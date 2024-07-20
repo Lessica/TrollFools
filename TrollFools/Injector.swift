@@ -345,10 +345,16 @@ class Injector {
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
             ])
         }
+
         for dylib in dylibs {
-            guard dylib.hasSuffix("/CydiaSubstrate") else {
+            guard (dylib.hasSuffix("/CydiaSubstrate") ||
+                   dylib.hasSuffix("/libsubstrate.dylib") ||
+                   dylib.hasSuffix("/libsubstitute.dylib") ||
+                   dylib.hasSuffix("/libellekit.dylib"))
+            else {
                 continue
             }
+
             try _applyChange(target, from: dylib, to: "@executable_path/Frameworks/CydiaSubstrate.framework/CydiaSubstrate")
         }
     }
