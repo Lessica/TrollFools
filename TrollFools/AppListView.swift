@@ -32,13 +32,21 @@ class App: Identifiable, ObservableObject {
     }
 }
 
-class AppListModel {
+class AppListModel: ObservableObject {
     static let shared = AppListModel()
 
-    let userApps: [App]
+    @Published var userApps: [App]
 
     private init() {
-        userApps = LSApplicationWorkspace.default()
+        userApps = Self.getUserApps()
+    }
+
+    func refresh() {
+        userApps = Self.getUserApps()
+    }
+
+    private static func getUserApps() -> [App] {
+        LSApplicationWorkspace.default()
             .allApplications()
             .filter { !$0.applicationIdentifier().hasPrefix("com.apple.") }
             .compactMap {
@@ -142,7 +150,7 @@ struct AppListCell: View {
 }
 
 struct AppListView: View {
-    let apps: [App] = AppListModel.shared.userApps
+    @StateObject var vm = AppListModel.shared
 
     @State var showPatchedOnly = false
     @State var searchResults: [App] = []
@@ -173,10 +181,10 @@ struct AppListView: View {
 
     var filteredApps: [App] {
         if showPatchedOnly {
-            (isSearching ? searchResults : apps)
+            (isSearching ? searchResults : vm.userApps)
                 .filter { $0.isInjected }
         } else {
-            isSearching ? searchResults : apps
+            isSearching ? searchResults : vm.userApps
         }
     }
 
@@ -247,15 +255,20 @@ struct AppListView: View {
         NavigationView {
             if #available(iOS 15.0, *) {
                 appList
-                .searchable(
-                    text: $searchOptions.keyword,
-                    placement: .automatic,
-                    prompt: NSLocalizedString("Search", comment: "")
-                )
-                .textInputAutocapitalization(.never)
-                .onChange(of: searchOptions.keyword) { _ in
-                    fetchSearchResults(for: searchOptions.keyword)
-                }
+                    .refreshable {
+                        withAnimation {
+                            vm.refresh()
+                        }
+                    }
+                    .searchable(
+                        text: $searchOptions.keyword,
+                        placement: .automatic,
+                        prompt: NSLocalizedString("Search", comment: "")
+                    )
+                    .textInputAutocapitalization(.never)
+                    .onChange(of: searchOptions.keyword) { _ in
+                        fetchSearchResults(for: searchOptions.keyword)
+                    }
             } else {
                 // Fallback on earlier versions
                 appList
@@ -264,7 +277,7 @@ struct AppListView: View {
     }
 
     private func fetchSearchResults(for query: String) {
-        searchResults = apps.filter { app in
+        searchResults = vm.userApps.filter { app in
             app.name.localizedCaseInsensitiveContains(query) ||
             app.id.localizedCaseInsensitiveContains(query)
         }
