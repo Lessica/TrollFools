@@ -48,7 +48,7 @@ class AppListModel: ObservableObject {
     private static func getUserApps() -> [App] {
         LSApplicationWorkspace.default()
             .allApplications()
-            .filter { !$0.applicationIdentifier().hasPrefix("com.apple.") }
+            .filter { $0.applicationType() == "User" && !$0.applicationIdentifier().hasPrefix("com.apple.") }
             .compactMap {
                 guard let id = $0.applicationIdentifier(),
                       !id.hasPrefix("wiki.qaq."),
