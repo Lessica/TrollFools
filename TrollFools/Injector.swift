@@ -28,7 +28,7 @@ class Injector {
         }
         return fileURLs
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
-            .filter { $0.pathExtension == "dylib" && !$0.lastPathComponent.hasPrefix("libswift_") }
+            .filter { $0.pathExtension == "dylib" && !$0.lastPathComponent.hasPrefix("libswift") }
     }
 
     let bundleURL: URL
