@@ -148,8 +148,8 @@ struct EjectListView: View {
                     prompt: NSLocalizedString("Search…", comment: "")
                 )
                 .textInputAutocapitalization(.never)
-                .onChange(of: searchOptions.keyword) { _ in
-                    fetchSearchResults(for: searchOptions.keyword)
+                .onChange(of: searchOptions.keyword) { keyword in
+                    fetchSearchResults(for: keyword)
                 }
         } else {
             // Fallback on earlier versions
