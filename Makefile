@@ -19,5 +19,5 @@ after-package::
 	$(ECHO_NOTHING)mkdir -p packages $(THEOS_STAGING_DIR)/Payload$(ECHO_END)
 	$(ECHO_NOTHING)cp -rp $(THEOS_STAGING_DIR)$(THEOS_PACKAGE_INSTALL_PREFIX)/Applications/TrollFools.app $(THEOS_STAGING_DIR)/Payload$(ECHO_END)
 	$(ECHO_NOTHING)chmod 0644 $(THEOS_STAGING_DIR)/Payload/TrollFools.app/Info.plist$(ECHO_END)
-	$(ECHO_NOTHING)cd $(THEOS_STAGING_DIR); 7z a -tzip -mm=LZMA TrollFools.tipa Payload; cd -;$(ECHO_END)
-	$(ECHO_NOTHING)mv $(THEOS_STAGING_DIR)/TrollFools.tipa packages/TrollFools.tipa$(ECHO_END)
+	$(ECHO_NOTHING)cd $(THEOS_STAGING_DIR); 7z a -tzip -mm=LZMA TrollFools.tipa Payload; zip -qr TrollFools14.tipa Payload; cd -;$(ECHO_END)
+	$(ECHO_NOTHING)cp -p $(THEOS_STAGING_DIR)/TrollFools.tipa $(THEOS_STAGING_DIR)/TrollFools14.tipa packages$(ECHO_END)
