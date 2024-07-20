@@ -51,16 +51,18 @@ class AppListModel {
                       !id.hasPrefix("com.tigisoftware."),
                       !id.hasPrefix("ch.xxtou."),
                       let url = $0.bundleURL(),
-                      let teamID = $0.teamID()
+                      let teamID = $0.teamID(),
+                      let localizedName = $0.localizedName(),
+                      let shortVersionString = $0.shortVersionString()
                 else {
                     return nil
                 }
                 return App(
                     id: id,
-                    name: $0.localizedName() ?? "",
+                    name: localizedName,
                     teamID: teamID,
                     url: url,
-                    version: $0.shortVersionString()
+                    version: shortVersionString
                 )
             }
             .filter { Injector.isEligibleBundle($0.url) }
