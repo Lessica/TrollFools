@@ -175,6 +175,7 @@ class Injector {
     lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "llvm-install-name-tool", withExtension: nil)!
     lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
     lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
+    lazy var ldidBinaryURL: URL = Bundle.main.url(forResource: "ldid", withExtension: nil)!
 
     func backup(_ url: URL) throws {
         let backupURL = url.appendingPathExtension("troll-fools.bak")
@@ -194,7 +195,50 @@ class Injector {
         try? rmURL(backupURL, isDirectory: false)
     }
 
+    func fakeSignIfNecessary(_ url: URL) throws {
+        var hasCodeSign = false
+        let file = try MachOKit.loadFromFile(url: url)
+        switch file {
+        case .machO(let machOFile):
+            for command in machOFile.loadCommands {
+                switch command {
+                case .codeSignature(_):
+                    hasCodeSign = true
+                    break
+                default:
+                    continue
+                }
+            }
+        case .fat(let fatFile):
+            let machOFiles = try fatFile.machOFiles()
+            for machOFile in machOFiles {
+                for command in machOFile.loadCommands {
+                    switch command {
+                    case .codeSignature(_):
+                        hasCodeSign = true
+                        break
+                    default:
+                        continue
+                    }
+                }
+            }
+        }
+        guard !hasCodeSign else {
+            return
+        }
+        let retCode = Execute.spawn(binary: ldidBinaryURL.path, arguments: [
+            "-S", url.path,
+        ], shouldWait: true)
+        guard retCode == 0 else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("ldid exited with code %d", comment: ""), retCode ?? -1),
+            ])
+        }
+        print("ldid \(url.lastPathComponent) done")
+    }
+
     func ctBypass(_ url: URL) throws {
+        try fakeSignIfNecessary(url)
         let retCode = Execute.spawn(binary: ctBypassBinaryURL.path, arguments: [
             "-i", url.path, "-t", teamID, "-r",
         ], shouldWait: true)

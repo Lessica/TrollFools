@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>get-task-allow</key>
+	<true/>
+	<key>platform-application</key>
+	<true/>
+	<key>task_for_pid-allow</key>
+	<true/>
+	<key>com.apple.private.security.container-required</key>
+	<false/>
+	<key>com.apple.system-task-ports</key>
+	<true/>
+	<key>com.apple.system-task-ports.control</key>
+	<true/>
+	<key>com.apple.private.thread-set-state</key>
+	<true/>
+	<key>com.apple.private.security.no-container</key>
+	<true/>
+	<key>com.apple.private.security.container-manager</key>
+	<true/>
+	<key>com.apple.private.security.storage.AppDataContainers</key>
+	<true/>
+	<key>com.apple.private.security.storage.Photos</key>
+	<true/>
+	<key>com.apple.private.WebClips.read-write</key>
+	<true/>
+	<key>com.apple.private.security.storage.AppBundles</key>
+	<true/>
+	<key>com.apple.private.security.disk-device-access</key>
+	<true/>
+	<key>com.apple.security.exception.files.absolute-path.read-write</key>
+	<array>
+		<string>/</string>
+	</array>
+</dict>
+</plist>
