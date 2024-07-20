@@ -38,6 +38,9 @@
 "Injectable Applications" = "Injectable Applications";
 
 /* No comment provided by engineer. */
+"Injected Applications" = "Injected Applications";
+
+/* No comment provided by engineer. */
 "Injected Plug-Ins" = "Injected Plug-Ins";
 
 /* No comment provided by engineer. */
@@ -45,6 +48,9 @@
 
 /* No comment provided by engineer. */
 "insert_dylib exited with code %d" = "insert_dylib exited with code %d";
+
+/* No comment provided by engineer. */
+"ldid exited with code %d" = "ldid exited with code %d";
 
 /* No comment provided by engineer. */
 "Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm and other contributors.";
@@ -65,6 +71,9 @@
 "optool exited with code %d" = "optool exited with code %d";
 
 /* No comment provided by engineer. */
+"Plug-Ins" = "Plug-Ins";
+
+/* No comment provided by engineer. */
 "rm exited with code %d" = "rm exited with code %d";
 
 /* No comment provided by engineer. */
@@ -78,6 +87,3 @@
 
 /* No comment provided by engineer. */
 "Tencent Apps are not allowed to be injected." = "Tencent Apps are not allowed to be injected.";
-
-/* No comment provided by engineer. */
-"Injected Applications" = "Injected Applications";

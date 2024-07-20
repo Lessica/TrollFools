@@ -80,6 +80,9 @@ class AppListModel: ObservableObject {
 
 class SearchOptions: ObservableObject {
     @Published var keyword = ""
+    func reset() {
+        keyword = ""
+    }
 }
 
 struct AppListCell: View {

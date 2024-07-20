@@ -38,6 +38,9 @@
 "Injectable Applications" = "可注入的应用程序";
 
 /* No comment provided by engineer. */
+"Injected Applications" = "已注入的应用程序";
+
+/* No comment provided by engineer. */
 "Injected Plug-Ins" = "已注入的插件";
 
 /* No comment provided by engineer. */
@@ -45,6 +48,9 @@
 
 /* No comment provided by engineer. */
 "insert_dylib exited with code %d" = "insert_dylib 意外退出，错误代码 %d";
+
+/* No comment provided by engineer. */
+"ldid exited with code %d" = "ldid 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
 "Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm 及其他贡献者";
@@ -65,6 +71,9 @@
 "optool exited with code %d" = "optool 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
+"Plug-Ins" = "插件列表";
+
+/* No comment provided by engineer. */
 "rm exited with code %d" = "rm 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
@@ -78,6 +87,3 @@
 
 /* No comment provided by engineer. */
 "Tencent Apps are not allowed to be injected." = "别碰腾讯，会变得不幸。";
-
-/* No comment provided by engineer. */
-"Injected Applications" = "已注入的应用程序";
