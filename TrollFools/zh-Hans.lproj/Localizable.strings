@@ -68,7 +68,7 @@
 "rm exited with code %d" = "rm 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
-"Search" = "搜索";
+"Search…" = "搜索…";
 
 /* No comment provided by engineer. */
 "Show Patched Only" = "仅显示已注入的";

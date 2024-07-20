@@ -68,7 +68,7 @@
 "rm exited with code %d" = "rm exited with code %d";
 
 /* No comment provided by engineer. */
-"Search" = "Search";
+"Search…" = "Search…";
 
 /* No comment provided by engineer. */
 "Show Patched Only" = "Show Patched Only";

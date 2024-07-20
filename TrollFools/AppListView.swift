@@ -263,7 +263,7 @@ struct AppListView: View {
                     .searchable(
                         text: $searchOptions.keyword,
                         placement: .automatic,
-                        prompt: NSLocalizedString("Search", comment: "")
+                        prompt: NSLocalizedString("Search…", comment: "")
                     )
                     .textInputAutocapitalization(.never)
                     .onChange(of: searchOptions.keyword) { _ in
