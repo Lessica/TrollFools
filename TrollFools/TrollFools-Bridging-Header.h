@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXTERN void TFUtilKillAll(NSString *processPath, BOOL softly);
+
 @interface UIImage (Private)
 + (instancetype)_applicationIconImageForBundleIdentifier:(NSString *)bundleIdentifier 
                                                   format:(int)format

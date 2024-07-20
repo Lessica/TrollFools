@@ -76,10 +76,10 @@
 		CCF4706A2C4A4919008D8197 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CCF4706C2C4A491B008D8197 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CCF4706D2C4A4BAB008D8197 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
-		CCF4706F2C4A4E6A008D8197 /* LSApplicationProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LSApplicationProxy.h; path = ../../../Projects/TrollRecorderPrivate/app/TRHud/Sources/TRHudObjC/include/LSApplicationProxy.h; sourceTree = "<group>"; };
-		CCF470702C4A4E6A008D8197 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LSApplicationWorkspace.h; path = ../../../Projects/TrollRecorderPrivate/app/TRHud/Sources/TRHudObjC/include/LSApplicationWorkspace.h; sourceTree = "<group>"; };
 		CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrollFools-Bridging-Header.h"; sourceTree = "<group>"; };
 		CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrollFoolsStub.m; sourceTree = "<group>"; };
+		CCF925412C4C1B6F00880D48 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
+		CCF925422C4C1B6F00880D48 /* LSApplicationProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationProxy.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,8 +160,8 @@
 				CC1548D42C4A744300A4173E /* FailureView.swift */,
 				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
 				CC1548D62C4A768700A4173E /* Injector.swift */,
-				CCF4706F2C4A4E6A008D8197 /* LSApplicationProxy.h */,
-				CCF470702C4A4E6A008D8197 /* LSApplicationWorkspace.h */,
+				CCF925422C4C1B6F00880D48 /* LSApplicationProxy.h */,
+				CCF925412C4C1B6F00880D48 /* LSApplicationWorkspace.h */,
 				CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */,
 				CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */,
 				CC15490F2C4B84DD00A4173E /* Resources */,
