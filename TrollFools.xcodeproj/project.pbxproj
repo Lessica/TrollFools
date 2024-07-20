@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
+		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
+		CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D22C4A743200A4173E /* SuccessView.swift */; };
+		CC1548D52C4A744300A4173E /* FailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D42C4A744300A4173E /* FailureView.swift */; };
+		CC1548D72C4A768700A4173E /* Injector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D62C4A768700A4173E /* Injector.swift */; };
+		CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548DA2C4A7C7000A4173E /* Execute.swift */; };
+		CC1548DD2C4A8DC500A4173E /* insert_dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548DC2C4A8DC500A4173E /* insert_dylib */; };
+		CC1548E12C4A963500A4173E /* cp in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E02C4A963500A4173E /* cp */; };
+		CC1548E62C4A974E00A4173E /* libintl.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E22C4A974400A4173E /* libintl.8.dylib */; };
+		CC1548E72C4A974E00A4173E /* libiosexec.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E32C4A974400A4173E /* libiosexec.1.dylib */; };
+		CC1548EE2C4AA22C00A4173E /* llvm-install-name-tool in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E92C4AA22C00A4173E /* llvm-install-name-tool */; };
+		CC1548F22C4AA24600A4173E /* libedit.0.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548EB2C4AA22C00A4173E /* libedit.0.dylib */; };
+		CC1548F32C4AA24600A4173E /* libncursesw.6.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548EC2C4AA22C00A4173E /* libncursesw.6.dylib */; };
+		CC1548F42C4AA24600A4173E /* libzstd.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E82C4AA22C00A4173E /* libzstd.1.dylib */; };
+		CC1548F52C4AA24600A4173E /* libLLVM.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548EA2C4AA22C00A4173E /* libLLVM.dylib */; };
+		CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548FB2C4AADBB00A4173E /* MachOKit */; };
+		CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548FD2C4AADBB00A4173E /* MachOKitC */; };
+		CC1549002C4AB43600A4173E /* rm in Resources */ = {isa = PBXBuildFile; fileRef = CC1548FF2C4AB43600A4173E /* rm */; };
+		CC1549022C4B62E300A4173E /* cp-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC1549012C4B62E300A4173E /* cp-15 */; };
+		CC15490C2C4B79D800A4173E /* optool in Resources */ = {isa = PBXBuildFile; fileRef = CC15490B2C4B79D800A4173E /* optool */; };
+		CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC15490D2C4B80AF00A4173E /* EjectListView.swift */; };
+		CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */ = {isa = PBXBuildFile; fileRef = CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */; };
+		CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A1162C4A540F000D75B0 /* CoreServices.framework */; };
+		CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A1182C4A58C7000D75B0 /* OptionView.swift */; };
+		CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A11A2C4A6066000D75B0 /* InjectView.swift */; };
+		CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */; };
+		CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF4705D2C4A464B008D8197 /* Assets.xcassets */; };
+		CCF470612C4A464B008D8197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF470602C4A464B008D8197 /* Preview Assets.xcassets */; };
+		CCF470692C4A4919008D8197 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCF4706B2C4A4919008D8197 /* Localizable.strings */; };
+		CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF4706D2C4A4BAB008D8197 /* AppListView.swift */; };
+		CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CC1548CF2C4A6B8200A4173E /* ct_bypass */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ct_bypass; sourceTree = "<group>"; };
+		CC1548D22C4A743200A4173E /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
+		CC1548D42C4A744300A4173E /* FailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureView.swift; sourceTree = "<group>"; };
+		CC1548D62C4A768700A4173E /* Injector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injector.swift; sourceTree = "<group>"; };
+		CC1548DA2C4A7C7000A4173E /* Execute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Execute.swift; sourceTree = "<group>"; };
+		CC1548DC2C4A8DC500A4173E /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
+		CC1548E02C4A963500A4173E /* cp */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = cp; sourceTree = "<group>"; };
+		CC1548E22C4A974400A4173E /* libintl.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libintl.8.dylib; sourceTree = "<group>"; };
+		CC1548E32C4A974400A4173E /* libiosexec.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libiosexec.1.dylib; sourceTree = "<group>"; };
+		CC1548E82C4AA22C00A4173E /* libzstd.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzstd.1.dylib; sourceTree = "<group>"; };
+		CC1548E92C4AA22C00A4173E /* llvm-install-name-tool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "llvm-install-name-tool"; sourceTree = "<group>"; };
+		CC1548EA2C4AA22C00A4173E /* libLLVM.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libLLVM.dylib; sourceTree = "<group>"; };
+		CC1548EB2C4AA22C00A4173E /* libedit.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libedit.0.dylib; sourceTree = "<group>"; };
+		CC1548EC2C4AA22C00A4173E /* libncursesw.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libncursesw.6.dylib; sourceTree = "<group>"; };
+		CC1548FF2C4AB43600A4173E /* rm */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = rm; sourceTree = "<group>"; };
+		CC1549012C4B62E300A4173E /* cp-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "cp-15"; sourceTree = "<group>"; };
+		CC15490B2C4B79D800A4173E /* optool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = optool; sourceTree = "<group>"; };
+		CC15490D2C4B80AF00A4173E /* EjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListView.swift; sourceTree = "<group>"; };
+		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
+		CCB6A1162C4A540F000D75B0 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		CCB6A1182C4A58C7000D75B0 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
+		CCB6A11A2C4A6066000D75B0 /* InjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectView.swift; sourceTree = "<group>"; };
+		CCF470562C4A4649008D8197 /* TrollFools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrollFools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrollFoolsApp.swift; sourceTree = "<group>"; };
+		CCF4705D2C4A464B008D8197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CCF470602C4A464B008D8197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CCF4706A2C4A4919008D8197 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CCF4706C2C4A491B008D8197 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CCF4706D2C4A4BAB008D8197 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
+		CCF4706F2C4A4E6A008D8197 /* LSApplicationProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LSApplicationProxy.h; path = ../../../Projects/TrollRecorderPrivate/app/TRHud/Sources/TRHudObjC/include/LSApplicationProxy.h; sourceTree = "<group>"; };
+		CCF470702C4A4E6A008D8197 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LSApplicationWorkspace.h; path = ../../../Projects/TrollRecorderPrivate/app/TRHud/Sources/TRHudObjC/include/LSApplicationWorkspace.h; sourceTree = "<group>"; };
+		CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrollFools-Bridging-Header.h"; sourceTree = "<group>"; };
+		CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrollFoolsStub.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CCF470532C4A4649008D8197 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */,
+				CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */,
+				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
+				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CC15490F2C4B84DD00A4173E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CCF4705D2C4A464B008D8197 /* Assets.xcassets */,
+				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
+				CC1548E02C4A963500A4173E /* cp */,
+				CC1549012C4B62E300A4173E /* cp-15 */,
+				CC1548FF2C4AB43600A4173E /* rm */,
+				CC15490B2C4B79D800A4173E /* optool */,
+				CC1548CF2C4A6B8200A4173E /* ct_bypass */,
+				CC1548DC2C4A8DC500A4173E /* insert_dylib */,
+				CC1548EB2C4AA22C00A4173E /* libedit.0.dylib */,
+				CC1548E22C4A974400A4173E /* libintl.8.dylib */,
+				CC1548E32C4A974400A4173E /* libiosexec.1.dylib */,
+				CC1548EC2C4AA22C00A4173E /* libncursesw.6.dylib */,
+				CC1548E82C4AA22C00A4173E /* libzstd.1.dylib */,
+				CC1548EA2C4AA22C00A4173E /* libLLVM.dylib */,
+				CC1548E92C4AA22C00A4173E /* llvm-install-name-tool */,
+				CCF4706B2C4A4919008D8197 /* Localizable.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CCB6A1152C4A540E000D75B0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CCB6A1162C4A540F000D75B0 /* CoreServices.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CCF4704D2C4A4649008D8197 = {
+			isa = PBXGroup;
+			children = (
+				CCF470582C4A4649008D8197 /* TrollFools */,
+				CCF470572C4A4649008D8197 /* Products */,
+				CCB6A1152C4A540E000D75B0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CCF470572C4A4649008D8197 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CCF470562C4A4649008D8197 /* TrollFools.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CCF470582C4A4649008D8197 /* TrollFools */ = {
+			isa = PBXGroup;
+			children = (
+				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
+				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
+				CCB6A1182C4A58C7000D75B0 /* OptionView.swift */,
+				CCB6A11A2C4A6066000D75B0 /* InjectView.swift */,
+				CC15490D2C4B80AF00A4173E /* EjectListView.swift */,
+				CC1548D22C4A743200A4173E /* SuccessView.swift */,
+				CC1548D42C4A744300A4173E /* FailureView.swift */,
+				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
+				CC1548D62C4A768700A4173E /* Injector.swift */,
+				CCF4706F2C4A4E6A008D8197 /* LSApplicationProxy.h */,
+				CCF470702C4A4E6A008D8197 /* LSApplicationWorkspace.h */,
+				CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */,
+				CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */,
+				CC15490F2C4B84DD00A4173E /* Resources */,
+				CCF4705F2C4A464B008D8197 /* Preview Content */,
+			);
+			path = TrollFools;
+			sourceTree = "<group>";
+		};
+		CCF4705F2C4A464B008D8197 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CCF470602C4A464B008D8197 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CCF470552C4A4649008D8197 /* TrollFools */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCF470642C4A464B008D8197 /* Build configuration list for PBXNativeTarget "TrollFools" */;
+			buildPhases = (
+				CCF470522C4A4649008D8197 /* Sources */,
+				CCF470532C4A4649008D8197 /* Frameworks */,
+				CCF470542C4A4649008D8197 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrollFools;
+			packageProductDependencies = (
+				CC1548C82C4A6B2100A4173E /* ZIPFoundation */,
+				CC1548FB2C4AADBB00A4173E /* MachOKit */,
+				CC1548FD2C4AADBB00A4173E /* MachOKitC */,
+			);
+			productName = TrollFools;
+			productReference = CCF470562C4A4649008D8197 /* TrollFools.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CCF4704E2C4A4649008D8197 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					CCF470552C4A4649008D8197 = {
+						CreatedOnToolsVersion = 15.0.1;
+						LastSwiftMigration = 1500;
+					};
+				};
+			};
+			buildConfigurationList = CCF470512C4A4649008D8197 /* Build configuration list for PBXProject "TrollFools" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = CCF4704D2C4A4649008D8197;
+			packageReferences = (
+				CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */,
+			);
+			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CCF470552C4A4649008D8197 /* TrollFools */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CCF470542C4A4649008D8197 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC1548E12C4A963500A4173E /* cp in Resources */,
+				CC15490C2C4B79D800A4173E /* optool in Resources */,
+				CC1549022C4B62E300A4173E /* cp-15 in Resources */,
+				CC1549002C4AB43600A4173E /* rm in Resources */,
+				CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */,
+				CC1548DD2C4A8DC500A4173E /* insert_dylib in Resources */,
+				CC1548F22C4AA24600A4173E /* libedit.0.dylib in Resources */,
+				CC1548E62C4A974E00A4173E /* libintl.8.dylib in Resources */,
+				CC1548E72C4A974E00A4173E /* libiosexec.1.dylib in Resources */,
+				CC1548F32C4AA24600A4173E /* libncursesw.6.dylib in Resources */,
+				CC1548F42C4AA24600A4173E /* libzstd.1.dylib in Resources */,
+				CC1548F52C4AA24600A4173E /* libLLVM.dylib in Resources */,
+				CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */,
+				CC1548EE2C4AA22C00A4173E /* llvm-install-name-tool in Resources */,
+				CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */,
+				CCF470612C4A464B008D8197 /* Preview Assets.xcassets in Resources */,
+				CCF470692C4A4919008D8197 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CCF470522C4A4649008D8197 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */,
+				CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */,
+				CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */,
+				CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */,
+				CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */,
+				CC1548D72C4A768700A4173E /* Injector.swift in Sources */,
+				CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */,
+				CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */,
+				CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */,
+				CC1548D52C4A744300A4173E /* FailureView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CCF4706B2C4A4919008D8197 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCF4706A2C4A4919008D8197 /* en */,
+				CCF4706C2C4A491B008D8197 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CCF470622C4A464B008D8197 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CCF470632C4A464B008D8197 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CCF470652C4A464B008D8197 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_ASSET_PATHS = "\"TrollFools/Preview Content\"";
+				DEVELOPMENT_TEAM = GXZ23M5TP2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TrollFools",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = wiki.qaq.TrollFools;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CCF470662C4A464B008D8197 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_ASSET_PATHS = "\"TrollFools/Preview Content\"";
+				DEVELOPMENT_TEAM = GXZ23M5TP2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TrollFools",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = wiki.qaq.TrollFools;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CCF470512C4A4649008D8197 /* Build configuration list for PBXProject "TrollFools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCF470622C4A464B008D8197 /* Debug */,
+				CCF470632C4A464B008D8197 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCF470642C4A464B008D8197 /* Build configuration list for PBXNativeTarget "TrollFools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCF470652C4A464B008D8197 /* Debug */,
+				CCF470662C4A464B008D8197 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
+		CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/p-x9/MachOKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.19.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CC1548C82C4A6B2100A4173E /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		CC1548FB2C4AADBB00A4173E /* MachOKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */;
+			productName = MachOKit;
+		};
+		CC1548FD2C4AADBB00A4173E /* MachOKitC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */;
+			productName = MachOKitC;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CCF4704E2C4A4649008D8197 /* Project object */;
+}

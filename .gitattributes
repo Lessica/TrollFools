@@ -1,0 +1,14 @@
+TrollFools/libintl.8.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/libiosexec.1.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/libncursesw.6.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/libzstd.1.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/libLLVM.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/libedit.0.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/cp filter=lfs diff=lfs merge=lfs -text
+TrollFools/ct_bypass filter=lfs diff=lfs merge=lfs -text
+TrollFools/insert_dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/llvm-install-name-tool filter=lfs diff=lfs merge=lfs -text
+TrollFools/CydiaSubstrate.framework.zip filter=lfs diff=lfs merge=lfs -text
+TrollFools/cp-15 filter=lfs diff=lfs merge=lfs -text
+TrollFools/rm filter=lfs diff=lfs merge=lfs -text
+TrollFools/optool filter=lfs diff=lfs merge=lfs -text
