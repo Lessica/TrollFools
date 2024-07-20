@@ -1,0 +1,83 @@
+/* No comment provided by engineer. */
+"Applications" = "Applications";
+
+/* No comment provided by engineer. */
+"Completed" = "Completed";
+
+/* No comment provided by engineer. */
+"Copyright" = "Copyright";
+
+/* No comment provided by engineer. */
+"cp exited with code %d" = "cp exited with code %d";
+
+/* No comment provided by engineer. */
+"ct_bypass exited with code %d" = "ct_bypass exited with code %d";
+
+/* No comment provided by engineer. */
+"Eject" = "Eject";
+
+/* No comment provided by engineer. */
+"Eject All" = "Eject All";
+
+/* No comment provided by engineer. */
+"Error" = "Error";
+
+/* No comment provided by engineer. */
+"Failed" = "Failed";
+
+/* No comment provided by engineer. */
+"Failed to parse Mach-O file: %@." = "Failed to parse Mach-O file: %@.";
+
+/* No comment provided by engineer. */
+"Give Me ¥108" = "Give Me ¥108";
+
+/* No comment provided by engineer. */
+"Inject" = "Inject";
+
+/* No comment provided by engineer. */
+"Injectable Applications" = "Injectable Applications";
+
+/* No comment provided by engineer. */
+"Injected Plug-Ins" = "Injected Plug-Ins";
+
+/* No comment provided by engineer. */
+"Injecting" = "Injecting";
+
+/* No comment provided by engineer. */
+"insert_dylib exited with code %d" = "insert_dylib exited with code %d";
+
+/* No comment provided by engineer. */
+"Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm and other contributors.";
+
+/* No comment provided by engineer. */
+"llvm-install-name-tool exited with code %d" = "llvm-install-name-tool exited with code %d";
+
+/* No comment provided by engineer. */
+"No eligible framework found." = "No eligible framework found.";
+
+/* No comment provided by engineer. */
+"No Injected Plug-Ins" = "No Injected Plug-Ins";
+
+/* No comment provided by engineer. */
+"Not implemented yet." = "Not implemented yet.";
+
+/* No comment provided by engineer. */
+"optool exited with code %d" = "optool exited with code %d";
+
+/* No comment provided by engineer. */
+"rm exited with code %d" = "rm exited with code %d";
+
+/* No comment provided by engineer. */
+"Search" = "Search";
+
+/* No comment provided by engineer. */
+"Show Patched Only" = "Show Patched Only";
+
+/* No comment provided by engineer. */
+"Source Code" = "Source Code";
+
+/* No comment provided by engineer. */
+"Tencent Apps are not allowed to be injected." = "Tencent Apps are not allowed to be injected.";
+
+/* No comment provided by engineer. */
+"Injected Applications" = "Injected Applications";
