@@ -63,6 +63,7 @@ class Injector {
     lazy var substrateFwkURL: URL = tempURL.appendingPathComponent("CydiaSubstrate.framework")
     lazy var substrateMainMachOURL: URL = substrateFwkURL.appendingPathComponent("CydiaSubstrate")
     lazy var targetSubstrateFwkURL: URL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework")
+    lazy var targetSubstrateMainMachOURL: URL = targetSubstrateFwkURL.appendingPathComponent("CydiaSubstrate")
 
     func isMachOURL(_ url: URL) -> Bool {
         guard let fileHandle = try? FileHandle(forReadingFrom: url) else {
@@ -282,6 +283,18 @@ class Injector {
         }
     }
 
+    func _applyChange(_ target: URL, from src: String, to dst: String) throws {
+        let retCode = Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
+            "-change", src, dst, target.path,
+        ], shouldWait: true)
+        guard retCode == 0 else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("llvm-install-name-tool exited with code %d", comment: ""), retCode ?? -1),
+            ])
+        }
+        print("llvm-install-name-tool \(target.lastPathComponent) done")
+    }
+
     func applySubstrateFixes(_ target: URL) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
@@ -292,15 +305,7 @@ class Injector {
             guard dylib.hasSuffix("/CydiaSubstrate") else {
                 continue
             }
-            let retCode = Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
-                "-change", dylib, "@executable_path/Frameworks/CydiaSubstrate.framework/CydiaSubstrate", target.path,
-            ], shouldWait: true)
-            guard retCode == 0 else {
-                throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                    NSLocalizedDescriptionKey: String(format: NSLocalizedString("llvm-install-name-tool exited with code %d", comment: ""), retCode ?? -1),
-                ])
-            }
-            print("llvm-install-name-tool \(target.lastPathComponent) done")
+            try _applyChange(target, from: dylib, to: "@executable_path/Frameworks/CydiaSubstrate.framework/CydiaSubstrate")
         }
     }
 
@@ -314,15 +319,7 @@ class Injector {
             guard dylib.hasSuffix("/" + name) else {
                 continue
             }
-            let retCode = Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
-                "-change", dylib, "@rpath/" + name, target.path,
-            ], shouldWait: true)
-            guard retCode == 0 else {
-                throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                    NSLocalizedDescriptionKey: String(format: NSLocalizedString("llvm-install-name-tool exited with code %d", comment: ""), retCode ?? -1),
-                ])
-            }
-            print("llvm-install-name-tool \(target.lastPathComponent) done")
+            try _applyChange(target, from: dylib, to: "@rpath/" + name)
         }
     }
 
