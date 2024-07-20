@@ -57,6 +57,7 @@ class AppListModel: ObservableObject {
                       !id.hasPrefix("com.Alfie."),
                       !id.hasPrefix("org.coolstar."),
                       !id.hasPrefix("com.tigisoftware."),
+                      !id.hasPrefix("com.icraze."),
                       !id.hasPrefix("ch.xxtou."),
                       let url = $0.bundleURL(),
                       let teamID = $0.teamID(),
@@ -269,8 +270,8 @@ struct AppListView: View {
                         prompt: NSLocalizedString("Search…", comment: "")
                     )
                     .textInputAutocapitalization(.never)
-                    .onChange(of: searchOptions.keyword) { _ in
-                        fetchSearchResults(for: searchOptions.keyword)
+                    .onChange(of: searchOptions.keyword) { keyword in
+                        fetchSearchResults(for: keyword)
                     }
             } else {
                 // Fallback on earlier versions
