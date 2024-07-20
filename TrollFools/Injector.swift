@@ -385,6 +385,7 @@ class Injector {
         }
 
         let shouldBackup = !hasInjectedPlugIn
+        TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
 
         var targetURL: URL?
         for url in try frameworkMachOURLs(mainExecutableURL) {
@@ -423,6 +424,8 @@ class Injector {
     }
 
     func eject(_ ejectURLs: [URL]) throws {
+        TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
+
         var targetURL: URL?
         for frameworkMachOURL in try frameworkMachOURLs(mainExecutableURL) {
             do {
