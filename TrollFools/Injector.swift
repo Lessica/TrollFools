@@ -221,7 +221,7 @@ final class Injector {
     }
 
     private func changeOwnerToInstalld(_ target: URL, isDirectory: Bool) throws {
-        try _changeOwner(target, owner: "_installd", isDirectory: isDirectory)
+        try _changeOwner(target, owner: "33", isDirectory: isDirectory) // _installd
     }
 
     private func copyURL(_ src: URL, to dst: URL) throws {
