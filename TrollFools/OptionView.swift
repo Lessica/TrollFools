@@ -108,7 +108,7 @@ struct OptionView: View {
                 .bundle,
                 .framework,
                 .package,
-                // .zip,
+                .zip,
             ],
             allowsMultipleSelection: true
         ) {

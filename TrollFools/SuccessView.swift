@@ -10,18 +10,72 @@ import SwiftUI
 struct SuccessView: View {
     let title: String
 
-    var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 64))
-                .foregroundColor(.green)
+    @StateObject var vm = AppListModel.shared
+    @StateObject var searchOptions = SearchOptions()
 
-            Text(title)
-                .font(.title)
-                .bold()
-                .multilineTextAlignment(.center)
+    var possibleApp: App? {
+        [
+            App(
+                id: NSLocalizedString("A pure TrollStore software channel!", comment: ""),
+                name: NSLocalizedString("AE86 TrollStore Channel", comment: ""),
+                teamID: "",
+                url: URL(string: "https://t.me/ae86_ios")!,
+                alternateIcon: .init(named: "ae86-ios")
+            ),
+            App(
+                id: NSLocalizedString("Not the first, but the best phone call recorder with TrollStore.", comment: ""),
+                name: NSLocalizedString("TrollRecorder", comment: ""),
+                teamID: "",
+                url: URL(string: "https://havoc.app/package/trollrecorder")!,
+                alternateIcon: .init(named: "tricon-default")
+            ),
+        ].randomElement()
+    }
+
+    var body: some View {
+        ZStack {
+            VStack(spacing: 20) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 64))
+                    .foregroundColor(.green)
+                
+                Text(title)
+                    .font(.title)
+                    .bold()
+            }
+            .padding()
+            .multilineTextAlignment(.center)
+
+            VStack {
+                Spacer()
+
+                if !vm.hasTrollRecorder, let possibleApp {
+                    Button {
+                        UIApplication.shared.open(possibleApp.url)
+                    } label: {
+                        AppListCell(app: possibleApp)
+                        .padding()
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.leading)
+                        .environmentObject(searchOptions)
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .foregroundColor(Color(.systemBackground))
+                            .shadow(radius: 4))
+                    }
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .bottom).combined(with: .opacity),
+                        removal: .move(edge: .bottom).combined(with: .opacity)
+                    ))
+                }
+            }
         }
-        .padding()
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                withAnimation {
+                    vm.hasTrollRecorder = true
+                }
+            }
+        }
     }
 }
 
