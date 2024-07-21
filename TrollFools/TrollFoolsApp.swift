@@ -9,7 +9,6 @@ import SwiftUI
 
 let kTrollFoolsErrorDomain = "wiki.qaq.TrollFools.error"
 
-@main
 struct TrollFoolsApp: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
