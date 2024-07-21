@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class App: Identifiable, ObservableObject {
+final class App: Identifiable, ObservableObject {
     let id: String
     let name: String
     let teamID: String
@@ -32,7 +32,7 @@ class App: Identifiable, ObservableObject {
     }
 }
 
-class AppListModel: ObservableObject {
+final class AppListModel: ObservableObject {
     static let shared = AppListModel()
 
     @Published var userApps: [App]
@@ -79,8 +79,9 @@ class AppListModel: ObservableObject {
     }
 }
 
-class SearchOptions: ObservableObject {
+final class SearchOptions: ObservableObject {
     @Published var keyword = ""
+
     func reset() {
         keyword = ""
     }
@@ -158,6 +159,7 @@ struct AppListView: View {
 
     @State var showPatchedOnly = false
     @State var searchResults: [App] = []
+
     @StateObject var searchOptions = SearchOptions()
 
     var appNameString: String {
@@ -280,7 +282,7 @@ struct AppListView: View {
         }
     }
 
-    private func fetchSearchResults(for query: String) {
+    func fetchSearchResults(for query: String) {
         searchResults = vm.userApps.filter { app in
             app.name.localizedCaseInsensitiveContains(query) ||
             app.id.localizedCaseInsensitiveContains(query)

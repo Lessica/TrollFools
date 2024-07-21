@@ -9,7 +9,8 @@ import Foundation
 import MachOKit
 import ZIPFoundation
 
-class Injector {
+final class Injector {
+
     static func isInjectedBundle(_ target: URL) -> Bool {
         let frameworksURL = target.appendingPathComponent("Frameworks", isDirectory: true)
         let substrateFwkURL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework", isDirectory: true)
@@ -31,20 +32,20 @@ class Injector {
             .filter { $0.pathExtension == "dylib" && !$0.lastPathComponent.hasPrefix("libswift") }
     }
 
-    let bundleURL: URL
-    let teamID: String
-    let tempURL: URL
+    private let bundleURL: URL
+    private let teamID: String
+    private let tempURL: URL
 
-    lazy var infoPlistURL: URL = bundleURL.appendingPathComponent("Info.plist")
-    lazy var mainExecutableURL: URL = {
+    private lazy var infoPlistURL: URL = bundleURL.appendingPathComponent("Info.plist")
+    private lazy var mainExecutableURL: URL = {
         let infoPlist = NSDictionary(contentsOf: infoPlistURL)!
         let mainExecutable = infoPlist["CFBundleExecutable"] as! String
         return bundleURL.appendingPathComponent(mainExecutable, isDirectory: false)
     }()
 
-    lazy var frameworksURL: URL = bundleURL.appendingPathComponent("Frameworks")
+    private lazy var frameworksURL: URL = bundleURL.appendingPathComponent("Frameworks")
 
-    var hasInjectedPlugIn: Bool {
+    private var hasInjectedPlugIn: Bool {
         !Self.injectedPlugInURLs(bundleURL).isEmpty
     }
 
@@ -59,13 +60,13 @@ class Injector {
         )
     }
 
-    lazy var substrateZipURL: URL = Bundle.main.url(forResource: "CydiaSubstrate.framework", withExtension: "zip")!
-    lazy var substrateFwkURL: URL = tempURL.appendingPathComponent("CydiaSubstrate.framework")
-    lazy var substrateMainMachOURL: URL = substrateFwkURL.appendingPathComponent("CydiaSubstrate")
-    lazy var targetSubstrateFwkURL: URL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework")
-    lazy var targetSubstrateMainMachOURL: URL = targetSubstrateFwkURL.appendingPathComponent("CydiaSubstrate")
+    private lazy var substrateZipURL: URL = Bundle.main.url(forResource: "CydiaSubstrate.framework", withExtension: "zip")!
+    private lazy var substrateFwkURL: URL = tempURL.appendingPathComponent("CydiaSubstrate.framework")
+    private lazy var substrateMainMachOURL: URL = substrateFwkURL.appendingPathComponent("CydiaSubstrate")
+    private lazy var targetSubstrateFwkURL: URL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework")
+    private lazy var targetSubstrateMainMachOURL: URL = targetSubstrateFwkURL.appendingPathComponent("CydiaSubstrate")
 
-    func isMachOURL(_ url: URL) -> Bool {
+    private func isMachOURL(_ url: URL) -> Bool {
         guard let fileHandle = try? FileHandle(forReadingFrom: url) else {
             return false
         }
@@ -80,7 +81,7 @@ class Injector {
         return magic == 0xfeedface || magic == 0xfeedfacf
     }
 
-    func frameworkMachOURLs(_ target: URL) throws -> [URL] {
+    private func frameworkMachOURLs(_ target: URL) throws -> [URL] {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
@@ -120,7 +121,7 @@ class Injector {
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
     }
 
-    func tempInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
+    private func tempInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
         let tempURLs = injectURLs.map { tempURL.appendingPathComponent($0.lastPathComponent) }
         for (injectURL, tempURL) in zip(injectURLs, tempURLs) {
             try FileManager.default.copyItem(at: injectURL, to: tempURL)
@@ -128,7 +129,7 @@ class Injector {
         return tempURLs
     }
 
-    func rmURL(_ target: URL, isDirectory: Bool) throws {
+    private func rmURL(_ target: URL, isDirectory: Bool) throws {
         let retCode = Execute.spawn(binary: rmBinaryURL.path, arguments: [
             isDirectory ? "-rf" : "-f", target.path,
         ], shouldWait: true)
@@ -140,7 +141,7 @@ class Injector {
         print("rm \(target.lastPathComponent) done")
     }
 
-    func copyURL(_ src: URL, to dst: URL) throws {
+    private func cpURL(_ src: URL, to dst: URL) throws {
         try? rmURL(dst, isDirectory: true)
         let retCode = Execute.spawn(binary: cpBinaryURL.path, arguments: [
             "-rfp", src.path, dst.path,
@@ -154,15 +155,15 @@ class Injector {
     }
 
     @discardableResult
-    func targetInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
+    private func targetInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
         let targetURLs = injectURLs.map { frameworksURL.appendingPathComponent($0.lastPathComponent) }
         for (injectURL, targetURL) in zip(injectURLs, targetURLs) {
-            try copyURL(injectURL, to: targetURL)
+            try cpURL(injectURL, to: targetURL)
         }
         return targetURLs
     }
 
-    lazy var cpBinaryURL: URL = {
+    private lazy var cpBinaryURL: URL = {
         if #available(iOS 16.0, *) {
             Bundle.main.url(forResource: "cp", withExtension: nil)!
         } else {
@@ -170,32 +171,32 @@ class Injector {
         }
     }()
 
-    lazy var ctBypassBinaryURL: URL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
-    lazy var insertDylibBinaryURL: URL = Bundle.main.url(forResource: "insert_dylib", withExtension: nil)!
-    lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "llvm-install-name-tool", withExtension: nil)!
-    lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
-    lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
-    lazy var ldidBinaryURL: URL = Bundle.main.url(forResource: "ldid", withExtension: nil)!
+    private lazy var ctBypassBinaryURL: URL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
+    private lazy var insertDylibBinaryURL: URL = Bundle.main.url(forResource: "insert_dylib", withExtension: nil)!
+    private lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "llvm-install-name-tool", withExtension: nil)!
+    private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
+    private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
+    private lazy var ldidBinaryURL: URL = Bundle.main.url(forResource: "ldid", withExtension: nil)!
 
-    func backup(_ url: URL) throws {
+    private func backup(_ url: URL) throws {
         let backupURL = url.appendingPathExtension("troll-fools.bak")
         guard !FileManager.default.fileExists(atPath: backupURL.path) else {
             return
         }
-        try copyURL(url, to: backupURL)
+        try cpURL(url, to: backupURL)
     }
 
-    func restoreIfExists(_ url: URL) throws {
+    private func restoreIfExists(_ url: URL) throws {
         let backupURL = url.appendingPathExtension("troll-fools.bak")
         guard FileManager.default.fileExists(atPath: backupURL.path) else {
             return
         }
         try? rmURL(url, isDirectory: false)
-        try copyURL(backupURL, to: url)
+        try cpURL(backupURL, to: url)
         try? rmURL(backupURL, isDirectory: false)
     }
 
-    func fakeSignIfNecessary(_ url: URL) throws {
+    private func fakeSignIfNecessary(_ url: URL) throws {
         var hasCodeSign = false
         let file = try MachOKit.loadFromFile(url: url)
         switch file {
@@ -237,7 +238,7 @@ class Injector {
         print("ldid \(url.lastPathComponent) done")
     }
 
-    func ctBypass(_ url: URL) throws {
+    private func ctBypass(_ url: URL) throws {
         try fakeSignIfNecessary(url)
         let retCode = Execute.spawn(binary: ctBypassBinaryURL.path, arguments: [
             "-i", url.path, "-t", teamID, "-r",
@@ -250,7 +251,7 @@ class Injector {
         print("ct_bypass \(url.lastPathComponent) done")
     }
 
-    func loadedDylibs(_ target: URL) throws -> Set<String> {
+    private func loadedDylibs(_ target: URL) throws -> Set<String> {
         var dylibs = Set<String>()
         let file = try MachOKit.loadFromFile(url: target)
         switch file {
@@ -283,7 +284,7 @@ class Injector {
         return dylibs
     }
 
-    func insertDylib(_ target: URL, url: URL) throws {
+    private func insertDylib(_ target: URL, url: URL) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
@@ -305,7 +306,7 @@ class Injector {
         print("insert_dylib \(url.lastPathComponent) done")
     }
 
-    func removeDylib(_ target: URL, name: String) throws {
+    private func removeDylib(_ target: URL, name: String) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
@@ -327,7 +328,7 @@ class Injector {
         }
     }
 
-    func _applyChange(_ target: URL, from src: String, to dst: String) throws {
+    private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
         let retCode = Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
             "-change", src, dst, target.path,
         ], shouldWait: true)
@@ -339,7 +340,7 @@ class Injector {
         print("llvm-install-name-tool \(target.lastPathComponent) done")
     }
 
-    func applySubstrateFixes(_ target: URL) throws {
+    private func applySubstrateFixes(_ target: URL) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
@@ -359,7 +360,7 @@ class Injector {
         }
     }
 
-    func applyTargetFixes(_ target: URL, name: String) throws {
+    private func applyTargetFixes(_ target: URL, name: String) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
@@ -373,12 +374,25 @@ class Injector {
         }
     }
 
+    private static let ignoredDylibNames: [String] = [
+        "libsubstrate.dylib",
+        "libsubstitute.dylib",
+        "libellekit.dylib",
+    ]
+
+    // MARK: - Public Methods
+
     func inject(_ injectURLs: [URL]) throws {
         try FileManager.default.unzipItem(at: substrateZipURL, to: tempURL)
 
         try ctBypass(substrateMainMachOURL)
 
-        let newInjectURLs = try tempInjectURLs(injectURLs)
+        let filteredURLs = injectURLs.filter {
+            !Self.ignoredDylibNames.contains($0.lastPathComponent)
+        }
+
+        let newInjectURLs = try tempInjectURLs(filteredURLs)
+
         for newInjectURL in newInjectURLs {
             try applySubstrateFixes(newInjectURL)
             try ctBypass(newInjectURL)
