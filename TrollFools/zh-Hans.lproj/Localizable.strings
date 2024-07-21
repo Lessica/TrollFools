@@ -2,6 +2,9 @@
 "Applications" = "应用程序";
 
 /* No comment provided by engineer. */
+"chown exited with code %d" = "chown 意外退出，错误代码 %d";
+
+/* No comment provided by engineer. */
 "Completed" = "已完成";
 
 /* No comment provided by engineer. */
@@ -26,7 +29,22 @@
 "Failed" = "失败";
 
 /* No comment provided by engineer. */
+"Failed to find entry CFBundleExecutable in: %@" = "找不到 %@ 中的 CFBundleExecutable。";
+
+/* No comment provided by engineer. */
+"Failed to locate main executable: %@" = "找不到主要可执行文件：%@";
+
+/* No comment provided by engineer. */
+"Failed to parse Mach-O file: %@" = "无法解析 Mach-O 文件：%@";
+
+/* No comment provided by engineer. */
 "Failed to parse Mach-O file: %@." = "无法解析 Mach-O 文件：%@。";
+
+/* No comment provided by engineer. */
+"Failed to parse: %@" = "无法解析：%@";
+
+/* No comment provided by engineer. */
+"Failed to read: %@" = "无法读取：%@";
 
 /* No comment provided by engineer. */
 "Give Me ¥108" = "快，给我 ¥108";

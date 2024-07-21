@@ -2,6 +2,9 @@
 "Applications" = "Applications";
 
 /* No comment provided by engineer. */
+"chown exited with code %d" = "chown exited with code %d";
+
+/* No comment provided by engineer. */
 "Completed" = "Completed";
 
 /* No comment provided by engineer. */
@@ -26,7 +29,22 @@
 "Failed" = "Failed";
 
 /* No comment provided by engineer. */
+"Failed to find entry CFBundleExecutable in: %@" = "Failed to find entry CFBundleExecutable in: %@";
+
+/* No comment provided by engineer. */
+"Failed to locate main executable: %@" = "Failed to locate main executable: %@";
+
+/* No comment provided by engineer. */
+"Failed to parse Mach-O file: %@" = "Failed to parse Mach-O file: %@";
+
+/* No comment provided by engineer. */
 "Failed to parse Mach-O file: %@." = "Failed to parse Mach-O file: %@.";
+
+/* No comment provided by engineer. */
+"Failed to parse: %@" = "Failed to parse: %@";
+
+/* No comment provided by engineer. */
+"Failed to read: %@" = "Failed to read: %@";
 
 /* No comment provided by engineer. */
 "Give Me ¥108" = "Give Me ¥108";

@@ -218,6 +218,7 @@ final class Injector {
 
     private func copyURL(_ src: URL, to dst: URL) throws {
         try? removeURL(dst, isDirectory: true)
+
         let retCode = Execute.spawn(binary: cpBinaryURL.path, arguments: [
             "-rfp", src.path, dst.path,
         ], shouldWait: true)
@@ -226,6 +227,7 @@ final class Injector {
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("cp exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
+
         print("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
     }
 
