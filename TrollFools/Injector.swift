@@ -492,7 +492,7 @@ final class Injector {
     private func applySubstrateFixes(_ target: URL) throws {
         let mainURL = try findMainMachO(target)
 
-        let dylibs = try loadedDylibs(target)
+        let dylibs = try loadedDylibs(mainURL)
         for dylib in dylibs {
             guard (dylib.hasSuffix("/CydiaSubstrate") ||
                    dylib.hasSuffix("/libsubstrate.dylib") ||
