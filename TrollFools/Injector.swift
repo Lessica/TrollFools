@@ -439,9 +439,7 @@ final class Injector {
 
         let payload = "@rpath/" + name
         guard dylibs.contains(payload) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Payload not found: %@", comment: ""), payload),
-            ])
+            return
         }
 
         let retCode = Execute.spawn(binary: optoolBinaryURL.path, arguments: [

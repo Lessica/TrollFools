@@ -42,13 +42,13 @@ private struct VCHookViewModifier: ViewModifier {
     }
 }
 
-private extension View {
+extension View {
     func onViewWillAppear(perform onViewWillAppear: @escaping ((UIViewController) -> Void)) -> some View {
         modifier(VCHookViewModifier(onViewWillAppear: onViewWillAppear))
     }
 }
 
-private final class ViewControllerHost: ObservableObject {
+final class ViewControllerHost: ObservableObject {
     weak var viewController: UIViewController?
 }
 
@@ -58,8 +58,7 @@ struct InjectView: View {
 
     @State var injectResult: Result<Void, Error>?
 
-    @StateObject
-    private var viewControllerHost = ViewControllerHost()
+    @StateObject var viewControllerHost = ViewControllerHost()
 
     func inject() -> Result<Void, Error> {
         do {
