@@ -17,7 +17,8 @@ You have to get precompiled binaries from released packages or build them yourse
 
 ## Credits
 
-- [Patched-TS-App](https://github.com/34306/Patched-TS-App) by [Huy Nguyen](https://x.com/Little_34306)
+This project is inspired by [Patched-TS-App](https://github.com/34306/Patched-TS-App) by **[Huy Nguyen](https://x.com/Little_34306) and [Nathan](https://x.com/dedbeddedbed)**.
+
 - [ChOma](https://github.com/opa334/ChOma) by [@opa334](https://github.com/opa334) and [@alfiecg24](https://github.com/alfiecg24)
 - [MachOKit](https://github.com/p-x9/MachOKit) by [@p-x9](https://github.com/p-x9)
 - [insert_dylib](https://github.com/tyilo/insert_dylib) by [@tyilo](https://github.com/tyilo)
