@@ -179,7 +179,7 @@ final class Injector {
         }
     }
 
-    private func throwCommandFailure(_ command: String, reason: Execute.TerminationReason) throws -> Never {
+    private func throwCommandFailure(_ command: String, reason: AuxiliaryExecute.TerminationReason) throws -> Never {
         switch reason {
         case .exit(let code):
             throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
@@ -193,7 +193,7 @@ final class Injector {
     }
 
     private func removeURL(_ target: URL, isDirectory: Bool) throws {
-        let retCode = try Execute.spawn(binary: rmBinaryURL.path, arguments: [
+        let retCode = try Execute.rootSpawn(binary: rmBinaryURL.path, arguments: [
             isDirectory ? "-rf" : "-f", target.path,
         ])
 
@@ -212,7 +212,7 @@ final class Injector {
             args.insert("-R", at: 0)
         }
 
-        let retCode = try Execute.spawn(binary: chownBinaryURL.path, arguments: args)
+        let retCode = try Execute.rootSpawn(binary: chownBinaryURL.path, arguments: args)
         guard case .exit(let code) = retCode, code == 0 else {
             try throwCommandFailure("chown", reason: retCode)
         }
@@ -227,7 +227,7 @@ final class Injector {
     private func copyURL(_ src: URL, to dst: URL) throws {
         try? removeURL(dst, isDirectory: true)
 
-        let retCode = try Execute.spawn(binary: cpBinaryURL.path, arguments: [
+        let retCode = try Execute.rootSpawn(binary: cpBinaryURL.path, arguments: [
             "-rfp", src.path, dst.path,
         ])
         guard case .exit(let code) = retCode, code == 0 else {
@@ -319,7 +319,7 @@ final class Injector {
             return
         }
 
-        let retCode = try Execute.spawn(binary: ldidBinaryURL.path, arguments: [
+        let retCode = try Execute.rootSpawn(binary: ldidBinaryURL.path, arguments: [
             "-S", url.path,
         ])
         guard case .exit(let code) = retCode, code == 0 else {
@@ -333,7 +333,7 @@ final class Injector {
         try fakeSignIfNecessary(url)
 
         let target = try findMainMachO(url)
-        let retCode = try Execute.spawn(binary: ctBypassBinaryURL.path, arguments: [
+        let retCode = try Execute.rootSpawn(binary: ctBypassBinaryURL.path, arguments: [
             "-i", target.path, "-t", teamID, "-r",
         ])
         guard case .exit(let code) = retCode, code == 0 else {
@@ -407,7 +407,7 @@ final class Injector {
             args.append("--weak")
         }
 
-        let retCode = try Execute.spawn(binary: insertDylibBinaryURL.path, arguments: args)
+        let retCode = try Execute.rootSpawn(binary: insertDylibBinaryURL.path, arguments: args)
         guard case .exit(let code) = retCode, code == 0 else {
             try throwCommandFailure("insert_dylib", reason: retCode)
         }
@@ -435,7 +435,7 @@ final class Injector {
             return
         }
 
-        let retCode = try Execute.spawn(binary: optoolBinaryURL.path, arguments: [
+        let retCode = try Execute.rootSpawn(binary: optoolBinaryURL.path, arguments: [
             "uninstall", "-p", payload, "-t", target.path,
         ])
 
@@ -447,7 +447,7 @@ final class Injector {
     }
 
     private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
-        let retCode = try Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
+        let retCode = try Execute.rootSpawn(binary: installNameToolBinaryURL.path, arguments: [
             "-change", src, dst, target.path,
         ])
 
