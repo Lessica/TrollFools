@@ -1,20 +1,17 @@
 /* No comment provided by engineer. */
-"Applications" = "应用程序";
+"%@ exited with code %d" = "%@ 意外退出，返回值 %d";
 
 /* No comment provided by engineer. */
-"chown exited with code %d" = "chown 意外退出，错误代码 %d";
+"%@ terminated with signal %d" = "%@ 意外终止，未捕获的信号 %d";
+
+/* No comment provided by engineer. */
+"Applications" = "应用程序";
 
 /* No comment provided by engineer. */
 "Completed" = "已完成";
 
 /* No comment provided by engineer. */
 "Copyright" = "版权所有";
-
-/* No comment provided by engineer. */
-"cp exited with code %d" = "cp 意外退出，错误代码 %d";
-
-/* No comment provided by engineer. */
-"ct_bypass exited with code %d" = "ct_bypass 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
 "Eject" = "推出";
@@ -35,19 +32,7 @@
 "Failed to locate main executable: %@" = "找不到主要可执行文件：%@";
 
 /* No comment provided by engineer. */
-"Failed to parse Mach-O file: %@" = "无法解析 Mach-O 文件：%@";
-
-/* No comment provided by engineer. */
-"Failed to parse Mach-O file: %@." = "无法解析 Mach-O 文件：%@。";
-
-/* No comment provided by engineer. */
 "Failed to parse: %@" = "无法解析：%@";
-
-/* No comment provided by engineer. */
-"Failed to read: %@" = "无法读取：%@";
-
-/* No comment provided by engineer. */
-"Give Me ¥108" = "快，给我 ¥108";
 
 /* No comment provided by engineer. */
 "Inject" = "注入";
@@ -65,16 +50,7 @@
 "Injecting" = "注入中";
 
 /* No comment provided by engineer. */
-"insert_dylib exited with code %d" = "insert_dylib 意外退出，错误代码 %d";
-
-/* No comment provided by engineer. */
-"ldid exited with code %d" = "ldid 意外退出，错误代码 %d";
-
-/* No comment provided by engineer. */
 "Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm 及其他贡献者";
-
-/* No comment provided by engineer. */
-"llvm-install-name-tool exited with code %d" = "llvm-install-name-tool 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "没有找到符合条件的框架。";
@@ -83,16 +59,7 @@
 "No Injected Plug-Ins" = "没有已注入的插件";
 
 /* No comment provided by engineer. */
-"Not implemented yet." = "别着急，还没实现。";
-
-/* No comment provided by engineer. */
-"optool exited with code %d" = "optool 意外退出，错误代码 %d";
-
-/* No comment provided by engineer. */
 "Plug-Ins" = "插件列表";
-
-/* No comment provided by engineer. */
-"rm exited with code %d" = "rm 意外退出，错误代码 %d";
 
 /* No comment provided by engineer. */
 "Search…" = "搜索…";
@@ -102,6 +69,3 @@
 
 /* No comment provided by engineer. */
 "Source Code" = "获取源代码";
-
-/* No comment provided by engineer. */
-"Tencent Apps are not allowed to be injected." = "别碰腾讯，会变得不幸。";

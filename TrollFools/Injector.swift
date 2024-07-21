@@ -116,11 +116,7 @@ final class Injector {
     }
 
     private func frameworkMachOURLs(_ target: URL) throws -> [URL] {
-        guard let dylibs = try? loadedDylibs(target) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
-            ])
-        }
+        let dylibs = try loadedDylibs(target)
 
         let rpath = URL(fileURLWithPath: target.deletingLastPathComponent().path)
             .appendingPathComponent("Frameworks")
@@ -388,16 +384,12 @@ final class Injector {
             name = url.lastPathComponent
         }
 
-        try _insertLoadCommandWeakDylib(target, name: name, isWeak: true)
+        try _insertLoadCommandDylib(target, name: name, isWeak: true)
         try applyTargetFixes(target, name: name)
     }
 
-    private func _insertLoadCommandWeakDylib(_ target: URL, name: String, isWeak: Bool) throws {
-        guard let dylibs = try? loadedDylibs(target) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
-            ])
-        }
+    private func _insertLoadCommandDylib(_ target: URL, name: String, isWeak: Bool) throws {
+        let dylibs = try loadedDylibs(target)
 
         let payload = "@rpath/" + name
         if dylibs.contains(payload) {
@@ -435,11 +427,7 @@ final class Injector {
     }
 
     private func _removeLoadCommandDylib(_ target: URL, name: String) throws {
-        guard let dylibs = try? loadedDylibs(target) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
-            ])
-        }
+        let dylibs = try loadedDylibs(target)
 
         let payload = "@rpath/" + name
         guard dylibs.contains(payload) else {
@@ -449,6 +437,7 @@ final class Injector {
         let retCode = try Execute.spawn(binary: optoolBinaryURL.path, arguments: [
             "uninstall", "-p", payload, "-t", target.path,
         ])
+
         guard case .exit(let code) = retCode, code == 0 else {
             try throwCommandFailure("optool", reason: retCode)
         }
@@ -460,6 +449,7 @@ final class Injector {
         let retCode = try Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
             "-change", src, dst, target.path,
         ])
+
         guard case .exit(let code) = retCode, code == 0 else {
             try throwCommandFailure("llvm-install-name-tool", reason: retCode)
         }
@@ -473,11 +463,7 @@ final class Injector {
         }
 
         let infoPlistURL = target.appendingPathComponent("Info.plist")
-        guard let infoPlistData = try? Data(contentsOf: infoPlistURL) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to read: %@", comment: ""), infoPlistURL.path),
-            ])
-        }
+        let infoPlistData = try Data(contentsOf: infoPlistURL)
 
         guard let infoPlist = try PropertyListSerialization.propertyList(from: infoPlistData, options: [], format: nil) as? [String: Any]
         else {
@@ -505,12 +491,7 @@ final class Injector {
     private func applySubstrateFixes(_ target: URL) throws {
         let mainURL = try findMainMachO(target)
 
-        guard let dylibs = try? loadedDylibs(mainURL) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), mainURL.path),
-            ])
-        }
-
+        let dylibs = try loadedDylibs(target)
         for dylib in dylibs {
             guard (dylib.hasSuffix("/CydiaSubstrate") ||
                    dylib.hasSuffix("/libsubstrate.dylib") ||
@@ -525,11 +506,7 @@ final class Injector {
     }
 
     private func applyTargetFixes(_ target: URL, name: String) throws {
-        guard let dylibs = try? loadedDylibs(target) else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
-            ])
-        }
+        let dylibs = try loadedDylibs(target)
         for dylib in dylibs {
             guard dylib.hasSuffix("/" + name) else {
                 continue
