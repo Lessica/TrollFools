@@ -516,24 +516,30 @@ final class Injector {
         }
     }
 
-    private static let ignoredDylibAndFrameworkNames: [String] = [
+    private static let ignoredDylibAndFrameworkNames: Set<String> = [
         "libsubstrate.dylib",
         "libsubstitute.dylib",
         "libellekit.dylib",
         "CydiaSubstrate.framework",
     ]
 
-    // MARK: - Public Methods
+    private static let allowedPathExtensions: Set<String> = ["bundle", "dylib", "framework"]
 
     private func preprocessURLs(_ urls: [URL]) throws -> [URL] {
         var finalURLs: [URL] = []
         for url in urls {
             if url.pathExtension.lowercased() == "zip" {
-                let extractedURL = url.appendingPathExtension("extracted")
+                let extractedURL = tempURL
+                    .appendingPathComponent(url.lastPathComponent)
+                    .appendingPathExtension("extracted")
+
                 try FileManager.default.createDirectory(at: extractedURL, withIntermediateDirectories: true)
                 try FileManager.default.unzipItem(at: url, to: extractedURL)
 
-                let extractedContents = try FileManager.default.contentsOfDirectory(at: extractedURL, includingPropertiesForKeys: nil)
+                let extractedContents = try FileManager.default
+                    .contentsOfDirectory(at: extractedURL, includingPropertiesForKeys: nil)
+                    .filter { Self.allowedPathExtensions.contains($0.pathExtension.lowercased()) }
+
                 finalURLs.append(contentsOf: extractedContents)
             } else {
                 finalURLs.append(url)
@@ -541,6 +547,8 @@ final class Injector {
         }
         return finalURLs
     }
+
+    // MARK: - Public Methods
 
     func inject(_ injectURLs: [URL]) throws {
         let urlsToInject = try preprocessURLs(injectURLs)
@@ -557,7 +565,7 @@ final class Injector {
                                        shouldBackup: shouldBackup)
     }
 
-    func _injectBundles(_ injectURLs: [URL]) throws {
+    private func _injectBundles(_ injectURLs: [URL]) throws {
         let newInjectURLs = try copyTempInjectURLs(injectURLs)
         try markInjectDirectories(newInjectURLs, withRootPermission: false)
 
