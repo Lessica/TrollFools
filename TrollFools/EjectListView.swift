@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let gDateFormatter: DateFormatter = {
+private let gDateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium
     formatter.timeStyle = .short
@@ -189,7 +189,7 @@ struct EjectListView: View {
         }
     }
 
-    private func fetchSearchResults(for query: String) {
+    func fetchSearchResults(for query: String) {
         searchResults = injectedPlugIns.filter { plugin in
             plugin.url.lastPathComponent.localizedCaseInsensitiveContains(query)
         }

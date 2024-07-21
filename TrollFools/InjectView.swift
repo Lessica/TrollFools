@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class VCHookViewController: UIViewController {
+private final class VCHookViewController: UIViewController {
     var onViewWillAppear: ((UIViewController) -> Void)?
     var didTriggered = false
 
@@ -21,7 +21,7 @@ class VCHookViewController: UIViewController {
     }
 }
 
-struct VCHookView: UIViewControllerRepresentable {
+private struct VCHookView: UIViewControllerRepresentable {
     typealias UIViewControllerType = VCHookViewController
     let onViewWillAppear: ((UIViewController) -> Void)
 
@@ -34,7 +34,7 @@ struct VCHookView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: VCHookViewController, context: Context) { }
 }
 
-struct VCHookViewModifier: ViewModifier {
+private struct VCHookViewModifier: ViewModifier {
     let onViewWillAppear: ((UIViewController) -> Void)
 
     func body(content: Content) -> some View {
@@ -42,13 +42,13 @@ struct VCHookViewModifier: ViewModifier {
     }
 }
 
-extension View {
+private extension View {
     func onViewWillAppear(perform onViewWillAppear: @escaping ((UIViewController) -> Void)) -> some View {
         modifier(VCHookViewModifier(onViewWillAppear: onViewWillAppear))
     }
 }
 
-class ViewControllerHost: ObservableObject {
+private final class ViewControllerHost: ObservableObject {
     weak var viewController: UIViewController?
 }
 
@@ -57,7 +57,9 @@ struct InjectView: View {
     let urlList: [URL]
 
     @State var injectResult: Result<Void, Error>?
-    @StateObject var viewControllerHost = ViewControllerHost()
+
+    @StateObject
+    private var viewControllerHost = ViewControllerHost()
 
     func inject() -> Result<Void, Error> {
         do {

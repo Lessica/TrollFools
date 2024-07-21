@@ -7,21 +7,19 @@
 
 import SwiftUI
 
-enum Option {
+private enum Option {
     case attach
     case detach
 }
 
-struct OptionCell: View {
+private struct OptionCell: View {
     let option: Option
 
     var iconName: String {
         if #available(iOS 16.0, *) {
-            option == .attach
-                  ? "syringe" : "xmark.bin"
+            option == .attach ? "syringe" : "xmark.bin"
         } else {
-            option == .attach
-                  ? "tray.and.arrow.down" : "xmark.bin"
+            option == .attach ? "tray.and.arrow.down" : "xmark.bin"
         }
     }
 
