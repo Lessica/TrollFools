@@ -28,14 +28,39 @@ private func posix_spawnattr_set_persona_gid_np(
 
 private let POSIX_SPAWN_PERSONA_FLAGS_OVERRIDE = UInt32(1)
 
+private func WIFEXITED(_ status: Int32) -> Bool {
+    return _WSTATUS(status) == 0
+}
+
+private func _WSTATUS(_ status: Int32) -> Int32 {
+    return status & 0x7f
+}
+
+private func WIFSIGNALED(_ status: Int32) -> Bool {
+    return (_WSTATUS(status) != 0) && (_WSTATUS(status) != 0x7f)
+}
+
+private func WEXITSTATUS(_ status: Int32) -> Int32 {
+    return (status >> 8) & 0xff
+}
+
+private func WTERMSIG(_ status: Int32) -> Int32 {
+    return status & 0x7f
+}
+
 enum Execute {
+
+    enum TerminationReason {
+        case exit(Int32)
+        case uncaughtSignal(Int32)
+    }
+
     @discardableResult
     static func spawn(
         binary: String,
         arguments: [String] = [],
-        environment: [String: String] = [:],
-        shouldWait: Bool = false
-    ) -> Int? {
+        environment: [String: String] = [:]
+    ) throws -> TerminationReason {
         var attrs: posix_spawnattr_t?
         posix_spawnattr_init(&attrs)
         defer { posix_spawnattr_destroy(&attrs) }
@@ -59,15 +84,17 @@ enum Execute {
         var pid: pid_t = 0
         let ret = posix_spawn(&pid, binary, nil, &attrs, argv + [nil], env + [nil])
         if ret != 0 {
-            return nil
+            throw POSIXError(POSIXErrorCode(rawValue: ret)!)
         }
 
-        if shouldWait {
-            var status: Int32 = 0
-            waitpid(pid, &status, 0)
-            return Int(status)
-        }
+        var status: Int32 = 0
+        waitpid(pid, &status, 0)
 
-        return nil
+        if WIFSIGNALED(status) {
+            return .uncaughtSignal(WTERMSIG(status))
+        } else {
+            assert(WIFEXITED(status))
+            return .exit(WEXITSTATUS(status))
+        }
     }
 }

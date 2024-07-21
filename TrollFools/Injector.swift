@@ -182,15 +182,28 @@ final class Injector {
         }
     }
 
-    private func removeURL(_ target: URL, isDirectory: Bool) throws {
-        let retCode = Execute.spawn(binary: rmBinaryURL.path, arguments: [
-            isDirectory ? "-rf" : "-f", target.path,
-        ], shouldWait: true)
-        guard retCode == 0 else {
+    private func throwCommandFailure(_ command: String, reason: Execute.TerminationReason) throws -> Never {
+        switch reason {
+        case .exit(let code):
             throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("rm exited with code %d", comment: ""), retCode ?? -1),
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("%@ exited with code %d", comment: ""), command, code),
+            ])
+        case .uncaughtSignal(let signal):
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("%@ terminated with signal %d", comment: ""), command, signal),
             ])
         }
+    }
+
+    private func removeURL(_ target: URL, isDirectory: Bool) throws {
+        let retCode = try Execute.spawn(binary: rmBinaryURL.path, arguments: [
+            isDirectory ? "-rf" : "-f", target.path,
+        ])
+
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("rm", reason: retCode)
+        }
+
         print("rm \(target.lastPathComponent) done")
     }
 
@@ -202,11 +215,9 @@ final class Injector {
             args.insert("-R", at: 0)
         }
 
-        let retCode = Execute.spawn(binary: chownBinaryURL.path, arguments: args, shouldWait: true)
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("chown exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        let retCode = try Execute.spawn(binary: chownBinaryURL.path, arguments: args)
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("chown", reason: retCode)
         }
 
         print("chown \(target.lastPathComponent) done")
@@ -219,13 +230,11 @@ final class Injector {
     private func copyURL(_ src: URL, to dst: URL) throws {
         try? removeURL(dst, isDirectory: true)
 
-        let retCode = Execute.spawn(binary: cpBinaryURL.path, arguments: [
+        let retCode = try Execute.spawn(binary: cpBinaryURL.path, arguments: [
             "-rfp", src.path, dst.path,
-        ], shouldWait: true)
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("cp exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        ])
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("cp", reason: retCode)
         }
 
         print("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
@@ -313,14 +322,11 @@ final class Injector {
             return
         }
 
-        let retCode = Execute.spawn(binary: ldidBinaryURL.path, arguments: [
+        let retCode = try Execute.spawn(binary: ldidBinaryURL.path, arguments: [
             "-S", url.path,
-        ], shouldWait: true)
-
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("ldid exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        ])
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("ldid", reason: retCode)
         }
 
         print("ldid \(url.lastPathComponent) done")
@@ -330,13 +336,11 @@ final class Injector {
         try fakeSignIfNecessary(url)
 
         let target = try findMainMachO(url)
-        let retCode = Execute.spawn(binary: ctBypassBinaryURL.path, arguments: [
+        let retCode = try Execute.spawn(binary: ctBypassBinaryURL.path, arguments: [
             "-i", target.path, "-t", teamID, "-r",
-        ], shouldWait: true)
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("ct_bypass exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        ])
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("ct_bypass", reason: retCode)
         }
 
         print("ct_bypass \(url.lastPathComponent) done")
@@ -410,11 +414,9 @@ final class Injector {
             args.append("--weak")
         }
 
-        let retCode = Execute.spawn(binary: insertDylibBinaryURL.path, arguments: args, shouldWait: true)
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("insert_dylib exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        let retCode = try Execute.spawn(binary: insertDylibBinaryURL.path, arguments: args)
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("insert_dylib", reason: retCode)
         }
 
         print("insert_dylib \(payload) done")
@@ -444,26 +446,22 @@ final class Injector {
             return
         }
 
-        let retCode = Execute.spawn(binary: optoolBinaryURL.path, arguments: [
+        let retCode = try Execute.spawn(binary: optoolBinaryURL.path, arguments: [
             "uninstall", "-p", payload, "-t", target.path,
-        ], shouldWait: true)
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("optool exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        ])
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("optool", reason: retCode)
         }
 
         print("optool \(target.lastPathComponent) done")
     }
 
     private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
-        let retCode = Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
+        let retCode = try Execute.spawn(binary: installNameToolBinaryURL.path, arguments: [
             "-change", src, dst, target.path,
-        ], shouldWait: true)
-        guard retCode == 0 else {
-            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("llvm-install-name-tool exited with code %d", comment: ""), retCode ?? -1),
-            ])
+        ])
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("llvm-install-name-tool", reason: retCode)
         }
 
         print("llvm-install-name-tool \(target.lastPathComponent) done")
