@@ -5,6 +5,7 @@
 //  Created by Lessica on 2024/7/20.
 //
 
+import CocoaLumberjackSwift
 import SwiftUI
 
 private let gDateFormatter: DateFormatter = {
@@ -215,6 +216,8 @@ struct EjectListView: View {
             app.reloadInjectedStatus()
             reloadPlugIns()
         } catch {
+            DDLogError("\(error)")
+
             errorMessage = error.localizedDescription
             isErrorOccurred = true
         }
@@ -253,6 +256,8 @@ struct EjectListView: View {
                         withAnimation {
                             isDeletingAll = false
                         }
+
+                        DDLogError("\(error)")
 
                         errorMessage = error.localizedDescription
                         isErrorOccurred = true

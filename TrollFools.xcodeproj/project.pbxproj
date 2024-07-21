@@ -41,6 +41,10 @@
 		CCF470692C4A4919008D8197 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCF4706B2C4A4919008D8197 /* Localizable.strings */; };
 		CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF4706D2C4A4BAB008D8197 /* AppListView.swift */; };
 		CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */; };
+		CCF5A09C2C4D40830097D48D /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = CCF5A09B2C4D40830097D48D /* CocoaLumberjack */; };
+		CCF5A09E2C4D40830097D48D /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CCF5A09D2C4D40830097D48D /* CocoaLumberjackSwift */; };
+		CCF5A0A02C4D40830097D48D /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = CCF5A09F2C4D40830097D48D /* CocoaLumberjackSwiftLogBackend */; };
+		CCF5A0A22C4D417F0097D48D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF5A0A12C4D417F0097D48D /* main.swift */; };
 		CCF925442C4CE47800880D48 /* chown in Resources */ = {isa = PBXBuildFile; fileRef = CCF925432C4CE47800880D48 /* chown */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +83,7 @@
 		CCF4706D2C4A4BAB008D8197 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
 		CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrollFools-Bridging-Header.h"; sourceTree = "<group>"; };
 		CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrollFoolsStub.m; sourceTree = "<group>"; };
+		CCF5A0A12C4D417F0097D48D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CCF925412C4C1B6F00880D48 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
 		CCF925422C4C1B6F00880D48 /* LSApplicationProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationProxy.h; sourceTree = "<group>"; };
 		CCF925432C4CE47800880D48 /* chown */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = chown; sourceTree = "<group>"; };
@@ -91,7 +96,10 @@
 			files = (
 				CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */,
 				CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */,
+				CCF5A09E2C4D40830097D48D /* CocoaLumberjackSwift in Frameworks */,
+				CCF5A0A02C4D40830097D48D /* CocoaLumberjackSwiftLogBackend in Frameworks */,
 				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
+				CCF5A09C2C4D40830097D48D /* CocoaLumberjack in Frameworks */,
 				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +162,7 @@
 		CCF470582C4A4649008D8197 /* TrollFools */ = {
 			isa = PBXGroup;
 			children = (
+				CCF5A0A12C4D417F0097D48D /* main.swift */,
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
 				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
 				CCB6A1182C4A58C7000D75B0 /* OptionView.swift */,
@@ -201,6 +210,9 @@
 				CC1548C82C4A6B2100A4173E /* ZIPFoundation */,
 				CC1548FB2C4AADBB00A4173E /* MachOKit */,
 				CC1548FD2C4AADBB00A4173E /* MachOKitC */,
+				CCF5A09B2C4D40830097D48D /* CocoaLumberjack */,
+				CCF5A09D2C4D40830097D48D /* CocoaLumberjackSwift */,
+				CCF5A09F2C4D40830097D48D /* CocoaLumberjackSwiftLogBackend */,
 			);
 			productName = TrollFools;
 			productReference = CCF470562C4A4649008D8197 /* TrollFools.app */;
@@ -235,6 +247,7 @@
 			packageReferences = (
 				CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */,
+				CCF5A09A2C4D40830097D48D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
 			projectDirPath = "";
@@ -288,6 +301,7 @@
 				CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */,
 				CC1548D72C4A768700A4173E /* Injector.swift in Sources */,
 				CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */,
+				CCF5A0A22C4D417F0097D48D /* main.swift in Sources */,
 				CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */,
 				CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */,
 				CC1548D52C4A744300A4173E /* FailureView.swift in Sources */,
@@ -555,6 +569,14 @@
 				minimumVersion = 0.19.0;
 			};
 		};
+		CCF5A09A2C4D40830097D48D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.8.5;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -572,6 +594,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */;
 			productName = MachOKitC;
+		};
+		CCF5A09B2C4D40830097D48D /* CocoaLumberjack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCF5A09A2C4D40830097D48D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjack;
+		};
+		CCF5A09D2C4D40830097D48D /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCF5A09A2C4D40830097D48D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		CCF5A09F2C4D40830097D48D /* CocoaLumberjackSwiftLogBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCF5A09A2C4D40830097D48D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwiftLogBackend;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

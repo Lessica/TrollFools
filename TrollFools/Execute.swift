@@ -5,6 +5,7 @@
 //  Created by Lessica on 2024/7/19.
 //
 
+import CocoaLumberjackSwift
 import Foundation
 
 @_silgen_name("posix_spawnattr_set_persona_np")
@@ -29,23 +30,23 @@ private func posix_spawnattr_set_persona_gid_np(
 private let POSIX_SPAWN_PERSONA_FLAGS_OVERRIDE = UInt32(1)
 
 private func WIFEXITED(_ status: Int32) -> Bool {
-    return _WSTATUS(status) == 0
+    _WSTATUS(status) == 0
 }
 
 private func _WSTATUS(_ status: Int32) -> Int32 {
-    return status & 0x7f
+    status & 0x7f
 }
 
 private func WIFSIGNALED(_ status: Int32) -> Bool {
-    return (_WSTATUS(status) != 0) && (_WSTATUS(status) != 0x7f)
+    (_WSTATUS(status) != 0) && (_WSTATUS(status) != 0x7f)
 }
 
 private func WEXITSTATUS(_ status: Int32) -> Int32 {
-    return (status >> 8) & 0xff
+    (status >> 8) & 0xff
 }
 
 private func WTERMSIG(_ status: Int32) -> Int32 {
-    return status & 0x7f
+    status & 0x7f
 }
 
 enum Execute {
@@ -61,6 +62,7 @@ enum Execute {
         arguments: [String] = [],
         environment: [String: String] = [:]
     ) throws -> TerminationReason {
+
         var attrs: posix_spawnattr_t?
         posix_spawnattr_init(&attrs)
         defer { posix_spawnattr_destroy(&attrs) }
@@ -81,6 +83,8 @@ enum Execute {
             free(arg)
         } }
 
+        DDLogInfo("Execute \(binary) \(args.joined(separator: " "))")
+
         var pid: pid_t = 0
         let ret = posix_spawn(&pid, binary, nil, &attrs, argv + [nil], env + [nil])
         if ret != 0 {
@@ -91,10 +95,20 @@ enum Execute {
         waitpid(pid, &status, 0)
 
         if WIFSIGNALED(status) {
-            return .uncaughtSignal(WTERMSIG(status))
+            let signal = WTERMSIG(status)
+            DDLogError("Process \(pid) terminated with uncaught signal \(signal)")
+            return .uncaughtSignal(signal)
         } else {
             assert(WIFEXITED(status))
-            return .exit(WEXITSTATUS(status))
+
+            let exitCode = WEXITSTATUS(status)
+            if exitCode == 0 {
+                DDLogInfo("Process \(pid) exited successfully")
+            } else {
+                DDLogError("Process \(pid) exited with code \(exitCode)")
+            }
+
+            return .exit(exitCode)
         }
     }
 }

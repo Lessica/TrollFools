@@ -5,6 +5,7 @@
 //  Created by Lessica on 2024/7/19.
 //
 
+import CocoaLumberjackSwift
 import Foundation
 import MachOKit
 import ZIPFoundation
@@ -200,7 +201,7 @@ final class Injector {
             try throwCommandFailure("rm", reason: retCode)
         }
 
-        print("rm \(target.lastPathComponent) done")
+        DDLogInfo("rm \(target.lastPathComponent) done")
     }
 
     private func _changeOwner(_ target: URL, owner: String, isDirectory: Bool) throws {
@@ -216,7 +217,7 @@ final class Injector {
             try throwCommandFailure("chown", reason: retCode)
         }
 
-        print("chown \(target.lastPathComponent) done")
+        DDLogInfo("chown \(target.lastPathComponent) done")
     }
 
     private func changeOwnerToInstalld(_ target: URL, isDirectory: Bool) throws {
@@ -233,7 +234,7 @@ final class Injector {
             try throwCommandFailure("cp", reason: retCode)
         }
 
-        print("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
+        DDLogInfo("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
     }
 
     @discardableResult
@@ -325,7 +326,7 @@ final class Injector {
             try throwCommandFailure("ldid", reason: retCode)
         }
 
-        print("ldid \(url.lastPathComponent) done")
+        DDLogInfo("ldid \(url.lastPathComponent) done")
     }
 
     private func ctBypass(_ url: URL) throws {
@@ -339,7 +340,7 @@ final class Injector {
             try throwCommandFailure("ct_bypass", reason: retCode)
         }
 
-        print("ct_bypass \(url.lastPathComponent) done")
+        DDLogInfo("ct_bypass \(url.lastPathComponent) done")
     }
 
     private func loadedDylibs(_ target: URL) throws -> Set<String> {
@@ -393,7 +394,7 @@ final class Injector {
 
         let payload = "@rpath/" + name
         if dylibs.contains(payload) {
-            print("payload \(name) already inserted")
+            DDLogInfo("payload \(name) already inserted")
             return
         }
 
@@ -411,7 +412,7 @@ final class Injector {
             try throwCommandFailure("insert_dylib", reason: retCode)
         }
 
-        print("insert_dylib \(payload) done")
+        DDLogInfo("insert_dylib \(payload) done")
     }
 
     private func removeLoadCommand(_ target: URL, url: URL) throws {
@@ -442,7 +443,7 @@ final class Injector {
             try throwCommandFailure("optool", reason: retCode)
         }
 
-        print("optool \(target.lastPathComponent) done")
+        DDLogInfo("optool \(target.lastPathComponent) done")
     }
 
     private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
@@ -454,7 +455,7 @@ final class Injector {
             try throwCommandFailure("llvm-install-name-tool", reason: retCode)
         }
 
-        print("llvm-install-name-tool \(target.lastPathComponent) done")
+        DDLogInfo("llvm-install-name-tool \(target.lastPathComponent) done")
     }
 
     private func findMainMachO(_ target: URL) throws -> URL {
