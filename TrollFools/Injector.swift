@@ -61,6 +61,11 @@ final class Injector {
         return dylibURLs + frameworkURLs
     }
 
+    private static func isFrameworkURL(_ url: URL) -> Bool {
+        let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+        return isDirectory && url.pathExtension.lowercased() == "framework"
+    }
+
     private let bundleURL: URL
     private let teamID: String
     private let tempURL: URL
@@ -113,7 +118,7 @@ final class Injector {
     private func frameworkMachOURLs(_ target: URL) throws -> [URL] {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
             ])
         }
 
@@ -158,9 +163,22 @@ final class Injector {
         return tempURLs
     }
 
-    private func markInjectDirectories(_ injectURLs: [URL]) throws {
-        try injectURLs.forEach {
-            try Data().write(to: $0.appendingPathComponent(Self.markerName), options: .atomic)
+    private func markInjectDirectories(_ injectURLs: [URL], withRootPermission: Bool) throws {
+        let filteredURLs = injectURLs
+            .filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false }
+
+        if withRootPermission {
+            let markerURL = tempURL.appendingPathComponent(Self.markerName)
+            try Data().write(to: markerURL, options: .atomic)
+            try changeOwnerToInstalld(markerURL, isDirectory: false)
+
+            try filteredURLs.forEach {
+                try copyURL(markerURL, to: $0.appendingPathComponent(Self.markerName))
+            }
+        } else {
+            try filteredURLs.forEach {
+                try Data().write(to: $0.appendingPathComponent(Self.markerName), options: .atomic)
+            }
         }
     }
 
@@ -176,20 +194,26 @@ final class Injector {
         print("rm \(target.lastPathComponent) done")
     }
 
-    private func changeOwner(_ target: URL, owner: String, isDirectory: Bool) throws {
+    private func _changeOwner(_ target: URL, owner: String, isDirectory: Bool) throws {
         var args = [
             String(format: "%@:%@", owner, owner), target.path,
         ]
         if isDirectory {
             args.insert("-R", at: 0)
         }
+
         let retCode = Execute.spawn(binary: chownBinaryURL.path, arguments: args, shouldWait: true)
         guard retCode == 0 else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("chown exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
+
         print("chown \(target.lastPathComponent) done")
+    }
+
+    private func changeOwnerToInstalld(_ target: URL, isDirectory: Bool) throws {
+        try _changeOwner(target, owner: "_installd", isDirectory: isDirectory)
     }
 
     private func copyURL(_ src: URL, to dst: URL) throws {
@@ -243,16 +267,21 @@ final class Injector {
         guard FileManager.default.fileExists(atPath: backupURL.path) else {
             return
         }
+
         try? removeURL(url, isDirectory: false)
+
         try copyURL(backupURL, to: url)
-        try changeOwner(url, owner: "_installd", isDirectory: false)
+        try changeOwnerToInstalld(url, isDirectory: false)
+
         try? removeURL(backupURL, isDirectory: false)
     }
 
     private func fakeSignIfNecessary(_ url: URL) throws {
         var hasCodeSign = false
-        let file = try MachOKit.loadFromFile(url: url)
-        switch file {
+
+        let target = try findMainMachO(url)
+        let targetFile = try MachOKit.loadFromFile(url: target)
+        switch targetFile {
         case .machO(let machOFile):
             for command in machOFile.loadCommands {
                 switch command {
@@ -277,31 +306,37 @@ final class Injector {
                 }
             }
         }
+
         guard !hasCodeSign else {
             return
         }
+
         let retCode = Execute.spawn(binary: ldidBinaryURL.path, arguments: [
             "-S", url.path,
         ], shouldWait: true)
+
         guard retCode == 0 else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("ldid exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
+
         print("ldid \(url.lastPathComponent) done")
     }
 
     private func ctBypass(_ url: URL) throws {
         try fakeSignIfNecessary(url)
+
+        let target = try findMainMachO(url)
         let retCode = Execute.spawn(binary: ctBypassBinaryURL.path, arguments: [
-            "-i", url.path, "-t", teamID, "-r",
+            "-i", target.path, "-t", teamID, "-r",
         ], shouldWait: true)
         guard retCode == 0 else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("ct_bypass exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
-        try? changeOwner(url, owner: "_installd", isDirectory: false)
+
         print("ct_bypass \(url.lastPathComponent) done")
     }
 
@@ -338,50 +373,87 @@ final class Injector {
         return dylibs
     }
 
-    private func insertDylib(_ target: URL, url: URL) throws {
+    private func insertLoadCommand(_ target: URL, url: URL) throws {
+        let name: String
+        let mainURL = try findMainMachO(url)
+        if mainURL != url {
+            name = mainURL.pathComponents.suffix(2).joined(separator: "/")
+        } else {
+            name = url.lastPathComponent
+        }
+
+        try _insertLoadCommandWeakDylib(target, name: name, isWeak: true)
+        try applyTargetFixes(target, name: name)
+    }
+
+    private func _insertLoadCommandWeakDylib(_ target: URL, name: String, isWeak: Bool) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
             ])
         }
-        if dylibs.contains("@rpath/" + url.lastPathComponent) {
-            print("dylib \(url.lastPathComponent) already inserted")
+
+        let payload = "@rpath/" + name
+        if dylibs.contains(payload) {
+            print("payload \(name) already inserted")
             return
         }
-        let retCode = Execute.spawn(binary: insertDylibBinaryURL.path, arguments: [
-            url.path, target.path,
-            "--inplace", "--weak", "--overwrite", "--no-strip-codesig", "--all-yes",
-        ], shouldWait: true)
+
+        var args = [
+            payload, target.path,
+            "--inplace", "--overwrite", "--no-strip-codesig", "--all-yes",
+        ]
+
+        if isWeak {
+            args.append("--weak")
+        }
+
+        let retCode = Execute.spawn(binary: insertDylibBinaryURL.path, arguments: args, shouldWait: true)
         guard retCode == 0 else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("insert_dylib exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
-        try changeOwner(target, owner: "_installd", isDirectory: false)
-        print("insert_dylib \(url.lastPathComponent) done")
+
+        print("insert_dylib \(payload) done")
     }
 
-    private func removeDylib(_ target: URL, name: String) throws {
+    private func removeLoadCommand(_ target: URL, url: URL) throws {
+        let name: String
+        let mainURL = try findMainMachO(url)
+        if mainURL != url {
+            name = mainURL.pathComponents.suffix(2).joined(separator: "/")
+        } else {
+            name = url.lastPathComponent
+        }
+
+        try _removeLoadCommandDylib(target, name: name)
+    }
+
+    private func _removeLoadCommandDylib(_ target: URL, name: String) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
             ])
         }
-        for dylib in dylibs {
-            guard dylib.hasSuffix("/" + name) else {
-                continue
-            }
-            let retCode = Execute.spawn(binary: optoolBinaryURL.path, arguments: [
-                "uninstall", "-p", dylib, "-t", target.path,
-            ], shouldWait: true)
-            guard retCode == 0 else {
-                throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
-                    NSLocalizedDescriptionKey: String(format: NSLocalizedString("optool exited with code %d", comment: ""), retCode ?? -1),
-                ])
-            }
-            try changeOwner(target, owner: "_installd", isDirectory: false)
-            print("optool \(target.lastPathComponent) done")
+
+        let payload = "@rpath/" + name
+        guard dylibs.contains(payload) else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Payload not found: %@", comment: ""), payload),
+            ])
         }
+
+        let retCode = Execute.spawn(binary: optoolBinaryURL.path, arguments: [
+            "uninstall", "-p", payload, "-t", target.path,
+        ], shouldWait: true)
+        guard retCode == 0 else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("optool exited with code %d", comment: ""), retCode ?? -1),
+            ])
+        }
+
+        print("optool \(target.lastPathComponent) done")
     }
 
     private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
@@ -393,14 +465,51 @@ final class Injector {
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("llvm-install-name-tool exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
-        try changeOwner(target, owner: "_installd", isDirectory: false)
+
         print("llvm-install-name-tool \(target.lastPathComponent) done")
     }
 
-    private func applySubstrateFixes(_ target: URL) throws {
-        guard let dylibs = try? loadedDylibs(target) else {
+    private func findMainMachO(_ target: URL) throws -> URL {
+        guard Self.isFrameworkURL(target) else {
+            return target
+        }
+
+        let infoPlistURL = target.appendingPathComponent("Info.plist")
+        guard let infoPlistData = try? Data(contentsOf: infoPlistURL) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to read: %@", comment: ""), infoPlistURL.path),
+            ])
+        }
+
+        guard let infoPlist = try PropertyListSerialization.propertyList(from: infoPlistData, options: [], format: nil) as? [String: Any]
+        else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse: %@", comment: ""), infoPlistURL.path),
+            ])
+        }
+
+        guard let executableName = infoPlist["CFBundleExecutable"] as? String else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to find entry CFBundleExecutable in: %@", comment: ""), infoPlistURL.path),
+            ])
+        }
+
+        let executableURL = target.appendingPathComponent(executableName)
+        guard FileManager.default.fileExists(atPath: executableURL.path) else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to locate main executable: %@", comment: ""), executableURL.path),
+            ])
+        }
+
+        return executableURL
+    }
+
+    private func applySubstrateFixes(_ target: URL) throws {
+        let mainURL = try findMainMachO(target)
+
+        guard let dylibs = try? loadedDylibs(mainURL) else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), mainURL.path),
             ])
         }
 
@@ -413,14 +522,14 @@ final class Injector {
                 continue
             }
 
-            try _applyChange(target, from: dylib, to: "@executable_path/Frameworks/CydiaSubstrate.framework/CydiaSubstrate")
+            try _applyChange(mainURL, from: dylib, to: "@executable_path/Frameworks/CydiaSubstrate.framework/CydiaSubstrate")
         }
     }
 
     private func applyTargetFixes(_ target: URL, name: String) throws {
         guard let dylibs = try? loadedDylibs(target) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@.", comment: ""), target.path),
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("Failed to parse Mach-O file: %@", comment: ""), target.path),
             ])
         }
         for dylib in dylibs {
@@ -455,42 +564,45 @@ final class Injector {
 
     func _injectBundles(_ injectURLs: [URL]) throws {
         let newInjectURLs = try copyTempInjectURLs(injectURLs)
-        try markInjectDirectories(newInjectURLs)
+        try markInjectDirectories(newInjectURLs, withRootPermission: false)
 
         for newInjectURL in newInjectURLs {
             let targetURL = bundleURL.appendingPathComponent(newInjectURL.lastPathComponent)
             try copyURL(newInjectURL, to: targetURL)
-            try changeOwner(targetURL, owner: "_installd", isDirectory: true)
+            try changeOwnerToInstalld(targetURL, isDirectory: true)
         }
     }
 
     private func _injectDylibsAndFrameworks(_ injectURLs: [URL], shouldBackup: Bool) throws {
         try FileManager.default.unzipItem(at: substrateZipURL, to: tempURL)
-
         try ctBypass(substrateMainMachOURL)
+        try changeOwnerToInstalld(substrateMainMachOURL, isDirectory: false)
 
         let filteredURLs = injectURLs.filter {
             !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
         }
 
         let newInjectURLs = try copyTempInjectURLs(filteredURLs)
-
         for newInjectURL in newInjectURLs {
             try applySubstrateFixes(newInjectURL)
             try ctBypass(newInjectURL)
+            try changeOwnerToInstalld(newInjectURL, isDirectory: true)
         }
 
         var targetURL: URL?
-        for url in try frameworkMachOURLs(mainExecutableURL) {
+        for frameworkMachOURL in try frameworkMachOURLs(mainExecutableURL) {
             do {
                 if shouldBackup {
-                    try backup(url)
+                    try backup(frameworkMachOURL)
                 }
-                try ctBypass(url)
-                targetURL = url
+
+                try ctBypass(frameworkMachOURL)
+                try changeOwnerToInstalld(frameworkMachOURL, isDirectory: false)
+
+                targetURL = frameworkMachOURL
                 break
             } catch {
-                try? restoreIfExists(url)
+                try? restoreIfExists(frameworkMachOURL)
                 continue
             }
         }
@@ -502,21 +614,24 @@ final class Injector {
         }
 
         do {
-            try markInjectDirectories([substrateFwkURL])
+            try markInjectDirectories([substrateFwkURL], withRootPermission: false)
             try copyTargetInjectURLs([substrateFwkURL])
-            try changeOwner(targetSubstrateFwkURL, owner: "_installd", isDirectory: true)
+            try changeOwnerToInstalld(targetSubstrateFwkURL, isDirectory: true)
 
+            try markInjectDirectories(newInjectURLs, withRootPermission: true)
             let copiedURLs: [URL] = try copyTargetInjectURLs(newInjectURLs)
             for copiedURL in copiedURLs {
-                try insertDylib(targetURL, url: copiedURL)
-                try applyTargetFixes(targetURL, name: copiedURL.lastPathComponent)
+                try insertLoadCommand(targetURL, url: copiedURL)
             }
+            try changeOwnerToInstalld(targetURL, isDirectory: false)
 
             if !copiedURLs.isEmpty {
                 try ctBypass(targetURL)
+                try changeOwnerToInstalld(targetURL, isDirectory: false)
             }
         } catch {
             try? restoreIfExists(targetURL)
+            throw error
         }
     }
 
@@ -545,6 +660,8 @@ final class Injector {
         for frameworkMachOURL in try frameworkMachOURLs(mainExecutableURL) {
             do {
                 try ctBypass(frameworkMachOURL)
+                try changeOwnerToInstalld(frameworkMachOURL, isDirectory: false)
+
                 targetURL = frameworkMachOURL
                 break
             } catch {
@@ -559,12 +676,16 @@ final class Injector {
         }
 
         for ejectURL in ejectURLs {
-            try removeDylib(targetURL, name: ejectURL.lastPathComponent)
-            try? removeURL(ejectURL, isDirectory: false)
+            try removeLoadCommand(targetURL, url: ejectURL)
+            try changeOwnerToInstalld(targetURL, isDirectory: false)
+
+            let isFramework = Self.isFrameworkURL(ejectURL)
+            try? removeURL(ejectURL, isDirectory: isFramework)
         }
 
         if !ejectURLs.isEmpty {
             try ctBypass(targetURL)
+            try changeOwnerToInstalld(targetURL, isDirectory: false)
         }
 
         if !hasInjectedPlugIn {
