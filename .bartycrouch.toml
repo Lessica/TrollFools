@@ -1,20 +1,20 @@
 [update]
-tasks = ["interfaces", "code", "transform", "translate", "normalize"]
+tasks = ["interfaces", "code", "transform", "normalize"]
 
 [update.interfaces]
 paths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs", "packages", ".theos", ".cache"]
+subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
 defaultToBase = false
 ignoreEmptyStrings = false
 unstripped = false
 ignoreKeys = ["#bartycrouch-ignore!", "#bc-ignore!", "#i!"]
 
 [update.code]
-codePaths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs", "packages", ".theos", ".cache"]
+codePaths = ["."]
+subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
 localizablePaths = ["TrollFools"]
 defaultToKeys = false
-additive = true
+additive = false
 customFunction = "LocalizedStringResource"
 unstripped = false
 plistArguments = true
@@ -23,7 +23,7 @@ overrideComments = false
 
 [update.transform]
 codePaths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs", "packages", ".theos", ".cache"]
+subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
 localizablePaths = ["TrollFools"]
 transformer = "foundation"
 supportedLanguageEnumPath = "."
@@ -31,16 +31,9 @@ typeName = "BartyCrouch"
 translateMethodName = "translate"
 separateWithEmptyLine = true
 
-[update.translate]
-paths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs", "packages", ".theos", ".cache"]
-translator = "deepL"
-secret = "fec26251-6db0-4d44-b1e1-687930db9258:fx"
-sourceLocale = "en"
-
 [update.normalize]
 paths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs", "packages", ".theos", ".cache"]
+subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
 sourceLocale = "en"
 harmonizeWithSource = true
 sortByKeys = true
@@ -48,6 +41,6 @@ separateWithEmptyLine = true
 
 [lint]
 paths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs", "packages", ".theos", ".cache"]
+subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
 duplicateKeys = true
 emptyValues = true
