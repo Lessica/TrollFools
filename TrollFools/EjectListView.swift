@@ -93,12 +93,42 @@ struct EjectListView: View {
     @State var searchResults: [InjectedPlugIn] = []
     @StateObject var searchOptions = SearchOptions()
 
+    @State var isDeletingAll = false
+    @StateObject var viewControllerHost = ViewControllerHost()
+
     var isSearching: Bool {
         return !searchOptions.keyword.isEmpty
     }
 
     var filteredPlugIns: [InjectedPlugIn] {
         isSearching ? searchResults : injectedPlugIns
+    }
+
+    var deleteAllButtonLabel: some View {
+        HStack {
+            Label(NSLocalizedString("Eject All", comment: ""), systemImage: "eject")
+            Spacer()
+            if isDeletingAll {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            }
+        }
+    }
+
+    var deleteAllButton: some View {
+        if #available(iOS 15.0, *) {
+            Button(role: .destructive) {
+                deleteAll()
+            } label: {
+                deleteAllButtonLabel
+            }
+        } else {
+            Button {
+                deleteAll()
+            } label: {
+                deleteAllButtonLabel
+            }
+        }
     }
 
     var ejectList: some View {
@@ -124,14 +154,9 @@ struct EjectListView: View {
 
             if !isSearching && !filteredPlugIns.isEmpty {
                 Section {
-                    Button(action: {
-                        withAnimation {
-                            deleteAll()
-                        }
-                    }) {
-                        Label(NSLocalizedString("Eject All", comment: ""), systemImage: "eject")
-                    }
-                    .foregroundColor(.red)
+                    deleteAllButton
+                        .disabled(isDeletingAll)
+                        .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
                     NavigationLink(isActive: $isErrorOccurred) {
                         FailureView(title: NSLocalizedString("Error", comment: ""),
@@ -143,6 +168,9 @@ struct EjectListView: View {
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("Plug-Ins", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
+        .onViewWillAppear { viewController in
+            viewControllerHost.viewController = viewController
+        }
         .onAppear {
             reloadPlugIns()
         }
@@ -183,6 +211,7 @@ struct EjectListView: View {
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
             let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
             try injector.eject(plugInURLsToRemove)
+
             app.reloadInjectedStatus()
             reloadPlugIns()
         } catch {
@@ -194,9 +223,42 @@ struct EjectListView: View {
     func deleteAll() {
         do {
             let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
-            try injector.ejectAll()
-            app.reloadInjectedStatus()
-            reloadPlugIns()
+
+            let view = viewControllerHost.viewController?
+                .navigationController?.view
+
+            view?.isUserInteractionEnabled = false
+
+            withAnimation {
+                isDeletingAll = true
+            }
+
+            DispatchQueue.global(qos: .userInteractive).async {
+                defer {
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            app.reloadInjectedStatus()
+                            reloadPlugIns()
+                            isDeletingAll = false
+                        }
+
+                        view?.isUserInteractionEnabled = true
+                    }
+                }
+
+                do {
+                    try injector.ejectAll()
+                } catch {
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            isDeletingAll = false
+                        }
+
+                        errorMessage = error.localizedDescription
+                        isErrorOccurred = true
+                    }
+                }
+            }
         } catch {
             errorMessage = error.localizedDescription
             isErrorOccurred = true
