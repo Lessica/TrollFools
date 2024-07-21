@@ -107,6 +107,7 @@ struct OptionView: View {
                 .init(filenameExtension: "dylib")!,
                 .bundle,
                 .framework,
+                .package,
                 // .zip,
             ],
             allowsMultipleSelection: true
