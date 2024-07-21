@@ -105,6 +105,9 @@ struct OptionView: View {
             isPresented: $isImporterPresented,
             allowedContentTypes: [
                 .init(filenameExtension: "dylib")!,
+                .bundle,
+                .framework,
+                // .zip,
             ],
             allowsMultipleSelection: true
         ) {

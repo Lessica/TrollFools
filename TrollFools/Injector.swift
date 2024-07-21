@@ -11,25 +11,54 @@ import ZIPFoundation
 
 final class Injector {
 
-    static func isInjectedBundle(_ target: URL) -> Bool {
-        let frameworksURL = target.appendingPathComponent("Frameworks", isDirectory: true)
-        let substrateFwkURL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework", isDirectory: true)
-        return FileManager.default.fileExists(atPath: substrateFwkURL.path)
-    }
+    private static let markerName = ".troll-fools"
 
     static func isEligibleBundle(_ target: URL) -> Bool {
-        let frameworksURL = target.appendingPathComponent("Frameworks", isDirectory: true)
+        let frameworksURL = target.appendingPathComponent("Frameworks")
         return !((try? FileManager.default.contentsOfDirectory(at: frameworksURL, includingPropertiesForKeys: nil).isEmpty) ?? true)
     }
 
+    static func isInjectedBundle(_ target: URL) -> Bool {
+        let frameworksURL = target.appendingPathComponent("Frameworks")
+        let substrateFwkURL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework")
+        return FileManager.default.fileExists(atPath: substrateFwkURL.path)
+    }
+
     static func injectedPlugInURLs(_ target: URL) -> [URL] {
-        let frameworksURL = target.appendingPathComponent("Frameworks", isDirectory: true)
-        guard let fileURLs = try? FileManager.default.contentsOfDirectory(at: frameworksURL, includingPropertiesForKeys: nil) else {
+        return (_injectedBundleURLs(target) + _injectedDylibAndFrameworkURLs(target))
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+    }
+
+    private static func _injectedBundleURLs(_ target: URL) -> [URL] {
+        guard let bundleContentURLs = try? FileManager.default.contentsOfDirectory(at: target, includingPropertiesForKeys: [.isDirectoryKey]) else {
             return []
         }
-        return fileURLs
+
+        let bundleURLs = bundleContentURLs
+            .filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false }
+            .filter { $0.pathExtension.lowercased() == "bundle" }
+            .filter { FileManager.default.fileExists(atPath: $0.appendingPathComponent(markerName).path) }
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
-            .filter { $0.pathExtension == "dylib" && !$0.lastPathComponent.hasPrefix("libswift") }
+
+        return bundleURLs
+    }
+
+    private static func _injectedDylibAndFrameworkURLs(_ target: URL) -> [URL] {
+        let frameworksURL = target.appendingPathComponent("Frameworks")
+        guard let frameworksContentURLs = try? FileManager.default.contentsOfDirectory(at: frameworksURL, includingPropertiesForKeys: nil) else {
+            return []
+        }
+
+        let dylibURLs = frameworksContentURLs
+            .filter { $0.pathExtension.lowercased() == "dylib" && !$0.lastPathComponent.hasPrefix("libswift") }
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+
+        let frameworkURLs = frameworksContentURLs
+            .filter { $0.lastPathComponent != "CydiaSubstrate.framework" && $0.pathExtension.lowercased() == "framework" }
+            .filter { FileManager.default.fileExists(atPath: $0.appendingPathComponent(markerName).path) }
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+
+        return dylibURLs + frameworkURLs
     }
 
     private let bundleURL: URL
@@ -40,7 +69,7 @@ final class Injector {
     private lazy var mainExecutableURL: URL = {
         let infoPlist = NSDictionary(contentsOf: infoPlistURL)!
         let mainExecutable = infoPlist["CFBundleExecutable"] as! String
-        return bundleURL.appendingPathComponent(mainExecutable, isDirectory: false)
+        return bundleURL.appendingPathComponent(mainExecutable)
     }()
 
     private lazy var frameworksURL: URL = bundleURL.appendingPathComponent("Frameworks")
@@ -121,7 +150,7 @@ final class Injector {
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
     }
 
-    private func tempInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
+    private func copyTempInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
         let tempURLs = injectURLs.map { tempURL.appendingPathComponent($0.lastPathComponent) }
         for (injectURL, tempURL) in zip(injectURLs, tempURLs) {
             try FileManager.default.copyItem(at: injectURL, to: tempURL)
@@ -129,7 +158,13 @@ final class Injector {
         return tempURLs
     }
 
-    private func rmURL(_ target: URL, isDirectory: Bool) throws {
+    private func markInjectDirectories(_ injectURLs: [URL]) throws {
+        try injectURLs.forEach {
+            try Data().write(to: $0.appendingPathComponent(Self.markerName), options: .atomic)
+        }
+    }
+
+    private func removeURL(_ target: URL, isDirectory: Bool) throws {
         let retCode = Execute.spawn(binary: rmBinaryURL.path, arguments: [
             isDirectory ? "-rf" : "-f", target.path,
         ], shouldWait: true)
@@ -141,8 +176,24 @@ final class Injector {
         print("rm \(target.lastPathComponent) done")
     }
 
-    private func cpURL(_ src: URL, to dst: URL) throws {
-        try? rmURL(dst, isDirectory: true)
+    private func changeOwner(_ target: URL, owner: String, isDirectory: Bool) throws {
+        var args = [
+            String(format: "%@:%@", owner, owner), target.path,
+        ]
+        if isDirectory {
+            args.insert("-R", at: 0)
+        }
+        let retCode = Execute.spawn(binary: chownBinaryURL.path, arguments: args, shouldWait: true)
+        guard retCode == 0 else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 1, userInfo: [
+                NSLocalizedDescriptionKey: String(format: NSLocalizedString("chown exited with code %d", comment: ""), retCode ?? -1),
+            ])
+        }
+        print("chown \(target.lastPathComponent) done")
+    }
+
+    private func copyURL(_ src: URL, to dst: URL) throws {
+        try? removeURL(dst, isDirectory: true)
         let retCode = Execute.spawn(binary: cpBinaryURL.path, arguments: [
             "-rfp", src.path, dst.path,
         ], shouldWait: true)
@@ -155,10 +206,10 @@ final class Injector {
     }
 
     @discardableResult
-    private func targetInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
+    private func copyTargetInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
         let targetURLs = injectURLs.map { frameworksURL.appendingPathComponent($0.lastPathComponent) }
         for (injectURL, targetURL) in zip(injectURLs, targetURLs) {
-            try cpURL(injectURL, to: targetURL)
+            try copyURL(injectURL, to: targetURL)
         }
         return targetURLs
     }
@@ -171,19 +222,20 @@ final class Injector {
         }
     }()
 
+    private lazy var chownBinaryURL: URL = Bundle.main.url(forResource: "chown", withExtension: nil)!
     private lazy var ctBypassBinaryURL: URL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
     private lazy var insertDylibBinaryURL: URL = Bundle.main.url(forResource: "insert_dylib", withExtension: nil)!
     private lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "llvm-install-name-tool", withExtension: nil)!
-    private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
-    private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var ldidBinaryURL: URL = Bundle.main.url(forResource: "ldid", withExtension: nil)!
+    private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
+    private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
 
     private func backup(_ url: URL) throws {
         let backupURL = url.appendingPathExtension("troll-fools.bak")
         guard !FileManager.default.fileExists(atPath: backupURL.path) else {
             return
         }
-        try cpURL(url, to: backupURL)
+        try copyURL(url, to: backupURL)
     }
 
     private func restoreIfExists(_ url: URL) throws {
@@ -191,9 +243,10 @@ final class Injector {
         guard FileManager.default.fileExists(atPath: backupURL.path) else {
             return
         }
-        try? rmURL(url, isDirectory: false)
-        try cpURL(backupURL, to: url)
-        try? rmURL(backupURL, isDirectory: false)
+        try? removeURL(url, isDirectory: false)
+        try copyURL(backupURL, to: url)
+        try changeOwner(url, owner: "_installd", isDirectory: false)
+        try? removeURL(backupURL, isDirectory: false)
     }
 
     private func fakeSignIfNecessary(_ url: URL) throws {
@@ -248,6 +301,7 @@ final class Injector {
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("ct_bypass exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
+        try? changeOwner(url, owner: "_installd", isDirectory: false)
         print("ct_bypass \(url.lastPathComponent) done")
     }
 
@@ -303,6 +357,7 @@ final class Injector {
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("insert_dylib exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
+        try changeOwner(target, owner: "_installd", isDirectory: false)
         print("insert_dylib \(url.lastPathComponent) done")
     }
 
@@ -324,6 +379,7 @@ final class Injector {
                     NSLocalizedDescriptionKey: String(format: NSLocalizedString("optool exited with code %d", comment: ""), retCode ?? -1),
                 ])
             }
+            try changeOwner(target, owner: "_installd", isDirectory: false)
             print("optool \(target.lastPathComponent) done")
         }
     }
@@ -337,6 +393,7 @@ final class Injector {
                 NSLocalizedDescriptionKey: String(format: NSLocalizedString("llvm-install-name-tool exited with code %d", comment: ""), retCode ?? -1),
             ])
         }
+        try changeOwner(target, owner: "_installd", isDirectory: false)
         print("llvm-install-name-tool \(target.lastPathComponent) done")
     }
 
@@ -374,32 +431,54 @@ final class Injector {
         }
     }
 
-    private static let ignoredDylibNames: [String] = [
+    private static let ignoredDylibAndFrameworkNames: [String] = [
         "libsubstrate.dylib",
         "libsubstitute.dylib",
         "libellekit.dylib",
+        "CydiaSubstrate.framework",
     ]
 
     // MARK: - Public Methods
 
     func inject(_ injectURLs: [URL]) throws {
+        TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
+
+        let shouldBackup = !hasInjectedPlugIn
+
+        try _injectBundles(injectURLs
+            .filter { $0.pathExtension.lowercased() == "bundle" })
+
+        try _injectDylibsAndFrameworks(injectURLs
+            .filter { $0.pathExtension.lowercased() == "dylib" || $0.pathExtension.lowercased() == "framework" },
+                                       shouldBackup: shouldBackup)
+    }
+
+    func _injectBundles(_ injectURLs: [URL]) throws {
+        let newInjectURLs = try copyTempInjectURLs(injectURLs)
+        try markInjectDirectories(newInjectURLs)
+
+        for newInjectURL in newInjectURLs {
+            let targetURL = bundleURL.appendingPathComponent(newInjectURL.lastPathComponent)
+            try copyURL(newInjectURL, to: targetURL)
+            try changeOwner(targetURL, owner: "_installd", isDirectory: true)
+        }
+    }
+
+    private func _injectDylibsAndFrameworks(_ injectURLs: [URL], shouldBackup: Bool) throws {
         try FileManager.default.unzipItem(at: substrateZipURL, to: tempURL)
 
         try ctBypass(substrateMainMachOURL)
 
         let filteredURLs = injectURLs.filter {
-            !Self.ignoredDylibNames.contains($0.lastPathComponent)
+            !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
         }
 
-        let newInjectURLs = try tempInjectURLs(filteredURLs)
+        let newInjectURLs = try copyTempInjectURLs(filteredURLs)
 
         for newInjectURL in newInjectURLs {
             try applySubstrateFixes(newInjectURL)
             try ctBypass(newInjectURL)
         }
-
-        let shouldBackup = !hasInjectedPlugIn
-        TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
 
         var targetURL: URL?
         for url in try frameworkMachOURLs(mainExecutableURL) {
@@ -423,15 +502,19 @@ final class Injector {
         }
 
         do {
-            try targetInjectURLs([substrateFwkURL])
+            try markInjectDirectories([substrateFwkURL])
+            try copyTargetInjectURLs([substrateFwkURL])
+            try changeOwner(targetSubstrateFwkURL, owner: "_installd", isDirectory: true)
 
-            let copiedURLs: [URL] = try targetInjectURLs(newInjectURLs)
+            let copiedURLs: [URL] = try copyTargetInjectURLs(newInjectURLs)
             for copiedURL in copiedURLs {
                 try insertDylib(targetURL, url: copiedURL)
                 try applyTargetFixes(targetURL, name: copiedURL.lastPathComponent)
             }
 
-            try ctBypass(targetURL)
+            if !copiedURLs.isEmpty {
+                try ctBypass(targetURL)
+            }
         } catch {
             try? restoreIfExists(targetURL)
         }
@@ -440,6 +523,24 @@ final class Injector {
     func eject(_ ejectURLs: [URL]) throws {
         TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
 
+        try _ejectBundles(ejectURLs
+            .filter { $0.pathExtension.lowercased() == "bundle" })
+
+        try _ejectDylibsAndFrameworks(ejectURLs
+            .filter { $0.pathExtension.lowercased() == "dylib" || $0.pathExtension.lowercased() == "framework" })
+    }
+
+    private func _ejectBundles(_ ejectURLs: [URL]) throws {
+        for ejectURL in ejectURLs {
+            let markerURL = ejectURL.appendingPathComponent(Self.markerName)
+            guard FileManager.default.fileExists(atPath: markerURL.path) else {
+                continue
+            }
+            try? removeURL(ejectURL, isDirectory: true)
+        }
+    }
+
+    private func _ejectDylibsAndFrameworks(_ ejectURLs: [URL]) throws {
         var targetURL: URL?
         for frameworkMachOURL in try frameworkMachOURLs(mainExecutableURL) {
             do {
@@ -459,13 +560,15 @@ final class Injector {
 
         for ejectURL in ejectURLs {
             try removeDylib(targetURL, name: ejectURL.lastPathComponent)
-            try? rmURL(ejectURL, isDirectory: false)
+            try? removeURL(ejectURL, isDirectory: false)
         }
 
-        try ctBypass(targetURL)
+        if !ejectURLs.isEmpty {
+            try ctBypass(targetURL)
+        }
 
         if !hasInjectedPlugIn {
-            try? rmURL(targetSubstrateFwkURL, isDirectory: true)
+            try? removeURL(targetSubstrateFwkURL, isDirectory: true)
             try? restoreIfExists(targetURL)
         }
     }

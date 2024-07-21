@@ -41,6 +41,7 @@
 		CCF470692C4A4919008D8197 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCF4706B2C4A4919008D8197 /* Localizable.strings */; };
 		CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF4706D2C4A4BAB008D8197 /* AppListView.swift */; };
 		CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */; };
+		CCF925442C4CE47800880D48 /* chown in Resources */ = {isa = PBXBuildFile; fileRef = CCF925432C4CE47800880D48 /* chown */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrollFoolsStub.m; sourceTree = "<group>"; };
 		CCF925412C4C1B6F00880D48 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
 		CCF925422C4C1B6F00880D48 /* LSApplicationProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationProxy.h; sourceTree = "<group>"; };
+		CCF925432C4CE47800880D48 /* chown */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = chown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			children = (
 				CCF4705D2C4A464B008D8197 /* Assets.xcassets */,
 				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
+				CCF925432C4CE47800880D48 /* chown */,
 				CC1548E02C4A963500A4173E /* cp */,
 				CC1549012C4B62E300A4173E /* cp-15 */,
 				CCC564E82C4BE8320097C300 /* ldid */,
@@ -262,6 +265,7 @@
 				CCC564ED2C4BE8470097C300 /* libplist-2.0.3.dylib in Resources */,
 				CC1548F42C4AA24600A4173E /* libzstd.1.dylib in Resources */,
 				CC1548F52C4AA24600A4173E /* libLLVM.dylib in Resources */,
+				CCF925442C4CE47800880D48 /* chown in Resources */,
 				CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */,
 				CC1548EE2C4AA22C00A4173E /* llvm-install-name-tool in Resources */,
 				CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */,

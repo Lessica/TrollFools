@@ -41,12 +41,26 @@ struct PlugInCell: View {
         return attributedString
     }
 
+    var iconName: String {
+        let pathExt = plugIn.url.pathExtension.lowercased()
+        if pathExt == "bundle" {
+            return "archivebox"
+        }
+        if pathExt == "dylib" {
+            return "bandage"
+        }
+        if pathExt == "framework" {
+            return "shippingbox"
+        }
+        return "puzzlepiece"
+    }
+
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: "puzzlepiece")
+            Image(systemName: iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 32, height: 32)
+                .frame(width: 24, height: 24)
                 .foregroundColor(.accentColor)
 
             VStack(alignment: .leading) {
