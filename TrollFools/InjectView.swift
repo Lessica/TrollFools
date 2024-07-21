@@ -84,7 +84,7 @@ struct InjectView: View {
                                 message: error.localizedDescription)
                 }
             } else {
-                if #available(iOS 15.0, *) {
+                if #available(iOS 16.0, *) {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding(.all, 20)
