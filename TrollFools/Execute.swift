@@ -22,8 +22,12 @@ enum Execute {
             environment: environment,
             personaOptions: .init(uid: 0, gid: 0)
         )
-        DDLogInfo("Standard output: \(receipt.stdout)")
-        DDLogInfo("Standard error: \(receipt.stderr)")
+        if !receipt.stdout.isEmpty {
+            DDLogInfo("Standard output: \(receipt.stdout)")
+        }
+        if !receipt.stderr.isEmpty {
+            DDLogInfo("Standard error: \(receipt.stderr)")
+        }
         return receipt.terminationReason
     }
 }
