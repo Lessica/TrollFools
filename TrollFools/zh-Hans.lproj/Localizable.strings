@@ -5,6 +5,12 @@
 "%@ terminated with signal %d" = "%@ 意外终止，未捕获的信号 %d";
 
 /* No comment provided by engineer. */
+"A pure TrollStore software channel!" = "秋名山一路向北，最纯净的巨魔软件体验！";
+
+/* No comment provided by engineer. */
+"AE86 TrollStore Channel" = "秋名山巨魔俱乐部";
+
+/* No comment provided by engineer. */
 "Applications" = "应用程序";
 
 /* No comment provided by engineer. */
@@ -59,6 +65,9 @@
 "No Injected Plug-Ins" = "没有已注入的插件";
 
 /* No comment provided by engineer. */
+"Not the first, but the best phone call recorder with TrollStore." = "TrollFools 永久免费，如果你喜欢它，请购买巨魔录音机支持我们的开发！";
+
+/* No comment provided by engineer. */
 "Plug-Ins" = "插件列表";
 
 /* No comment provided by engineer. */
@@ -69,3 +78,6 @@
 
 /* No comment provided by engineer. */
 "Source Code" = "获取源代码";
+
+/* No comment provided by engineer. */
+"TrollRecorder" = "巨魔录音机";

@@ -42,7 +42,5 @@
 	</array>
 	<key>platform-application</key>
 	<true/>
-	<key>task_for_pid-allow</key>
-	<true/>
 </dict>
 </plist>

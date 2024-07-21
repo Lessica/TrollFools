@@ -17,18 +17,20 @@ final class App: Identifiable, ObservableObject {
     @Published var isInjected: Bool = false
 
     lazy var icon: UIImage? = UIImage._applicationIconImage(forBundleIdentifier: id, format: 0, scale: 3.0)
+    var alternateIcon: UIImage?
 
-    init(id: String, name: String, teamID: String, url: URL, version: String?) {
+    init(id: String, name: String, teamID: String, url: URL, version: String? = nil, alternateIcon: UIImage? = nil) {
         self.id = id
         self.name = name
         self.teamID = teamID
         self.url = url
         self.version = version
         self.isInjected = Injector.isInjectedBundle(url)
+        self.alternateIcon = alternateIcon
     }
 
     func reloadInjectedStatus() {
-        isInjected = Injector.isInjectedBundle(url)
+        self.isInjected = Injector.isInjectedBundle(url)
     }
 }
 
@@ -36,19 +38,30 @@ final class AppListModel: ObservableObject {
     static let shared = AppListModel()
 
     @Published var userApps: [App]
+    @Published var hasTrollRecorder: Bool = false
 
     private init() {
-        userApps = Self.getUserApps()
+        var hasTrollRecorder = false
+        self.userApps = Self.getUserApps(&hasTrollRecorder)
+        self.hasTrollRecorder = hasTrollRecorder
     }
 
     func refresh() {
-        userApps = Self.getUserApps()
+        self.userApps = Self.getUserApps(&hasTrollRecorder)
     }
 
-    private static func getUserApps() -> [App] {
+    private static func getUserApps(_ hasTrollRecorder: inout Bool) -> [App] {
         LSApplicationWorkspace.default()
             .allApplications()
-            .filter { $0.applicationType() == "User" && !$0.applicationIdentifier().hasPrefix("com.apple.") }
+            .filter { app in
+                guard let appId = app.applicationIdentifier() else {
+                    return false
+                }
+                if appId == "wiki.qaq.trapp" {
+                    hasTrollRecorder = true
+                }
+                return app.applicationType() == "User"
+            }
             .compactMap {
                 guard let id = $0.applicationIdentifier(),
                       !id.hasPrefix("wiki.qaq."),
@@ -113,18 +126,20 @@ struct AppListCell: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(uiImage: app.icon ?? UIImage())
+            Image(uiImage: app.alternateIcon ?? app.icon ?? UIImage())
                 .resizable()
                 .frame(width: 32, height: 32)
 
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
                     if #available(iOS 15.0, *) {
                         Text(highlightedName)
                             .font(.headline)
+                            .lineLimit(1)
                     } else {
                         Text(app.name)
                             .font(.headline)
+                            .lineLimit(1)
                     }
 
                     if app.isInjected {

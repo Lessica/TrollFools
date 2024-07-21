@@ -525,15 +525,34 @@ final class Injector {
 
     // MARK: - Public Methods
 
+    private func preprocessURLs(_ urls: [URL]) throws -> [URL] {
+        var finalURLs: [URL] = []
+        for url in urls {
+            if url.pathExtension.lowercased() == "zip" {
+                let extractedURL = url.appendingPathExtension("extracted")
+                try FileManager.default.createDirectory(at: extractedURL, withIntermediateDirectories: true)
+                try FileManager.default.unzipItem(at: url, to: extractedURL)
+
+                let extractedContents = try FileManager.default.contentsOfDirectory(at: extractedURL, includingPropertiesForKeys: nil)
+                finalURLs.append(contentsOf: extractedContents)
+            } else {
+                finalURLs.append(url)
+            }
+        }
+        return finalURLs
+    }
+
     func inject(_ injectURLs: [URL]) throws {
+        let urlsToInject = try preprocessURLs(injectURLs)
+
         TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
 
         let shouldBackup = !hasInjectedPlugIn
 
-        try _injectBundles(injectURLs
+        try _injectBundles(urlsToInject
             .filter { $0.pathExtension.lowercased() == "bundle" })
 
-        try _injectDylibsAndFrameworks(injectURLs
+        try _injectDylibsAndFrameworks(urlsToInject
             .filter { $0.pathExtension.lowercased() == "dylib" || $0.pathExtension.lowercased() == "framework" },
                                        shouldBackup: shouldBackup)
     }

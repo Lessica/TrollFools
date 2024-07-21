@@ -63,7 +63,10 @@ struct InjectView: View {
 
     func inject() -> Result<Void, Error> {
         do {
-            let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+            let injector = try Injector(
+                bundleURL: app.url,
+                teamID: app.teamID
+            )
             try injector.inject(urlList)
             return .success(())
         } catch {

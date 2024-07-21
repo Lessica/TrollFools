@@ -5,6 +5,12 @@
 "%@ terminated with signal %d" = "%@ terminated with signal %d";
 
 /* No comment provided by engineer. */
+"A pure TrollStore software channel!" = "A pure TrollStore software channel!";
+
+/* No comment provided by engineer. */
+"AE86 TrollStore Channel" = "AE86 TrollStore Channel";
+
+/* No comment provided by engineer. */
 "Applications" = "Applications";
 
 /* No comment provided by engineer. */
@@ -59,6 +65,9 @@
 "No Injected Plug-Ins" = "No Injected Plug-Ins";
 
 /* No comment provided by engineer. */
+"Not the first, but the best phone call recorder with TrollStore." = "Not the first, but the best phone call recorder with TrollStore.";
+
+/* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
 
 /* No comment provided by engineer. */
@@ -69,3 +78,6 @@
 
 /* No comment provided by engineer. */
 "Source Code" = "Source Code";
+
+/* No comment provided by engineer. */
+"TrollRecorder" = "TrollRecorder";
