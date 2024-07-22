@@ -98,7 +98,7 @@ final class AppListModel: ObservableObject {
                     version: shortVersionString
                 )
             }
-            .filter { Injector.isEligibleBundle($0.url) }
+            .filter { $0.type != "User" || Injector.isEligibleBundle($0.url) }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
     }
 }
