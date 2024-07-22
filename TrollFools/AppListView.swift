@@ -10,6 +10,7 @@ import SwiftUI
 final class App: Identifiable, ObservableObject {
     let id: String
     let name: String
+    let type: String
     let teamID: String
     let url: URL
     let version: String?
@@ -19,9 +20,17 @@ final class App: Identifiable, ObservableObject {
     lazy var icon: UIImage? = UIImage._applicationIconImage(forBundleIdentifier: id, format: 0, scale: 3.0)
     var alternateIcon: UIImage?
 
-    init(id: String, name: String, teamID: String, url: URL, version: String? = nil, alternateIcon: UIImage? = nil) {
+    init(id: String,
+         name: String,
+         type: String,
+         teamID: String,
+         url: URL,
+         version: String? = nil,
+         alternateIcon: UIImage? = nil
+    ) {
         self.id = id
         self.name = name
+        self.type = type
         self.teamID = teamID
         self.url = url
         self.version = version
@@ -60,7 +69,7 @@ final class AppListModel: ObservableObject {
                 if appId == "wiki.qaq.trapp" {
                     hasTrollRecorder = true
                 }
-                return app.applicationType() == "User"
+                return !appId.hasPrefix("com.apple.")
             }
             .compactMap {
                 guard let id = $0.applicationIdentifier(),
@@ -74,6 +83,7 @@ final class AppListModel: ObservableObject {
                       !id.hasPrefix("ch.xxtou."),
                       let url = $0.bundleURL(),
                       let teamID = $0.teamID(),
+                      let appType = $0.applicationType(),
                       let localizedName = $0.localizedName(),
                       let shortVersionString = $0.shortVersionString()
                 else {
@@ -82,6 +92,7 @@ final class AppListModel: ObservableObject {
                 return App(
                     id: id,
                     name: localizedName,
+                    type: appType,
                     teamID: teamID,
                     url: url,
                     version: shortVersionString
