@@ -34,7 +34,6 @@
 		CCC564ED2C4BE8470097C300 /* libplist-2.0.3.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */; };
 		CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */; };
 		CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF4705D2C4A464B008D8197 /* Assets.xcassets */; };
-		CCF470612C4A464B008D8197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF470602C4A464B008D8197 /* Preview Assets.xcassets */; };
 		CCF470692C4A4919008D8197 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCF4706B2C4A4919008D8197 /* Localizable.strings */; };
 		CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF4706D2C4A4BAB008D8197 /* AppListView.swift */; };
 		CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */; };
@@ -73,7 +72,6 @@
 		CCF470562C4A4649008D8197 /* TrollFools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrollFools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrollFoolsApp.swift; sourceTree = "<group>"; };
 		CCF4705D2C4A464B008D8197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CCF470602C4A464B008D8197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CCF4706A2C4A4919008D8197 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CCF4706C2C4A491B008D8197 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CCF4706D2C4A4BAB008D8197 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
@@ -174,17 +172,8 @@
 				CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */,
 				CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */,
 				CC15490F2C4B84DD00A4173E /* Resources */,
-				CCF4705F2C4A464B008D8197 /* Preview Content */,
 			);
 			path = TrollFools;
-			sourceTree = "<group>";
-		};
-		CCF4705F2C4A464B008D8197 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				CCF470602C4A464B008D8197 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,7 +265,6 @@
 				CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */,
 				CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */,
 				CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */,
-				CCF470612C4A464B008D8197 /* Preview Assets.xcassets in Resources */,
 				CCF470692C4A4919008D8197 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,9 +436,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_ASSET_PATHS = "\"TrollFools/Preview Content\"";
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
-				ENABLE_PREVIEWS = YES;
+				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
@@ -491,9 +478,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_ASSET_PATHS = "\"TrollFools/Preview Content\"";
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
-				ENABLE_PREVIEWS = YES;
+				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
