@@ -258,7 +258,15 @@ final class Injector {
     private lazy var ctBypassBinaryURL: URL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
     private lazy var insertDylibBinaryURL: URL = Bundle.main.url(forResource: "insert_dylib", withExtension: nil)!
     private lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "install_name_tool", withExtension: nil)!
-    private lazy var ldidBinaryURL: URL = Bundle.main.url(forResource: "ldid", withExtension: nil)!
+
+    private lazy var ldidBinaryURL: URL = {
+        if #available(iOS 15.0, *) {
+            Bundle.main.url(forResource: "ldid", withExtension: nil)!
+        } else {
+            Bundle.main.url(forResource: "ldid-14", withExtension: nil)!
+        }
+    }()
+
     private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
 
