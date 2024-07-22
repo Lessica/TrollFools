@@ -15,3 +15,5 @@ TrollFools/optool filter=lfs diff=lfs merge=lfs -text
 TrollFools/ldid filter=lfs diff=lfs merge=lfs -text
 TrollFools/libcrypto.3.dylib filter=lfs diff=lfs merge=lfs -text
 TrollFools/libplist-2.0.3.dylib filter=lfs diff=lfs merge=lfs -text
+TrollFools/install_name_tool filter=lfs diff=lfs merge=lfs -text
+TrollFools/libxar.1.dylib filter=lfs diff=lfs merge=lfs -text

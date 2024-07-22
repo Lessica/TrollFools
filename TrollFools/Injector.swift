@@ -257,7 +257,7 @@ final class Injector {
     private lazy var chownBinaryURL: URL = Bundle.main.url(forResource: "chown", withExtension: nil)!
     private lazy var ctBypassBinaryURL: URL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
     private lazy var insertDylibBinaryURL: URL = Bundle.main.url(forResource: "insert_dylib", withExtension: nil)!
-    private lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "llvm-install-name-tool", withExtension: nil)!
+    private lazy var installNameToolBinaryURL: URL = Bundle.main.url(forResource: "install_name_tool", withExtension: nil)!
     private lazy var ldidBinaryURL: URL = Bundle.main.url(forResource: "ldid", withExtension: nil)!
     private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!

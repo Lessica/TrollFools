@@ -17,17 +17,14 @@
 		CC1548E12C4A963500A4173E /* cp in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E02C4A963500A4173E /* cp */; };
 		CC1548E62C4A974E00A4173E /* libintl.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E22C4A974400A4173E /* libintl.8.dylib */; };
 		CC1548E72C4A974E00A4173E /* libiosexec.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E32C4A974400A4173E /* libiosexec.1.dylib */; };
-		CC1548EE2C4AA22C00A4173E /* llvm-install-name-tool in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E92C4AA22C00A4173E /* llvm-install-name-tool */; };
-		CC1548F22C4AA24600A4173E /* libedit.0.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548EB2C4AA22C00A4173E /* libedit.0.dylib */; };
-		CC1548F32C4AA24600A4173E /* libncursesw.6.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548EC2C4AA22C00A4173E /* libncursesw.6.dylib */; };
-		CC1548F42C4AA24600A4173E /* libzstd.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E82C4AA22C00A4173E /* libzstd.1.dylib */; };
-		CC1548F52C4AA24600A4173E /* libLLVM.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548EA2C4AA22C00A4173E /* libLLVM.dylib */; };
 		CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548FB2C4AADBB00A4173E /* MachOKit */; };
 		CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548FD2C4AADBB00A4173E /* MachOKitC */; };
 		CC1549002C4AB43600A4173E /* rm in Resources */ = {isa = PBXBuildFile; fileRef = CC1548FF2C4AB43600A4173E /* rm */; };
 		CC1549022C4B62E300A4173E /* cp-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC1549012C4B62E300A4173E /* cp-15 */; };
 		CC15490C2C4B79D800A4173E /* optool in Resources */ = {isa = PBXBuildFile; fileRef = CC15490B2C4B79D800A4173E /* optool */; };
 		CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC15490D2C4B80AF00A4173E /* EjectListView.swift */; };
+		CC5E54BE2C4E12F900FDE4A8 /* install_name_tool in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */; };
+		CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */; };
 		CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */ = {isa = PBXBuildFile; fileRef = CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */; };
 		CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A1162C4A540F000D75B0 /* CoreServices.framework */; };
 		CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A1182C4A58C7000D75B0 /* OptionView.swift */; };
@@ -60,15 +57,12 @@
 		CC1548E02C4A963500A4173E /* cp */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = cp; sourceTree = "<group>"; };
 		CC1548E22C4A974400A4173E /* libintl.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libintl.8.dylib; sourceTree = "<group>"; };
 		CC1548E32C4A974400A4173E /* libiosexec.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libiosexec.1.dylib; sourceTree = "<group>"; };
-		CC1548E82C4AA22C00A4173E /* libzstd.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzstd.1.dylib; sourceTree = "<group>"; };
-		CC1548E92C4AA22C00A4173E /* llvm-install-name-tool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "llvm-install-name-tool"; sourceTree = "<group>"; };
-		CC1548EA2C4AA22C00A4173E /* libLLVM.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libLLVM.dylib; sourceTree = "<group>"; };
-		CC1548EB2C4AA22C00A4173E /* libedit.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libedit.0.dylib; sourceTree = "<group>"; };
-		CC1548EC2C4AA22C00A4173E /* libncursesw.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libncursesw.6.dylib; sourceTree = "<group>"; };
 		CC1548FF2C4AB43600A4173E /* rm */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = rm; sourceTree = "<group>"; };
 		CC1549012C4B62E300A4173E /* cp-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "cp-15"; sourceTree = "<group>"; };
 		CC15490B2C4B79D800A4173E /* optool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = optool; sourceTree = "<group>"; };
 		CC15490D2C4B80AF00A4173E /* EjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListView.swift; sourceTree = "<group>"; };
+		CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxar.1.dylib; sourceTree = "<group>"; };
+		CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = install_name_tool; sourceTree = "<group>"; };
 		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
 		CCB6A1162C4A540F000D75B0 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		CCB6A1182C4A58C7000D75B0 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
@@ -119,20 +113,17 @@
 				CCF925432C4CE47800880D48 /* chown */,
 				CC1548E02C4A963500A4173E /* cp */,
 				CC1549012C4B62E300A4173E /* cp-15 */,
-				CCC564E82C4BE8320097C300 /* ldid */,
-				CC1548FF2C4AB43600A4173E /* rm */,
-				CC15490B2C4B79D800A4173E /* optool */,
 				CC1548CF2C4A6B8200A4173E /* ct_bypass */,
 				CC1548DC2C4A8DC500A4173E /* insert_dylib */,
+				CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */,
+				CCC564E82C4BE8320097C300 /* ldid */,
+				CC15490B2C4B79D800A4173E /* optool */,
+				CC1548FF2C4AB43600A4173E /* rm */,
 				CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */,
-				CC1548EB2C4AA22C00A4173E /* libedit.0.dylib */,
 				CC1548E22C4A974400A4173E /* libintl.8.dylib */,
 				CC1548E32C4A974400A4173E /* libiosexec.1.dylib */,
-				CC1548EC2C4AA22C00A4173E /* libncursesw.6.dylib */,
 				CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */,
-				CC1548E82C4AA22C00A4173E /* libzstd.1.dylib */,
-				CC1548EA2C4AA22C00A4173E /* libLLVM.dylib */,
-				CC1548E92C4AA22C00A4173E /* llvm-install-name-tool */,
+				CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */,
 				CCF4706B2C4A4919008D8197 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -269,24 +260,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCF925442C4CE47800880D48 /* chown in Resources */,
 				CC1548E12C4A963500A4173E /* cp in Resources */,
 				CC1549022C4B62E300A4173E /* cp-15 in Resources */,
 				CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */,
 				CC1549002C4AB43600A4173E /* rm in Resources */,
 				CC1548DD2C4A8DC500A4173E /* insert_dylib in Resources */,
+				CC5E54BE2C4E12F900FDE4A8 /* install_name_tool in Resources */,
 				CCC564EB2C4BE8320097C300 /* ldid in Resources */,
 				CC15490C2C4B79D800A4173E /* optool in Resources */,
 				CCC564EC2C4BE8470097C300 /* libcrypto.3.dylib in Resources */,
-				CC1548F22C4AA24600A4173E /* libedit.0.dylib in Resources */,
 				CC1548E62C4A974E00A4173E /* libintl.8.dylib in Resources */,
 				CC1548E72C4A974E00A4173E /* libiosexec.1.dylib in Resources */,
-				CC1548F32C4AA24600A4173E /* libncursesw.6.dylib in Resources */,
 				CCC564ED2C4BE8470097C300 /* libplist-2.0.3.dylib in Resources */,
-				CC1548F42C4AA24600A4173E /* libzstd.1.dylib in Resources */,
-				CC1548F52C4AA24600A4173E /* libLLVM.dylib in Resources */,
-				CCF925442C4CE47800880D48 /* chown in Resources */,
+				CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */,
 				CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */,
-				CC1548EE2C4AA22C00A4173E /* llvm-install-name-tool in Resources */,
 				CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */,
 				CCF470612C4A464B008D8197 /* Preview Assets.xcassets in Resources */,
 				CCF470692C4A4919008D8197 /* Localizable.strings in Resources */,
