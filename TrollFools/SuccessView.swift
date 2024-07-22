@@ -18,14 +18,16 @@ struct SuccessView: View {
             App(
                 id: NSLocalizedString("A pure TrollStore software channel!", comment: ""),
                 name: NSLocalizedString("AE86 TrollStore Channel", comment: ""),
-                teamID: "",
+                type: "User",
+                teamID: "GXZ23M5TP2",
                 url: URL(string: "https://t.me/ae86_ios")!,
                 alternateIcon: .init(named: "ae86-ios")
             ),
             App(
                 id: NSLocalizedString("Not the first, but the best phone call recorder with TrollStore.", comment: ""),
                 name: NSLocalizedString("TrollRecorder", comment: ""),
-                teamID: "",
+                type: "User",
+                teamID: "GXZ23M5TP2",
                 url: URL(string: "https://havoc.app/package/trollrecorder")!,
                 alternateIcon: .init(named: "tricon-default")
             ),
