@@ -12,8 +12,8 @@ You have to get precompiled binaries from released packages or build them yourse
 
 ## Milestones
 
-- [ ] `optool` is buggy so we need to compile a statically linked `install_name_tool` or `llvm-install-name-tool` on iOS to achieve a smaller package size.
-- [ ] Support for `.deb` and `.zip`
+- [x] `optool` is buggy so we need to compile a statically linked `install_name_tool` or `llvm-install-name-tool` on iOS to achieve a smaller package size.
+- [x] Support for `.deb` or `.zip`.
 
 ## Credits
 
