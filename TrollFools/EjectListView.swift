@@ -159,7 +159,7 @@ struct EjectListView: View {
                         .disabled(isDeletingAll)
                         .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
-                    if app.isFromTrollStore {
+                    if app.isFromTroll {
                         Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
                             .font(.footnote)
                     }

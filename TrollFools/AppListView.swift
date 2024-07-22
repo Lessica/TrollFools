@@ -23,7 +23,7 @@ final class App: Identifiable, ObservableObject {
     lazy var isUser: Bool = type == "User"
     lazy var isSystem: Bool = !isUser
     lazy var isFromApple: Bool = id.hasPrefix("com.apple.")
-    lazy var isFromTrollStore: Bool = isSystem && !isFromApple
+    lazy var isFromTroll: Bool = isSystem && !isFromApple
     lazy var isRemovableSystem: Bool = isSystem && url.path.contains("/var/containers/Bundle/Application/")
 
     init(id: String,
@@ -52,23 +52,19 @@ final class App: Identifiable, ObservableObject {
 final class AppListModel: ObservableObject {
     static let shared = AppListModel()
 
-    @Published var userApps: [App]
+    @Published var allApplications: [App] = []
     @Published var hasTrollRecorder: Bool = false
     @Published var unsupportedCount: Int = 0
 
     private init() {
-        var hasTrollRecorder = false
-        var unsupportedCount = 0
-        self.userApps = Self.getUserApps(&hasTrollRecorder, &unsupportedCount)
-        self.hasTrollRecorder = hasTrollRecorder
-        self.unsupportedCount = unsupportedCount
+        refresh()
     }
 
     func refresh() {
-        self.userApps = Self.getUserApps(&hasTrollRecorder, &unsupportedCount)
+        self.allApplications = Self.fetchApplications(&hasTrollRecorder, &unsupportedCount)
     }
 
-    private static func getUserApps(_ hasTrollRecorder: inout Bool, _ unsupportedCount: inout Int) -> [App] {
+    private static func fetchApplications(_ hasTrollRecorder: inout Bool, _ unsupportedCount: inout Int) -> [App] {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
             .compactMap {
@@ -97,10 +93,13 @@ final class AppListModel: ObservableObject {
                 }
                 return app
             }
+
         let filteredApps = allApps
             .filter { $0.isSystem || Injector.isEligibleBundle($0.url) }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+
         unsupportedCount = allApps.count - filteredApps.count
+
         return filteredApps
     }
 }
@@ -216,10 +215,10 @@ struct AppListView: View {
 
     var filteredApps: [App] {
         if showPatchedOnly {
-            (isSearching ? searchResults : vm.userApps)
+            (isSearching ? searchResults : vm.allApplications)
                 .filter { $0.isInjected }
         } else {
-            isSearching ? searchResults : vm.userApps
+            isSearching ? searchResults : vm.allApplications
         }
     }
 
@@ -366,7 +365,7 @@ struct AppListView: View {
     }
 
     func fetchSearchResults(for query: String) {
-        searchResults = vm.userApps.filter { app in
+        searchResults = vm.allApplications.filter { app in
             app.name.localizedCaseInsensitiveContains(query) ||
             app.id.localizedCaseInsensitiveContains(query)
         }
