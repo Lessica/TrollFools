@@ -48,19 +48,22 @@ final class AppListModel: ObservableObject {
 
     @Published var userApps: [App]
     @Published var hasTrollRecorder: Bool = false
+    @Published var unsupportedCount: Int = 0
 
     private init() {
         var hasTrollRecorder = false
-        self.userApps = Self.getUserApps(&hasTrollRecorder)
+        var unsupportedCount = 0
+        self.userApps = Self.getUserApps(&hasTrollRecorder, &unsupportedCount)
         self.hasTrollRecorder = hasTrollRecorder
+        self.unsupportedCount = unsupportedCount
     }
 
     func refresh() {
-        self.userApps = Self.getUserApps(&hasTrollRecorder)
+        self.userApps = Self.getUserApps(&hasTrollRecorder, &unsupportedCount)
     }
 
-    private static func getUserApps(_ hasTrollRecorder: inout Bool) -> [App] {
-        LSApplicationWorkspace.default()
+    private static func getUserApps(_ hasTrollRecorder: inout Bool, _ unsupportedCount: inout Int) -> [App] {
+        let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
             .filter { app in
                 guard let appId = app.applicationIdentifier() else {
@@ -98,8 +101,11 @@ final class AppListModel: ObservableObject {
                     version: shortVersionString
                 )
             }
+        let filteredApps = allApps
             .filter { $0.type != "User" || Injector.isEligibleBundle($0.url) }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        unsupportedCount = allApps.count - filteredApps.count
+        return filteredApps
     }
 }
 
@@ -270,6 +276,11 @@ struct AppListView: View {
             } header: {
                 Text(NSLocalizedString("User Applications", comment: ""))
                     .font(.footnote)
+            } footer: {
+                if vm.unsupportedCount > 0 {
+                    Text(String(format: NSLocalizedString("And %d more unsupported applications.", comment: ""), vm.unsupportedCount))
+                        .font(.footnote)
+                }
             }
 
             Section {
