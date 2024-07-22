@@ -62,14 +62,15 @@ final class Injector {
         return dylibURLs + frameworkURLs
     }
 
-    private static func isFrameworkURL(_ url: URL) -> Bool {
+    private static func isBundleOrFrameworkURL(_ url: URL) -> Bool {
         let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-        return isDirectory && url.pathExtension.lowercased() == "framework"
+        let pathExt = url.pathExtension.lowercased()
+        return isDirectory && (pathExt == "app" || pathExt == "framework")
     }
 
     private let bundleURL: URL
-    private let teamID: String
     private let tempURL: URL
+    private var teamID: String
 
     private lazy var infoPlistURL: URL = bundleURL.appendingPathComponent("Info.plist")
     private lazy var mainExecutableURL: URL = {
@@ -78,7 +79,13 @@ final class Injector {
         return bundleURL.appendingPathComponent(mainExecutable)
     }()
 
-    private lazy var frameworksURL: URL = bundleURL.appendingPathComponent("Frameworks")
+    private lazy var frameworksURL: URL = {
+        let fwkURL = bundleURL.appendingPathComponent("Frameworks")
+        if !FileManager.default.fileExists(atPath: fwkURL.path) {
+            try? makeDirectory(fwkURL)
+        }
+        return fwkURL
+    }()
 
     private var hasInjectedPlugIn: Bool {
         !Self.injectedPlugInURLs(bundleURL).isEmpty
@@ -93,6 +100,30 @@ final class Injector {
             appropriateFor: URL(fileURLWithPath: NSHomeDirectory()),
             create: true
         )
+        try updateTeamIdentifier(bundleURL)
+    }
+
+    private func updateTeamIdentifier(_ target: URL) throws {
+        let mainURL = try findMainMachO(target)
+        let targetFile = try MachOKit.loadFromFile(url: mainURL)
+        switch targetFile {
+        case .machO(let machOFile):
+            if let codeSign = machOFile.codeSign,
+               let teamID = codeSign.codeDirectory?.teamId(in: codeSign)
+            {
+                self.teamID = teamID
+            }
+        case .fat(let fatFile):
+            let machOFiles = try fatFile.machOFiles()
+            for machOFile in machOFiles {
+                if let codeSign = machOFile.codeSign,
+                   let teamID = codeSign.codeDirectory?.teamId(in: codeSign)
+                {
+                    self.teamID = teamID
+                    break
+                }
+            }
+        }
     }
 
     private lazy var substrateZipURL: URL = Bundle.main.url(forResource: "CydiaSubstrate.framework", withExtension: "zip")!
@@ -123,19 +154,27 @@ final class Injector {
             .appendingPathComponent("Frameworks")
 
         let initialDylibs = dylibs
-            .filter { $0.hasPrefix("@rpath/") }
+            .filter { $0.hasPrefix("@rpath/") && $0.contains(".framework/") }
             .map { $0.replacingOccurrences(of: "@rpath", with: rpath.path) }
             .map { URL(fileURLWithPath: $0) }
 
         var executableURLs = Set<URL>()
         if let enumerator = FileManager.default.enumerator(
             at: frameworksURL,
-            includingPropertiesForKeys: [.isRegularFileKey, .isExecutableKey],
+            includingPropertiesForKeys: [.isRegularFileKey, .isDirectoryKey],
             options: [.skipsHiddenFiles]
         ) {
             for case let fileURL as URL in enumerator {
-                guard let fileAttributes = try? fileURL.resourceValues(forKeys: [.isRegularFileKey]) else {
+                guard let fileAttributes = try? fileURL.resourceValues(forKeys: [.isRegularFileKey, .isDirectoryKey]) else {
                     continue
+                }
+
+                if (fileAttributes.isDirectory ?? false) && fileURL.pathExtension.lowercased() == "framework" {
+                    let markerURL = fileURL.appendingPathComponent(Self.markerName)
+                    if FileManager.default.fileExists(atPath: markerURL.path) {
+                        enumerator.skipDescendants()
+                        continue
+                    }
                 }
 
                 guard fileAttributes.isRegularFile ?? false else {
@@ -149,7 +188,7 @@ final class Injector {
         return executableURLs
             .intersection(initialDylibs)
             .filter { isMachOURL($0) }
-            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) + [target]
     }
 
     private func copyTempInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
@@ -237,6 +276,18 @@ final class Injector {
         DDLogInfo("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
     }
 
+    private func makeDirectory(_ target: URL) throws {
+        let retCode = try Execute.rootSpawn(binary: mkdirBinaryURL.path, arguments: [
+            "-p", target.path,
+        ])
+
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("mkdir", reason: retCode)
+        }
+
+        DDLogInfo("mkdir \(target.lastPathComponent) done")
+    }
+
     @discardableResult
     private func copyTargetInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
         let targetURLs = injectURLs.map { frameworksURL.appendingPathComponent($0.lastPathComponent) }
@@ -267,6 +318,7 @@ final class Injector {
         }
     }()
 
+    private lazy var mkdirBinaryURL: URL = Bundle.main.url(forResource: "mkdir", withExtension: nil)!
     private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
 
@@ -293,13 +345,27 @@ final class Injector {
     }
 
     private func fakeSignIfNecessary(_ url: URL, force: Bool = false) throws {
-        if !force {
-            var hasCodeSign = false
+        var hasCodeSign = false
+        var isExecutable = false
 
-            let target = try findMainMachO(url)
-            let targetFile = try MachOKit.loadFromFile(url: target)
-            switch targetFile {
-            case .machO(let machOFile):
+        let target = try findMainMachO(url)
+        let targetFile = try MachOKit.loadFromFile(url: target)
+        switch targetFile {
+        case .machO(let machOFile):
+            isExecutable = machOFile.header.fileType == .execute
+            for command in machOFile.loadCommands {
+                switch command {
+                case .codeSignature(_):
+                    hasCodeSign = true
+                    break
+                default:
+                    continue
+                }
+            }
+        case .fat(let fatFile):
+            let machOFiles = try fatFile.machOFiles()
+            for machOFile in machOFiles {
+                isExecutable = machOFile.header.fileType == .execute
                 for command in machOFile.loadCommands {
                     switch command {
                     case .codeSignature(_):
@@ -309,31 +375,44 @@ final class Injector {
                         continue
                     }
                 }
-            case .fat(let fatFile):
-                let machOFiles = try fatFile.machOFiles()
-                for machOFile in machOFiles {
-                    for command in machOFile.loadCommands {
-                        switch command {
-                        case .codeSignature(_):
-                            hasCodeSign = true
-                            break
-                        default:
-                            continue
-                        }
-                    }
-                }
-            }
-
-            guard !hasCodeSign else {
-                return
             }
         }
 
-        let retCode = try Execute.rootSpawn(binary: ldidBinaryURL.path, arguments: [
-            "-S", url.path,
-        ])
-        guard case .exit(let code) = retCode, code == 0 else {
-            try throwCommandFailure("ldid", reason: retCode)
+        guard force || !hasCodeSign else {
+            return
+        }
+
+        if isExecutable {
+            var receipt: AuxiliaryExecute.ExecuteReceipt
+
+            receipt = try Execute.rootSpawnWithOutputs(binary: ldidBinaryURL.path, arguments: [
+                "-e", url.path,
+            ])
+
+            guard case .exit(let code) = receipt.terminationReason, code == 0 else {
+                try throwCommandFailure("ldid", reason: receipt.terminationReason)
+            }
+
+            let xmlContent = receipt.stdout
+            let xmlURL = tempURL
+                .appendingPathComponent(url.lastPathComponent)
+                .appendingPathExtension("xml")
+            try xmlContent.write(to: xmlURL, atomically: true, encoding: .utf8)
+
+            receipt = try Execute.rootSpawnWithOutputs(binary: ldidBinaryURL.path, arguments: [
+                "-S\(xmlURL.path)", url.path,
+            ])
+
+            guard case .exit(let code) = receipt.terminationReason, code == 0 else {
+                try throwCommandFailure("ldid", reason: receipt.terminationReason)
+            }
+        } else {
+            let retCode = try Execute.rootSpawn(binary: ldidBinaryURL.path, arguments: [
+                "-S", url.path,
+            ])
+            guard case .exit(let code) = retCode, code == 0 else {
+                try throwCommandFailure("ldid", reason: retCode)
+            }
         }
 
         DDLogInfo("ldid \(url.lastPathComponent) done")
@@ -471,7 +550,7 @@ final class Injector {
     }
 
     private func findMainMachO(_ target: URL) throws -> URL {
-        guard Self.isFrameworkURL(target) else {
+        guard Self.isBundleOrFrameworkURL(target) else {
             return target
         }
 
@@ -596,23 +675,9 @@ final class Injector {
         }
     }
 
-    private func _injectDylibsAndFrameworks(_ injectURLs: [URL], shouldBackup: Bool) throws {
-        try FileManager.default.unzipItem(at: substrateZipURL, to: tempURL)
-        try ctBypass(substrateMainMachOURL)
-        try changeOwnerToInstalld(substrateMainMachOURL, isDirectory: false)
-
-        let filteredURLs = injectURLs.filter {
-            !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
-        }
-
-        let newInjectURLs = try copyTempInjectURLs(filteredURLs)
-        for newInjectURL in newInjectURLs {
-            try applySubstrateFixes(newInjectURL)
-            try ctBypass(newInjectURL)
-            try changeOwnerToInstalld(newInjectURL, isDirectory: true)
-        }
-
+    private func _locateAvailableMachO(shouldBackup: Bool) throws -> URL? {
         var targetURL: URL?
+
         for frameworkMachOURL in try frameworkMachOURLs(mainExecutableURL) {
             do {
                 if shouldBackup {
@@ -630,7 +695,26 @@ final class Injector {
             }
         }
 
-        guard let targetURL else {
+        return targetURL
+    }
+
+    private func _injectDylibsAndFrameworks(_ injectURLs: [URL], shouldBackup: Bool) throws {
+        try FileManager.default.unzipItem(at: substrateZipURL, to: tempURL)
+        try ctBypass(substrateMainMachOURL)
+        try changeOwnerToInstalld(substrateMainMachOURL, isDirectory: false)
+
+        let filteredURLs = injectURLs.filter {
+            !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
+        }
+
+        let newInjectURLs = try copyTempInjectURLs(filteredURLs)
+        for newInjectURL in newInjectURLs {
+            try applySubstrateFixes(newInjectURL)
+            try ctBypass(newInjectURL)
+            try changeOwnerToInstalld(newInjectURL, isDirectory: true)
+        }
+
+        guard let targetURL = try _locateAvailableMachO(shouldBackup: shouldBackup) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: NSLocalizedString("No eligible framework found.", comment: ""),
             ])
@@ -679,20 +763,7 @@ final class Injector {
     }
 
     private func _ejectDylibsAndFrameworks(_ ejectURLs: [URL]) throws {
-        var targetURL: URL?
-        for frameworkMachOURL in try frameworkMachOURLs(mainExecutableURL) {
-            do {
-                try ctBypass(frameworkMachOURL)
-                try changeOwnerToInstalld(frameworkMachOURL, isDirectory: false)
-
-                targetURL = frameworkMachOURL
-                break
-            } catch {
-                continue
-            }
-        }
-
-        guard let targetURL else {
+        guard let targetURL = try _locateAvailableMachO(shouldBackup: false) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
                 NSLocalizedDescriptionKey: NSLocalizedString("No eligible framework found.", comment: ""),
             ])
@@ -702,7 +773,7 @@ final class Injector {
             try removeLoadCommand(targetURL, url: ejectURL)
             try changeOwnerToInstalld(targetURL, isDirectory: false)
 
-            let isFramework = Self.isFrameworkURL(ejectURL)
+            let isFramework = Self.isBundleOrFrameworkURL(ejectURL)
             try? removeURL(ejectURL, isDirectory: isFramework)
         }
 
