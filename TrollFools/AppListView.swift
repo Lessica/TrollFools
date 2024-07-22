@@ -24,7 +24,7 @@ final class App: Identifiable, ObservableObject {
     lazy var isSystem: Bool = !isUser
     lazy var isFromApple: Bool = id.hasPrefix("com.apple.")
     lazy var isFromTroll: Bool = isSystem && !isFromApple
-    lazy var isRemovableSystem: Bool = isSystem && url.path.contains("/var/containers/Bundle/Application/")
+    lazy var isRemovable: Bool = url.path.contains("/var/containers/Bundle/Application/")
 
     init(id: String,
          name: String,
@@ -64,6 +64,11 @@ final class AppListModel: ObservableObject {
         self.allApplications = Self.fetchApplications(&hasTrollRecorder, &unsupportedCount)
     }
 
+    private static let excludedIdentifiers: Set<String> = [
+        "com.opa334.Dopamine",
+        "org.coolstar.SileoStore",
+    ]
+
     private static func fetchApplications(_ hasTrollRecorder: inout Bool, _ unsupportedCount: inout Int) -> [App] {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
@@ -77,9 +82,19 @@ final class AppListModel: ObservableObject {
                 else {
                     return nil
                 }
+
                 if id == "wiki.qaq.trapp" {
                     hasTrollRecorder = true
                 }
+
+                guard !id.hasPrefix("wiki.qaq.") && !id.hasPrefix("com.82flex.") else {
+                    return nil
+                }
+
+                guard !excludedIdentifiers.contains(id) else {
+                    return nil
+                }
+
                 let app = App(
                     id: id,
                     name: localizedName,
@@ -88,9 +103,15 @@ final class AppListModel: ObservableObject {
                     url: url,
                     version: shortVersionString
                 )
-                guard !app.isFromApple || app.isRemovableSystem else {
+
+                if app.isUser && app.isFromApple {
                     return nil
                 }
+
+                guard app.isRemovable else {
+                    return nil
+                }
+
                 return app
             }
 
