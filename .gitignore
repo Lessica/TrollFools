@@ -18,6 +18,8 @@ TrollFools/ldid
 TrollFools/libcrypto.3.dylib
 TrollFools/libplist-2.0.3.dylib
 TrollFools/chown
+TrollFools/install_name_tool
+TrollFools/libxar.1.dylib
 
 # Created by https://www.toptal.com/developers/gitignore/api/swift,macos,xcode
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,macos,xcode
