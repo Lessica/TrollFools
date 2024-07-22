@@ -159,6 +159,11 @@ struct EjectListView: View {
                         .disabled(isDeletingAll)
                         .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
+                    if app.type != "User" {
+                        Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
+                            .font(.footnote)
+                    }
+
                     NavigationLink(isActive: $isErrorOccurred) {
                         FailureView(title: NSLocalizedString("Error", comment: ""),
                                     message: errorMessage)
