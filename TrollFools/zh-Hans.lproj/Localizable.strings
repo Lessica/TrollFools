@@ -80,6 +80,9 @@
 "Show Patched Only" = "仅显示已注入的";
 
 /* No comment provided by engineer. */
+"Some plug-ins were not injected by TrollFools, please eject them with caution." = "部分插件可能并非由 TrollFools 注入，移除它们可能会造成应用程序异常，请谨慎操作。";
+
+/* No comment provided by engineer. */
 "Source Code" = "获取源代码";
 
 /* No comment provided by engineer. */
