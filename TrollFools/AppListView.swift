@@ -300,10 +300,12 @@ struct AppListView: View {
                 Text(NSLocalizedString("Injectable System Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if !isSearching && !showPatchedOnly {
+                if !isSearching {
                     VStack(alignment: .leading, spacing: 20) {
-                        Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
-                            .font(.footnote)
+                        if !showPatchedOnly {
+                            Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
+                                .font(.footnote)
+                        }
 
                         if #available(iOS 16.0, *) {
                             appListFooter
