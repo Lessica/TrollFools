@@ -284,25 +284,14 @@ final class Injector {
         try? removeURL(backupURL, isDirectory: false)
     }
 
-    private func fakeSignIfNecessary(_ url: URL) throws {
-        var hasCodeSign = false
+    private func fakeSignIfNecessary(_ url: URL, force: Bool = false) throws {
+        if !force {
+            var hasCodeSign = false
 
-        let target = try findMainMachO(url)
-        let targetFile = try MachOKit.loadFromFile(url: target)
-        switch targetFile {
-        case .machO(let machOFile):
-            for command in machOFile.loadCommands {
-                switch command {
-                case .codeSignature(_):
-                    hasCodeSign = true
-                    break
-                default:
-                    continue
-                }
-            }
-        case .fat(let fatFile):
-            let machOFiles = try fatFile.machOFiles()
-            for machOFile in machOFiles {
+            let target = try findMainMachO(url)
+            let targetFile = try MachOKit.loadFromFile(url: target)
+            switch targetFile {
+            case .machO(let machOFile):
                 for command in machOFile.loadCommands {
                     switch command {
                     case .codeSignature(_):
@@ -312,11 +301,24 @@ final class Injector {
                         continue
                     }
                 }
+            case .fat(let fatFile):
+                let machOFiles = try fatFile.machOFiles()
+                for machOFile in machOFiles {
+                    for command in machOFile.loadCommands {
+                        switch command {
+                        case .codeSignature(_):
+                            hasCodeSign = true
+                            break
+                        default:
+                            continue
+                        }
+                    }
+                }
             }
-        }
 
-        guard !hasCodeSign else {
-            return
+            guard !hasCodeSign else {
+                return
+            }
         }
 
         let retCode = try Execute.rootSpawn(binary: ldidBinaryURL.path, arguments: [
@@ -447,15 +449,17 @@ final class Injector {
     }
 
     private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
+        try fakeSignIfNecessary(target, force: true)
+
         let retCode = try Execute.rootSpawn(binary: installNameToolBinaryURL.path, arguments: [
             "-change", src, dst, target.path,
         ])
 
         guard case .exit(let code) = retCode, code == 0 else {
-            try throwCommandFailure("llvm-install-name-tool", reason: retCode)
+            try throwCommandFailure("install-name-tool", reason: retCode)
         }
 
-        DDLogInfo("llvm-install-name-tool \(target.lastPathComponent) done")
+        DDLogInfo("install-name-tool \(target.lastPathComponent) done")
     }
 
     private func findMainMachO(_ target: URL) throws -> URL {
