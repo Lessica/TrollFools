@@ -20,6 +20,12 @@ final class App: Identifiable, ObservableObject {
     lazy var icon: UIImage? = UIImage._applicationIconImage(forBundleIdentifier: id, format: 0, scale: 3.0)
     var alternateIcon: UIImage?
 
+    lazy var isUser: Bool = type == "User"
+    lazy var isSystem: Bool = !isUser
+    lazy var isFromApple: Bool = id.hasPrefix("com.apple.")
+    lazy var isFromTrollStore: Bool = isSystem && !isFromApple
+    lazy var isRemovableSystem: Bool = isSystem && url.path.contains("/var/containers/Bundle/Application/")
+
     init(id: String,
          name: String,
          type: String,
@@ -65,25 +71,8 @@ final class AppListModel: ObservableObject {
     private static func getUserApps(_ hasTrollRecorder: inout Bool, _ unsupportedCount: inout Int) -> [App] {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
-            .filter { app in
-                guard let appId = app.applicationIdentifier() else {
-                    return false
-                }
-                if appId == "wiki.qaq.trapp" {
-                    hasTrollRecorder = true
-                }
-                return !appId.hasPrefix("com.apple.")
-            }
             .compactMap {
                 guard let id = $0.applicationIdentifier(),
-                      !id.hasPrefix("wiki.qaq."),
-                      !id.hasPrefix("com.82flex."),
-                      !id.hasPrefix("com.opa334."),
-                      !id.hasPrefix("com.Alfie."),
-                      !id.hasPrefix("org.coolstar."),
-                      !id.hasPrefix("com.tigisoftware."),
-                      !id.hasPrefix("com.icraze."),
-                      !id.hasPrefix("ch.xxtou."),
                       let url = $0.bundleURL(),
                       let teamID = $0.teamID(),
                       let appType = $0.applicationType(),
@@ -92,7 +81,10 @@ final class AppListModel: ObservableObject {
                 else {
                     return nil
                 }
-                return App(
+                if id == "wiki.qaq.trapp" {
+                    hasTrollRecorder = true
+                }
+                let app = App(
                     id: id,
                     name: localizedName,
                     type: appType,
@@ -100,9 +92,13 @@ final class AppListModel: ObservableObject {
                     url: url,
                     version: shortVersionString
                 )
+                guard !app.isFromApple || app.isRemovableSystem else {
+                    return nil
+                }
+                return app
             }
         let filteredApps = allApps
-            .filter { $0.type != "User" || Injector.isEligibleBundle($0.url) }
+            .filter { $0.isSystem || Injector.isEligibleBundle($0.url) }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         unsupportedCount = allApps.count - filteredApps.count
         return filteredApps
@@ -228,11 +224,19 @@ struct AppListView: View {
     }
 
     var filteredUserApps: [App] {
-        filteredApps.filter { $0.type == "User" }
+        filteredApps.filter { $0.isUser }
     }
 
     var filteredSystemApps: [App] {
-        filteredApps.filter { $0.type != "User" }
+        filteredApps.filter { $0.isSystem }
+    }
+
+    var filteredTrollApps: [App] {
+        filteredSystemApps.filter { !$0.id.hasPrefix("com.apple.") }
+    }
+
+    var filteredAppleApps: [App] {
+        filteredSystemApps.filter { $0.id.hasPrefix("com.apple.") }
     }
 
     func filteredAppList(_ apps: [App]) -> some View {
@@ -277,24 +281,38 @@ struct AppListView: View {
                 Text(NSLocalizedString("User Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if vm.unsupportedCount > 0 {
-                    Text(String(format: NSLocalizedString("And %d more unsupported applications.", comment: ""), vm.unsupportedCount))
+                if !isSearching && !showPatchedOnly && vm.unsupportedCount > 0 {
+                    Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), vm.unsupportedCount))
                         .font(.footnote)
                 }
             }
 
             Section {
-                filteredAppList(filteredSystemApps)
+                filteredAppList(filteredTrollApps)
             } header: {
-                Text(NSLocalizedString("System Applications", comment: ""))
+                Text(NSLocalizedString("TrollStore Applications", comment: ""))
+                    .font(.footnote)
+            }
+
+            Section {
+                filteredAppList(filteredAppleApps)
+            } header: {
+                Text(NSLocalizedString("Injectable System Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if #available(iOS 16.0, *) {
-                    appListFooter
-                        .padding(.top, 8)
-                } else {
-                    appListFooter
-                        .padding(.top, 2)
+                if !isSearching && !showPatchedOnly {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
+                            .font(.footnote)
+
+                        if #available(iOS 16.0, *) {
+                            appListFooter
+                                .padding(.top, 8)
+                        } else {
+                            appListFooter
+                                .padding(.top, 2)
+                        }
+                    }
                 }
             }
         }

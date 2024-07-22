@@ -87,6 +87,7 @@ struct OptionView: View {
             } label: {
                 OptionCell(option: .attach)
             }
+            .accessibilityLabel(NSLocalizedString("Inject", comment: ""))
 
             Spacer()
             
@@ -95,7 +96,8 @@ struct OptionView: View {
             } label: {
                 OptionCell(option: .detach)
             }
-            
+            .accessibilityLabel(NSLocalizedString("Eject", comment: ""))
+
             Spacer()
         }
         .padding()
