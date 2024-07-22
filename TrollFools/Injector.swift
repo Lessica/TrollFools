@@ -531,6 +531,7 @@ final class Injector {
 
     private func preprocessURLs(_ urls: [URL]) throws -> [URL] {
         var finalURLs: [URL] = []
+
         for url in urls {
             if url.pathExtension.lowercased() == "zip" {
                 let extractedURL = tempURL
@@ -549,6 +550,13 @@ final class Injector {
                 finalURLs.append(url)
             }
         }
+
+        guard !finalURLs.isEmpty else {
+            throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
+                NSLocalizedDescriptionKey: NSLocalizedString("No valid plug-ins found.", comment: ""),
+            ])
+        }
+
         return finalURLs
     }
 
