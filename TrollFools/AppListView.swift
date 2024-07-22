@@ -221,6 +221,31 @@ struct AppListView: View {
         }
     }
 
+    var filteredUserApps: [App] {
+        filteredApps.filter { $0.type == "User" }
+    }
+
+    var filteredSystemApps: [App] {
+        filteredApps.filter { $0.type != "User" }
+    }
+
+    func filteredAppList(_ apps: [App]) -> some View {
+        ForEach(apps, id: \.id) { app in
+            NavigationLink {
+                OptionView(app)
+            } label: {
+                if #available(iOS 16.0, *) {
+                    AppListCell(app: app)
+                        .environmentObject(searchOptions)
+                } else {
+                    AppListCell(app: app)
+                        .environmentObject(searchOptions)
+                        .padding(.vertical, 4)
+                }
+            }
+        }
+    }
+
     var appListFooter: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(appString)
@@ -241,22 +266,16 @@ struct AppListView: View {
     var appList: some View {
         List {
             Section {
-                ForEach(filteredApps, id: \.id) { app in
-                    NavigationLink {
-                        OptionView(app)
-                    } label: {
-                        if #available(iOS 16.0, *) {
-                            AppListCell(app: app)
-                                .environmentObject(searchOptions)
-                        } else {
-                            AppListCell(app: app)
-                                .environmentObject(searchOptions)
-                                .padding(.vertical, 4)
-                        }
-                    }
-                }
+                filteredAppList(filteredUserApps)
             } header: {
-                Text(showPatchedOnly ? NSLocalizedString("Injected Applications", comment: "") : NSLocalizedString("Injectable Applications", comment: ""))
+                Text(NSLocalizedString("User Applications", comment: ""))
+                    .font(.footnote)
+            }
+
+            Section {
+                filteredAppList(filteredSystemApps)
+            } header: {
+                Text(NSLocalizedString("System Applications", comment: ""))
                     .font(.footnote)
             } footer: {
                 if #available(iOS 16.0, *) {
@@ -269,7 +288,7 @@ struct AppListView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(NSLocalizedString("Applications", comment: ""))
+        .navigationTitle(NSLocalizedString("TrollFools", comment: ""))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -300,7 +319,9 @@ struct AppListView: View {
                     .searchable(
                         text: $searchOptions.keyword,
                         placement: .automatic,
-                        prompt: NSLocalizedString("Search…", comment: "")
+                        prompt: (showPatchedOnly
+                                 ? NSLocalizedString("Search Patched…", comment: "")
+                                 : NSLocalizedString("Search…", comment: ""))
                     )
                     .textInputAutocapitalization(.never)
                     .onChange(of: searchOptions.keyword) { keyword in

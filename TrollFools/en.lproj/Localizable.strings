@@ -11,9 +11,6 @@
 "AE86 TrollStore Channel" = "AE86 TrollStore Channel";
 
 /* No comment provided by engineer. */
-"Applications" = "Applications";
-
-/* No comment provided by engineer. */
 "Completed" = "Completed";
 
 /* No comment provided by engineer. */
@@ -44,12 +41,6 @@
 "Inject" = "Inject";
 
 /* No comment provided by engineer. */
-"Injectable Applications" = "Injectable Applications";
-
-/* No comment provided by engineer. */
-"Injected Applications" = "Injected Applications";
-
-/* No comment provided by engineer. */
 "Injected Plug-Ins" = "Injected Plug-Ins";
 
 /* No comment provided by engineer. */
@@ -71,7 +62,13 @@
 "Not the first, but the best phone call recorder with TrollStore." = "Not the first, but the best phone call recorder with TrollStore.";
 
 /* No comment provided by engineer. */
+"Patched" = "Patched";
+
+/* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
+
+/* No comment provided by engineer. */
+"Search Patched…" = "Search Patched…";
 
 /* No comment provided by engineer. */
 "Search…" = "Search…";
@@ -83,7 +80,13 @@
 "Source Code" = "Source Code";
 
 /* No comment provided by engineer. */
+"System Applications" = "System Applications";
+
+/* No comment provided by engineer. */
+"TrollFools" = "TrollFools";
+
+/* No comment provided by engineer. */
 "TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
-"Patched" = "Patched";
+"User Applications" = "User Applications";
