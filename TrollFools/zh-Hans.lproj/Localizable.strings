@@ -11,7 +11,7 @@
 "AE86 TrollStore Channel" = "秋名山巨魔俱乐部";
 
 /* No comment provided by engineer. */
-"And %d more unsupported applications." = "另有 %d 个不支持的应用程序";
+"And %d more unsupported user applications." = "另有 %d 个不支持的用户应用";
 
 /* No comment provided by engineer. */
 "Completed" = "已完成";
@@ -44,6 +44,9 @@
 "Inject" = "注入";
 
 /* No comment provided by engineer. */
+"Injectable System Applications" = "可注入的系统应用";
+
+/* No comment provided by engineer. */
 "Injected Plug-Ins" = "已注入的插件";
 
 /* No comment provided by engineer. */
@@ -63,6 +66,9 @@
 
 /* No comment provided by engineer. */
 "Not the first, but the best phone call recorder with TrollStore." = "TrollFools 永久免费，如果你喜欢它，请购买巨魔录音机支持我们的开发！";
+
+/* No comment provided by engineer. */
+"Only removable system applications are eligible and listed." = "仅列出可移除的系统应用，其他系统应用不支持注入。";
 
 /* No comment provided by engineer. */
 "Patched" = "已注入";
@@ -86,13 +92,13 @@
 "Source Code" = "获取源代码";
 
 /* No comment provided by engineer. */
-"System Applications" = "系统应用程序";
-
-/* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
 
 /* No comment provided by engineer. */
 "TrollRecorder" = "巨魔录音机";
 
 /* No comment provided by engineer. */
-"User Applications" = "用户应用程序";
+"TrollStore Applications" = "巨魔商店应用";
+
+/* No comment provided by engineer. */
+"User Applications" = "用户应用";
