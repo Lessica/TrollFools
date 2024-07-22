@@ -65,6 +65,9 @@
 "No Injected Plug-Ins" = "No Injected Plug-Ins";
 
 /* No comment provided by engineer. */
+"No valid plug-ins found." = "No valid plug-ins found.";
+
+/* No comment provided by engineer. */
 "Not the first, but the best phone call recorder with TrollStore." = "Not the first, but the best phone call recorder with TrollStore.";
 
 /* No comment provided by engineer. */
@@ -83,4 +86,4 @@
 "TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
-"No valid plug-ins found." = "No valid plug-ins found.";
+"Patched" = "Patched";

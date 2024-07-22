@@ -146,6 +146,7 @@ struct AppListCell: View {
                         Image(systemName: "bandage")
                             .font(.subheadline)
                             .foregroundColor(.orange)
+                            .accessibilityLabel(NSLocalizedString("Patched", comment: ""))
                     }
                 }
 
@@ -265,7 +266,11 @@ struct AppListView: View {
                         showPatchedOnly.toggle()
                     }
                 } label: {
-                    Image(systemName: showPatchedOnly ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    if #available(iOS 15.0, *) {
+                        Image(systemName: showPatchedOnly ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    } else {
+                        Image(systemName: showPatchedOnly ? "eject.circle.fill" : "eject.circle")
+                    }
                 }
                 .accessibilityLabel(NSLocalizedString("Show Patched Only", comment: ""))
             }
