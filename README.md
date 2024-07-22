@@ -3,7 +3,13 @@
 In-place tweak injection with insert_dylib and ChOma.  
 Proudly written in SwiftUI.  
 
-Expected to work on all iOS versions supported by opa334’s TrollStore.
+Expected to work on all iOS versions supported by opa334’s TrollStore (i.e. iOS 14.0 - 17.0).
+
+## Limitations
+
+- [x] Removable system applications
+- [x] Decrypted App Store applications (TrollStore applications)
+- [x] Encrypted App Store applications with bare dynamic library
 
 ## Build
 
