@@ -62,6 +62,7 @@ final class AppListModel: ObservableObject {
     @Published var hasTrollRecorder: Bool = false
     @Published var unsupportedCount: Int = 0
 
+    private let applicationChanged = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     private init() {
@@ -76,6 +77,23 @@ final class AppListModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        applicationChanged
+            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+            .sink { [weak self] _ in
+                withAnimation {
+                    self?.reload()
+                }
+            }
+            .store(in: &cancellables)
+
+        let darwinCenter = CFNotificationCenterGetDarwinNotifyCenter()
+        CFNotificationCenterAddObserver(darwinCenter, Unmanaged.passRetained(self).toOpaque(), { center, observer, name, object, userInfo in
+            guard let observer = Unmanaged<AppListModel>.fromOpaque(observer!).takeUnretainedValue() as AppListModel? else {
+                return
+            }
+            observer.applicationChanged.send()
+        }, "com.apple.LaunchServices.ApplicationsChanged" as CFString, nil, .coalesce)
     }
 
     func reload() {
