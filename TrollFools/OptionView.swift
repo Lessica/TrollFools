@@ -102,7 +102,6 @@ struct OptionView: View {
         }
         .padding()
         .navigationTitle(app.name)
-        .navigationBarTitleDisplayMode(.inline)
         .fileImporter(
             isPresented: $isImporterPresented,
             allowedContentTypes: [
