@@ -5,6 +5,7 @@
 //  Created by Lessica on 2024/7/19.
 //
 
+import Combine
 import SwiftUI
 
 final class App: Identifiable, ObservableObject {
@@ -51,17 +52,54 @@ final class App: Identifiable, ObservableObject {
 
 final class AppListModel: ObservableObject {
     static let shared = AppListModel()
+    private var _allApplications: [App] = []
 
-    @Published var allApplications: [App] = []
+    @Published var filter = FilterOptions()
+    @Published var userApplications: [App] = []
+    @Published var trollApplications: [App] = []
+    @Published var appleApplications: [App] = []
+
     @Published var hasTrollRecorder: Bool = false
     @Published var unsupportedCount: Int = 0
 
+    private var cancellables = Set<AnyCancellable>()
+
     private init() {
-        refresh()
+        reload()
+
+        filter.$searchKeyword
+            .combineLatest(filter.$showPatchedOnly)
+            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+            .sink { _ in
+                withAnimation {
+                    self.performFilter()
+                }
+            }
+            .store(in: &cancellables)
     }
 
-    func refresh() {
-        self.allApplications = Self.fetchApplications(&hasTrollRecorder, &unsupportedCount)
+    func reload() {
+        let allApplications = Self.fetchApplications(&hasTrollRecorder, &unsupportedCount)
+        self._allApplications = allApplications
+        performFilter()
+    }
+
+    func performFilter() {
+        var filteredApplications = _allApplications
+
+        if !filter.searchKeyword.isEmpty {
+            filteredApplications = filteredApplications.filter {
+                $0.name.localizedCaseInsensitiveContains(filter.searchKeyword) || $0.id.localizedCaseInsensitiveContains(filter.searchKeyword)
+            }
+        }
+
+        if filter.showPatchedOnly {
+            filteredApplications = filteredApplications.filter { $0.isInjected }
+        }
+
+        userApplications = filteredApplications.filter { $0.isUser }
+        trollApplications = filteredApplications.filter { $0.isFromTroll }
+        appleApplications = filteredApplications.filter { $0.isFromApple }
     }
 
     private static let excludedIdentifiers: Set<String> = [
@@ -125,23 +163,27 @@ final class AppListModel: ObservableObject {
     }
 }
 
-final class SearchOptions: ObservableObject {
-    @Published var keyword = ""
+final class FilterOptions: ObservableObject {
+    @Published var searchKeyword = ""
+    @Published var showPatchedOnly = false
+
+    var isSearching: Bool { !searchKeyword.isEmpty }
 
     func reset() {
-        keyword = ""
+        searchKeyword = ""
+        showPatchedOnly = false
     }
 }
 
 struct AppListCell: View {
     @StateObject var app: App
-    @EnvironmentObject var searchOptions: SearchOptions
+    @EnvironmentObject var filter: FilterOptions
 
     @available(iOS 15.0, *)
     var highlightedName: AttributedString {
         let name = app.name
         var attributedString = AttributedString(name)
-        if let range = attributedString.range(of: searchOptions.keyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -151,7 +193,7 @@ struct AppListCell: View {
     var highlightedId: AttributedString {
         let id = app.id
         var attributedString = AttributedString(id)
-        if let range = attributedString.range(of: searchOptions.keyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -206,11 +248,6 @@ struct AppListCell: View {
 struct AppListView: View {
     @StateObject var vm = AppListModel.shared
 
-    @State var showPatchedOnly = false
-    @State var searchResults: [App] = []
-
-    @StateObject var searchOptions = SearchOptions()
-
     var appNameString: String {
         Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "TrollFools"
     }
@@ -230,35 +267,6 @@ struct AppListView: View {
 
     let repoURL = URL(string: "https://github.com/Lessica/TrollFools")
 
-    var isSearching: Bool {
-        return !searchOptions.keyword.isEmpty
-    }
-
-    var filteredApps: [App] {
-        if showPatchedOnly {
-            (isSearching ? searchResults : vm.allApplications)
-                .filter { $0.isInjected }
-        } else {
-            isSearching ? searchResults : vm.allApplications
-        }
-    }
-
-    var filteredUserApps: [App] {
-        filteredApps.filter { $0.isUser }
-    }
-
-    var filteredSystemApps: [App] {
-        filteredApps.filter { $0.isSystem }
-    }
-
-    var filteredTrollApps: [App] {
-        filteredSystemApps.filter { !$0.id.hasPrefix("com.apple.") }
-    }
-
-    var filteredAppleApps: [App] {
-        filteredSystemApps.filter { $0.id.hasPrefix("com.apple.") }
-    }
-
     func filteredAppList(_ apps: [App]) -> some View {
         ForEach(apps, id: \.id) { app in
             NavigationLink {
@@ -266,10 +274,10 @@ struct AppListView: View {
             } label: {
                 if #available(iOS 16.0, *) {
                     AppListCell(app: app)
-                        .environmentObject(searchOptions)
+                        .environmentObject(vm.filter)
                 } else {
                     AppListCell(app: app)
-                        .environmentObject(searchOptions)
+                        .environmentObject(vm.filter)
                         .padding(.vertical, 4)
                 }
             }
@@ -296,33 +304,33 @@ struct AppListView: View {
     var appList: some View {
         List {
             Section {
-                filteredAppList(filteredUserApps)
+                filteredAppList(vm.userApplications)
             } header: {
                 Text(NSLocalizedString("User Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if !isSearching && !showPatchedOnly && vm.unsupportedCount > 0 {
+                if !vm.filter.isSearching && !vm.filter.showPatchedOnly && vm.unsupportedCount > 0 {
                     Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), vm.unsupportedCount))
                         .font(.footnote)
                 }
             }
 
             Section {
-                filteredAppList(filteredTrollApps)
+                filteredAppList(vm.trollApplications)
             } header: {
                 Text(NSLocalizedString("TrollStore Applications", comment: ""))
                     .font(.footnote)
             }
 
             Section {
-                filteredAppList(filteredAppleApps)
+                filteredAppList(vm.appleApplications)
             } header: {
                 Text(NSLocalizedString("Injectable System Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if !isSearching {
+                if !vm.filter.isSearching {
                     VStack(alignment: .leading, spacing: 20) {
-                        if !showPatchedOnly {
+                        if !vm.filter.showPatchedOnly {
                             Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
                                 .font(.footnote)
                         }
@@ -343,14 +351,16 @@ struct AppListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    withAnimation {
-                        showPatchedOnly.toggle()
-                    }
+                    vm.filter.showPatchedOnly.toggle()
                 } label: {
                     if #available(iOS 15.0, *) {
-                        Image(systemName: showPatchedOnly ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                        Image(systemName: vm.filter.showPatchedOnly 
+                              ? "line.3.horizontal.decrease.circle.fill"
+                              : "line.3.horizontal.decrease.circle")
                     } else {
-                        Image(systemName: showPatchedOnly ? "eject.circle.fill" : "eject.circle")
+                        Image(systemName: vm.filter.showPatchedOnly 
+                              ? "eject.circle.fill"
+                              : "eject.circle")
                     }
                 }
                 .accessibilityLabel(NSLocalizedString("Show Patched Only", comment: ""))
@@ -363,32 +373,20 @@ struct AppListView: View {
             if #available(iOS 15.0, *) {
                 appList
                     .refreshable {
-                        withAnimation {
-                            vm.refresh()
-                        }
+                        vm.reload()
                     }
                     .searchable(
-                        text: $searchOptions.keyword,
+                        text: $vm.filter.searchKeyword,
                         placement: .automatic,
-                        prompt: (showPatchedOnly
+                        prompt: (vm.filter.showPatchedOnly
                                  ? NSLocalizedString("Search Patched…", comment: "")
                                  : NSLocalizedString("Search…", comment: ""))
                     )
                     .textInputAutocapitalization(.never)
-                    .onChange(of: searchOptions.keyword) { keyword in
-                        fetchSearchResults(for: keyword)
-                    }
             } else {
                 // Fallback on earlier versions
                 appList
             }
-        }
-    }
-
-    func fetchSearchResults(for query: String) {
-        searchResults = vm.allApplications.filter { app in
-            app.name.localizedCaseInsensitiveContains(query) ||
-            app.id.localizedCaseInsensitiveContains(query)
         }
     }
 }

@@ -30,13 +30,13 @@ struct InjectedPlugIn: Identifiable {
 struct PlugInCell: View {
     let plugIn: InjectedPlugIn
 
-    @EnvironmentObject var searchOptions: SearchOptions
+    @EnvironmentObject var searchOptions: FilterOptions
 
     @available(iOS 15.0, *)
     var highlightedName: AttributedString {
         let name = plugIn.url.lastPathComponent
         var attributedString = AttributedString(name)
-        if let range = attributedString.range(of: searchOptions.keyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: searchOptions.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -92,13 +92,13 @@ struct EjectListView: View {
     @State var errorMessage: String = ""
 
     @State var searchResults: [InjectedPlugIn] = []
-    @StateObject var searchOptions = SearchOptions()
+    @StateObject var searchOptions = FilterOptions()
 
     @State var isDeletingAll = false
     @StateObject var viewControllerHost = ViewControllerHost()
 
     var isSearching: Bool {
-        return !searchOptions.keyword.isEmpty
+        return !searchOptions.searchKeyword.isEmpty
     }
 
     var filteredPlugIns: [InjectedPlugIn] {
@@ -191,12 +191,12 @@ struct EjectListView: View {
                     }
                 }
                 .searchable(
-                    text: $searchOptions.keyword,
+                    text: $searchOptions.searchKeyword,
                     placement: .automatic,
                     prompt: NSLocalizedString("Search…", comment: "")
                 )
                 .textInputAutocapitalization(.never)
-                .onChange(of: searchOptions.keyword) { keyword in
+                .onChange(of: searchOptions.searchKeyword) { keyword in
                     fetchSearchResults(for: keyword)
                 }
         } else {
