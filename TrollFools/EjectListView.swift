@@ -6,6 +6,7 @@
 //
 
 import CocoaLumberjackSwift
+import Combine
 import SwiftUI
 
 private let gDateFormatter: DateFormatter = {
@@ -30,13 +31,13 @@ struct InjectedPlugIn: Identifiable {
 struct PlugInCell: View {
     let plugIn: InjectedPlugIn
 
-    @EnvironmentObject var searchOptions: FilterOptions
+    @EnvironmentObject var filter: FilterOptions
 
     @available(iOS 15.0, *)
     var highlightedName: AttributedString {
         let name = plugIn.url.lastPathComponent
         var attributedString = AttributedString(name)
-        if let range = attributedString.range(of: searchOptions.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -80,30 +81,60 @@ struct PlugInCell: View {
     }
 }
 
-struct EjectListView: View {
+final class EjectListModel: ObservableObject {
     let app: App
+    private var _injectedPlugIns: [InjectedPlugIn] = []
+
+    @Published var filter = FilterOptions()
+    @Published var filteredPlugIns: [InjectedPlugIn] = []
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(_ app: App) {
         self.app = app
+        reload()
+
+        filter.$searchKeyword
+            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+            .sink { [weak self] _ in
+                withAnimation {
+                    self?.performFilter()
+                }
+            }
+            .store(in: &cancellables)
     }
 
-    @State var injectedPlugIns: [InjectedPlugIn] = []
+    func reload() {
+        self._injectedPlugIns = Injector.injectedPlugInURLs(app.url)
+            .map { InjectedPlugIn(url: $0) }
+        performFilter()
+    }
+
+    func performFilter() {
+        var filteredPlugIns = _injectedPlugIns
+
+        if !filter.searchKeyword.isEmpty {
+            filteredPlugIns = filteredPlugIns.filter {
+                $0.url.lastPathComponent.localizedCaseInsensitiveContains(filter.searchKeyword)
+            }
+        }
+
+        self.filteredPlugIns = filteredPlugIns
+    }
+}
+
+struct EjectListView: View {
+    @StateObject var vm: EjectListModel
+
+    init(_ app: App) {
+        _vm = StateObject(wrappedValue: EjectListModel(app))
+    }
+
     @State var isErrorOccurred: Bool = false
     @State var errorMessage: String = ""
 
-    @State var searchResults: [InjectedPlugIn] = []
-    @StateObject var searchOptions = FilterOptions()
-
     @State var isDeletingAll = false
     @StateObject var viewControllerHost = ViewControllerHost()
-
-    var isSearching: Bool {
-        return !searchOptions.searchKeyword.isEmpty
-    }
-
-    var filteredPlugIns: [InjectedPlugIn] {
-        isSearching ? searchResults : injectedPlugIns
-    }
 
     var deleteAllButtonLabel: some View {
         HStack {
@@ -135,31 +166,31 @@ struct EjectListView: View {
     var ejectList: some View {
         List {
             Section {
-                ForEach(filteredPlugIns) { plugin in
+                ForEach(vm.filteredPlugIns) { plugin in
                     if #available(iOS 16.0, *) {
                         PlugInCell(plugIn: plugin)
-                            .environmentObject(searchOptions)
+                            .environmentObject(vm.filter)
                     } else {
                         PlugInCell(plugIn: plugin)
-                            .environmentObject(searchOptions)
+                            .environmentObject(vm.filter)
                             .padding(.vertical, 4)
                     }
                 }
                 .onDelete(perform: delete)
             } header: {
-                Text(filteredPlugIns.isEmpty
+                Text(vm.filteredPlugIns.isEmpty
                      ? NSLocalizedString("No Injected Plug-Ins", comment: "")
                      : NSLocalizedString("Injected Plug-Ins", comment: ""))
                     .font(.footnote)
             }
 
-            if !isSearching && !filteredPlugIns.isEmpty {
+            if !vm.filter.isSearching && !vm.filteredPlugIns.isEmpty {
                 Section {
                     deleteAllButton
                         .disabled(isDeletingAll)
                         .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
-                    if app.isFromTroll {
+                    if vm.app.isFromTroll {
                         Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
                             .font(.footnote)
                     }
@@ -173,12 +204,9 @@ struct EjectListView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("Plug-Ins", comment: ""))
-        .navigationBarTitleDisplayMode(.inline)
+        .animation(.easeOut, value: vm.filter.isSearching)
         .onViewWillAppear { viewController in
             viewControllerHost.viewController = viewController
-        }
-        .onAppear {
-            reloadPlugIns()
         }
     }
 
@@ -187,39 +215,30 @@ struct EjectListView: View {
             ejectList
                 .refreshable {
                     withAnimation {
-                        reloadPlugIns()
+                        vm.reload()
                     }
                 }
                 .searchable(
-                    text: $searchOptions.searchKeyword,
+                    text: $vm.filter.searchKeyword,
                     placement: .automatic,
                     prompt: NSLocalizedString("Search…", comment: "")
                 )
                 .textInputAutocapitalization(.never)
-                .onChange(of: searchOptions.searchKeyword) { keyword in
-                    fetchSearchResults(for: keyword)
-                }
         } else {
             // Fallback on earlier versions
             ejectList
         }
     }
 
-    func reloadPlugIns() {
-        searchOptions.reset()
-        injectedPlugIns = Injector.injectedPlugInURLs(app.url)
-            .map { InjectedPlugIn(url: $0) }
-    }
-
     func delete(at offsets: IndexSet) {
         do {
-            let plugInsToRemove = offsets.map { filteredPlugIns[$0] }
+            let plugInsToRemove = offsets.map { vm.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
-            let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+            let injector = try Injector(bundleURL: vm.app.url, teamID: vm.app.teamID)
             try injector.eject(plugInURLsToRemove)
 
-            app.reloadInjectedStatus()
-            reloadPlugIns()
+            vm.app.reloadInjectedStatus()
+            vm.reload()
         } catch {
             DDLogError("\(error)")
 
@@ -230,7 +249,7 @@ struct EjectListView: View {
 
     func deleteAll() {
         do {
-            let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+            let injector = try Injector(bundleURL: vm.app.url, teamID: vm.app.teamID)
 
             let view = viewControllerHost.viewController?
                 .navigationController?.view
@@ -245,8 +264,8 @@ struct EjectListView: View {
                 defer {
                     DispatchQueue.main.async {
                         withAnimation {
-                            app.reloadInjectedStatus()
-                            reloadPlugIns()
+                            vm.app.reloadInjectedStatus()
+                            vm.reload()
                             isDeletingAll = false
                         }
 
@@ -272,12 +291,6 @@ struct EjectListView: View {
         } catch {
             errorMessage = error.localizedDescription
             isErrorOccurred = true
-        }
-    }
-
-    func fetchSearchResults(for query: String) {
-        searchResults = injectedPlugIns.filter { plugin in
-            plugin.url.lastPathComponent.localizedCaseInsensitiveContains(query)
         }
     }
 }

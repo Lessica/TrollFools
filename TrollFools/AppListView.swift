@@ -70,9 +70,9 @@ final class AppListModel: ObservableObject {
         filter.$searchKeyword
             .combineLatest(filter.$showPatchedOnly)
             .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
-            .sink { _ in
+            .sink { [weak self] _ in
                 withAnimation {
-                    self.performFilter()
+                    self?.performFilter()
                 }
             }
             .store(in: &cancellables)
