@@ -11,7 +11,7 @@ struct SuccessView: View {
     let title: String
 
     @StateObject var vm = AppListModel.shared
-    @StateObject var searchOptions = SearchOptions()
+    @StateObject var filter = FilterOptions()
 
     var possibleApp: App? {
         [
@@ -59,7 +59,7 @@ struct SuccessView: View {
                         .padding()
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.leading)
-                        .environmentObject(searchOptions)
+                        .environmentObject(filter)
                         .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .foregroundColor(Color(.systemBackground))
                             .shadow(radius: 4))
