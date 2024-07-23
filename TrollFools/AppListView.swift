@@ -110,13 +110,13 @@ final class AppListModel: ObservableObject {
     private static func fetchApplications(_ hasTrollRecorder: inout Bool, _ unsupportedCount: inout Int) -> [App] {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
-            .compactMap {
-                guard let id = $0.applicationIdentifier(),
-                      let url = $0.bundleURL(),
-                      let teamID = $0.teamID(),
-                      let appType = $0.applicationType(),
-                      let localizedName = $0.localizedName(),
-                      let shortVersionString = $0.shortVersionString()
+            .compactMap { proxy in
+                guard let id = proxy.applicationIdentifier(),
+                      let url = proxy.bundleURL(),
+                      let teamID = proxy.teamID(),
+                      let appType = proxy.applicationType(),
+                      let localizedName = proxy.localizedName(),
+                      let shortVersionString = proxy.shortVersionString()
                 else {
                     return nil
                 }
@@ -373,7 +373,9 @@ struct AppListView: View {
             if #available(iOS 15.0, *) {
                 appList
                     .refreshable {
-                        vm.reload()
+                        withAnimation {
+                            vm.reload()
+                        }
                     }
                     .searchable(
                         text: $vm.filter.searchKeyword,

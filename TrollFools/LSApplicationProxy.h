@@ -28,6 +28,7 @@
 - (NSArray<LSPlugInKitProxy *> *)plugInKitPlugins;
 
 - (BOOL)isRemoveableSystemApp;
+- (BOOL)isRemovedSystemApp;
 
 @end
 
