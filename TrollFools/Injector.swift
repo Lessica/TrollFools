@@ -432,6 +432,35 @@ final class Injector {
         DDLogInfo("ct_bypass \(url.lastPathComponent) done")
     }
 
+    private func runtimePaths(_ target: URL) throws -> Set<String> {
+        var paths = Set<String>()
+        let file = try MachOKit.loadFromFile(url: target)
+        switch file {
+        case .machO(let machOFile):
+            for command in machOFile.loadCommands {
+                switch command {
+                case .rpath(let rpathCommand):
+                    paths.insert(rpathCommand.path(in: machOFile))
+                default:
+                    continue
+                }
+            }
+        case .fat(let fatFile):
+            let machOFiles = try fatFile.machOFiles()
+            for machOFile in machOFiles {
+                for command in machOFile.loadCommands {
+                    switch command {
+                    case .rpath(let rpathCommand):
+                        paths.insert(rpathCommand.path(in: machOFile))
+                    default:
+                        continue
+                    }
+                }
+            }
+        }
+        return paths
+    }
+
     private func loadedDylibs(_ target: URL) throws -> Set<String> {
         var dylibs = Set<String>()
         let file = try MachOKit.loadFromFile(url: target)
@@ -474,8 +503,29 @@ final class Injector {
             name = url.lastPathComponent
         }
 
+        try _insertLoadCommandRpath(target, name: "@executable_path/Frameworks")
         try _insertLoadCommandDylib(target, name: name, isWeak: true)
         try applyTargetFixes(target, name: name)
+    }
+
+    private func _insertLoadCommandRpath(_ target: URL, name: String) throws {
+        let rpaths = try runtimePaths(target)
+
+        if rpaths.contains(name) {
+            DDLogInfo("payload \(name) already inserted")
+            return
+        }
+
+        try fakeSignIfNecessary(target, force: true)
+
+        let retCode = try Execute.rootSpawn(binary: installNameToolBinaryURL.path, arguments: [
+            "-add_rpath", name, target.path,
+        ])
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("install_name_tool", reason: retCode)
+        }
+
+        DDLogInfo("install_name_tool \(name) done")
     }
 
     private func _insertLoadCommandDylib(_ target: URL, name: String, isWeak: Bool) throws {
