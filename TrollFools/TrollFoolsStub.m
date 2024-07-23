@@ -79,7 +79,7 @@ static void TFUtilEnumerateProcessesUsingBlock(void (^enumerator)(pid_t pid, NSS
 
 void TFUtilKillAll(NSString *processName, BOOL softly) {
     TFUtilEnumerateProcessesUsingBlock(^(pid_t pid, NSString *executablePath, BOOL *stop) {
-      if ([executablePath hasSuffix:[NSString stringWithFormat:@"/%@.app/%@", processName, processName]]) {
+      if ([executablePath containsString:[NSString stringWithFormat:@"/%@.app/%@", processName, processName]]) {
           if (softly) {
               kill(pid, SIGTERM);
           } else {
