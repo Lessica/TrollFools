@@ -1,21 +1,17 @@
 #import <UIKit/UIKit.h>
 
+@interface FLEXManager : NSObject
++ (instancetype)sharedManager;
+- (void)showExplorer;
+@end
+
 %hook UIViewController
 
-- (void)viewDidAppear:(BOOL)animated {
-	%orig;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Hello, World!" message:nil preferredStyle:UIAlertControllerStyleAlert];
-		[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-		[self presentViewController:alert animated:YES completion:nil];
-	});
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake) {
+        [[%c(FLEXManager) sharedManager] showExplorer];
+    }
 }
 
 %end
-
-%ctor {
-	@autoreleasepool {
-		NSLog(@"Hello, World!");
-	}
-}
