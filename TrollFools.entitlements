@@ -29,6 +29,18 @@
 	<array>
 		<string>/</string>
 	</array>
+	<key>com.apple.springboard.iconState</key>
+	<true/>
+	<key>com.apple.springboard.iconState.mutate</key>
+	<true/>
+	<key>com.apple.springboard.launchapplications</key>
+	<true/>
+	<key>com.apple.springboard.launchapplicationswithoptions</key>
+	<true/>
+	<key>com.apple.springboard.opensensitiveurl</key>
+	<true/>
+	<key>com.apple.springboard.openurlswhenlocked</key>
+	<true/>
 	<key>com.apple.system-task-ports</key>
 	<true/>
 	<key>com.apple.system-task-ports.control</key>

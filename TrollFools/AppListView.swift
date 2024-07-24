@@ -62,6 +62,9 @@ final class AppListModel: ObservableObject {
     @Published var hasTrollRecorder: Bool = false
     @Published var unsupportedCount: Int = 0
 
+    @Published var isFilzaInstalled: Bool = false
+    private let filzaURL = URL(string: "filza://")
+
     private let applicationChanged = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
@@ -99,6 +102,11 @@ final class AppListModel: ObservableObject {
     func reload() {
         let allApplications = Self.fetchApplications(&hasTrollRecorder, &unsupportedCount)
         self._allApplications = allApplications
+        if let filzaURL {
+            self.isFilzaInstalled = UIApplication.shared.canOpenURL(filzaURL)
+        } else {
+            self.isFilzaInstalled = false
+        }
         performFilter()
     }
 
@@ -178,6 +186,14 @@ final class AppListModel: ObservableObject {
         unsupportedCount = allApps.count - filteredApps.count
 
         return filteredApps
+    }
+
+    func openInFilza(_ url: URL) {
+        guard let filzaURL else {
+            return
+        }
+        let fileURL = filzaURL.appendingPathComponent(url.path)
+        UIApplication.shared.open(fileURL)
     }
 }
 
@@ -260,6 +276,32 @@ struct AppListCell: View {
                     .foregroundColor(.secondary)
             }
         }
+        .contextMenu {
+            Button {
+                launch()
+            } label: {
+                Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
+            }
+
+            if isFilzaInstalled {
+                Button {
+                    openInFilza()
+                } label: {
+                    Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+                }
+            }
+        }
+    }
+
+    private func launch() {
+        LSApplicationWorkspace.default()
+            .openApplication(withBundleID: app.id)
+    }
+
+    var isFilzaInstalled: Bool { AppListModel.shared.isFilzaInstalled }
+
+    private func openInFilza() {
+        AppListModel.shared.openInFilza(app.url)
     }
 }
 
