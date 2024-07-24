@@ -78,6 +78,21 @@ struct PlugInCell: View {
                     .font(.subheadline)
             }
         }
+        .contextMenu {
+            if isFilzaInstalled {
+                Button {
+                    openInFilza()
+                } label: {
+                    Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+                }
+            }
+        }
+    }
+
+    var isFilzaInstalled: Bool { AppListModel.shared.isFilzaInstalled }
+
+    private func openInFilza() {
+        AppListModel.shared.openInFilza(plugIn.url)
     }
 }
 
