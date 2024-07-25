@@ -50,6 +50,11 @@ final class App: Identifiable, ObservableObject {
     }
 }
 
+enum SortOrder {
+    case ascending
+    case descending
+}
+
 final class AppListModel: ObservableObject {
     static let shared = AppListModel()
     private var _allApplications: [App] = []
@@ -110,6 +115,8 @@ final class AppListModel: ObservableObject {
         performFilter()
     }
 
+    @Published var sortOrder: SortOrder = .ascending
+    
     func performFilter() {
         var filteredApplications = _allApplications
 
@@ -122,7 +129,9 @@ final class AppListModel: ObservableObject {
         if filter.showPatchedOnly {
             filteredApplications = filteredApplications.filter { $0.isInjected }
         }
-
+        
+        filteredApplications.sort { sortOrder == .ascending ? $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending : $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedDescending }
+        
         userApplications = filteredApplications.filter { $0.isUser }
         trollApplications = filteredApplications.filter { $0.isFromTroll }
         appleApplications = filteredApplications.filter { $0.isFromApple }
@@ -409,22 +418,38 @@ struct AppListView: View {
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("TrollFools", comment: ""))
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    vm.filter.showPatchedOnly.toggle()
-                } label: {
-                    if #available(iOS 15.0, *) {
-                        Image(systemName: vm.filter.showPatchedOnly 
-                              ? "line.3.horizontal.decrease.circle.fill"
-                              : "line.3.horizontal.decrease.circle")
-                    } else {
-                        Image(systemName: vm.filter.showPatchedOnly 
-                              ? "eject.circle.fill"
-                              : "eject.circle")
+            ToolbarItem(placement: .navigationBarLeading) {
+                Menu {
+                    Button(NSLocalizedString("Name (A-Z)", comment: "")) {
+                        vm.sortOrder = .ascending
+                        vm.performFilter()
                     }
+                    Button(NSLocalizedString("Name (Z-A)", comment: "")) {
+                        vm.sortOrder = .descending
+                        vm.performFilter()
+                    }
+                } label: {
+                    Image(systemName: "arrow.up.arrow.down")
+                }
+                .accessibilityLabel(NSLocalizedString("Sort Order", comment: ""))
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    vm.filter.showPatchedOnly.toggle()
+                }) {
+                    Image(systemName: vm.filter.showPatchedOnly
+                          ? "line.3.horizontal.decrease.circle.fill"
+                          : "line.3.horizontal.decrease.circle")
                 }
                 .accessibilityLabel(NSLocalizedString("Show Patched Only", comment: ""))
             }
+        }
+        .onChange(of: vm.sortOrder) { _ in
+            vm.performFilter()
+        }
+        .onAppear {
+            vm.reload()
         }
     }
 
@@ -445,6 +470,7 @@ struct AppListView: View {
                                  : NSLocalizedString("Search…", comment: ""))
                     )
                     .textInputAutocapitalization(.never)
+                    .navigationTitle("Applications")
             } else {
                 // Fallback on earlier versions
                 appList
