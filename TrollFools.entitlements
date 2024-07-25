@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>application-identifier</key>
-	<string>GXZ23M5TP2.wiki.qaq.TrollFools</string>
+	<string>6LMF23FAGL.com.huami.TrollFools</string>
 	<key>com.apple.CommCenter.fine-grained</key>
 	<array>
 		<string>spi</string>
@@ -47,8 +47,8 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>wiki.qaq.TrollFools</string>
-		<string>GXZ23M5TP2.wiki.qaq.TrollFools</string>
+		<string>com.huami.TrollFools</string>
+		<string>6LMF23FAGL.com.huami.TrollFools</string>
 	</array>
 	<key>platform-application</key>
 	<true/>

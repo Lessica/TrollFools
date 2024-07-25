@@ -304,6 +304,14 @@ final class Injector {
             Bundle.main.url(forResource: "cp-15", withExtension: nil)!
         }
     }()
+    
+    private lazy var composeBinaryURL: URL = {
+        if #available(iOS 16.0, *) {
+            Bundle.main.url(forResource: "composedeb", withExtension: nil)!
+        } else {
+            Bundle.main.url(forResource: "composedeb-15", withExtension: nil)!
+        }
+    }()
 
     private lazy var chownBinaryURL: URL = Bundle.main.url(forResource: "chown", withExtension: nil)!
     private lazy var ctBypassBinaryURL: URL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
@@ -321,6 +329,10 @@ final class Injector {
     private lazy var mkdirBinaryURL: URL = Bundle.main.url(forResource: "mkdir", withExtension: nil)!
     private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
+    private lazy var dpkgBinaryURL: URL = Bundle.main.url(forResource: "dpkg-deb", withExtension: nil)!
+//    private lazy var arBinaryURL: URL = Bundle.main.url(forResource: "ar", withExtension: nil)!
+
+
 
     private func backup(_ url: URL) throws {
         let backupURL = url.appendingPathExtension("troll-fools.bak")
@@ -683,6 +695,29 @@ final class Injector {
                     .filter { Self.allowedPathExtensions.contains($0.pathExtension.lowercased()) }
 
                 finalURLs.append(contentsOf: extractedContents)
+            } else if url.pathExtension.lowercased() == "deb" {
+                let extractedURL = tempURL
+                    .appendingPathComponent(url.lastPathComponent)
+                    .appendingPathExtension("extracted")
+
+                try FileManager.default.createDirectory(at: extractedURL, withIntermediateDirectories: true)
+                try _ = decomposeDeb(at: url, to: extractedURL)
+                
+                var dylibFiles = [URL]()
+                var bundleFiles = [URL]()
+                let fileManager = FileManager.default
+                let enumerator = fileManager.enumerator(at: extractedURL, includingPropertiesForKeys: nil)
+
+                while let file = enumerator?.nextObject() as? URL {
+                    if file.pathExtension.lowercased() == "dylib" {
+                        dylibFiles.append(file)
+                    }
+                    if file.pathExtension.lowercased() == "bundle" {
+                        bundleFiles.append(file)
+                    }
+                }
+                try _injectBundles(bundleFiles)
+                finalURLs.append(contentsOf: dylibFiles)
             } else {
                 finalURLs.append(url)
             }
@@ -697,6 +732,67 @@ final class Injector {
         return finalURLs
     }
 
+    private func decomposeDeb(at sourceURL: URL, to destinationURL: URL) throws -> String {
+        let composedebPath = Bundle.main.url(forResource: "composedeb", withExtension: nil)!.path
+        let executablePath = (composedebPath as NSString).deletingLastPathComponent
+
+        let environment = [
+            "PATH": "\(executablePath):\(ProcessInfo.processInfo.environment["PATH"] ?? "")"
+        ]
+        
+        let logFilePath = destinationURL.appendingPathComponent("decomposeDeb.log").path
+        let logFileHandle: FileHandle?
+        
+        if FileManager.default.fileExists(atPath: logFilePath) {
+            logFileHandle = FileHandle(forWritingAtPath: logFilePath)
+            logFileHandle?.seekToEndOfFile()
+        } else {
+            FileManager.default.createFile(atPath: logFilePath, contents: nil, attributes: nil)
+            logFileHandle = FileHandle(forWritingAtPath: logFilePath)
+        }
+        
+        guard let logHandle = logFileHandle else {
+            throw NSError(domain: "DecomposeDebErrorDomain", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to create log file handle"])
+        }
+        
+        func log(_ message: String) {
+            if let data = (message + "\n").data(using: .utf8) {
+                logHandle.write(data)
+            }
+        }
+
+        do {
+            log("Starting decomposeDeb for file \(sourceURL.lastPathComponent)")
+            log("Using composedeb at path \(composedebPath)")
+            log("Executable path: \(executablePath)")
+            
+            let receipt = try Execute.rootSpawnWithOutputs(binary: composeBinaryURL.path, arguments: [
+                sourceURL.path,
+                destinationURL.path,
+                Bundle.main.bundlePath,
+            ], environment: environment)
+
+            guard case .exit(let code) = receipt.terminationReason, code == 0 else {
+                let errorMessage = "Command failed with reason: \(receipt.terminationReason) and status: \(receipt.terminationReason)"
+                log(errorMessage)
+                log("Standard Error: \(receipt.stderr)")
+                throw NSError(domain: "DecomposeDebErrorDomain", code: 1, userInfo: [NSLocalizedDescriptionKey: "Command failed: \(receipt.stderr)"])
+            }
+            
+            log("Command Output: \(receipt.stdout)")
+            log("Standard Error: \(receipt.stderr)")
+            log("Decompose Deb File \(sourceURL.lastPathComponent) done")
+            DDLogInfo("Decompose Deb File \(sourceURL.lastPathComponent) done")
+            
+            return receipt.stdout
+        } catch {
+            log("Error occurred: \(error.localizedDescription)")
+            throw error
+        }
+    }
+
+
+    
     // MARK: - Public Methods
 
     func inject(_ injectURLs: [URL]) throws {
@@ -705,7 +801,6 @@ final class Injector {
         TFUtilKillAll(mainExecutableURL.lastPathComponent, true)
 
         let shouldBackup = !hasInjectedPlugIn
-
         try _injectBundles(urlsToInject
             .filter { $0.pathExtension.lowercased() == "bundle" })
 
