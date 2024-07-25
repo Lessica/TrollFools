@@ -429,7 +429,7 @@ struct AppListView: View {
                         vm.performFilter()
                     }
                 } label: {
-                    Image(systemName: "arrow.up.arrow.down")
+                    Image(systemName: "arrow.up.arrow.down.square")
                 }
                 .accessibilityLabel(NSLocalizedString("Sort Order", comment: ""))
             }
