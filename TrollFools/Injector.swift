@@ -709,7 +709,7 @@ final class Injector {
                 let enumerator = fileManager.enumerator(at: extractedURL, includingPropertiesForKeys: nil)
 
                 while let file = enumerator?.nextObject() as? URL {
-                    if file.pathExtension.lowercased() == "dylib" {
+                    if file.pathExtension.lowercased() == "dylib" || file.pathExtension.lowercased() == "framework"{
                         dylibFiles.append(file)
                     }
                     if file.pathExtension.lowercased() == "bundle" {
