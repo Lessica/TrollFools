@@ -14,12 +14,12 @@ final class Injector {
 
     private static let markerName = ".troll-fools"
 
-    static func isEligibleBundle(_ target: URL) -> Bool {
+    static func isBundleEligible(_ target: URL) -> Bool {
         let frameworksURL = target.appendingPathComponent("Frameworks")
         return !((try? FileManager.default.contentsOfDirectory(at: frameworksURL, includingPropertiesForKeys: nil).isEmpty) ?? true)
     }
 
-    static func isInjectedBundle(_ target: URL) -> Bool {
+    static func isBundleInjected(_ target: URL) -> Bool {
         let frameworksURL = target.appendingPathComponent("Frameworks")
         let substrateFwkURL = frameworksURL.appendingPathComponent("CydiaSubstrate.framework")
         return FileManager.default.fileExists(atPath: substrateFwkURL.path)
@@ -28,6 +28,38 @@ final class Injector {
     static func injectedPlugInURLs(_ target: URL) -> [URL] {
         return (_injectedBundleURLs(target) + _injectedDylibAndFrameworkURLs(target))
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+    }
+
+    static func isBundleDetached(_ target: URL) -> Bool {
+        let containerURL = target.deletingLastPathComponent()
+        let metaBackupURL = containerURL.appendingPathComponent("iTunesMetadata.plist.bak")
+        return FileManager.default.fileExists(atPath: metaBackupURL.path)
+    }
+
+    static func isBundleAllowedToAttachOrDetach(_ target: URL) -> Bool {
+        let containerURL = target.deletingLastPathComponent()
+
+        let metaURL = containerURL.appendingPathComponent("iTunesMetadata.plist")
+        let metaBackupURL = containerURL.appendingPathComponent("iTunesMetadata.plist.bak")
+
+        return FileManager.default.fileExists(atPath: metaURL.path) || FileManager.default.fileExists(atPath: metaBackupURL.path)
+    }
+
+    lazy var isDetached: Bool = Self.isBundleDetached(bundleURL)
+
+    func setDetached(_ detached: Bool) throws {
+        let containerURL = bundleURL.deletingLastPathComponent()
+
+        let metaURL = containerURL.appendingPathComponent("iTunesMetadata.plist")
+        let metaBackupURL = containerURL.appendingPathComponent("iTunesMetadata.plist.bak")
+
+        if detached && !isDetached {
+            try? moveURL(metaURL, to: metaBackupURL, shouldOverride: false)
+        }
+
+        if !detached && isDetached {
+            try? moveURL(metaBackupURL, to: metaURL, shouldOverride: false)
+        }
     }
 
     private static func _injectedBundleURLs(_ target: URL) -> [URL] {
@@ -90,6 +122,8 @@ final class Injector {
     private var hasInjectedPlugIn: Bool {
         !Self.injectedPlugInURLs(bundleURL).isEmpty
     }
+
+    private init() { fatalError("Not implemented") }
 
     init(bundleURL: URL, teamID: String) throws {
         self.bundleURL = bundleURL
@@ -276,6 +310,27 @@ final class Injector {
         DDLogInfo("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
     }
 
+    private func moveURL(_ src: URL, to dst: URL, shouldOverride: Bool = false) throws {
+        if shouldOverride {
+            try? removeURL(dst, isDirectory: true)
+        }
+
+        var args = [
+            src.path, dst.path,
+        ]
+
+        if shouldOverride {
+            args.insert("-f", at: 0)
+        }
+
+        let retCode = try Execute.rootSpawn(binary: mvBinaryURL.path, arguments: args)
+        guard case .exit(let code) = retCode, code == 0 else {
+            try throwCommandFailure("mv", reason: retCode)
+        }
+
+        DDLogInfo("mv \(src.lastPathComponent) to \(dst.lastPathComponent) done")
+    }
+
     private func makeDirectory(_ target: URL) throws {
         let retCode = try Execute.rootSpawn(binary: mkdirBinaryURL.path, arguments: [
             "-p", target.path,
@@ -319,6 +374,7 @@ final class Injector {
     }()
 
     private lazy var mkdirBinaryURL: URL = Bundle.main.url(forResource: "mkdir", withExtension: nil)!
+    private lazy var mvBinaryURL: URL = Bundle.main.url(forResource: "mv", withExtension: nil)!
     private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
 

@@ -252,7 +252,7 @@ struct EjectListView: View {
             let injector = try Injector(bundleURL: vm.app.url, teamID: vm.app.teamID)
             try injector.eject(plugInURLsToRemove)
 
-            vm.app.reloadInjectedStatus()
+            vm.app.reload()
             vm.reload()
         } catch {
             DDLogError("\(error)")
@@ -279,7 +279,7 @@ struct EjectListView: View {
                 defer {
                     DispatchQueue.main.async {
                         withAnimation {
-                            vm.app.reloadInjectedStatus()
+                            vm.app.reload()
                             vm.reload()
                             isDeletingAll = false
                         }

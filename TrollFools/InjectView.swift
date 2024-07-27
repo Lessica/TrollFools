@@ -121,7 +121,7 @@ struct InjectView: View {
                 DispatchQueue.main.async {
                     withAnimation {
                         injectResult = result
-                        app.reloadInjectedStatus()
+                        app.reload()
                         viewControllerHost.viewController?.navigationController?
                             .view.isUserInteractionEnabled = true
                     }
