@@ -59,6 +59,9 @@
 "Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm and other contributors.";
 
 /* No comment provided by engineer. */
+"Lock Version" = "Lock Version";
+
+/* No comment provided by engineer. */
 "No eligible framework found." = "No eligible framework found.";
 
 /* No comment provided by engineer. */
@@ -77,7 +80,13 @@
 "Patched" = "Patched";
 
 /* No comment provided by engineer. */
+"Pinned Version" = "Pinned Version";
+
+/* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
+
+/* No comment provided by engineer. */
+"Rebuild Icon Cache" = "Rebuild Icon Cache";
 
 /* No comment provided by engineer. */
 "Search Patched…" = "Search Patched…";
@@ -107,4 +116,10 @@
 "TrollStore Applications" = "TrollStore Applications";
 
 /* No comment provided by engineer. */
+"Unlock Version" = "Unlock Version";
+
+/* No comment provided by engineer. */
 "User Applications" = "User Applications";
+
+/* No comment provided by engineer. */
+"You need to rebuild the icon cache in TrollStore to apply changes." = "You need to rebuild the icon cache in TrollStore to apply changes.";

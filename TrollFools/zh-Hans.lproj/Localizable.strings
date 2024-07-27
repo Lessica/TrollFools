@@ -59,6 +59,9 @@
 "Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm 及其他贡献者";
 
 /* No comment provided by engineer. */
+"Lock Version" = "锁定版本";
+
+/* No comment provided by engineer. */
 "No eligible framework found." = "没有找到符合条件的框架。";
 
 /* No comment provided by engineer. */
@@ -77,7 +80,13 @@
 "Patched" = "已注入";
 
 /* No comment provided by engineer. */
+"Pinned Version" = "已固定版本";
+
+/* No comment provided by engineer. */
 "Plug-Ins" = "插件列表";
+
+/* No comment provided by engineer. */
+"Rebuild Icon Cache" = "重建图标缓存";
 
 /* No comment provided by engineer. */
 "Search Patched…" = "搜索 已注入…";
@@ -107,4 +116,10 @@
 "TrollStore Applications" = "巨魔商店应用";
 
 /* No comment provided by engineer. */
+"Unlock Version" = "解锁版本";
+
+/* No comment provided by engineer. */
 "User Applications" = "用户应用";
+
+/* No comment provided by engineer. */
+"You need to rebuild the icon cache in TrollStore to apply changes." = "你需要在 TrollStore 中重建图标缓存以应用更改。";
