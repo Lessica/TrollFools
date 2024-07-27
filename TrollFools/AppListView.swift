@@ -217,8 +217,7 @@ final class AppListModel: ObservableObject {
 
     func rebuildIconCache() throws {
         // Sadly, we can't call `trollstorehelper` directly because only TrollStore can launch it without error.
-        LSApplicationWorkspace.default()
-            .openApplication(withBundleID: "com.opa334.TrollStore")
+        LSApplicationWorkspace.default().openApplication(withBundleID: "com.opa334.TrollStore")
     }
 }
 
@@ -256,6 +255,80 @@ struct AppListCell: View {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
+    }
+
+    @ViewBuilder
+    var cellContextMenu: some View {
+        Button {
+            launch()
+        } label: {
+            Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
+        }
+
+        if isFilzaInstalled {
+            Button {
+                openInFilza()
+            } label: {
+                Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+            }
+        }
+
+        if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
+            if app.isDetached {
+                Button {
+                    do {
+                        let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+                        try injector.setDetached(false)
+                        withAnimation {
+                            app.reload()
+                            AppListModel.shared.isRebuildNeeded = true
+                        }
+                    } catch { DDLogError("\(error.localizedDescription)") }
+                } label: {
+                    Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
+                }
+            } else {
+                Button {
+                    do {
+                        let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+                        try injector.setDetached(true)
+                        withAnimation {
+                            app.reload()
+                            AppListModel.shared.isRebuildNeeded = true
+                        }
+                    } catch { DDLogError("\(error.localizedDescription)") }
+                } label: {
+                    Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    var cellContextMenuWrapper: some View {
+        if #available(iOS 16.0, *) {
+            // iOS 16
+            cellContextMenu
+        } else {
+            if #available(iOS 15.0, *) { }
+            else {
+                // iOS 14
+                cellContextMenu
+            }
+        }
+    }
+
+    @ViewBuilder
+    var cellBackground: some View {
+        if #available(iOS 15.0, *) {
+            if #available(iOS 16.0, *) { }
+            else {
+                // iOS 15
+                Color.clear
+                    .contextMenu { cellContextMenu }
+                    .id(app.isDetached)
+            }
+        }
     }
 
     var body: some View {
@@ -318,56 +391,12 @@ struct AppListCell: View {
                 }
             }
         }
-        .contextMenu {
-            Button {
-                launch()
-            } label: {
-                Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
-            }
-
-            if isFilzaInstalled {
-                Button {
-                    openInFilza()
-                } label: {
-                    Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
-                }
-            }
-
-            if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
-                if app.isDetached {
-                    Button {
-                        do {
-                            let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
-                            try injector.setDetached(false)
-                            withAnimation {
-                                app.reload()
-                                AppListModel.shared.isRebuildNeeded = true
-                            }
-                        } catch { DDLogError("\(error.localizedDescription)") }
-                    } label: {
-                        Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
-                    }
-                } else {
-                    Button {
-                        do {
-                            let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
-                            try injector.setDetached(true)
-                            withAnimation {
-                                app.reload()
-                                AppListModel.shared.isRebuildNeeded = true
-                            }
-                        } catch { DDLogError("\(error.localizedDescription)") }
-                    } label: {
-                        Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
-                    }
-                }
-            }
-        }
+        .contextMenu { cellContextMenuWrapper }
+        .background(cellBackground)
     }
 
     private func launch() {
-        LSApplicationWorkspace.default()
-            .openApplication(withBundleID: app.id)
+        LSApplicationWorkspace.default().openApplication(withBundleID: app.id)
     }
 
     var isFilzaInstalled: Bool { AppListModel.shared.isFilzaInstalled }
@@ -476,11 +505,6 @@ struct AppListView: View {
                         .padding(.vertical, 4)
                     }
                     .disabled(vm.isRebuilding)
-                } footer: {
-                    NavigationLink(isActive: $isErrorOccurred) {
-                        FailureView(title: NSLocalizedString("Error", comment: ""),
-                                    message: errorMessage)
-                    } label: { }
                 }
             }
 
@@ -529,6 +553,12 @@ struct AppListView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("TrollFools", comment: ""))
+        .background(Group {
+            NavigationLink(isActive: $isErrorOccurred) {
+                FailureView(title: NSLocalizedString("Error", comment: ""),
+                            message: errorMessage)
+            } label: { }
+        })
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {

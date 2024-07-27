@@ -209,17 +209,18 @@ struct EjectListView: View {
                         Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
                             .font(.footnote)
                     }
-
-                    NavigationLink(isActive: $isErrorOccurred) {
-                        FailureView(title: NSLocalizedString("Error", comment: ""),
-                                    message: errorMessage)
-                    } label: { }
                 }
             }
         }
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("Plug-Ins", comment: ""))
         .animation(.easeOut, value: vm.filter.isSearching)
+        .background(Group {
+            NavigationLink(isActive: $isErrorOccurred) {
+                FailureView(title: NSLocalizedString("Error", comment: ""),
+                            message: errorMessage)
+            } label: { }
+        })
         .onViewWillAppear { viewController in
             viewControllerHost.viewController = viewController
         }
