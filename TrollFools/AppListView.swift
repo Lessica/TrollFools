@@ -476,7 +476,7 @@ struct AppListView: View {
                         .padding(.vertical, 4)
                     }
                     .disabled(vm.isRebuilding)
-                } header: {
+                } footer: {
                     NavigationLink(isActive: $isErrorOccurred) {
                         FailureView(title: NSLocalizedString("Error", comment: ""),
                                     message: errorMessage)

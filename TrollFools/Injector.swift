@@ -374,7 +374,15 @@ final class Injector {
     }()
 
     private lazy var mkdirBinaryURL: URL = Bundle.main.url(forResource: "mkdir", withExtension: nil)!
-    private lazy var mvBinaryURL: URL = Bundle.main.url(forResource: "mv", withExtension: nil)!
+
+    private lazy var mvBinaryURL: URL = {
+        if #available(iOS 16.0, *) {
+            Bundle.main.url(forResource: "mv", withExtension: nil)!
+        } else {
+            Bundle.main.url(forResource: "mv-15", withExtension: nil)!
+        }
+    }()
+
     private lazy var optoolBinaryURL: URL = Bundle.main.url(forResource: "optool", withExtension: nil)!
     private lazy var rmBinaryURL: URL = Bundle.main.url(forResource: "rm", withExtension: nil)!
 
