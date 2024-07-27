@@ -23,6 +23,7 @@ TrollFools/install_name_tool
 TrollFools/libxar.1.dylib
 TrollFools/mkdir
 TrollFools/mv
+TrollFools/mv-15
 
 # Created by https://www.toptal.com/developers/gitignore/api/swift,macos,xcode
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,macos,xcode

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC0E80FA2C54F84000B137B4 /* mv-15 */; };
 		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
 		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
 		CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D22C4A743200A4173E /* SuccessView.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC0E80FA2C54F84000B137B4 /* mv-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "mv-15"; sourceTree = "<group>"; };
 		CC1548CF2C4A6B8200A4173E /* ct_bypass */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ct_bypass; sourceTree = "<group>"; };
 		CC1548D22C4A743200A4173E /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
 		CC1548D42C4A744300A4173E /* FailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				CCC564E82C4BE8320097C300 /* ldid */,
 				CCFC78632C4E853D008EB25D /* mkdir */,
 				CCECB7CD2C54DC660094C8E6 /* mv */,
+				CC0E80FA2C54F84000B137B4 /* mv-15 */,
 				CC15490B2C4B79D800A4173E /* optool */,
 				CC1548FF2C4AB43600A4173E /* rm */,
 				CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */,
@@ -261,6 +264,7 @@
 				CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */,
 				CCFC78642C4E853D008EB25D /* mkdir in Resources */,
 				CCECB7CE2C54DC660094C8E6 /* mv in Resources */,
+				CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */,
 				CC1549002C4AB43600A4173E /* rm in Resources */,
 				CC1548DD2C4A8DC500A4173E /* insert_dylib in Resources */,
 				CC5E54BE2C4E12F900FDE4A8 /* install_name_tool in Resources */,
