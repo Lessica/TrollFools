@@ -250,7 +250,7 @@ struct EjectListView: View {
         do {
             let plugInsToRemove = offsets.map { vm.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
-            let injector = try Injector(bundleURL: vm.app.url, teamID: vm.app.teamID)
+            let injector = try Injector(vm.app.url, appID: vm.app.id, teamID: vm.app.teamID)
             try injector.eject(plugInURLsToRemove)
 
             vm.app.reload()
@@ -265,7 +265,7 @@ struct EjectListView: View {
 
     func deleteAll() {
         do {
-            let injector = try Injector(bundleURL: vm.app.url, teamID: vm.app.teamID)
+            let injector = try Injector(vm.app.url, appID: vm.app.id, teamID: vm.app.teamID)
 
             let view = viewControllerHost.viewController?
                 .navigationController?.view

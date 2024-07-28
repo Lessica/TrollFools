@@ -8,6 +8,7 @@
 import CocoaLumberjackSwift
 import Foundation
 import MachOKit
+import SwiftUI
 import ZIPFoundation
 
 final class Injector {
@@ -104,6 +105,9 @@ final class Injector {
     private let tempURL: URL
     private var teamID: String
 
+    @AppStorage var useWeakReference: Bool
+    @AppStorage var preferMainExecutable: Bool
+
     private lazy var infoPlistURL: URL = bundleURL.appendingPathComponent("Info.plist")
     private lazy var mainExecutableURL: URL = {
         let infoPlist = NSDictionary(contentsOf: infoPlistURL)!
@@ -125,7 +129,7 @@ final class Injector {
 
     private init() { fatalError("Not implemented") }
 
-    init(bundleURL: URL, teamID: String) throws {
+    init(_ bundleURL: URL, appID: String, teamID: String) throws {
         self.bundleURL = bundleURL
         self.teamID = teamID
         self.tempURL = try FileManager.default.url(
@@ -134,6 +138,8 @@ final class Injector {
             appropriateFor: URL(fileURLWithPath: NSHomeDirectory()),
             create: true
         )
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(appID)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(appID)")
         try updateTeamIdentifier(bundleURL)
     }
 
@@ -219,10 +225,18 @@ final class Injector {
             }
         }
 
-        return executableURLs
+        var fwkURLs = executableURLs
             .intersection(initialDylibs)
             .filter { isMachOURL($0) }
-            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) + [target]
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+
+        if preferMainExecutable {
+            fwkURLs.insert(target, at: 0)
+        } else {
+            fwkURLs.append(target)
+        }
+
+        return fwkURLs
     }
 
     private func copyTempInjectURLs(_ injectURLs: [URL]) throws -> [URL] {
@@ -568,7 +582,7 @@ final class Injector {
         }
 
         try _insertLoadCommandRpath(target, name: "@executable_path/Frameworks")
-        try _insertLoadCommandDylib(target, name: name, isWeak: true)
+        try _insertLoadCommandDylib(target, name: name, isWeak: useWeakReference)
         try applyTargetFixes(target, name: name)
     }
 

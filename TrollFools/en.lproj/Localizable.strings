@@ -8,6 +8,9 @@
 "A pure TrollStore software channel!" = "A pure TrollStore software channel!";
 
 /* No comment provided by engineer. */
+"Advanced Settings" = "Advanced Settings";
+
+/* No comment provided by engineer. */
 "AE86 TrollStore Channel" = "AE86 TrollStore Channel";
 
 /* No comment provided by engineer. */
@@ -41,6 +44,9 @@
 "Failed to parse: %@" = "Failed to parse: %@";
 
 /* No comment provided by engineer. */
+"If you do not know what these options mean, please do not change them." = "If you do not know what these options mean, please do not change them.";
+
+/* No comment provided by engineer. */
 "Inject" = "Inject";
 
 /* No comment provided by engineer. */
@@ -51,6 +57,9 @@
 
 /* No comment provided by engineer. */
 "Injecting" = "Injecting";
+
+/* No comment provided by engineer. */
+"Injection" = "Injection";
 
 /* No comment provided by engineer. */
 "Launch" = "Launch";
@@ -86,6 +95,9 @@
 "Plug-Ins" = "Plug-Ins";
 
 /* No comment provided by engineer. */
+"Prefer Main Executable" = "Prefer Main Executable";
+
+/* No comment provided by engineer. */
 "Rebuild Icon Cache" = "Rebuild Icon Cache";
 
 /* No comment provided by engineer. */
@@ -117,6 +129,9 @@
 
 /* No comment provided by engineer. */
 "Unlock Version" = "Unlock Version";
+
+/* No comment provided by engineer. */
+"Use Weak Reference" = "Use Weak Reference";
 
 /* No comment provided by engineer. */
 "User Applications" = "User Applications";

@@ -277,7 +277,7 @@ struct AppListCell: View {
             if app.isDetached {
                 Button {
                     do {
-                        let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+                        let injector = try Injector(app.url, appID: app.id, teamID: app.teamID)
                         try injector.setDetached(false)
                         withAnimation {
                             app.reload()
@@ -290,7 +290,7 @@ struct AppListCell: View {
             } else {
                 Button {
                     do {
-                        let injector = try Injector(bundleURL: app.url, teamID: app.teamID)
+                        let injector = try Injector(app.url, appID: app.id, teamID: app.teamID)
                         try injector.setDetached(true)
                         withAnimation {
                             app.reload()

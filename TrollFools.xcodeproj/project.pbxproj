@@ -24,6 +24,7 @@
 		CC1549022C4B62E300A4173E /* cp-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC1549012C4B62E300A4173E /* cp-15 */; };
 		CC15490C2C4B79D800A4173E /* optool in Resources */ = {isa = PBXBuildFile; fileRef = CC15490B2C4B79D800A4173E /* optool */; };
 		CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC15490D2C4B80AF00A4173E /* EjectListView.swift */; };
+		CC19E4BB2C561D7300E0F1B5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19E4BA2C561D7300E0F1B5 /* SettingsView.swift */; };
 		CC5E54BE2C4E12F900FDE4A8 /* install_name_tool in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */; };
 		CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */; };
 		CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */ = {isa = PBXBuildFile; fileRef = CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */; };
@@ -64,6 +65,7 @@
 		CC1549012C4B62E300A4173E /* cp-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "cp-15"; sourceTree = "<group>"; };
 		CC15490B2C4B79D800A4173E /* optool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = optool; sourceTree = "<group>"; };
 		CC15490D2C4B80AF00A4173E /* EjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListView.swift; sourceTree = "<group>"; };
+		CC19E4BA2C561D7300E0F1B5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxar.1.dylib; sourceTree = "<group>"; };
 		CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = install_name_tool; sourceTree = "<group>"; };
 		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
 				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
 				CCB6A1182C4A58C7000D75B0 /* OptionView.swift */,
+				CC19E4BA2C561D7300E0F1B5 /* SettingsView.swift */,
 				CCB6A11A2C4A6066000D75B0 /* InjectView.swift */,
 				CC15490D2C4B80AF00A4173E /* EjectListView.swift */,
 				CC1548D22C4A743200A4173E /* SuccessView.swift */,
@@ -295,6 +298,7 @@
 				CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */,
 				CCF5A0A42C4D45160097D48D /* AuxiliaryExecute.swift in Sources */,
 				CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */,
+				CC19E4BB2C561D7300E0F1B5 /* SettingsView.swift in Sources */,
 				CC1548D72C4A768700A4173E /* Injector.swift in Sources */,
 				CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */,
 				CCF5A0A22C4D417F0097D48D /* main.swift in Sources */,
@@ -467,7 +471,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/TrollFools",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = wiki.qaq.TrollFools;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -509,7 +513,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/TrollFools",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = wiki.qaq.TrollFools;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
