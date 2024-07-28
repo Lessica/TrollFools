@@ -8,6 +8,9 @@
 "A pure TrollStore software channel!" = "秋名山一路向北，最纯净的巨魔软件体验！";
 
 /* No comment provided by engineer. */
+"Advanced Settings" = "高级选项";
+
+/* No comment provided by engineer. */
 "AE86 TrollStore Channel" = "秋名山巨魔俱乐部";
 
 /* No comment provided by engineer. */
@@ -41,6 +44,9 @@
 "Failed to parse: %@" = "无法解析：%@";
 
 /* No comment provided by engineer. */
+"If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
+
+/* No comment provided by engineer. */
 "Inject" = "注入";
 
 /* No comment provided by engineer. */
@@ -51,6 +57,9 @@
 
 /* No comment provided by engineer. */
 "Injecting" = "注入中";
+
+/* No comment provided by engineer. */
+"Injection" = "注入";
 
 /* No comment provided by engineer. */
 "Launch" = "启动";
@@ -86,6 +95,9 @@
 "Plug-Ins" = "插件列表";
 
 /* No comment provided by engineer. */
+"Prefer Main Executable" = "优先处理主要可执行文件";
+
+/* No comment provided by engineer. */
 "Rebuild Icon Cache" = "重建图标缓存";
 
 /* No comment provided by engineer. */
@@ -117,6 +129,9 @@
 
 /* No comment provided by engineer. */
 "Unlock Version" = "解锁版本";
+
+/* No comment provided by engineer. */
+"Use Weak Reference" = "创建弱引用";
 
 /* No comment provided by engineer. */
 "User Applications" = "用户应用";
