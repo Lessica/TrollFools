@@ -1,5 +1,9 @@
 # TrollFools
 
+[now-on-havoc]: https://havoc.app/package/trollfools
+
+[<img width="150" src="https://docs.havoc.app/img/badges/get_square.svg" />][now-on-havoc]
+
 In-place tweak injection with insert_dylib and ChOma.  
 Proudly written in SwiftUI.  
 
