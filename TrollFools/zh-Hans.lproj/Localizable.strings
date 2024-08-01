@@ -47,7 +47,9 @@
 "If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
 
 /* No comment provided by engineer. */
-"Inject" = "注入";
+"Manual Inject" = "普通注入";
+
+"Runtime Inject" = "动态注入";
 
 /* No comment provided by engineer. */
 "Injectable System Applications" = "可注入的系统应用";
@@ -127,6 +129,7 @@
 /* No comment provided by engineer. */
 "TrollStore Applications" = "巨魔商店应用";
 
+"jr Add opainject support" = "jr添加opainject注入支持";
 /* No comment provided by engineer. */
 "Unlock Version" = "解锁版本";
 
