@@ -13,6 +13,7 @@
 #import <sys/sysctl.h>
 
 FOUNDATION_EXTERN void TFUtilKillAll(NSString *processPath, BOOL softly);
+FOUNDATION_EXTERN pid_t PidForName(NSString *procName);
 
 static void TFUtilEnumerateProcessesUsingBlock(void (^enumerator)(pid_t pid, NSString *executablePath, BOOL *stop)) {
 
@@ -87,4 +88,14 @@ void TFUtilKillAll(NSString *processName, BOOL softly) {
           }
       }
     });
+}
+pid_t PidForName(NSString *procName){
+    static pid_t retPid = 0;
+    
+    TFUtilEnumerateProcessesUsingBlock(^(pid_t pid, NSString *executablePath, BOOL *stop) {
+      if ([executablePath containsString:[NSString stringWithFormat:@"/%@.app/%@", procName, procName]]) {
+          retPid = pid;
+      }
+    });
+    return  retPid;
 }
