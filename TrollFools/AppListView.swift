@@ -426,7 +426,8 @@ struct AppListView: View {
         String(format: """
 %@ %@ %@ © 2024
 %@
-""", appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Lessica, Lakr233, mlgm and other contributors.", comment: ""))
+%@
+""", appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Lessica, Lakr233, mlgm and other contributors.", comment: ""),NSLocalizedString("", comment: "jr Add opainject support"))
     }
 
     let repoURL = URL(string: "https://github.com/Lessica/TrollFools")
