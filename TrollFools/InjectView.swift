@@ -56,6 +56,7 @@ final class ViewControllerHost: ObservableObject {
 struct InjectView: View {
     let app: App
     let urlList: [URL]
+    let injectType: Int
 
     @State var injectResult: Result<Void, Error>?
 
@@ -63,8 +64,20 @@ struct InjectView: View {
 
     func inject() -> Result<Void, Error> {
         do {
-            let injector = try Injector(app.url, appID: app.id, teamID: app.teamID)
-            try injector.inject(urlList)
+            let injector = try Injector(
+                bundleURL: app.url,
+                teamID: app.teamID
+            )
+            switch injectType {
+            case 0:
+                try injector.inject(urlList)
+            case 1:
+                try injector.RuntimeInject(urlList)
+            default:
+                throw NSError(domain: kTrollFoolsErrorDomain, code: -1)
+            }
+            
+            
             return .success(())
         } catch {
             DDLogError("\(error)")
@@ -118,7 +131,7 @@ struct InjectView: View {
                 DispatchQueue.main.async {
                     withAnimation {
                         injectResult = result
-                        app.reload()
+                        app.reloadInjectedStatus()
                         viewControllerHost.viewController?.navigationController?
                             .view.isUserInteractionEnabled = true
                     }
