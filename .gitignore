@@ -1,29 +1,5 @@
 .theos
 packages
-TrollFools/libintl.8.dylib
-TrollFools/libiosexec.1.dylib
-TrollFools/libncursesw.6.dylib
-TrollFools/libzstd.1.dylib
-TrollFools/libLLVM.dylib
-TrollFools/libedit.0.dylib
-TrollFools/cp
-TrollFools/ct_bypass
-TrollFools/insert_dylib
-TrollFools/llvm-install-name-tool
-TrollFools/CydiaSubstrate.framework.zip
-TrollFools/cp-15
-TrollFools/rm
-TrollFools/optool
-TrollFools/ldid
-TrollFools/ldid-14
-TrollFools/libcrypto.3.dylib
-TrollFools/libplist-2.0.3.dylib
-TrollFools/chown
-TrollFools/install_name_tool
-TrollFools/libxar.1.dylib
-TrollFools/mkdir
-TrollFools/mv
-TrollFools/mv-15
 
 # Created by https://www.toptal.com/developers/gitignore/api/swift,macos,xcode
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,macos,xcode

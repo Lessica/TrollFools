@@ -17,8 +17,9 @@ Expected to work on all iOS versions supported by opa334’s TrollStore (i.e. iO
 
 ## Build
 
-PRs are always welcome.  
-You have to get precompiled binaries from released packages or build them yourself.
+See GitHub Actions for the latest build status.
+
+PRs are always welcome.
 
 ## Milestones
 
