@@ -73,7 +73,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v0.1.15
         with:
-          tag_name: ${{ env.VERSION }}
+          tag_name: v${{ env.VERSION }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
