@@ -1,0 +1,12 @@
+//
+//  Version.xcconfig
+//  TrollFools
+//
+//  Created by Lessica on 2024/8/18.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+DEBUG_VERSION = 2.5
+DEBUG_BUILD_NUMBER = 202408181

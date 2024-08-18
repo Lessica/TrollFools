@@ -13,7 +13,7 @@ SUBPROJECTS += TrollFoolsTweak
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
 before-package::
-	$(ECHO_NOTHING)ldid -STrollFools.entitlements $(THEOS_STAGING_DIR)/Applications/TrollFools.app$(ECHO_END)
+	$(ECHO_NOTHING)ldid -STrollFools/TrollFools.entitlements $(THEOS_STAGING_DIR)/Applications/TrollFools.app$(ECHO_END)
 
 after-package::
 	$(ECHO_NOTHING)mkdir -p packages $(THEOS_STAGING_DIR)/Payload$(ECHO_END)
