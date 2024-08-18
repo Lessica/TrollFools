@@ -714,9 +714,10 @@ final class Injector {
         let dylibs = try loadedDylibs(mainURL)
         for dylib in dylibs {
             let lowercasedDylib = dylib.lowercased()
-            guard (lowercasedDylib.hasSuffix("/CydiaSubstrate") ||
+            guard (lowercasedDylib.hasSuffix("/cydiasubstrate") ||
                    lowercasedDylib.hasSuffix("/libsubstrate.dylib") ||
                    lowercasedDylib.hasSuffix("/libsubstitute.dylib") ||
+                   lowercasedDylib.hasSuffix("/ellekit") ||
                    lowercasedDylib.hasSuffix("/libellekit.dylib"))
             else {
                 continue
