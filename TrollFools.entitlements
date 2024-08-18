@@ -23,8 +23,6 @@
 	<true/>
 	<key>com.apple.private.security.storage.AppDataContainers</key>
 	<true/>
-	<key>com.apple.private.thread-set-state</key>
-	<true/>
 	<key>com.apple.security.exception.files.absolute-path.read-write</key>
 	<array>
 		<string>/</string>
@@ -40,10 +38,6 @@
 	<key>com.apple.springboard.opensensitiveurl</key>
 	<true/>
 	<key>com.apple.springboard.openurlswhenlocked</key>
-	<true/>
-	<key>com.apple.system-task-ports</key>
-	<true/>
-	<key>com.apple.system-task-ports.control</key>
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
