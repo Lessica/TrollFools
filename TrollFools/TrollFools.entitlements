@@ -9,6 +9,22 @@
 		<string>spi</string>
 		<string>identity</string>
 	</array>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>GXZ23M5TP2.iCloud.wiki.qaq.TrollFools.icloud-container</string>
+	</array>
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudDocuments</string>
+	</array>
+	<key>com.apple.developer.notificationcenter-identifiers</key>
+	<true/>
+	<key>com.apple.developer.team-identifier</key>
+	<string>GXZ23M5TP2</string>
+	<key>com.apple.developer.ubiquity-container-identifiers</key>
+	<array>
+		<string>GXZ23M5TP2.iCloud.wiki.qaq.TrollFools.icloud-container</string>
+	</array>
 	<key>com.apple.private.persona-mgmt</key>
 	<true/>
 	<key>com.apple.private.security.container-manager</key>
@@ -23,9 +39,42 @@
 	<true/>
 	<key>com.apple.private.security.storage.AppDataContainers</key>
 	<true/>
+	<key>com.apple.private.security.storage.CloudDocsDB</key>
+	<true/>
+	<key>com.apple.private.security.storage.CloudKit</key>
+	<true/>
+	<key>com.apple.private.security.storage.DocumentRevisions</key>
+	<true/>
+	<key>com.apple.private.security.storage.MobileDocuments</key>
+	<true/>
+	<key>com.apple.private.security.storage.ciconia</key>
+	<true/>
+	<key>com.apple.private.security.storage.iCloudDrive</key>
+	<true/>
+	<key>com.apple.private.tcc.allow</key>
+	<array>
+		<string>kTCCServiceUbiquity</string>
+		<string>kTCCServiceSystemPolicyDesktopFolder</string>
+		<string>kTCCServiceSystemPolicyDocumentsFolder</string>
+		<string>kTCCServiceSystemPolicyDownloadsFolder</string>
+	</array>
+	<key>com.apple.private.tcc.manager</key>
+	<true/>
+	<key>com.apple.private.tcc.manager.check-by-audit-token</key>
+	<array>
+		<string>kTCCServiceUbiquity</string>
+		<string>kTCCServiceSystemPolicyDesktopFolder</string>
+		<string>kTCCServiceSystemPolicyDocumentsFolder</string>
+		<string>kTCCServiceSystemPolicyDownloadsFolder</string>
+	</array>
 	<key>com.apple.security.exception.files.absolute-path.read-write</key>
 	<array>
 		<string>/</string>
+	</array>
+	<key>com.apple.security.exception.files.home-relative-path.read-write</key>
+	<array>
+		<string>/Library/CloudStorage/</string>
+		<string>/Library/Mobile Documents/</string>
 	</array>
 	<key>com.apple.springboard.iconState</key>
 	<true/>
@@ -38,6 +87,8 @@
 	<key>com.apple.springboard.opensensitiveurl</key>
 	<true/>
 	<key>com.apple.springboard.openurlswhenlocked</key>
+	<true/>
+	<key>file-read-data</key>
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
