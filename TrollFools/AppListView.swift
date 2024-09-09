@@ -161,7 +161,7 @@ final class AppListModel: ObservableObject {
                       let teamID = proxy.teamID(),
                       let appType = proxy.applicationType(),
                       let localizedName = proxy.localizedName(),
-                      let shortVersionString = proxy.shortVersionString()
+                      let shortVersionString: String? = proxy.shortVersionString()
                 else {
                     return nil
                 }
