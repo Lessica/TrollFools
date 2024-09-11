@@ -160,8 +160,7 @@ final class AppListModel: ObservableObject {
                       let url = proxy.bundleURL(),
                       let teamID = proxy.teamID(),
                       let appType = proxy.applicationType(),
-                      let localizedName = proxy.localizedName(),
-                      let shortVersionString = proxy.shortVersionString()
+                      let localizedName = proxy.localizedName()
                 else {
                     return nil
                 }
@@ -178,6 +177,7 @@ final class AppListModel: ObservableObject {
                     return nil
                 }
 
+                let shortVersionString: String? = proxy.shortVersionString()
                 let app = App(
                     id: id,
                     name: localizedName,
