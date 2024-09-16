@@ -1,11 +1,11 @@
 /* No comment provided by engineer. */
-"%@ exited with code %d" = "%@ đã thoát với mã %d";
+"%@ exited with code %d" = "%@ thoát với mã %d";
 
 /* No comment provided by engineer. */
 "%@ terminated with signal %d" = "%@ đã kết thúc với tín hiệu %d";
 
 /* No comment provided by engineer. */
-"A pure TrollStore software channel!" = "Kênh phần mềm TrollStore thuần túy!";
+"A pure TrollStore software channel!" = "Một kênh phần mềm TrollStore thuần túy!";
 
 /* No comment provided by engineer. */
 "Advanced Settings" = "Cài đặt nâng cao";
@@ -38,13 +38,13 @@
 "Failed to find entry CFBundleExecutable in: %@" = "Không tìm thấy mục CFBundleExecutable trong: %@";
 
 /* No comment provided by engineer. */
-"Failed to locate main executable: %@" = "Không  tìm thấy tệp thực thi chính: %@";
+"Failed to locate main executable: %@" = "Không tìm thấy tệp thực thi chính: %@";
 
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "Không thể phân tích: %@";
 
 /* No comment provided by engineer. */
-"If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này để làm gì, đừng thay đổi chúng.";
+"If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
 
 /* No comment provided by engineer. */
 "Inject" = "Tiêm";
@@ -95,7 +95,7 @@
 "Plug-Ins" = "Plug-Ins";
 
 /* No comment provided by engineer. */
-"Prefer Main Executable" = "Ưu tiên mã thực thi chính";
+"Prefer Main Executable" = "Ưu tiên tệp thực thi chính";
 
 /* No comment provided by engineer. */
 "Rebuild Icon Cache" = "Làm mới bộ nhớ đệm biểu tượng";
