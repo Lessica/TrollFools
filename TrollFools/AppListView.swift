@@ -596,6 +596,7 @@ struct AppListView: View {
                                  : NSLocalizedString("Search…", comment: ""))
                     )
                     .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(true)
             } else {
                 // Fallback on earlier versions
                 appList
