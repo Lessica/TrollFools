@@ -2,10 +2,10 @@
 "%@ exited with code %d" = "%@ thoát với mã %d";
 
 /* No comment provided by engineer. */
-"%@ terminated with signal %d" = "%@ bị kết thúc với tín hiệu %d";
+"%@ terminated with signal %d" = "%@ đã kết thúc với tín hiệu %d";
 
 /* No comment provided by engineer. */
-"A pure TrollStore software channel!" = "Kênh phần mềm TrollStore thuần túy!";
+"A pure TrollStore software channel!" = "Một kênh phần mềm TrollStore thuần túy!";
 
 /* No comment provided by engineer. */
 "Advanced Settings" = "Cài đặt nâng cao";
@@ -14,7 +14,7 @@
 "AE86 TrollStore Channel" = "Kênh AE86 TrollStore";
 
 /* No comment provided by engineer. */
-"And %d more unsupported user applications." = "Và %d ứng dụng người dùng không được hỗ trợ khác.";
+"And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
 /* No comment provided by engineer. */
 "Completed" = "Hoàn thành";
@@ -38,13 +38,13 @@
 "Failed to find entry CFBundleExecutable in: %@" = "Không tìm thấy mục CFBundleExecutable trong: %@";
 
 /* No comment provided by engineer. */
-"Failed to locate main executable: %@" = "Không thể tìm thấy tệp thực thi chính: %@";
+"Failed to locate main executable: %@" = "Không tìm thấy tệp thực thi chính: %@";
 
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "Không thể phân tích: %@";
 
 /* No comment provided by engineer. */
-"If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này để làm gì, vui lòng không thay đổi chúng.";
+"If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
 
 /* No comment provided by engineer. */
 "Inject" = "Tiêm";
@@ -53,19 +53,19 @@
 "Injectable System Applications" = "Ứng dụng hệ thống có thể tiêm";
 
 /* No comment provided by engineer. */
-"Injected Plug-Ins" = "Các plug-in đã tiêm";
+"Injected Plug-Ins" = "Plug-in đã tiêm";
 
 /* No comment provided by engineer. */
 "Injecting" = "Đang tiêm";
 
 /* No comment provided by engineer. */
-"Injection" = "Tiêm vào";
+"Injection" = "Nâng cao";
 
 /* No comment provided by engineer. */
-"Launch" = "Khởi chạy";
+"Launch" = "Mở ứng dụng";
 
 /* No comment provided by engineer. */
-"Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm và những người đóng góp khác.";
+"Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm và các cộng tác viên khác.";
 
 /* No comment provided by engineer. */
 "Lock Version" = "Khóa phiên bản";
@@ -83,7 +83,7 @@
 "Not the first, but the best phone call recorder with TrollStore." = "Không phải ứng dụng đầu tiên, nhưng là ứng dụng ghi âm cuộc gọi tốt nhất trên TrollStore.";
 
 /* No comment provided by engineer. */
-"Only removable system applications are eligible and listed." = "Chỉ các ứng dụng hệ thống CÓ THỂ GỠ BỎ và đủ điều kiện tiêm sẽ được liệt kê.";
+"Only removable system applications are eligible and listed." = "Chỉ các ứng dụng hệ thống có thể gỡ bỏ và đủ điều kiện tiêm mới được liệt kê.";
 
 /* No comment provided by engineer. */
 "Patched" = "Đã sửa đổi";
