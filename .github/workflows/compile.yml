@@ -1,13 +1,10 @@
-name: Build & Release
+name: Compile
 
 on:
   workflow_dispatch:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - release
 
 env:
   THEOS: ""
@@ -64,21 +61,3 @@ jobs:
           make package
           cp packages/*.tipa .
           find .theos/obj -name "*.dSYM" -exec cp -r {} . \;
-
-      - name: Upload Packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: packages-${{ env.VERSION }}
-          path: |
-            *.tipa
-            *.dSYM
-
-      - name: Release
-        uses: softprops/action-gh-release@v0.1.15
-        with:
-          tag_name: v${{ env.VERSION }}
-          body_path: CHANGELOG.md
-          draft: false
-          prerelease: false
-          files: |
-            *.tipa
