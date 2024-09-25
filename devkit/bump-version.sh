@@ -3,11 +3,11 @@
 # This script is designed to increment the build number consistently across all
 # targets.
 
-# Usage: bump_version.sh <version>
-# Example: bump_version.sh 1.0
+# Usage: bump-version.sh <version>
+# Example: bump-version.sh 1.0
 
-# Usage: DEBUG=1 bump_version.sh <version>
-# Example: DEBUG=1 bump_version.sh 1.0
+# Usage: DEBUG=1 bump-version.sh <version>
+# Example: DEBUG=1 bump-version.sh 1.0
 
 set -e
 cd "$(dirname "$0")"
