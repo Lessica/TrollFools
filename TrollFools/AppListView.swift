@@ -644,7 +644,7 @@ struct AppListView: View {
             guard url.isFileURL, url.pathExtension.lowercased() == "dylib" else {
                 return
             }
-            selectorOpenedURL = url
+            selectorOpenedURL = preprocessURL(url)
         }
     }
 
@@ -678,6 +678,28 @@ struct AppListView: View {
                     isErrorOccurred = true
                 }
             }
+        }
+    }
+
+    private func preprocessURL(_ url: URL) -> URL {
+        let isInbox = url.path.contains("/Documents/Inbox/")
+        guard isInbox else {
+            return url
+        }
+        let fileNameNoExt = url.deletingPathExtension().lastPathComponent
+        let fileNameComps = fileNameNoExt.components(separatedBy: CharacterSet(charactersIn: "._- "))
+        guard let lastComp = fileNameComps.last, fileNameComps.count > 1, lastComp.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil else {
+            return url
+        }
+        let newURL = url.deletingLastPathComponent()
+            .appendingPathComponent(String(fileNameNoExt.prefix(fileNameNoExt.count - lastComp.count - 1)))
+            .appendingPathExtension(url.pathExtension)
+        do {
+            try? FileManager.default.removeItem(at: newURL)
+            try FileManager.default.copyItem(at: url, to: newURL)
+            return newURL
+        } catch {
+            return url
         }
     }
 }

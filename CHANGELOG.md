@@ -4,4 +4,5 @@
 
 ## Bug Fixes
 
+- Avoid in-box document renaming.
 - Removed ads and prevented the app from crashing.
