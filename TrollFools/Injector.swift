@@ -5,7 +5,6 @@
 //  Created by Lessica on 2024/7/19.
 //
 
-import CocoaLumberjackSwift
 import Foundation
 import MachOKit
 import SwiftUI
@@ -288,7 +287,7 @@ final class Injector {
             try throwCommandFailure("rm", reason: retCode)
         }
 
-        DDLogInfo("rm \(target.lastPathComponent) done")
+        NSLog("rm \(target.lastPathComponent) done")
     }
 
     private func _changeOwner(_ target: URL, owner: String, isDirectory: Bool) throws {
@@ -304,7 +303,7 @@ final class Injector {
             try throwCommandFailure("chown", reason: retCode)
         }
 
-        DDLogInfo("chown \(target.lastPathComponent) done")
+        NSLog("chown \(target.lastPathComponent) done")
     }
 
     private func changeOwnerToInstalld(_ target: URL, isDirectory: Bool) throws {
@@ -321,7 +320,7 @@ final class Injector {
             try throwCommandFailure("cp", reason: retCode)
         }
 
-        DDLogInfo("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
+        NSLog("cp \(src.lastPathComponent) to \(dst.lastPathComponent) done")
     }
 
     private func moveURL(_ src: URL, to dst: URL, shouldOverride: Bool = false) throws {
@@ -342,7 +341,7 @@ final class Injector {
             try throwCommandFailure("mv", reason: retCode)
         }
 
-        DDLogInfo("mv \(src.lastPathComponent) to \(dst.lastPathComponent) done")
+        NSLog("mv \(src.lastPathComponent) to \(dst.lastPathComponent) done")
     }
 
     private func makeDirectory(_ target: URL) throws {
@@ -354,7 +353,7 @@ final class Injector {
             try throwCommandFailure("mkdir", reason: retCode)
         }
 
-        DDLogInfo("mkdir \(target.lastPathComponent) done")
+        NSLog("mkdir \(target.lastPathComponent) done")
     }
 
     @discardableResult
@@ -493,7 +492,7 @@ final class Injector {
             }
         }
 
-        DDLogInfo("ldid \(url.lastPathComponent) done")
+        NSLog("ldid \(url.lastPathComponent) done")
     }
 
     private func ctBypass(_ url: URL) throws {
@@ -507,7 +506,7 @@ final class Injector {
             try throwCommandFailure("ct_bypass", reason: retCode)
         }
 
-        DDLogInfo("ct_bypass \(url.lastPathComponent) done")
+        NSLog("ct_bypass \(url.lastPathComponent) done")
     }
 
     private func runtimePaths(_ target: URL) throws -> Set<String> {
@@ -590,7 +589,7 @@ final class Injector {
         let rpaths = try runtimePaths(target)
 
         if rpaths.contains(name) {
-            DDLogInfo("payload \(name) already inserted")
+            NSLog("payload \(name) already inserted")
             return
         }
 
@@ -603,7 +602,7 @@ final class Injector {
             try throwCommandFailure("install_name_tool", reason: retCode)
         }
 
-        DDLogInfo("install_name_tool \(name) done")
+        NSLog("install_name_tool \(name) done")
     }
 
     private func _insertLoadCommandDylib(_ target: URL, name: String, isWeak: Bool) throws {
@@ -611,7 +610,7 @@ final class Injector {
 
         let payload = "@rpath/" + name
         if dylibs.contains(payload) {
-            DDLogInfo("payload \(name) already inserted")
+            NSLog("payload \(name) already inserted")
             return
         }
 
@@ -629,7 +628,7 @@ final class Injector {
             try throwCommandFailure("insert_dylib", reason: retCode)
         }
 
-        DDLogInfo("insert_dylib \(payload) done")
+        NSLog("insert_dylib \(payload) done")
     }
 
     private func removeLoadCommand(_ target: URL, url: URL) throws {
@@ -660,7 +659,7 @@ final class Injector {
             try throwCommandFailure("optool", reason: retCode)
         }
 
-        DDLogInfo("optool \(target.lastPathComponent) done")
+        NSLog("optool \(target.lastPathComponent) done")
     }
 
     private func _applyChange(_ target: URL, from src: String, to dst: String) throws {
@@ -674,7 +673,7 @@ final class Injector {
             try throwCommandFailure("install-name-tool", reason: retCode)
         }
 
-        DDLogInfo("install-name-tool \(target.lastPathComponent) done")
+        NSLog("install-name-tool \(target.lastPathComponent) done")
     }
 
     private func findMainMachO(_ target: URL) throws -> URL {

@@ -5,7 +5,6 @@
 //  Created by Lessica on 2024/7/19.
 //
 
-import CocoaLumberjackSwift
 import Foundation
 
 enum Execute {
@@ -23,10 +22,10 @@ enum Execute {
             personaOptions: .init(uid: 0, gid: 0)
         )
         if !receipt.stdout.isEmpty {
-            DDLogInfo("Standard output: \(receipt.stdout)")
+            NSLog("Standard output: \(receipt.stdout)")
         }
         if !receipt.stderr.isEmpty {
-            DDLogInfo("Standard error: \(receipt.stderr)")
+            NSLog("Standard error: \(receipt.stderr)")
         }
         return receipt.terminationReason
     }
@@ -43,10 +42,10 @@ enum Execute {
             personaOptions: .init(uid: 0, gid: 0)
         )
         if !receipt.stdout.isEmpty {
-            DDLogInfo("Standard output: \(receipt.stdout)")
+            NSLog("Standard output: \(receipt.stdout)")
         }
         if !receipt.stderr.isEmpty {
-            DDLogInfo("Standard error: \(receipt.stderr)")
+            NSLog("Standard error: \(receipt.stderr)")
         }
         return receipt
     }

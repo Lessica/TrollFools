@@ -5,7 +5,6 @@
 //  Created by Lessica on 2024/7/20.
 //
 
-import CocoaLumberjackSwift
 import Combine
 import SwiftUI
 
@@ -257,7 +256,7 @@ struct EjectListView: View {
             vm.app.reload()
             vm.reload()
         } catch {
-            DDLogError("\(error)")
+            NSLog("\(error)")
 
             errorMessage = error.localizedDescription
             isErrorOccurred = true
@@ -298,7 +297,7 @@ struct EjectListView: View {
                             isDeletingAll = false
                         }
 
-                        DDLogError("\(error)")
+                        NSLog("\(error)")
 
                         errorMessage = error.localizedDescription
                         isErrorOccurred = true

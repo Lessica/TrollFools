@@ -5,7 +5,6 @@
 //  Created by Lessica on 2024/7/19.
 //
 
-import CocoaLumberjackSwift
 import Combine
 import SwiftUI
 
@@ -284,7 +283,7 @@ struct AppListCell: View {
                             app.reload()
                             vm.isRebuildNeeded = true
                         }
-                    } catch { DDLogError("\(error.localizedDescription)") }
+                    } catch { NSLog("\(error.localizedDescription)") }
                 } label: {
                     Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
                 }
@@ -297,7 +296,7 @@ struct AppListCell: View {
                             app.reload()
                             vm.isRebuildNeeded = true
                         }
-                    } catch { DDLogError("\(error.localizedDescription)") }
+                    } catch { NSLog("\(error.localizedDescription)") }
                 } label: {
                     Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
                 }
@@ -630,7 +629,7 @@ struct AppListView: View {
                     }
                 }
             } catch {
-                DDLogError("\(error.localizedDescription)")
+                NSLog("\(error.localizedDescription)")
 
                 DispatchQueue.main.async {
                     errorMessage = error.localizedDescription

@@ -5,7 +5,6 @@
 //  Created by Lakr Aream on 2021/12/6.
 //
 
-import CocoaLumberjackSwift
 import Foundation
 
 @discardableResult
@@ -259,7 +258,7 @@ public extension AuxiliaryExecute {
         defer { for case let arg? in argv { free(arg) } }
 
         // MARK: NOW POSIX_SPAWN -
-        DDLogInfo("Execute \(command) \(args.joined(separator: " "))")
+        NSLog("Execute \(command) \(args.joined(separator: " "))")
 
         var pid: pid_t = 0
         let spawnStatus = posix_spawn(&pid, command, &fileActions, &attrs, argv + [nil], realEnv + [nil])
@@ -366,16 +365,16 @@ public extension AuxiliaryExecute {
             let terminationReason: TerminationReason
             if WIFSIGNALED(status) {
                 let signal = WTERMSIG(status)
-                DDLogError("Process \(pid) terminated with uncaught signal \(signal)")
+                NSLog("Process \(pid) terminated with uncaught signal \(signal)")
                 terminationReason = .uncaughtSignal(signal)
             } else {
                 assert(WIFEXITED(status))
 
                 let exitCode = WEXITSTATUS(status)
                 if exitCode == 0 {
-                    DDLogInfo("Process \(pid) exited successfully")
+                    NSLog("Process \(pid) exited successfully")
                 } else {
-                    DDLogError("Process \(pid) exited with code \(exitCode)")
+                    NSLog("Process \(pid) exited with code \(exitCode)")
                 }
 
                 terminationReason = .exit(exitCode)
