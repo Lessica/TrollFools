@@ -66,7 +66,6 @@ final class App: Identifiable, ObservableObject {
 }
 
 final class AppListModel: ObservableObject {
-    static let shared = AppListModel()
     static let hasTrollStore: Bool = { LSApplicationProxy(forIdentifier: "com.opa334.TrollStore") != nil }()
     private var _allApplications: [App] = []
 
@@ -87,7 +86,7 @@ final class AppListModel: ObservableObject {
     private let applicationChanged = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    private init() {
+    init() {
         reload()
 
         filter.$searchKeyword
@@ -234,8 +233,10 @@ final class FilterOptions: ObservableObject {
 }
 
 struct AppListCell: View {
-    @StateObject var app: App
+    @EnvironmentObject var vm: AppListModel
     @EnvironmentObject var filter: FilterOptions
+
+    @StateObject var app: App
 
     @available(iOS 15.0, *)
     var highlightedName: AttributedString {
@@ -281,7 +282,7 @@ struct AppListCell: View {
                         try injector.setDetached(false)
                         withAnimation {
                             app.reload()
-                            AppListModel.shared.isRebuildNeeded = true
+                            vm.isRebuildNeeded = true
                         }
                     } catch { DDLogError("\(error.localizedDescription)") }
                 } label: {
@@ -294,7 +295,7 @@ struct AppListCell: View {
                         try injector.setDetached(true)
                         withAnimation {
                             app.reload()
-                            AppListModel.shared.isRebuildNeeded = true
+                            vm.isRebuildNeeded = true
                         }
                     } catch { DDLogError("\(error.localizedDescription)") }
                 } label: {
@@ -399,15 +400,15 @@ struct AppListCell: View {
         LSApplicationWorkspace.default().openApplication(withBundleID: app.id)
     }
 
-    var isFilzaInstalled: Bool { AppListModel.shared.isFilzaInstalled }
+    var isFilzaInstalled: Bool { vm.isFilzaInstalled }
 
     private func openInFilza() {
-        AppListModel.shared.openInFilza(app.url)
+        vm.openInFilza(app.url)
     }
 }
 
 struct AppListView: View {
-    @StateObject var vm = AppListModel.shared
+    @EnvironmentObject var vm: AppListModel
 
     @State var isErrorOccurred: Bool = false
     @State var errorMessage: String = ""
@@ -454,10 +455,9 @@ struct AppListView: View {
                 .font(.footnote)
 
             Button {
-                guard let url = repoURL else {
-                    return
+                if let repoURL {
+                    UIApplication.shared.open(repoURL)
                 }
-                UIApplication.shared.open(url)
             } label: {
                 Text(NSLocalizedString("Source Code", comment: ""))
                     .font(.footnote)
@@ -601,6 +601,9 @@ struct AppListView: View {
                 // Fallback on earlier versions
                 appList
             }
+        }
+        .onOpenURL { url in
+
         }
     }
 

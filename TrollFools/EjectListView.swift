@@ -29,9 +29,10 @@ struct InjectedPlugIn: Identifiable {
 }
 
 struct PlugInCell: View {
-    let plugIn: InjectedPlugIn
-
+    @EnvironmentObject var vm: AppListModel
     @EnvironmentObject var filter: FilterOptions
+
+    let plugIn: InjectedPlugIn
 
     @available(iOS 15.0, *)
     var highlightedName: AttributedString {
@@ -89,10 +90,10 @@ struct PlugInCell: View {
         }
     }
 
-    var isFilzaInstalled: Bool { AppListModel.shared.isFilzaInstalled }
+    var isFilzaInstalled: Bool { vm.isFilzaInstalled }
 
     private func openInFilza() {
-        AppListModel.shared.openInFilza(plugIn.url)
+        vm.openInFilza(plugIn.url)
     }
 }
 

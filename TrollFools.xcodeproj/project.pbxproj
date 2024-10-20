@@ -73,6 +73,7 @@
 		CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Version.Debug.xcconfig; sourceTree = "<group>"; };
 		CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxar.1.dylib; sourceTree = "<group>"; };
 		CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = install_name_tool; sourceTree = "<group>"; };
+		CC60FBE92CC4E6C400A6D21A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
 		CCB6A1162C4A540F000D75B0 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		CCB6A1182C4A58C7000D75B0 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
@@ -174,6 +175,7 @@
 		CCF470582C4A4649008D8197 /* TrollFools */ = {
 			isa = PBXGroup;
 			children = (
+				CC60FBE92CC4E6C400A6D21A /* Info.plist */,
 				CCF5A0A12C4D417F0097D48D /* main.swift */,
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
 				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
@@ -466,6 +468,7 @@
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TrollFools/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -473,6 +476,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -509,6 +513,7 @@
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TrollFools/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -516,6 +521,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

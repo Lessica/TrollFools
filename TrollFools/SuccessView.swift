@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct SuccessView: View {
-    let title: String
+    @EnvironmentObject var vm: AppListModel
 
-    @StateObject var vm = AppListModel.shared
-    @StateObject var filter = FilterOptions()
+    let title: String
 
     var possibleApp: App? {
         [
@@ -59,7 +58,6 @@ struct SuccessView: View {
                         .padding()
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.leading)
-                        .environmentObject(filter)
                         .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .foregroundColor(Color(.systemBackground))
                             .shadow(radius: 4))
