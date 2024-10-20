@@ -105,7 +105,7 @@ struct OptionView: View {
                 if let result = importerResult {
                     switch result {
                     case .success(let urls):
-                        InjectView(app: app, urlList: urls
+                        InjectView(app, urlList: urls
                             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent }))
                     case .failure(let message):
                         FailureView(title: NSLocalizedString("Error", comment: ""),

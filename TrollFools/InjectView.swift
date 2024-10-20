@@ -53,12 +53,18 @@ final class ViewControllerHost: ObservableObject {
 }
 
 struct InjectView: View {
+    @EnvironmentObject var vm: AppListModel
+
     let app: App
     let urlList: [URL]
 
     @State var injectResult: Result<Void, Error>?
-
     @StateObject var viewControllerHost = ViewControllerHost()
+
+    init(_ app: App, urlList: [URL]) {
+        self.app = app
+        self.urlList = urlList
+    }
 
     func inject() -> Result<Void, Error> {
         do {
@@ -73,7 +79,7 @@ struct InjectView: View {
         }
     }
 
-    var body: some View {
+    var bodyContent: some View {
         VStack {
             if let injectResult {
                 switch injectResult {
@@ -123,6 +129,22 @@ struct InjectView: View {
                     }
                 }
             }
+        }
+    }
+
+    var body: some View {
+        if vm.isSelectorMode {
+            bodyContent
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(NSLocalizedString("Done", comment: "")) {
+                            viewControllerHost.viewController?.navigationController?
+                                .dismiss(animated: true)
+                        }
+                    }
+                }
+        } else {
+            bodyContent
         }
     }
 }

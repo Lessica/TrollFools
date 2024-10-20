@@ -29,13 +29,14 @@ final class App: Identifiable, ObservableObject {
     lazy var isFromTroll: Bool = isSystem && !isFromApple
     lazy var isRemovable: Bool = url.path.contains("/var/containers/Bundle/Application/")
 
-    init(id: String,
-         name: String,
-         type: String,
-         teamID: String,
-         url: URL,
-         version: String? = nil,
-         alternateIcon: UIImage? = nil
+    init(
+        id: String,
+        name: String,
+        type: String,
+        teamID: String,
+        url: URL,
+        version: String? = nil,
+        alternateIcon: UIImage? = nil
     ) {
         self.id = id
         self.name = name
@@ -68,6 +69,9 @@ final class AppListModel: ObservableObject {
     static let hasTrollStore: Bool = { LSApplicationProxy(forIdentifier: "com.opa334.TrollStore") != nil }()
     private var _allApplications: [App] = []
 
+    let selectorURL: URL?
+    var isSelectorMode: Bool { selectorURL != nil }
+
     @Published var filter = FilterOptions()
     @Published var userApplications: [App] = []
     @Published var trollApplications: [App] = []
@@ -85,7 +89,8 @@ final class AppListModel: ObservableObject {
     private let applicationChanged = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    init() {
+    init(selectorURL: URL? = nil) {
+        self.selectorURL = selectorURL
         reload()
 
         filter.$searchKeyword
@@ -114,6 +119,11 @@ final class AppListModel: ObservableObject {
             }
             observer.applicationChanged.send()
         }, "com.apple.LaunchServices.ApplicationsChanged" as CFString, nil, .coalesce)
+    }
+
+    deinit {
+        let darwinCenter = CFNotificationCenterGetDarwinNotifyCenter()
+        CFNotificationCenterRemoveObserver(darwinCenter, Unmanaged.passUnretained(self).toOpaque(), nil, nil)
     }
 
     func reload() {
@@ -325,7 +335,11 @@ struct AppListCell: View {
             else {
                 // iOS 15
                 Color.clear
-                    .contextMenu { cellContextMenu }
+                    .contextMenu {
+                        if !vm.isSelectorMode {
+                            cellContextMenu
+                        }
+                    }
                     .id(app.isDetached)
             }
         }
@@ -391,7 +405,11 @@ struct AppListCell: View {
                 }
             }
         }
-        .contextMenu { cellContextMenuWrapper }
+        .contextMenu {
+            if !vm.isSelectorMode {
+                cellContextMenuWrapper
+            }
+        }
         .background(cellBackground)
     }
 
@@ -412,6 +430,8 @@ struct AppListView: View {
     @State var isErrorOccurred: Bool = false
     @State var errorMessage: String = ""
 
+    @State var selectorOpenedURL: URL? = nil
+
     var appNameString: String {
         Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "TrollFools"
     }
@@ -426,7 +446,7 @@ struct AppListView: View {
         String(format: """
 %@ %@ %@ © 2024
 %@
-""", appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Lessica, Lakr233, mlgm and other contributors.", comment: ""))
+""", appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Made with ♥ by OwnGoal Studio", comment: ""))
     }
 
     let repoURL = URL(string: "https://github.com/Lessica/TrollFools")
@@ -434,7 +454,11 @@ struct AppListView: View {
     func filteredAppList(_ apps: [App]) -> some View {
         ForEach(apps, id: \.id) { app in
             NavigationLink {
-                OptionView(app)
+                if vm.isSelectorMode, let selectorURL = vm.selectorURL {
+                    InjectView(app, urlList: [selectorURL])
+                } else {
+                    OptionView(app)
+                }
             } label: {
                 if #available(iOS 16.0, *) {
                     AppListCell(app: app)
@@ -539,19 +563,22 @@ struct AppListView: View {
                                 .font(.footnote)
                         }
 
-                        if #available(iOS 16.0, *) {
-                            appListFooter
-                                .padding(.top, 8)
-                        } else {
-                            appListFooter
-                                .padding(.top, 2)
+                        if !vm.isSelectorMode {
+                            if #available(iOS 16.0, *) {
+                                appListFooter
+                                    .padding(.top, 8)
+                            } else {
+                                appListFooter
+                                    .padding(.top, 2)
+                            }
                         }
                     }
                 }
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(NSLocalizedString("TrollFools", comment: ""))
+        .navigationTitle(vm.isSelectorMode ? NSLocalizedString("Select Application to Inject", comment: "") : NSLocalizedString("TrollFools", comment: ""))
+        .navigationBarTitleDisplayMode(vm.isSelectorMode ? .inline : .automatic)
         .background(Group {
             NavigationLink(isActive: $isErrorOccurred) {
                 FailureView(title: NSLocalizedString("Error", comment: ""),
@@ -559,6 +586,14 @@ struct AppListView: View {
             } label: { }
         })
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                if vm.isSelectorMode, let selectorURL = vm.selectorURL {
+                    VStack {
+                        Text(selectorURL.lastPathComponent).font(.headline)
+                        Text(NSLocalizedString("Select Application to Inject", comment: "")).font(.caption)
+                    }
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     vm.filter.showPatchedOnly.toggle()
@@ -601,8 +636,15 @@ struct AppListView: View {
                 appList
             }
         }
+        .sheet(item: $selectorOpenedURL) { url in
+            AppListView()
+                .environmentObject(AppListModel(selectorURL: url))
+        }
         .onOpenURL { url in
-
+            guard url.isFileURL, url.pathExtension.lowercased() == "dylib" else {
+                return
+            }
+            selectorOpenedURL = url
         }
     }
 
@@ -638,4 +680,8 @@ struct AppListView: View {
             }
         }
     }
+}
+
+extension URL: Identifiable {
+    public var id: String { absoluteString }
 }

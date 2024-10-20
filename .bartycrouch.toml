@@ -4,7 +4,7 @@ tasks = ["interfaces", "code", "transform", "normalize"]
 [update.interfaces]
 paths = ["TrollFools"]
 subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
-defaultToBase = false
+defaultToBase = true
 ignoreEmptyStrings = false
 unstripped = false
 ignoreKeys = ["#bartycrouch-ignore!", "#bc-ignore!", "#i!"]

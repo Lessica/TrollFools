@@ -29,6 +29,7 @@
 		CC3485182C71B219007E0E28 /* Version.Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */; };
 		CC5E54BE2C4E12F900FDE4A8 /* install_name_tool in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */; };
 		CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */; };
+		CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */; };
 		CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */ = {isa = PBXBuildFile; fileRef = CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */; };
 		CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A1162C4A540F000D75B0 /* CoreServices.framework */; };
 		CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A1182C4A58C7000D75B0 /* OptionView.swift */; };
@@ -70,6 +71,8 @@
 		CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxar.1.dylib; sourceTree = "<group>"; };
 		CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = install_name_tool; sourceTree = "<group>"; };
 		CC60FBE92CC4E6C400A6D21A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CC60FBEA2CC5024000A6D21A /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartyCrouch.swift; sourceTree = "<group>"; };
 		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
 		CCB6A1162C4A540F000D75B0 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		CCB6A1182C4A58C7000D75B0 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
@@ -113,28 +116,29 @@
 			isa = PBXGroup;
 			children = (
 				CCF4705D2C4A464B008D8197 /* Assets.xcassets */,
-				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
 				CCF925432C4CE47800880D48 /* chown */,
 				CC1548E02C4A963500A4173E /* cp */,
 				CC1549012C4B62E300A4173E /* cp-15 */,
 				CC1548CF2C4A6B8200A4173E /* ct_bypass */,
+				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
+				CC60FBE92CC4E6C400A6D21A /* Info.plist */,
 				CC1548DC2C4A8DC500A4173E /* insert_dylib */,
 				CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */,
 				CCC564E82C4BE8320097C300 /* ldid */,
-				CCFC78632C4E853D008EB25D /* mkdir */,
-				CCECB7CD2C54DC660094C8E6 /* mv */,
-				CC0E80FA2C54F84000B137B4 /* mv-15 */,
-				CC15490B2C4B79D800A4173E /* optool */,
-				CC1548FF2C4AB43600A4173E /* rm */,
 				CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */,
 				CC1548E22C4A974400A4173E /* libintl.8.dylib */,
 				CC1548E32C4A974400A4173E /* libiosexec.1.dylib */,
 				CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */,
 				CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */,
 				CCF4706B2C4A4919008D8197 /* Localizable.strings */,
+				CCFC78632C4E853D008EB25D /* mkdir */,
+				CCECB7CD2C54DC660094C8E6 /* mv */,
+				CC0E80FA2C54F84000B137B4 /* mv-15 */,
+				CC15490B2C4B79D800A4173E /* optool */,
+				CC1548FF2C4AB43600A4173E /* rm */,
 				CC3485142C71B219007E0E28 /* TrollFools.entitlements */,
-				CC3485152C71B219007E0E28 /* Version.xcconfig */,
 				CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */,
+				CC3485152C71B219007E0E28 /* Version.xcconfig */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -167,7 +171,7 @@
 		CCF470582C4A4649008D8197 /* TrollFools */ = {
 			isa = PBXGroup;
 			children = (
-				CC60FBE92CC4E6C400A6D21A /* Info.plist */,
+				CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */,
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
 				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
 				CCB6A1182C4A58C7000D75B0 /* OptionView.swift */,
@@ -238,6 +242,7 @@
 				en,
 				Base,
 				"zh-Hans",
+				vi,
 			);
 			mainGroup = CCF4704D2C4A4649008D8197;
 			packageReferences = (
@@ -294,6 +299,7 @@
 				CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */,
 				CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */,
 				CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */,
+				CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */,
 				CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */,
 				CCF5A0A42C4D45160097D48D /* AuxiliaryExecute.swift in Sources */,
 				CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */,
@@ -314,6 +320,7 @@
 			children = (
 				CCF4706A2C4A4919008D8197 /* en */,
 				CCF4706C2C4A491B008D8197 /* zh-Hans */,
+				CC60FBEA2CC5024000A6D21A /* vi */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

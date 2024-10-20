@@ -23,6 +23,9 @@
 "Copyright" = "版权所有";
 
 /* No comment provided by engineer. */
+"Done" = "完成";
+
+/* No comment provided by engineer. */
 "Eject" = "推出";
 
 /* No comment provided by engineer. */
@@ -65,10 +68,10 @@
 "Launch" = "启动";
 
 /* No comment provided by engineer. */
-"Lessica, Lakr233, mlgm and other contributors." = "Lessica, Lakr233, mlgm 及其他贡献者";
+"Lock Version" = "锁定版本";
 
 /* No comment provided by engineer. */
-"Lock Version" = "锁定版本";
+"Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "没有找到符合条件的框架。";
@@ -105,6 +108,9 @@
 
 /* No comment provided by engineer. */
 "Search…" = "搜索…";
+
+/* No comment provided by engineer. */
+"Select Application to Inject" = "选择应用程序进行注入";
 
 /* No comment provided by engineer. */
 "Show in Filza" = "在 Filza 中显示";
