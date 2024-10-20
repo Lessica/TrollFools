@@ -8,30 +8,7 @@
 import SwiftUI
 
 struct SuccessView: View {
-    @EnvironmentObject var vm: AppListModel
-
     let title: String
-
-    var possibleApp: App? {
-        [
-            App(
-                id: NSLocalizedString("A pure TrollStore software channel!", comment: ""),
-                name: NSLocalizedString("AE86 TrollStore Channel", comment: ""),
-                type: "User",
-                teamID: "GXZ23M5TP2",
-                url: URL(string: "https://t.me/ae86_ios")!,
-                alternateIcon: .init(named: "ae86-ios")
-            ),
-            App(
-                id: NSLocalizedString("Not the first, but the best phone call recorder with TrollStore.", comment: ""),
-                name: NSLocalizedString("TrollRecorder", comment: ""),
-                type: "User",
-                teamID: "GXZ23M5TP2",
-                url: URL(string: "https://havoc.app/package/trollrecorder")!,
-                alternateIcon: .init(named: "tricon-default")
-            ),
-        ].randomElement()
-    }
 
     var body: some View {
         ZStack {
@@ -46,35 +23,6 @@ struct SuccessView: View {
             }
             .padding()
             .multilineTextAlignment(.center)
-
-            VStack {
-                Spacer()
-
-                if !vm.hasTrollRecorder, let possibleApp {
-                    Button {
-                        UIApplication.shared.open(possibleApp.url)
-                    } label: {
-                        AppListCell(app: possibleApp)
-                        .padding()
-                        .foregroundColor(.primary)
-                        .multilineTextAlignment(.leading)
-                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .foregroundColor(Color(.systemBackground))
-                            .shadow(radius: 4))
-                    }
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .bottom).combined(with: .opacity),
-                        removal: .move(edge: .bottom).combined(with: .opacity)
-                    ))
-                }
-            }
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                withAnimation {
-                    vm.hasTrollRecorder = true
-                }
-            }
         }
     }
 }
