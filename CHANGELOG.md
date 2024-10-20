@@ -1,8 +1,3 @@
-## Bug Fixes
+## New Feature
 
-- Now application without a short version string will be displayed in the list (#72).
-- The auto-correction for the app search has been disabled (#78).
-
-## Languages
-
-- Added Vietnamese (#71, #74).
+- Receive `.dylib` files from share sheets and inject them into specified applications.
