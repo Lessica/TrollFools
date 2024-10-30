@@ -14,4 +14,3 @@ FOUNDATION_EXTERN void TFUtilKillAll(NSString *processPath, BOOL softly);
                                                   format:(int)format
                                                    scale:(CGFloat)scale;
 @end
-

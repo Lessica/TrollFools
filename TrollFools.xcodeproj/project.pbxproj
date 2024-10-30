@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6124A06D2CD2322400C52253 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A06C2CD2322400C52253 /* App.swift */; };
+		6124A06F2CD2324200C52253 /* AppListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A06E2CD2324200C52253 /* AppListModel.swift */; };
+		6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0702CD2326500C52253 /* FilterOptions.swift */; };
+		6124A0742CD2328600C52253 /* AppListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0732CD2328600C52253 /* AppListCell.swift */; };
+		6124A0762CD232C600C52253 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0752CD232C600C52253 /* Option.swift */; };
+		6124A0782CD232D400C52253 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0772CD232D400C52253 /* OptionCell.swift */; };
+		6124A07B2CD2337500C52253 /* ViewControllerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07A2CD2337500C52253 /* ViewControllerHost.swift */; };
+		6124A07D2CD233A700C52253 /* InjectedPlugIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */; };
+		6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07E2CD233BA00C52253 /* PlugInCell.swift */; };
+		6124A0812CD233DA00C52253 /* EjectListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0802CD233DA00C52253 /* EjectListModel.swift */; };
 		CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC0E80FA2C54F84000B137B4 /* mv-15 */; };
 		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
 		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
@@ -50,6 +60,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6124A06C2CD2322400C52253 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		6124A06E2CD2324200C52253 /* AppListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListModel.swift; sourceTree = "<group>"; };
+		6124A0702CD2326500C52253 /* FilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptions.swift; sourceTree = "<group>"; };
+		6124A0732CD2328600C52253 /* AppListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListCell.swift; sourceTree = "<group>"; };
+		6124A0752CD232C600C52253 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
+		6124A0772CD232D400C52253 /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
+		6124A07A2CD2337500C52253 /* ViewControllerHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHost.swift; sourceTree = "<group>"; };
+		6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedPlugIn.swift; sourceTree = "<group>"; };
+		6124A07E2CD233BA00C52253 /* PlugInCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlugInCell.swift; sourceTree = "<group>"; };
+		6124A0802CD233DA00C52253 /* EjectListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListModel.swift; sourceTree = "<group>"; };
 		CC0E80FA2C54F84000B137B4 /* mv-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "mv-15"; sourceTree = "<group>"; };
 		CC1548CF2C4A6B8200A4173E /* ct_bypass */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ct_bypass; sourceTree = "<group>"; };
 		CC1548D22C4A743200A4173E /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
@@ -112,33 +132,100 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CC15490F2C4B84DD00A4173E /* Resources */ = {
+		6124A06B2CD2321200C52253 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				CCF4705D2C4A464B008D8197 /* Assets.xcassets */,
+				6124A06C2CD2322400C52253 /* App.swift */,
+				6124A06E2CD2324200C52253 /* AppListModel.swift */,
+				6124A0702CD2326500C52253 /* FilterOptions.swift */,
+				6124A0752CD232C600C52253 /* Option.swift */,
+				6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */,
+				6124A0802CD233DA00C52253 /* EjectListModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		6124A0722CD2327E00C52253 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6124A0732CD2328600C52253 /* AppListCell.swift */,
+				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
+				6124A0772CD232D400C52253 /* OptionCell.swift */,
+				CCB6A1182C4A58C7000D75B0 /* OptionView.swift */,
+				CC19E4BA2C561D7300E0F1B5 /* SettingsView.swift */,
+				CCB6A11A2C4A6066000D75B0 /* InjectView.swift */,
+				6124A07E2CD233BA00C52253 /* PlugInCell.swift */,
+				CC15490D2C4B80AF00A4173E /* EjectListView.swift */,
+				CC1548D22C4A743200A4173E /* SuccessView.swift */,
+				CC1548D42C4A744300A4173E /* FailureView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		6124A0792CD2336100C52253 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				6124A07A2CD2337500C52253 /* ViewControllerHost.swift */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
+		6124A0822CD2345300C52253 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CC1548D62C4A768700A4173E /* Injector.swift */,
+				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
+				CCF5A0A32C4D45160097D48D /* AuxiliaryExecute.swift */,
+				CCF5A0A52C4D45400097D48D /* AuxiliaryExecute+Spawn.swift */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		6124A0832CD2348E00C52253 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
 				CCF925432C4CE47800880D48 /* chown */,
 				CC1548E02C4A963500A4173E /* cp */,
 				CC1549012C4B62E300A4173E /* cp-15 */,
 				CC1548CF2C4A6B8200A4173E /* ct_bypass */,
-				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
-				CC60FBE92CC4E6C400A6D21A /* Info.plist */,
 				CC1548DC2C4A8DC500A4173E /* insert_dylib */,
 				CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */,
 				CCC564E82C4BE8320097C300 /* ldid */,
-				CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */,
-				CC1548E22C4A974400A4173E /* libintl.8.dylib */,
-				CC1548E32C4A974400A4173E /* libiosexec.1.dylib */,
-				CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */,
-				CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */,
-				CCF4706B2C4A4919008D8197 /* Localizable.strings */,
 				CCFC78632C4E853D008EB25D /* mkdir */,
 				CCECB7CD2C54DC660094C8E6 /* mv */,
 				CC0E80FA2C54F84000B137B4 /* mv-15 */,
 				CC15490B2C4B79D800A4173E /* optool */,
 				CC1548FF2C4AB43600A4173E /* rm */,
+				CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */,
+				CC1548E22C4A974400A4173E /* libintl.8.dylib */,
+				CC1548E32C4A974400A4173E /* libiosexec.1.dylib */,
+				CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */,
+				CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */,
+				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		6124A0842CD234E000C52253 /* CExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CCF925422C4C1B6F00880D48 /* LSApplicationProxy.h */,
+				CCF925412C4C1B6F00880D48 /* LSApplicationWorkspace.h */,
+				CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */,
+				CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */,
+			);
+			name = CExtension;
+			sourceTree = "<group>";
+		};
+		CC15490F2C4B84DD00A4173E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CCF4705D2C4A464B008D8197 /* Assets.xcassets */,
+				CC60FBE92CC4E6C400A6D21A /* Info.plist */,
+				CCF4706B2C4A4919008D8197 /* Localizable.strings */,
 				CC3485142C71B219007E0E28 /* TrollFools.entitlements */,
-				CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */,
 				CC3485152C71B219007E0E28 /* Version.xcconfig */,
+				CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -173,21 +260,12 @@
 			children = (
 				CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */,
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
-				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
-				CCB6A1182C4A58C7000D75B0 /* OptionView.swift */,
-				CC19E4BA2C561D7300E0F1B5 /* SettingsView.swift */,
-				CCB6A11A2C4A6066000D75B0 /* InjectView.swift */,
-				CC15490D2C4B80AF00A4173E /* EjectListView.swift */,
-				CC1548D22C4A743200A4173E /* SuccessView.swift */,
-				CC1548D42C4A744300A4173E /* FailureView.swift */,
-				CC1548D62C4A768700A4173E /* Injector.swift */,
-				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
-				CCF5A0A32C4D45160097D48D /* AuxiliaryExecute.swift */,
-				CCF5A0A52C4D45400097D48D /* AuxiliaryExecute+Spawn.swift */,
-				CCF925422C4C1B6F00880D48 /* LSApplicationProxy.h */,
-				CCF925412C4C1B6F00880D48 /* LSApplicationWorkspace.h */,
-				CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */,
-				CCF470712C4A4E81008D8197 /* TrollFools-Bridging-Header.h */,
+				6124A0822CD2345300C52253 /* Core */,
+				6124A0722CD2327E00C52253 /* View */,
+				6124A06B2CD2321200C52253 /* ViewModel */,
+				6124A0792CD2336100C52253 /* Extension */,
+				6124A0842CD234E000C52253 /* CExtension */,
+				6124A0832CD2348E00C52253 /* Tools */,
 				CC15490F2C4B84DD00A4173E /* Resources */,
 			);
 			path = TrollFools;
@@ -295,16 +373,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6124A0782CD232D400C52253 /* OptionCell.swift in Sources */,
 				CCF5A0A62C4D45400097D48D /* AuxiliaryExecute+Spawn.swift in Sources */,
 				CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */,
 				CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */,
+				6124A06D2CD2322400C52253 /* App.swift in Sources */,
 				CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */,
 				CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */,
+				6124A0762CD232C600C52253 /* Option.swift in Sources */,
+				6124A07D2CD233A700C52253 /* InjectedPlugIn.swift in Sources */,
 				CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */,
+				6124A0742CD2328600C52253 /* AppListCell.swift in Sources */,
 				CCF5A0A42C4D45160097D48D /* AuxiliaryExecute.swift in Sources */,
+				6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */,
+				6124A07B2CD2337500C52253 /* ViewControllerHost.swift in Sources */,
 				CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */,
+				6124A0812CD233DA00C52253 /* EjectListModel.swift in Sources */,
 				CC19E4BB2C561D7300E0F1B5 /* SettingsView.swift in Sources */,
 				CC1548D72C4A768700A4173E /* Injector.swift in Sources */,
+				6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */,
+				6124A06F2CD2324200C52253 /* AppListModel.swift in Sources */,
 				CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */,
 				CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */,
 				CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */,
