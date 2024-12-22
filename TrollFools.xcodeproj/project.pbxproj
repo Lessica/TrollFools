@@ -663,7 +663,7 @@
 			repositoryURL = "https://github.com/p-x9/MachOKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.19.0;
+				minimumVersion = 0.26.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
