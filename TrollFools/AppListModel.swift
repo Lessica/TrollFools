@@ -36,8 +36,7 @@ final class AppListModel: ObservableObject {
         self.selectorURL = selectorURL
         reload()
 
-        filter.$searchKeyword
-            .combineLatest(filter.$showPatchedOnly)
+        $filter
             .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] _ in
                 withAnimation {
@@ -71,6 +70,7 @@ final class AppListModel: ObservableObject {
 
     func reload() {
         let allApplications = Self.fetchApplications(&hasTrollRecorder, &unsupportedCount)
+        allApplications.forEach { $0.appList = self }
         self._allApplications = allApplications
         if let filzaURL {
             self.isFilzaInstalled = UIApplication.shared.canOpenURL(filzaURL)

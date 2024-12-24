@@ -7,13 +7,13 @@
 
 import Foundation
 
-final class FilterOptions: ObservableObject {
-    @Published var searchKeyword = ""
-    @Published var showPatchedOnly = false
+struct FilterOptions {
+    var searchKeyword = ""
+    var showPatchedOnly = false
 
     var isSearching: Bool { !searchKeyword.isEmpty }
 
-    func reset() {
+    mutating func reset() {
         searchKeyword = ""
         showPatchedOnly = false
     }

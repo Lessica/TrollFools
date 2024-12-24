@@ -15,8 +15,7 @@ private let gDateFormatter: DateFormatter = {
 }()
 
 struct PlugInCell: View {
-    @EnvironmentObject var vm: AppListModel
-    @EnvironmentObject var filter: FilterOptions
+    @EnvironmentObject var ejectList: EjectListModel
 
     let plugIn: InjectedPlugIn
 
@@ -24,7 +23,7 @@ struct PlugInCell: View {
     var highlightedName: AttributedString {
         let name = plugIn.url.lastPathComponent
         var attributedString = AttributedString(name)
-        if let range = attributedString.range(of: filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: ejectList.filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -66,19 +65,22 @@ struct PlugInCell: View {
             }
         }
         .contextMenu {
-            if isFilzaInstalled {
-                Button {
-                    openInFilza()
-                } label: {
+            Button {
+                openInFilza()
+            } label: {
+                if isFilzaInstalled {
                     Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+                } else {
+                    Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
                 }
             }
+            .disabled(!isFilzaInstalled)
         }
     }
 
-    var isFilzaInstalled: Bool { vm.isFilzaInstalled }
+    var isFilzaInstalled: Bool { ejectList.app.appList?.isFilzaInstalled ?? false }
 
     private func openInFilza() {
-        vm.openInFilza(plugIn.url)
+        ejectList.app.appList?.openInFilza(plugIn.url)
     }
 }

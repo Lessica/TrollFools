@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppListView: View {
-    @EnvironmentObject var vm: AppListModel
+    @EnvironmentObject var appList: AppListModel
 
     @State var isErrorOccurred: Bool = false
     @State var errorMessage: String = ""
@@ -37,7 +37,7 @@ struct AppListView: View {
     func filteredAppList(_ apps: [App]) -> some View {
         ForEach(apps, id: \.id) { app in
             NavigationLink {
-                if vm.isSelectorMode, let selectorURL = vm.selectorURL {
+                if appList.isSelectorMode, let selectorURL = appList.selectorURL {
                     InjectView(app, urlList: [selectorURL])
                 } else {
                     OptionView(app)
@@ -45,17 +45,15 @@ struct AppListView: View {
             } label: {
                 if #available(iOS 16.0, *) {
                     AppListCell(app: app)
-                        .environmentObject(vm.filter)
                 } else {
                     AppListCell(app: app)
-                        .environmentObject(vm.filter)
                         .padding(.vertical, 4)
                 }
             }
         }
     }
 
-    var appListFooter: some View {
+    var appListFooterView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(appString)
                 .font(.footnote)
@@ -71,9 +69,9 @@ struct AppListView: View {
         }
     }
 
-    var appList: some View {
+    var appListView: some View {
         List {
-            if AppListModel.hasTrollStore && vm.isRebuildNeeded {
+            if AppListModel.hasTrollStore && appList.isRebuildNeeded {
                 Section {
                     Button {
                         rebuildIconCache()
@@ -91,7 +89,7 @@ struct AppListView: View {
 
                             Spacer()
 
-                            if vm.isRebuilding {
+                            if appList.isRebuilding {
                                 if #available(iOS 16.0, *) {
                                     ProgressView()
                                         .progressViewStyle(CircularProgressViewStyle())
@@ -110,48 +108,48 @@ struct AppListView: View {
                         }
                         .padding(.vertical, 4)
                     }
-                    .disabled(vm.isRebuilding)
+                    .disabled(appList.isRebuilding)
                 }
             }
 
             Section {
-                filteredAppList(vm.userApplications)
+                filteredAppList(appList.userApplications)
             } header: {
                 Text(NSLocalizedString("User Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if !vm.filter.isSearching && !vm.filter.showPatchedOnly && vm.unsupportedCount > 0 {
-                    Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), vm.unsupportedCount))
+                if !appList.filter.isSearching && !appList.filter.showPatchedOnly && appList.unsupportedCount > 0 {
+                    Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
                         .font(.footnote)
                 }
             }
 
             Section {
-                filteredAppList(vm.trollApplications)
+                filteredAppList(appList.trollApplications)
             } header: {
                 Text(NSLocalizedString("TrollStore Applications", comment: ""))
                     .font(.footnote)
             }
 
             Section {
-                filteredAppList(vm.appleApplications)
+                filteredAppList(appList.appleApplications)
             } header: {
                 Text(NSLocalizedString("Injectable System Applications", comment: ""))
                     .font(.footnote)
             } footer: {
-                if !vm.filter.isSearching {
+                if !appList.filter.isSearching {
                     VStack(alignment: .leading, spacing: 20) {
-                        if !vm.filter.showPatchedOnly {
+                        if !appList.filter.showPatchedOnly {
                             Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
                                 .font(.footnote)
                         }
 
-                        if !vm.isSelectorMode {
+                        if !appList.isSelectorMode {
                             if #available(iOS 16.0, *) {
-                                appListFooter
+                                appListFooterView
                                     .padding(.top, 8)
                             } else {
-                                appListFooter
+                                appListFooterView
                                     .padding(.top, 2)
                             }
                         }
@@ -160,8 +158,8 @@ struct AppListView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(vm.isSelectorMode ? NSLocalizedString("Select Application to Inject", comment: "") : NSLocalizedString("TrollFools", comment: ""))
-        .navigationBarTitleDisplayMode(vm.isSelectorMode ? .inline : .automatic)
+        .navigationTitle(appList.isSelectorMode ? NSLocalizedString("Select Application to Inject", comment: "") : NSLocalizedString("TrollFools", comment: ""))
+        .navigationBarTitleDisplayMode(appList.isSelectorMode ? .inline : .automatic)
         .background(Group {
             NavigationLink(isActive: $isErrorOccurred) {
                 FailureView(title: NSLocalizedString("Error", comment: ""),
@@ -170,7 +168,7 @@ struct AppListView: View {
         })
         .toolbar {
             ToolbarItem(placement: .principal) {
-                if vm.isSelectorMode, let selectorURL = vm.selectorURL {
+                if appList.isSelectorMode, let selectorURL = appList.selectorURL {
                     VStack {
                         Text(selectorURL.lastPathComponent).font(.headline)
                         Text(NSLocalizedString("Select Application to Inject", comment: "")).font(.caption)
@@ -179,14 +177,14 @@ struct AppListView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    vm.filter.showPatchedOnly.toggle()
+                    appList.filter.showPatchedOnly.toggle()
                 } label: {
                     if #available(iOS 15.0, *) {
-                        Image(systemName: vm.filter.showPatchedOnly 
+                        Image(systemName: appList.filter.showPatchedOnly 
                               ? "line.3.horizontal.decrease.circle.fill"
                               : "line.3.horizontal.decrease.circle")
                     } else {
-                        Image(systemName: vm.filter.showPatchedOnly 
+                        Image(systemName: appList.filter.showPatchedOnly 
                               ? "eject.circle.fill"
                               : "eject.circle")
                     }
@@ -199,16 +197,16 @@ struct AppListView: View {
     var body: some View {
         NavigationView {
             if #available(iOS 15.0, *) {
-                appList
+                appListView
                     .refreshable {
                         withAnimation {
-                            vm.reload()
+                            appList.reload()
                         }
                     }
                     .searchable(
-                        text: $vm.filter.searchKeyword,
+                        text: $appList.filter.searchKeyword,
                         placement: .automatic,
-                        prompt: (vm.filter.showPatchedOnly
+                        prompt: (appList.filter.showPatchedOnly
                                  ? NSLocalizedString("Search Patched…", comment: "")
                                  : NSLocalizedString("Search…", comment: ""))
                     )
@@ -216,7 +214,7 @@ struct AppListView: View {
                     .autocorrectionDisabled(true)
             } else {
                 // Fallback on earlier versions
-                appList
+                appListView
             }
         }
         .sheet(item: $selectorOpenedURL) { url in
@@ -233,24 +231,24 @@ struct AppListView: View {
 
     private func rebuildIconCache() {
         withAnimation {
-            vm.isRebuilding = true
+            appList.isRebuilding = true
         }
 
         DispatchQueue.global(qos: .userInteractive).async {
             defer {
                 DispatchQueue.main.async {
                     withAnimation {
-                        vm.isRebuilding = false
+                        appList.isRebuilding = false
                     }
                 }
             }
 
             do {
-                try vm.rebuildIconCache()
+                try appList.rebuildIconCache()
 
                 DispatchQueue.main.async {
                     withAnimation {
-                        vm.isRebuildNeeded = false
+                        appList.isRebuildNeeded = false
                     }
                 }
             } catch {

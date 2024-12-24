@@ -844,7 +844,7 @@ final class Injector {
 
         guard let targetURL = try _locateAvailableMachO(shouldBackup: shouldBackup) else {
             throw NSError(domain: kTrollFoolsErrorDomain, code: 2, userInfo: [
-                NSLocalizedDescriptionKey: NSLocalizedString("No eligible framework found.", comment: ""),
+                NSLocalizedDescriptionKey: NSLocalizedString("No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”.", comment: ""),
             ])
         }
 

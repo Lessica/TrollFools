@@ -5,13 +5,7 @@
 "%@ terminated with signal %d" = "%@ terminated with signal %d";
 
 /* No comment provided by engineer. */
-"A pure TrollStore software channel!" = "A pure TrollStore software channel!";
-
-/* No comment provided by engineer. */
 "Advanced Settings" = "Advanced Settings";
-
-/* No comment provided by engineer. */
-"AE86 TrollStore Channel" = "AE86 TrollStore Channel";
 
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "And %d more unsupported user applications.";
@@ -47,6 +41,9 @@
 "Failed to parse: %@" = "Failed to parse: %@";
 
 /* No comment provided by engineer. */
+"Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
+
+/* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "If you do not know what these options mean, please do not change them.";
 
 /* No comment provided by engineer. */
@@ -77,13 +74,13 @@
 "No eligible framework found." = "No eligible framework found.";
 
 /* No comment provided by engineer. */
+"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”.";
+
+/* No comment provided by engineer. */
 "No Injected Plug-Ins" = "No Injected Plug-Ins";
 
 /* No comment provided by engineer. */
 "No valid plug-ins found." = "No valid plug-ins found.";
-
-/* No comment provided by engineer. */
-"Not the first, but the best phone call recorder with TrollStore." = "Not the first, but the best phone call recorder with TrollStore.";
 
 /* No comment provided by engineer. */
 "Only removable system applications are eligible and listed." = "Only removable system applications are eligible and listed.";
@@ -126,9 +123,6 @@
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
-
-/* No comment provided by engineer. */
-"TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "TrollStore Applications";

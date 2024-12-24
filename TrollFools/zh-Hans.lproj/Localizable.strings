@@ -5,13 +5,7 @@
 "%@ terminated with signal %d" = "%@ 意外终止，未捕获的信号 %d";
 
 /* No comment provided by engineer. */
-"A pure TrollStore software channel!" = "秋名山一路向北，最纯净的巨魔软件体验！";
-
-/* No comment provided by engineer. */
 "Advanced Settings" = "高级选项";
-
-/* No comment provided by engineer. */
-"AE86 TrollStore Channel" = "秋名山巨魔俱乐部";
 
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用";
@@ -47,6 +41,9 @@
 "Failed to parse: %@" = "无法解析：%@";
 
 /* No comment provided by engineer. */
+"Filza (URL Scheme) Not Installed" = "未安装支持 URL Scheme 的 Filza";
+
+/* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
 
 /* No comment provided by engineer. */
@@ -77,13 +74,13 @@
 "No eligible framework found." = "没有找到符合条件的框架。";
 
 /* No comment provided by engineer. */
+"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "没有找到符合条件的框架。\n\n通常情况下，这不是 TrollFools 自身的问题，而是目标应用程序的问题。你可能需要从 App Store 重新安装该应用。你不能在通过 “爱啪思道” 或 “NoAppThinning” 等方式安装的应用程序上使用 TrollFools。";
+
+/* No comment provided by engineer. */
 "No Injected Plug-Ins" = "没有已注入的插件";
 
 /* No comment provided by engineer. */
 "No valid plug-ins found." = "没有找到有效的插件。";
-
-/* No comment provided by engineer. */
-"Not the first, but the best phone call recorder with TrollStore." = "TrollFools 永久免费，如果你喜欢它，请购买巨魔录音机支持我们的开发！";
 
 /* No comment provided by engineer. */
 "Only removable system applications are eligible and listed." = "仅列出可移除的系统应用，其他系统应用不支持注入。";
@@ -126,9 +123,6 @@
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
-
-/* No comment provided by engineer. */
-"TrollRecorder" = "巨魔录音机";
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "巨魔商店应用";

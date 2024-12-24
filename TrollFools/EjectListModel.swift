@@ -21,7 +21,7 @@ final class EjectListModel: ObservableObject {
         self.app = app
         reload()
 
-        filter.$searchKeyword
+        $filter
             .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] _ in
                 withAnimation {

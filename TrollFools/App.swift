@@ -28,6 +28,8 @@ final class App: Identifiable, ObservableObject {
     lazy var isFromTroll: Bool = isSystem && !isFromApple
     lazy var isRemovable: Bool = url.path.contains("/var/containers/Bundle/Application/")
 
+    weak var appList: AppListModel?
+
     init(
         id: String,
         name: String,

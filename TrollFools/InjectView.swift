@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InjectView: View {
-    @EnvironmentObject var vm: AppListModel
+    @EnvironmentObject var appList: AppListModel
 
     let app: App
     let urlList: [URL]
@@ -88,7 +88,7 @@ struct InjectView: View {
     }
 
     var body: some View {
-        if vm.isSelectorMode {
+        if appList.isSelectorMode {
             bodyContent
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {

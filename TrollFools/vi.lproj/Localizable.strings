@@ -5,13 +5,7 @@
 "%@ terminated with signal %d" = "%@ đã kết thúc với tín hiệu %d";
 
 /* No comment provided by engineer. */
-"A pure TrollStore software channel!" = "Một kênh phần mềm TrollStore thuần túy!";
-
-/* No comment provided by engineer. */
 "Advanced Settings" = "Cài đặt nâng cao";
-
-/* No comment provided by engineer. */
-"AE86 TrollStore Channel" = "Kênh AE86 TrollStore";
 
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
@@ -46,6 +40,9 @@
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "Không thể phân tích: %@";
 
+/* TODO */
+"Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
+
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
 
@@ -76,14 +73,14 @@
 /* No comment provided by engineer. */
 "No eligible framework found." = "Không tìm thấy framework đủ điều kiện.";
 
+/* TODO */
+"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”.";
+
 /* No comment provided by engineer. */
 "No Injected Plug-Ins" = "Không có plug-in nào được tiêm";
 
 /* No comment provided by engineer. */
 "No valid plug-ins found." = "Không tìm thấy plug-in hợp lệ.";
-
-/* No comment provided by engineer. */
-"Not the first, but the best phone call recorder with TrollStore." = "Không phải ứng dụng đầu tiên, nhưng là ứng dụng ghi âm cuộc gọi tốt nhất trên TrollStore.";
 
 /* No comment provided by engineer. */
 "Only removable system applications are eligible and listed." = "Chỉ các ứng dụng hệ thống có thể gỡ bỏ và đủ điều kiện tiêm mới được liệt kê.";
@@ -126,9 +123,6 @@
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
-
-/* No comment provided by engineer. */
-"TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "Ứng dụng TrollStore";

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct AppListCell: View {
-    @EnvironmentObject var vm: AppListModel
-    @EnvironmentObject var filter: FilterOptions
+    @EnvironmentObject var appList: AppListModel
 
     @StateObject var app: App
 
@@ -17,7 +16,7 @@ struct AppListCell: View {
     var highlightedName: AttributedString {
         let name = app.name
         var attributedString = AttributedString(name)
-        if let range = attributedString.range(of: filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: appList.filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -27,7 +26,7 @@ struct AppListCell: View {
     var highlightedId: AttributedString {
         let id = app.id
         var attributedString = AttributedString(id)
-        if let range = attributedString.range(of: filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if let range = attributedString.range(of: appList.filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
         return attributedString
@@ -41,13 +40,16 @@ struct AppListCell: View {
             Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
         }
 
-        if isFilzaInstalled {
-            Button {
-                openInFilza()
-            } label: {
+        Button {
+            openInFilza()
+        } label: {
+            if isFilzaInstalled {
                 Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+            } else {
+                Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
             }
         }
+        .disabled(!isFilzaInstalled)
 
         if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
             if app.isDetached {
@@ -57,7 +59,7 @@ struct AppListCell: View {
                         try injector.setDetached(false)
                         withAnimation {
                             app.reload()
-                            vm.isRebuildNeeded = true
+                            appList.isRebuildNeeded = true
                         }
                     } catch { NSLog("\(error.localizedDescription)") }
                 } label: {
@@ -70,7 +72,7 @@ struct AppListCell: View {
                         try injector.setDetached(true)
                         withAnimation {
                             app.reload()
-                            vm.isRebuildNeeded = true
+                            appList.isRebuildNeeded = true
                         }
                     } catch { NSLog("\(error.localizedDescription)") }
                 } label: {
@@ -102,7 +104,7 @@ struct AppListCell: View {
                 // iOS 15
                 Color.clear
                     .contextMenu {
-                        if !vm.isSelectorMode {
+                        if !appList.isSelectorMode {
                             cellContextMenu
                         }
                     }
@@ -172,7 +174,7 @@ struct AppListCell: View {
             }
         }
         .contextMenu {
-            if !vm.isSelectorMode {
+            if !appList.isSelectorMode {
                 cellContextMenuWrapper
             }
         }
@@ -183,9 +185,9 @@ struct AppListCell: View {
         LSApplicationWorkspace.default().openApplication(withBundleID: app.id)
     }
 
-    var isFilzaInstalled: Bool { vm.isFilzaInstalled }
+    var isFilzaInstalled: Bool { appList.isFilzaInstalled }
 
     private func openInFilza() {
-        vm.openInFilza(app.url)
+        appList.openInFilza(app.url)
     }
 }

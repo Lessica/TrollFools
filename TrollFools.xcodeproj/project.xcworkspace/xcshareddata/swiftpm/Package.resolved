@@ -1,13 +1,13 @@
 {
-  "originHash" : "e7ce1fd4fcdecadb07f5ee7960a2cf10270051e5e3d100390f5f086f58e08f31",
+  "originHash" : "adc44634da0dd03bba1d65245a216ccd10fae6b5d630df20e64e13e82e311b1b",
   "pins" : [
     {
       "identity" : "machokit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/p-x9/MachOKit.git",
+      "location" : "https://github.com/Lessica/MachOKit.git",
       "state" : {
-        "revision" : "55a08c5ce8a9115c279a25d17349753a520fb474",
-        "version" : "0.19.0"
+        "branch" : "patch/trollfools",
+        "revision" : "43c4b5d59ab75c91ad689fb4a39a8a3913229535"
       }
     },
     {

@@ -35,8 +35,6 @@
 		CC15490C2C4B79D800A4173E /* optool in Resources */ = {isa = PBXBuildFile; fileRef = CC15490B2C4B79D800A4173E /* optool */; };
 		CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC15490D2C4B80AF00A4173E /* EjectListView.swift */; };
 		CC19E4BB2C561D7300E0F1B5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19E4BA2C561D7300E0F1B5 /* SettingsView.swift */; };
-		CC3485172C71B219007E0E28 /* Version.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC3485152C71B219007E0E28 /* Version.xcconfig */; };
-		CC3485182C71B219007E0E28 /* Version.Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */; };
 		CC5E54BE2C4E12F900FDE4A8 /* install_name_tool in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BC2C4E12F900FDE4A8 /* install_name_tool */; };
 		CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */; };
 		CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */; };
@@ -304,7 +302,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					CCF470552C4A4649008D8197 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -355,13 +353,11 @@
 				CC15490C2C4B79D800A4173E /* optool in Resources */,
 				CCC564EC2C4BE8470097C300 /* libcrypto.3.dylib in Resources */,
 				CC1548E62C4A974E00A4173E /* libintl.8.dylib in Resources */,
-				CC3485172C71B219007E0E28 /* Version.xcconfig in Resources */,
 				CC1548E72C4A974E00A4173E /* libiosexec.1.dylib in Resources */,
 				CCC564ED2C4BE8470097C300 /* libplist-2.0.3.dylib in Resources */,
 				CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */,
 				CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */,
 				CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */,
-				CC3485182C71B219007E0E28 /* Version.Debug.xcconfig in Resources */,
 				CCF470692C4A4919008D8197 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -660,10 +656,10 @@
 		};
 		CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/p-x9/MachOKit.git";
+			repositoryURL = "https://github.com/Lessica/MachOKit.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.19.0;
+				branch = patch/trollfools;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

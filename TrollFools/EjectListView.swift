@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct EjectListView: View {
-    @StateObject var vm: EjectListModel
+    @StateObject var ejectList: EjectListModel
 
     init(_ app: App) {
-        _vm = StateObject(wrappedValue: EjectListModel(app))
+        _ejectList = StateObject(wrappedValue: EjectListModel(app))
     }
 
     @State var isErrorOccurred: Bool = false
@@ -47,34 +47,34 @@ struct EjectListView: View {
         }
     }
 
-    var ejectList: some View {
+    var ejectListView: some View {
         List {
             Section {
-                ForEach(vm.filteredPlugIns) { plugin in
+                ForEach(ejectList.filteredPlugIns) { plugin in
                     if #available(iOS 16.0, *) {
                         PlugInCell(plugIn: plugin)
-                            .environmentObject(vm.filter)
+                            .environmentObject(ejectList)
                     } else {
                         PlugInCell(plugIn: plugin)
-                            .environmentObject(vm.filter)
+                            .environmentObject(ejectList)
                             .padding(.vertical, 4)
                     }
                 }
                 .onDelete(perform: delete)
             } header: {
-                Text(vm.filteredPlugIns.isEmpty
+                Text(ejectList.filteredPlugIns.isEmpty
                      ? NSLocalizedString("No Injected Plug-Ins", comment: "")
                      : NSLocalizedString("Injected Plug-Ins", comment: ""))
                     .font(.footnote)
             }
 
-            if !vm.filter.isSearching && !vm.filteredPlugIns.isEmpty {
+            if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
                 Section {
                     deleteAllButton
                         .disabled(isDeletingAll)
                         .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
-                    if vm.app.isFromTroll {
+                    if ejectList.app.isFromTroll {
                         Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
                             .font(.footnote)
                     }
@@ -83,7 +83,7 @@ struct EjectListView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("Plug-Ins", comment: ""))
-        .animation(.easeOut, value: vm.filter.isSearching)
+        .animation(.easeOut, value: ejectList.filter.isSearching)
         .background(Group {
             NavigationLink(isActive: $isErrorOccurred) {
                 FailureView(title: NSLocalizedString("Error", comment: ""),
@@ -97,33 +97,34 @@ struct EjectListView: View {
 
     var body: some View {
         if #available(iOS 15.0, *) {
-            ejectList
+            ejectListView
                 .refreshable {
                     withAnimation {
-                        vm.reload()
+                        ejectList.reload()
                     }
                 }
                 .searchable(
-                    text: $vm.filter.searchKeyword,
+                    text: $ejectList.filter.searchKeyword,
                     placement: .automatic,
                     prompt: NSLocalizedString("Search…", comment: "")
                 )
                 .textInputAutocapitalization(.never)
+                .autocorrectionDisabled(true)
         } else {
             // Fallback on earlier versions
-            ejectList
+            ejectListView
         }
     }
 
     func delete(at offsets: IndexSet) {
         do {
-            let plugInsToRemove = offsets.map { vm.filteredPlugIns[$0] }
+            let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
-            let injector = try Injector(vm.app.url, appID: vm.app.id, teamID: vm.app.teamID)
+            let injector = try Injector(ejectList.app.url, appID: ejectList.app.id, teamID: ejectList.app.teamID)
             try injector.eject(plugInURLsToRemove)
 
-            vm.app.reload()
-            vm.reload()
+            ejectList.app.reload()
+            ejectList.reload()
         } catch {
             NSLog("\(error)")
 
@@ -134,7 +135,7 @@ struct EjectListView: View {
 
     func deleteAll() {
         do {
-            let injector = try Injector(vm.app.url, appID: vm.app.id, teamID: vm.app.teamID)
+            let injector = try Injector(ejectList.app.url, appID: ejectList.app.id, teamID: ejectList.app.teamID)
 
             let view = viewControllerHost.viewController?
                 .navigationController?.view
@@ -149,8 +150,8 @@ struct EjectListView: View {
                 defer {
                     DispatchQueue.main.async {
                         withAnimation {
-                            vm.app.reload()
-                            vm.reload()
+                            ejectList.app.reload()
+                            ejectList.reload()
                             isDeletingAll = false
                         }
 
