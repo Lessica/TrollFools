@@ -32,7 +32,7 @@ final class EjectListModel: ObservableObject {
     }
 
     func reload() {
-        self._injectedPlugIns = Injector.injectedPlugInURLs(app.url)
+        self._injectedPlugIns = InjectorV3.main.injectedAssetURLsInBundle(app.url)
             .map { InjectedPlugIn(url: $0) }
         performFilter()
     }

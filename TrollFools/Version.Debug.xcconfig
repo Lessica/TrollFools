@@ -8,5 +8,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-DEBUG_VERSION = 2.8
-DEBUG_BUILD_NUMBER = 202410211
+DEBUG_VERSION = 2.9
+DEBUG_BUILD_NUMBER = 202501092

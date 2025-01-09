@@ -150,7 +150,7 @@ final class AppListModel: ObservableObject {
             }
 
         let filteredApps = allApps
-            .filter { $0.isSystem || Injector.isBundleEligible($0.url) }
+            .filter { $0.isSystem || InjectorV3.main.checkIsEligibleAppBundle($0.url) }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 
         unsupportedCount = allApps.count - filteredApps.count

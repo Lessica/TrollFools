@@ -45,9 +45,9 @@ final class App: Identifiable, ObservableObject {
         self.teamID = teamID
         self.url = url
         self.version = version
-        self.isDetached = Injector.isBundleDetached(url)
-        self.isAllowedToAttachOrDetach = type == "User" && Injector.isBundleAllowedToAttachOrDetach(url)
-        self.isInjected = Injector.isBundleInjected(url)
+        self.isDetached = InjectorV3.main.isMetadataDetachedInBundle(url)
+        self.isAllowedToAttachOrDetach = type == "User" && InjectorV3.main.isAllowedToAttachOrDetachMetadataInBundle(url)
+        self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
         self.alternateIcon = alternateIcon
     }
 
@@ -57,11 +57,11 @@ final class App: Identifiable, ObservableObject {
     }
 
     private func reloadDetachedStatus() {
-        self.isDetached = Injector.isBundleDetached(url)
-        self.isAllowedToAttachOrDetach = isUser && Injector.isBundleAllowedToAttachOrDetach(url)
+        self.isDetached = InjectorV3.main.isMetadataDetachedInBundle(url)
+        self.isAllowedToAttachOrDetach = isUser && InjectorV3.main.isAllowedToAttachOrDetachMetadataInBundle(url)
     }
 
     private func reloadInjectedStatus() {
-        self.isInjected = Injector.isBundleInjected(url)
+        self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
     }
 }

@@ -23,7 +23,13 @@ struct InjectView: View {
 
     func inject() -> Result<Void, Error> {
         do {
-            let injector = try Injector(app.url, appID: app.id, teamID: app.teamID)
+            let injector = try InjectorV3(app.url)
+            if injector.appID.isEmpty {
+                injector.appID = app.id
+            }
+            if injector.teamID.isEmpty {
+                injector.teamID = app.teamID
+            }
             try injector.inject(urlList)
             return .success(())
         } catch {

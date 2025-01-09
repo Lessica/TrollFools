@@ -17,12 +17,25 @@
 		6124A07D2CD233A700C52253 /* InjectedPlugIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */; };
 		6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07E2CD233BA00C52253 /* PlugInCell.swift */; };
 		6124A0812CD233DA00C52253 /* EjectListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0802CD233DA00C52253 /* EjectListModel.swift */; };
+		61946B262D2FD8AB009E0AC4 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 61946B252D2FD8AB009E0AC4 /* OrderedCollections */; };
+		61EFA3642D30267E00159442 /* InjectorV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3632D30267200159442 /* InjectorV3.swift */; };
+		61EFA3672D3026D400159442 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 61EFA3662D3026D400159442 /* CocoaLumberjack */; };
+		61EFA3692D3026D400159442 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 61EFA3682D3026D400159442 /* CocoaLumberjackSwift */; };
+		61EFA36B2D3026D400159442 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 61EFA36A2D3026D400159442 /* CocoaLumberjackSwiftLogBackend */; };
+		61EFA36D2D3027C400159442 /* InjectorV3+Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA36C2D3027AF00159442 /* InjectorV3+Command.swift */; };
+		61EFA36F2D30338B00159442 /* InjectorV3+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA36E2D30338300159442 /* InjectorV3+Bundle.swift */; };
+		61EFA3712D3033BB00159442 /* InjectorV3+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3702D3033B700159442 /* InjectorV3+Error.swift */; };
+		61EFA3732D30347A00159442 /* InjectorV3+MachO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3722D30347600159442 /* InjectorV3+MachO.swift */; };
+		61EFA3752D303C3C00159442 /* InjectorV3+Preprocess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3742D303C3700159442 /* InjectorV3+Preprocess.swift */; };
+		61EFA3772D30403900159442 /* InjectorV3+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3762D30401A00159442 /* InjectorV3+Metadata.swift */; };
+		61EFA3792D3108BD00159442 /* InjectorV3+Eject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3782D3108B700159442 /* InjectorV3+Eject.swift */; };
+		61EFA37B2D31165700159442 /* InjectorV3+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */; };
+		61EFA37D2D311DA800159442 /* InjectorV3+Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */; };
 		CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC0E80FA2C54F84000B137B4 /* mv-15 */; };
 		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
 		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
 		CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D22C4A743200A4173E /* SuccessView.swift */; };
 		CC1548D52C4A744300A4173E /* FailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D42C4A744300A4173E /* FailureView.swift */; };
-		CC1548D72C4A768700A4173E /* Injector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548D62C4A768700A4173E /* Injector.swift */; };
 		CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548DA2C4A7C7000A4173E /* Execute.swift */; };
 		CC1548DD2C4A8DC500A4173E /* insert_dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC1548DC2C4A8DC500A4173E /* insert_dylib */; };
 		CC1548E12C4A963500A4173E /* cp in Resources */ = {isa = PBXBuildFile; fileRef = CC1548E02C4A963500A4173E /* cp */; };
@@ -68,11 +81,20 @@
 		6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedPlugIn.swift; sourceTree = "<group>"; };
 		6124A07E2CD233BA00C52253 /* PlugInCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlugInCell.swift; sourceTree = "<group>"; };
 		6124A0802CD233DA00C52253 /* EjectListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListModel.swift; sourceTree = "<group>"; };
+		61EFA3632D30267200159442 /* InjectorV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorV3.swift; sourceTree = "<group>"; };
+		61EFA36C2D3027AF00159442 /* InjectorV3+Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Command.swift"; sourceTree = "<group>"; };
+		61EFA36E2D30338300159442 /* InjectorV3+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Bundle.swift"; sourceTree = "<group>"; };
+		61EFA3702D3033B700159442 /* InjectorV3+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Error.swift"; sourceTree = "<group>"; };
+		61EFA3722D30347600159442 /* InjectorV3+MachO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+MachO.swift"; sourceTree = "<group>"; };
+		61EFA3742D303C3700159442 /* InjectorV3+Preprocess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Preprocess.swift"; sourceTree = "<group>"; };
+		61EFA3762D30401A00159442 /* InjectorV3+Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Metadata.swift"; sourceTree = "<group>"; };
+		61EFA3782D3108B700159442 /* InjectorV3+Eject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Eject.swift"; sourceTree = "<group>"; };
+		61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Backup.swift"; sourceTree = "<group>"; };
+		61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Inject.swift"; sourceTree = "<group>"; };
 		CC0E80FA2C54F84000B137B4 /* mv-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "mv-15"; sourceTree = "<group>"; };
 		CC1548CF2C4A6B8200A4173E /* ct_bypass */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ct_bypass; sourceTree = "<group>"; };
 		CC1548D22C4A743200A4173E /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
 		CC1548D42C4A744300A4173E /* FailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureView.swift; sourceTree = "<group>"; };
-		CC1548D62C4A768700A4173E /* Injector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injector.swift; sourceTree = "<group>"; };
 		CC1548DA2C4A7C7000A4173E /* Execute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Execute.swift; sourceTree = "<group>"; };
 		CC1548DC2C4A8DC500A4173E /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
 		CC1548E02C4A963500A4173E /* cp */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = cp; sourceTree = "<group>"; };
@@ -120,8 +142,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61EFA3672D3026D400159442 /* CocoaLumberjack in Frameworks */,
+				61946B262D2FD8AB009E0AC4 /* OrderedCollections in Frameworks */,
+				61EFA36B2D3026D400159442 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
 				CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */,
 				CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */,
+				61EFA3692D3026D400159442 /* CocoaLumberjackSwift in Frameworks */,
 				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
 				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
 			);
@@ -171,10 +197,19 @@
 		6124A0822CD2345300C52253 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CC1548D62C4A768700A4173E /* Injector.swift */,
-				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
 				CCF5A0A32C4D45160097D48D /* AuxiliaryExecute.swift */,
 				CCF5A0A52C4D45400097D48D /* AuxiliaryExecute+Spawn.swift */,
+				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
+				61EFA3632D30267200159442 /* InjectorV3.swift */,
+				61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */,
+				61EFA36E2D30338300159442 /* InjectorV3+Bundle.swift */,
+				61EFA36C2D3027AF00159442 /* InjectorV3+Command.swift */,
+				61EFA3782D3108B700159442 /* InjectorV3+Eject.swift */,
+				61EFA3702D3033B700159442 /* InjectorV3+Error.swift */,
+				61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */,
+				61EFA3722D30347600159442 /* InjectorV3+MachO.swift */,
+				61EFA3762D30401A00159442 /* InjectorV3+Metadata.swift */,
+				61EFA3742D303C3700159442 /* InjectorV3+Preprocess.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -289,6 +324,10 @@
 				CC1548C82C4A6B2100A4173E /* ZIPFoundation */,
 				CC1548FB2C4AADBB00A4173E /* MachOKit */,
 				CC1548FD2C4AADBB00A4173E /* MachOKitC */,
+				61946B252D2FD8AB009E0AC4 /* OrderedCollections */,
+				61EFA3662D3026D400159442 /* CocoaLumberjack */,
+				61EFA3682D3026D400159442 /* CocoaLumberjackSwift */,
+				61EFA36A2D3026D400159442 /* CocoaLumberjackSwiftLogBackend */,
 			);
 			productName = TrollFools;
 			productReference = CCF470562C4A4649008D8197 /* TrollFools.app */;
@@ -324,6 +363,8 @@
 			packageReferences = (
 				CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */,
+				61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */,
+				61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
 			projectDirPath = "";
@@ -370,29 +411,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				6124A0782CD232D400C52253 /* OptionCell.swift in Sources */,
+				61EFA37D2D311DA800159442 /* InjectorV3+Inject.swift in Sources */,
 				CCF5A0A62C4D45400097D48D /* AuxiliaryExecute+Spawn.swift in Sources */,
 				CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */,
 				CCF470732C4A4E81008D8197 /* TrollFoolsStub.m in Sources */,
 				6124A06D2CD2322400C52253 /* App.swift in Sources */,
 				CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */,
 				CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */,
+				61EFA3772D30403900159442 /* InjectorV3+Metadata.swift in Sources */,
 				6124A0762CD232C600C52253 /* Option.swift in Sources */,
 				6124A07D2CD233A700C52253 /* InjectedPlugIn.swift in Sources */,
 				CC1548DB2C4A7C7000A4173E /* Execute.swift in Sources */,
 				6124A0742CD2328600C52253 /* AppListCell.swift in Sources */,
 				CCF5A0A42C4D45160097D48D /* AuxiliaryExecute.swift in Sources */,
 				6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */,
+				61EFA3792D3108BD00159442 /* InjectorV3+Eject.swift in Sources */,
 				6124A07B2CD2337500C52253 /* ViewControllerHost.swift in Sources */,
+				61EFA3752D303C3C00159442 /* InjectorV3+Preprocess.swift in Sources */,
 				CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */,
 				6124A0812CD233DA00C52253 /* EjectListModel.swift in Sources */,
 				CC19E4BB2C561D7300E0F1B5 /* SettingsView.swift in Sources */,
-				CC1548D72C4A768700A4173E /* Injector.swift in Sources */,
+				61EFA36F2D30338B00159442 /* InjectorV3+Bundle.swift in Sources */,
+				61EFA3642D30267E00159442 /* InjectorV3.swift in Sources */,
 				6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */,
+				61EFA37B2D31165700159442 /* InjectorV3+Backup.swift in Sources */,
+				61EFA3712D3033BB00159442 /* InjectorV3+Error.swift in Sources */,
 				6124A06F2CD2324200C52253 /* AppListModel.swift in Sources */,
 				CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */,
 				CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */,
 				CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */,
+				61EFA36D2D3027C400159442 /* InjectorV3+Command.swift in Sources */,
 				CC1548D52C4A744300A4173E /* FailureView.swift in Sources */,
+				61EFA3732D30347A00159442 /* InjectorV3+MachO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,6 +696,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.4;
+			};
+		};
+		61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.8.5;
+			};
+		};
 		CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
@@ -665,6 +731,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		61946B252D2FD8AB009E0AC4 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		61EFA3662D3026D400159442 /* CocoaLumberjack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjack;
+		};
+		61EFA3682D3026D400159442 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		61EFA36A2D3026D400159442 /* CocoaLumberjackSwiftLogBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwiftLogBackend;
+		};
 		CC1548C82C4A6B2100A4173E /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
