@@ -1,2 +1,5 @@
 - Re-write the injector entirely to be more modular and easier to maintain.
-- Speed up the injector by choosing a smaller framework to inject into.
+- Speed up the injector by:
+  - Choose a smaller framework to inject into.
+  - Skip Mach-Os with **cryptid > 0**
+- Update [ChOma](https://github.com/opa334/ChOma/tree/61acfba55695c8f3c6607dd0be933aa104eb9531) to its latest commit.

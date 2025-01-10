@@ -35,11 +35,17 @@ extension InjectorV3 {
                 try FileManager.default.createDirectory(at: extractedURL, withIntermediateDirectories: true)
                 try FileManager.default.unzipItem(at: assetURL, to: extractedURL)
 
-                let extractedContents = try FileManager.default
+                let extractedItems = try FileManager.default
                     .contentsOfDirectory(at: extractedURL, includingPropertiesForKeys: nil)
                     .filter { Self.allowedPathExtensions.contains($0.pathExtension.lowercased()) }
 
-                preparedAssetURLs.append(contentsOf: extractedContents)
+                for extractedItem in extractedItems {
+                    if checkIsBundle(extractedItem) {
+                        urlsToMarkAsInjected.append(extractedItem)
+                    }
+                }
+
+                preparedAssetURLs.append(contentsOf: extractedItems)
                 continue
             }
 
