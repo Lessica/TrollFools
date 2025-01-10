@@ -1,2 +1,2 @@
-- Added some explanation about the “No eligible framework found” error.
-- Patch MachOKit to avoid potential crashes when parsing certain Mach-O files.
+- Re-write the injector entirely to be more modular and easier to maintain.
+- Speed up the injector by choosing a smaller framework to inject into.
