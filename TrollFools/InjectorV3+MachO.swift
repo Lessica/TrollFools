@@ -165,6 +165,11 @@ extension InjectorV3 {
         resolvedName = resolvedName
             .replacingOccurrences(of: "@rpath/", with: frameworksDirectoryURL.path + "/")
 
-        return URL(fileURLWithPath: resolvedName)
+        let resolvedURL = URL(fileURLWithPath: resolvedName)
+        guard FileManager.default.fileExists(atPath: resolvedURL.path) else {
+            return nil
+        }
+
+        return resolvedURL
     }
 }
