@@ -27,7 +27,7 @@ struct AppListView: View {
 
     var appString: String {
         String(format: """
-%@ %@ %@ © 2024
+%@ %@ %@ © 2024-2025
 %@
 """, appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Made with ♥ by OwnGoal Studio", comment: ""))
     }

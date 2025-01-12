@@ -59,11 +59,11 @@ extension InjectorV3 {
             options: [.skipsHiddenFiles]
         ) {
             for case let itemURL as URL in enumerator {
-                if checkIsInjectedBundle(itemURL) {
+                if checkIsInjectedBundle(itemURL) || enumerator.level > 2 {
                     enumerator.skipDescendants()
                     continue
                 }
-                if linkedDylibs.contains(itemURL) && itemURL.deletingLastPathComponent().pathExtension == "framework" {
+                if enumerator.level == 2 && linkedDylibs.contains(itemURL) {
                     machOs.append(itemURL)
                 }
             }
