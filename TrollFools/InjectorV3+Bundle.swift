@@ -216,7 +216,7 @@ extension InjectorV3 {
 
         let frameworksDirectoryURL = target.appendingPathComponent("Frameworks")
         if !FileManager.default.fileExists(atPath: frameworksDirectoryURL.path) {
-            try? cmdMakeDirectory(at: target)
+            try? cmdMakeDirectory(at: frameworksDirectoryURL)
         }
 
         return frameworksDirectoryURL
