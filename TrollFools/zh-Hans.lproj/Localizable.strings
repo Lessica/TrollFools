@@ -1,6 +1,9 @@
 /* No comment provided by engineer. */
 "%@ exited with code %d" = "%@ 意外退出，返回值 %d";
 
+/* StripedTextTableViewController */
+"%@ rows not loaded" = "%@ 行未加载";
+
 /* No comment provided by engineer. */
 "%@ terminated with signal %d" = "%@ 意外终止，未捕获的信号 %d";
 
@@ -10,11 +13,26 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用";
 
+/* StripedTextTableViewController */
+"Cancel" = "取消";
+
+/* No comment provided by engineer. */
+"Cannot parse text with UTF-8 encoding: “%@”." = "无法使用 UTF-8 编码解析文本：“%@”。";
+
 /* No comment provided by engineer. */
 "Completed" = "已完成";
 
+/* StripedTextTableViewController */
+"Confirm" = "确认";
+
+/* StripedTextTableViewController */
+"Copy" = "拷贝";
+
 /* No comment provided by engineer. */
 "Copyright" = "版权所有";
+
+/* StripedTextTableViewController */
+"Do you want to clear this log file “%@”?" = "你确定要清空日志文件 “%@” 吗？";
 
 /* No comment provided by engineer. */
 "Done" = "完成";
@@ -35,10 +53,16 @@
 "Failed to find entry CFBundleExecutable in: %@" = "找不到 %@ 中的 CFBundleExecutable。";
 
 /* No comment provided by engineer. */
+"Failed to find entry CFBundleIdentifier in: %@" = "找不到 %@ 中的 CFBundleIdentifier";
+
+/* No comment provided by engineer. */
 "Failed to locate main executable: %@" = "找不到主要可执行文件：%@";
 
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "无法解析：%@";
+
+/* No comment provided by engineer. */
+"Fast" = "快速";
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "未安装支持 URL Scheme 的 Filza";
@@ -62,10 +86,19 @@
 "Injection" = "注入";
 
 /* No comment provided by engineer. */
+"Injection Strategy" = "注入策略";
+
+/* No comment provided by engineer. */
 "Launch" = "启动";
 
 /* No comment provided by engineer. */
+"Lexicographic" = "字典序";
+
+/* No comment provided by engineer. */
 "Lock Version" = "锁定版本";
+
+/* StripedTextTableViewController */
+"Log Viewer" = "日志查看器";
 
 /* No comment provided by engineer. */
 "Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制";
@@ -95,6 +128,12 @@
 "Plug-Ins" = "插件列表";
 
 /* No comment provided by engineer. */
+"Post-order" = "后置";
+
+/* No comment provided by engineer. */
+"Pre-order" = "前置";
+
+/* No comment provided by engineer. */
 "Prefer Main Executable" = "优先处理主要可执行文件";
 
 /* No comment provided by engineer. */
@@ -122,6 +161,9 @@
 "Source Code" = "获取源代码";
 
 /* No comment provided by engineer. */
+"The content of text file “%@” is empty." = "文本文件 “%@” 的内容为空。";
+
+/* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
 
 /* No comment provided by engineer. */
@@ -135,6 +177,9 @@
 
 /* No comment provided by engineer. */
 "User Applications" = "用户应用";
+
+/* No comment provided by engineer. */
+"View Logs" = "查看日志";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "你需要在 TrollStore 中重建图标缓存以应用更改。";

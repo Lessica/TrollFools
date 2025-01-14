@@ -49,10 +49,11 @@ extension InjectorV3 {
 
         let targetURLs = try collectModifiedMachOs()
         guard !targetURLs.isEmpty else {
+            DDLogError("Unable to find any modified Mach-Os", ddlog: logger)
             throw Error.generic(NSLocalizedString("No eligible framework found.", comment: ""))
         }
 
-        DDLogInfo("modified Mach-Os \(targetURLs.map { $0.path })")
+        DDLogInfo("Modified Mach-Os \(targetURLs.map { $0.path })", ddlog: logger)
 
         for assetURL in assetURLs {
             try targetURLs.forEach {

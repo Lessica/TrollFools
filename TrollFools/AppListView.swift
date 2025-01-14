@@ -5,13 +5,14 @@
 //  Created by Lessica on 2024/7/19.
 //
 
+import CocoaLumberjackSwift
 import SwiftUI
 
 struct AppListView: View {
     @EnvironmentObject var appList: AppListModel
 
     @State var isErrorOccurred: Bool = false
-    @State var errorMessage: String = ""
+    @State var lastError: Error?
 
     @State var selectorOpenedURL: URL? = nil
 
@@ -162,8 +163,10 @@ struct AppListView: View {
         .navigationBarTitleDisplayMode(appList.isSelectorMode ? .inline : .automatic)
         .background(Group {
             NavigationLink(isActive: $isErrorOccurred) {
-                FailureView(title: NSLocalizedString("Error", comment: ""),
-                            message: errorMessage)
+                FailureView(
+                    title: NSLocalizedString("Error", comment: ""),
+                    error: lastError
+                )
             } label: { }
         })
         .toolbar {
@@ -252,10 +255,10 @@ struct AppListView: View {
                     }
                 }
             } catch {
-                NSLog("\(error.localizedDescription)")
+                DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
                 DispatchQueue.main.async {
-                    errorMessage = error.localizedDescription
+                    lastError = error
                     isErrorOccurred = true
                 }
             }

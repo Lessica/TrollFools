@@ -5,6 +5,7 @@
 //  Created by 82Flex on 2024/10/30.
 //
 
+import CocoaLumberjackSwift
 import SwiftUI
 
 struct AppListCell: View {
@@ -60,7 +61,7 @@ struct AppListCell: View {
                             app.reload()
                             appList.isRebuildNeeded = true
                         }
-                    } catch { NSLog("\(error.localizedDescription)") }
+                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
                 } label: {
                     Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
                 }
@@ -72,7 +73,7 @@ struct AppListCell: View {
                             app.reload()
                             appList.isRebuildNeeded = true
                         }
-                    } catch { NSLog("\(error.localizedDescription)") }
+                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
                 } label: {
                     Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
                 }

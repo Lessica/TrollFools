@@ -1,6 +1,9 @@
 /* No comment provided by engineer. */
 "%@ exited with code %d" = "%@ exited with code %d";
 
+/* StripedTextTableViewController */
+"%@ rows not loaded" = "%@ rows not loaded";
+
 /* No comment provided by engineer. */
 "%@ terminated with signal %d" = "%@ terminated with signal %d";
 
@@ -10,11 +13,26 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "And %d more unsupported user applications.";
 
+/* StripedTextTableViewController */
+"Cancel" = "Cancel";
+
+/* No comment provided by engineer. */
+"Cannot parse text with UTF-8 encoding: “%@”." = "Cannot parse text with UTF-8 encoding: “%@”.";
+
 /* No comment provided by engineer. */
 "Completed" = "Completed";
 
+/* StripedTextTableViewController */
+"Confirm" = "Confirm";
+
+/* StripedTextTableViewController */
+"Copy" = "Copy";
+
 /* No comment provided by engineer. */
 "Copyright" = "Copyright";
+
+/* StripedTextTableViewController */
+"Do you want to clear this log file “%@”?" = "Do you want to clear this log file “%@”?";
 
 /* No comment provided by engineer. */
 "Done" = "Done";
@@ -35,10 +53,16 @@
 "Failed to find entry CFBundleExecutable in: %@" = "Failed to find entry CFBundleExecutable in: %@";
 
 /* No comment provided by engineer. */
+"Failed to find entry CFBundleIdentifier in: %@" = "Failed to find entry CFBundleIdentifier in: %@";
+
+/* No comment provided by engineer. */
 "Failed to locate main executable: %@" = "Failed to locate main executable: %@";
 
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "Failed to parse: %@";
+
+/* No comment provided by engineer. */
+"Fast" = "Fast";
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
@@ -62,10 +86,19 @@
 "Injection" = "Injection";
 
 /* No comment provided by engineer. */
+"Injection Strategy" = "Injection Strategy";
+
+/* No comment provided by engineer. */
 "Launch" = "Launch";
 
 /* No comment provided by engineer. */
+"Lexicographic" = "Lexicographic";
+
+/* No comment provided by engineer. */
 "Lock Version" = "Lock Version";
+
+/* StripedTextTableViewController */
+"Log Viewer" = "Log Viewer";
 
 /* No comment provided by engineer. */
 "Made with ♥ by OwnGoal Studio" = "Made with ♥ by OwnGoal Studio";
@@ -95,6 +128,12 @@
 "Plug-Ins" = "Plug-Ins";
 
 /* No comment provided by engineer. */
+"Post-order" = "Post-order";
+
+/* No comment provided by engineer. */
+"Pre-order" = "Pre-order";
+
+/* No comment provided by engineer. */
 "Prefer Main Executable" = "Prefer Main Executable";
 
 /* No comment provided by engineer. */
@@ -122,6 +161,9 @@
 "Source Code" = "Source Code";
 
 /* No comment provided by engineer. */
+"The content of text file “%@” is empty." = "The content of text file “%@” is empty.";
+
+/* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
 
 /* No comment provided by engineer. */
@@ -135,6 +177,9 @@
 
 /* No comment provided by engineer. */
 "User Applications" = "User Applications";
+
+/* No comment provided by engineer. */
+"View Logs" = "View Logs";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "You need to rebuild the icon cache in TrollStore to apply changes.";

@@ -5,6 +5,7 @@
 //  Created by 82Flex on 2025/1/10.
 //
 
+import CocoaLumberjackSwift
 import OrderedCollections
 
 extension InjectorV3 {
@@ -52,7 +53,7 @@ extension InjectorV3 {
         let frameworksURL = target.appendingPathComponent("Frameworks")
         let linkedDylibs = try linkedDylibsRecursivelyOfMachO(executableURL)
 
-        var machOs = OrderedSet<URL>()
+        var enumeratedURLs = OrderedSet<URL>()
         if let enumerator = FileManager.default.enumerator(
             at: frameworksURL,
             includingPropertiesForKeys: [.fileSizeKey],
@@ -63,25 +64,40 @@ extension InjectorV3 {
                     enumerator.skipDescendants()
                     continue
                 }
-                if enumerator.level == 2 && linkedDylibs.contains(itemURL) {
-                    machOs.append(itemURL)
+                if enumerator.level == 2 {
+                    enumeratedURLs.append(itemURL)
                 }
             }
         }
 
-        var sortedMachOs = try machOs
-            .sorted { url1, url2 in
-                let size1 = (try url1.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
-                let size2 = (try url2.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
-                return if size1 == size2 {
-                    url1.lastPathComponent.localizedStandardCompare(url2.lastPathComponent) == .orderedAscending
-                } else {
-                    size1 < size2
+        let machOs = linkedDylibs.intersection(enumeratedURLs)
+        var sortedMachOs: [URL] =
+        switch injectStrategy.wrappedValue {
+        case .lexicographic:
+            machOs.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+        case .fast:
+            try machOs
+                .sorted { url1, url2 in
+                    let size1 = (try url1.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+                    let size2 = (try url2.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+                    return if size1 == size2 {
+                        url1.lastPathComponent.localizedStandardCompare(url2.lastPathComponent) == .orderedAscending
+                    } else {
+                        size1 < size2
+                    }
                 }
-            }
+        case .preorder:
+            machOs.elements
+        case .postorder:
+            machOs.reversed()
+        }
+
+        DDLogWarn("Strategy \(injectStrategy.wrappedValue.rawValue)", ddlog: logger)
+        DDLogInfo("Sorted Mach-Os \(sortedMachOs.map { $0.lastPathComponent })", ddlog: logger)
 
         if preferMainExecutable.wrappedValue {
             sortedMachOs.insert(executableURL, at: 0)
+            DDLogWarn("Prefer main executable", ddlog: logger)
         } else {
             sortedMachOs.append(executableURL)
         }
@@ -200,7 +216,7 @@ extension InjectorV3 {
 
         let frameworksDirectoryURL = target.appendingPathComponent("Frameworks")
         if !FileManager.default.fileExists(atPath: frameworksDirectoryURL.path) {
-            try cmdMakeDirectory(at: target)
+            try? cmdMakeDirectory(at: target)
         }
 
         return frameworksDirectoryURL

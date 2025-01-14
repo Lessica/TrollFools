@@ -18,7 +18,7 @@ extension InjectorV3 {
 
     func preprocessAssets(_ assetURLs: [URL]) throws -> [URL] {
 
-        DDLogVerbose("preprocess \(assetURLs.map { $0.path })")
+        DDLogVerbose("Preprocess \(assetURLs.map { $0.path })", ddlog: logger)
 
         var preparedAssetURLs = [URL]()
         var urlsToMarkAsInjected = [URL]()

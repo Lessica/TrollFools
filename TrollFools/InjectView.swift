@@ -5,6 +5,7 @@
 //  Created by Lessica on 2024/7/19.
 //
 
+import CocoaLumberjackSwift
 import SwiftUI
 
 struct InjectView: View {
@@ -13,7 +14,7 @@ struct InjectView: View {
     let app: App
     let urlList: [URL]
 
-    @State var injectResult: Result<Void, Error>?
+    @State var injectResult: Result<URL?, Error>?
     @StateObject fileprivate var viewControllerHost = ViewControllerHost()
 
     init(_ app: App, urlList: [URL]) {
@@ -21,22 +22,37 @@ struct InjectView: View {
         self.urlList = urlList
     }
 
-    func inject() -> Result<Void, Error> {
+    func inject() -> Result<URL?, Error> {
+        var logFileURL: URL?
+
         do {
             let injector = try InjectorV3(app.url)
+            logFileURL = injector.latestLogFileURL
+
             if injector.appID.isEmpty {
                 injector.appID = app.id
             }
+
             if injector.teamID.isEmpty {
                 injector.teamID = app.teamID
             }
+
             try injector.inject(urlList)
-            return .success(())
+            return .success(injector.latestLogFileURL)
+
         } catch {
-            NSLog("\(error)")
-            return .failure(NSError(domain: kTrollFoolsErrorDomain, code: 0, userInfo: [
+
+            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
+
+            var userInfo: [String: Any] = [
                 NSLocalizedDescriptionKey: error.localizedDescription,
-            ]))
+            ]
+
+            if let logFileURL {
+                userInfo[NSURLErrorKey] = logFileURL
+            }
+
+            return .failure(NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo))
         }
     }
 
@@ -44,12 +60,16 @@ struct InjectView: View {
         VStack {
             if let injectResult {
                 switch injectResult {
-                case .success:
-                    SuccessView(title: NSLocalizedString("Completed", comment: ""))
-
+                case .success(let url):
+                    SuccessView(
+                        title: NSLocalizedString("Completed", comment: ""),
+                        logFileURL: url
+                    )
                 case .failure(let error):
-                    FailureView(title: NSLocalizedString("Failed", comment: ""),
-                                message: error.localizedDescription)
+                    FailureView(
+                        title: NSLocalizedString("Failed", comment: ""),
+                        error: error
+                    )
                 }
             } else {
                 if #available(iOS 16.0, *) {

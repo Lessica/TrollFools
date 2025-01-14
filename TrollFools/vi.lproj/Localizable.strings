@@ -1,6 +1,9 @@
 /* No comment provided by engineer. */
 "%@ exited with code %d" = "%@ thoát với mã %d";
 
+/* TODO */
+"%@ rows not loaded" = "%@ rows not loaded";
+
 /* No comment provided by engineer. */
 "%@ terminated with signal %d" = "%@ đã kết thúc với tín hiệu %d";
 
@@ -10,11 +13,26 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
+/* TODO */
+"Cancel" = "Cancel";
+
+/* TODO */
+"Cannot parse text with UTF-8 encoding: “%@”." = "Cannot parse text with UTF-8 encoding: “%@”.";
+
 /* No comment provided by engineer. */
 "Completed" = "Hoàn thành";
 
+/* TODO */
+"Confirm" = "Confirm";
+
+/* TODO */
+"Copy" = "Copy";
+
 /* No comment provided by engineer. */
 "Copyright" = "Bản quyền";
+
+/* TODO */
+"Do you want to clear this log file “%@”?" = "Do you want to clear this log file “%@”?";
 
 /* TODO */
 "Done" = "Done";
@@ -35,10 +53,16 @@
 "Failed to find entry CFBundleExecutable in: %@" = "Không tìm thấy mục CFBundleExecutable trong: %@";
 
 /* No comment provided by engineer. */
+"Failed to find entry CFBundleIdentifier in: %@" = "Không tìm thấy mục CFBundleIdentifier trong: %@";
+
+/* No comment provided by engineer. */
 "Failed to locate main executable: %@" = "Không tìm thấy tệp thực thi chính: %@";
 
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "Không thể phân tích: %@";
+
+/* TODO */
+"Fast" = "Fast";
 
 /* TODO */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
@@ -61,11 +85,20 @@
 /* No comment provided by engineer. */
 "Injection" = "Nâng cao";
 
+/* TODO */
+"Injection Strategy" = "Injection Strategy";
+
 /* No comment provided by engineer. */
 "Launch" = "Mở ứng dụng";
 
+/* TODO */
+"Lexicographic" = "Lexicographic";
+
 /* No comment provided by engineer. */
 "Lock Version" = "Khóa phiên bản";
+
+/* TODO */
+"Log Viewer" = "Log Viewer";
 
 /* TODO */
 "Made with ♥ by OwnGoal Studio" = "Made with ♥ by OwnGoal Studio";
@@ -94,6 +127,12 @@
 /* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
 
+/* TODO */
+"Post-order" = "Post-order";
+
+/* TODO */
+"Pre-order" = "Pre-order";
+
 /* No comment provided by engineer. */
 "Prefer Main Executable" = "Ưu tiên tệp thực thi chính";
 
@@ -121,6 +160,9 @@
 /* No comment provided by engineer. */
 "Source Code" = "Mã nguồn";
 
+/* TODO */
+"The content of text file “%@” is empty." = "The content of text file “%@” is empty.";
+
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
 
@@ -135,6 +177,9 @@
 
 /* No comment provided by engineer. */
 "User Applications" = "Ứng dụng người dùng";
+
+/* TODO */
+"View Logs" = "View Logs";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "Bạn cần làm mới bộ nhớ đệm biểu tượng trong TrollStore để áp dụng các thay đổi.";

@@ -5,6 +5,7 @@
 //  Created by Lessica on 2024/7/20.
 //
 
+import CocoaLumberjackSwift
 import SwiftUI
 
 struct EjectListView: View {
@@ -15,7 +16,7 @@ struct EjectListView: View {
     }
 
     @State var isErrorOccurred: Bool = false
-    @State var errorMessage: String = ""
+    @State var lastError: Error?
 
     @State var isDeletingAll = false
     @StateObject var viewControllerHost = ViewControllerHost()
@@ -86,8 +87,10 @@ struct EjectListView: View {
         .animation(.easeOut, value: ejectList.filter.isSearching)
         .background(Group {
             NavigationLink(isActive: $isErrorOccurred) {
-                FailureView(title: NSLocalizedString("Error", comment: ""),
-                            message: errorMessage)
+                FailureView(
+                    title: NSLocalizedString("Error", comment: ""),
+                    error: lastError
+                )
             } label: { }
         })
         .onViewWillAppear { viewController in
@@ -125,9 +128,9 @@ struct EjectListView: View {
             ejectList.app.reload()
             ejectList.reload()
         } catch {
-            NSLog("\(error)")
+            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
-            errorMessage = error.localizedDescription
+            lastError = error
             isErrorOccurred = true
         }
     }
@@ -166,15 +169,15 @@ struct EjectListView: View {
                             isDeletingAll = false
                         }
 
-                        NSLog("\(error)")
+                        DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
-                        errorMessage = error.localizedDescription
+                        lastError = error
                         isErrorOccurred = true
                     }
                 }
             }
         } catch {
-            errorMessage = error.localizedDescription
+            lastError = error
             isErrorOccurred = true
         }
     }

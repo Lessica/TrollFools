@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct FailureView: View {
+
     let title: String
-    let message: String
+    let error: Error?
+
+    var logFileURL: URL? {
+        (error as? NSError)?.userInfo[NSURLErrorKey] as? URL
+    }
+
+    @State private var isLogsPresented = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -20,16 +27,34 @@ struct FailureView: View {
             Text(title)
                 .font(.title)
                 .bold()
-                .multilineTextAlignment(.center)
 
-            Text(message)
-                .font(.title3)
-                .multilineTextAlignment(.center)
+            if let error {
+                Text(error.localizedDescription)
+                    .font(.title3)
+            }
+
+            if logFileURL != nil {
+                Button {
+                    isLogsPresented = true
+                } label: {
+                    Label(NSLocalizedString("View Logs", comment: ""),
+                          systemImage: "note.text")
+                }
+            }
         }
         .padding()
+        .multilineTextAlignment(.center)
+        .sheet(isPresented: $isLogsPresented) {
+            if let logFileURL {
+                LogsView(url: logFileURL)
+            }
+        }
     }
 }
 
 #Preview {
-    FailureView(title: "Hello, World!", message: "This is a failure.")
+    FailureView(
+        title: "Hello, World!",
+        error: nil
+    )
 }

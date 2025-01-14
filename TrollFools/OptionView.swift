@@ -61,9 +61,11 @@ struct OptionView: View {
                     case .success(let urls):
                         InjectView(app, urlList: urls
                             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent }))
-                    case .failure(let message):
-                        FailureView(title: NSLocalizedString("Error", comment: ""),
-                                    message: message.localizedDescription)
+                    case .failure(let error):
+                        FailureView(
+                            title: NSLocalizedString("Error", comment: ""),
+                            error: error
+                        )
                     }
                 }
             } label: { }
