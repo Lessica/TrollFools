@@ -1,2 +1,1 @@
-- View logs in the app.
-- Option to change the injection strategy.
+- Fixed a bug that caused ejecting to fail when the previous inject was not successful.
