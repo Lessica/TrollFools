@@ -75,8 +75,10 @@
 
     NSMutableArray <UIBarButtonItem *> *rightBarButtonItems = [NSMutableArray arrayWithCapacity:2];
 
-    if (self.allowShare) {
-        [rightBarButtonItems addObject:self.shareItem];
+    if (@available(iOS 16.0, *)) {
+        if (self.allowShare) {
+            [rightBarButtonItems addObject:self.shareItem];
+        }
     }
 
     if (self.allowTrash) {
@@ -258,6 +260,7 @@
     } else {
         // Fallback on earlier versions
         activityViewController.popoverPresentationController.barButtonItem = sender;
+        activityViewController.popoverPresentationController.sourceView = self.view;
     }
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
