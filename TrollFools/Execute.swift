@@ -20,7 +20,9 @@ enum Execute {
         let receipt = AuxiliaryExecute.spawn(
             command: binary,
             args: arguments,
-            environment: environment,
+            environment: environment.merging([
+                "DISABLE_TWEAKS": "1",
+            ], uniquingKeysWith: { $1 }),
             personaOptions: .init(uid: 0, gid: 0),
             ddlog: ddlog
         )
@@ -42,7 +44,9 @@ enum Execute {
         let receipt = AuxiliaryExecute.spawn(
             command: binary,
             args: arguments,
-            environment: environment,
+            environment: environment.merging([
+                "DISABLE_TWEAKS": "1",
+            ], uniquingKeysWith: { $1 }),
             personaOptions: .init(uid: 0, gid: 0),
             ddlog: ddlog
         )

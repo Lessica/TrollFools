@@ -23,6 +23,7 @@ struct LogsView: UIViewControllerRepresentable {
         viewController.reversed = true
         viewController.allowTrash = false
         viewController.allowSearch = true
+        viewController.allowShare = true
         viewController.allowMultiline = true
         viewController.pullToReload = false
         viewController.tapToCopy = true

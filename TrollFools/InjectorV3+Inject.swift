@@ -50,7 +50,7 @@ extension InjectorV3 {
         for assetURL in assetURLs {
             let targetURL = bundleURL.appendingPathComponent(assetURL.lastPathComponent)
 
-            try cmdCopy(from: assetURL, to: targetURL, overwrite: true)
+            try cmdCopy(from: assetURL, to: targetURL, clone: true, overwrite: true)
             try cmdChangeOwnerToInstalld(targetURL, recursively: true)
         }
     }
@@ -74,15 +74,17 @@ extension InjectorV3 {
 
         DDLogInfo("Best matched Mach-O is \(targetMachO.path)", ddlog: logger)
 
+        let resourceURLs: [URL] = [substrateFwkURL] + assetURLs
         try makeAlternate(targetMachO)
         do {
-            try copyfiles([substrateFwkURL] + assetURLs)
+            try copyfiles(resourceURLs)
             for assetURL in assetURLs {
                 try insertLoadCommandOfAsset(assetURL, to: targetMachO)
             }
             try applyCoreTrustBypass(targetMachO)
         } catch {
             try? restoreAlternate(targetMachO)
+            try? batchRemove(resourceURLs)
             throw error
         }
     }
@@ -179,18 +181,21 @@ extension InjectorV3 {
 
     // MARK: - Path Clone
 
-    @discardableResult
-    fileprivate func copyfiles(_ assetURLs: [URL]) throws -> [URL] {
+    fileprivate func copyfiles(_ assetURLs: [URL]) throws {
         let targetURLs = assetURLs.map {
             frameworksDirectoryURL.appendingPathComponent($0.lastPathComponent)
         }
 
         for (assetURL, targetURL) in zip(assetURLs, targetURLs) {
-            try cmdCopy(from: assetURL, to: targetURL, overwrite: true)
-            try cmdChangeOwnerToInstalld(targetURL, recursively: checkIsBundle(assetURL))
+            try cmdCopy(from: assetURL, to: targetURL, clone: true, overwrite: true)
+            try cmdChangeOwnerToInstalld(targetURL, recursively: checkIsDirectory(assetURL))
         }
+    }
 
-        return targetURLs
+    fileprivate func batchRemove(_ assetURLs: [URL]) throws {
+        try assetURLs.forEach {
+            try cmdRemove($0, recursively: checkIsDirectory($0))
+        }
     }
 
     // MARK: - Path Finder

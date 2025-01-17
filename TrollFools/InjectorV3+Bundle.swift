@@ -178,7 +178,12 @@ extension InjectorV3 {
             try cmdChangeOwnerToInstalld(markerURL, recursively: false)
 
             try filteredURLs.forEach {
-                try cmdCopy(from: markerURL, to: $0.appendingPathComponent(Self.injectedMarkerName), overwrite: true)
+                try cmdCopy(
+                    from: markerURL,
+                    to: $0.appendingPathComponent(Self.injectedMarkerName),
+                    clone: true,
+                    overwrite: true
+                )
             }
         } else {
             try filteredURLs.forEach {
@@ -285,5 +290,10 @@ extension InjectorV3 {
         let isPackage = values?.isPackage ?? false
         let pathExt = target.pathExtension.lowercased()
         return isPackage || (isDirectory && (pathExt == "app" || pathExt == "bundle" || pathExt == "framework"))
+    }
+
+    func checkIsDirectory(_ target: URL) -> Bool {
+        let values = try? target.resourceValues(forKeys: [.isDirectoryKey])
+        return values?.isDirectory ?? false
     }
 }

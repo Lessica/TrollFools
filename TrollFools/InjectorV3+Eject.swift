@@ -59,7 +59,7 @@ extension InjectorV3 {
             try targetURLs.forEach {
                 try removeLoadCommandOfAsset(assetURL, from: $0)
             }
-            try? cmdRemove(assetURL, recursively: checkIsBundle(assetURL))
+            try? cmdRemove(assetURL, recursively: checkIsDirectory(assetURL))
         }
 
         try targetURLs.forEach {
