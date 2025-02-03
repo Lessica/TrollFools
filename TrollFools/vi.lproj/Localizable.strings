@@ -2,7 +2,7 @@
 "%@ exited with code %d" = "%@ thoát với mã %d";
 
 /* TODO */
-"%@ rows not loaded" = "%@ rows not loaded";
+"%@ rows not loaded" = "%@ dòng chưa được tải.";
 
 /* No comment provided by engineer. */
 "%@ terminated with signal %d" = "%@ đã kết thúc với tín hiệu %d";
@@ -14,28 +14,28 @@
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
 /* TODO */
-"Cancel" = "Cancel";
+"Cancel" = "Hủy";
 
 /* TODO */
-"Cannot parse text with UTF-8 encoding: “%@”." = "Cannot parse text with UTF-8 encoding: “%@”.";
+"Cannot parse text with UTF-8 encoding: “%@”." = "Không thể phân tích văn bản với mã hóa UTF-8: “%@”.";
 
 /* No comment provided by engineer. */
 "Completed" = "Hoàn thành";
 
 /* TODO */
-"Confirm" = "Confirm";
+"Confirm" = "Xác nhận";
 
 /* TODO */
-"Copy" = "Copy";
+"Copy" = "sao chép";
 
 /* No comment provided by engineer. */
 "Copyright" = "Bản quyền";
 
 /* TODO */
-"Do you want to clear this log file “%@”?" = "Do you want to clear this log file “%@”?";
+"Do you want to clear this log file “%@”?" = "Bạn có muốn xóa tệp nhật ký này “%@”?";
 
 /* TODO */
-"Done" = "Done";
+"Done" = "Hoàn thành";
 
 /* No comment provided by engineer. */
 "Eject" = "Gỡ bỏ";
@@ -62,10 +62,10 @@
 "Failed to parse: %@" = "Không thể phân tích: %@";
 
 /* TODO */
-"Fast" = "Fast";
+"Fast" = "Tiêm nhanh";
 
 /* TODO */
-"Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
+"Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) chưa được cài đặt.";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
@@ -86,28 +86,28 @@
 "Injection" = "Nâng cao";
 
 /* TODO */
-"Injection Strategy" = "Injection Strategy";
+"Injection Strategy" = "Phương pháp tiêm";
 
 /* No comment provided by engineer. */
 "Launch" = "Mở ứng dụng";
 
 /* TODO */
-"Lexicographic" = "Lexicographic";
+"Lexicographic" = "Theo thứ tự từ điển";
 
 /* No comment provided by engineer. */
 "Lock Version" = "Khóa phiên bản";
 
 /* TODO */
-"Log Viewer" = "Log Viewer";
+"Log Viewer" = "Trình xem nhật ký";
 
 /* TODO */
-"Made with ♥ by OwnGoal Studio" = "Made with ♥ by OwnGoal Studio";
+"Made with ♥ by OwnGoal Studio" = "Tạo với ♥ bởi OwnGoal Studio.";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "Không tìm thấy framework đủ điều kiện.";
 
 /* TODO */
-"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”.";
+"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "Không tìm thấy framework hợp lệ.\n\nĐây thường không phải là lỗi của TrollFools, mà là lỗi của ứng dụng đang tiêm. Bạn có thể cài đặt lại ứng dụng đó từ App Store.\n\nBạn không thể sử dụng TrollFools với các ứng dụng được cài đặt qua “Asspp” hoặc các tinh chỉnh như “NoAppThinning”.";
 
 /* No comment provided by engineer. */
 "No Injected Plug-Ins" = "Không có plug-in nào được tiêm";
@@ -128,10 +128,10 @@
 "Plug-Ins" = "Plug-Ins";
 
 /* TODO */
-"Post-order" = "Post-order";
+"Post-order" = "Theo thứ tự hậu thứ";
 
 /* TODO */
-"Pre-order" = "Pre-order";
+"Pre-order" = "Theo thứ tự tiền thứ";
 
 /* No comment provided by engineer. */
 "Prefer Main Executable" = "Ưu tiên tệp thực thi chính";
@@ -146,7 +146,7 @@
 "Search…" = "Tìm kiếm…";
 
 /* TODO */
-"Select Application to Inject" = "Select Application to Inject";
+"Select Application to Inject" = "Chọn ứng dụng để tiêm";
 
 /* No comment provided by engineer. */
 "Show in Filza" = "Hiển thị trong Filza";
@@ -161,7 +161,7 @@
 "Source Code" = "Mã nguồn";
 
 /* TODO */
-"The content of text file “%@” is empty." = "The content of text file “%@” is empty.";
+"The content of text file “%@” is empty." = "Nội dung của tệp văn bản “%@” trống.";
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
@@ -179,7 +179,7 @@
 "User Applications" = "Ứng dụng người dùng";
 
 /* TODO */
-"View Logs" = "View Logs";
+"View Logs" = "Xem nhật ký";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "Bạn cần làm mới bộ nhớ đệm biểu tượng trong TrollStore để áp dụng các thay đổi.";
