@@ -9,7 +9,7 @@ cp -rp $THEOS_STAGING_DIR$THEOS_PACKAGE_INSTALL_PREFIX/Applications/TrollFools.a
 chmod 0644 $THEOS_STAGING_DIR/Payload/TrollFools.app/Info.plist
 
 cd $THEOS_STAGING_DIR
-7z a -tzip -mm=LZMA TrollFools_$VERSION-$BUILD_NUMBER.tipa Payload
+7z a -tzip TrollFools_$VERSION-$BUILD_NUMBER.tipa Payload
 cd -
 
 cp -p $THEOS_STAGING_DIR/TrollFools_$VERSION-$BUILD_NUMBER.tipa packages
