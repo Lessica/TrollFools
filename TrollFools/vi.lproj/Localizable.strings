@@ -1,7 +1,7 @@
 /* No comment provided by engineer. */
 "%@ exited with code %d" = "%@ thoát với mã %d";
 
-/* TODO */
+/* No comment provided by engineer. */
 "%@ rows not loaded" = "%@ dòng chưa được tải.";
 
 /* No comment provided by engineer. */
@@ -13,28 +13,28 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Cancel" = "Hủy";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Cannot parse text with UTF-8 encoding: “%@”." = "Không thể phân tích văn bản với mã hóa UTF-8: “%@”.";
 
 /* No comment provided by engineer. */
 "Completed" = "Hoàn thành";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Confirm" = "Xác nhận";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Copy" = "Sao chép";
 
 /* No comment provided by engineer. */
 "Copyright" = "Bản quyền";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Do you want to clear this log file “%@”?" = "Bạn có muốn xóa tệp nhật ký này “%@”?";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Done" = "Hoàn thành";
 
 /* No comment provided by engineer. */
@@ -61,10 +61,10 @@
 /* No comment provided by engineer. */
 "Failed to parse: %@" = "Không thể phân tích: %@";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Fast" = "Tiêm nhanh";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) chưa được cài đặt.";
 
 /* No comment provided by engineer. */
@@ -85,28 +85,28 @@
 /* No comment provided by engineer. */
 "Injection" = "Nâng cao";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Injection Strategy" = "Phương pháp tiêm";
 
 /* No comment provided by engineer. */
 "Launch" = "Mở ứng dụng";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Lexicographic" = "Theo thứ tự từ điển";
 
 /* No comment provided by engineer. */
 "Lock Version" = "Khóa phiên bản";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Log Viewer" = "Trình xem nhật ký";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Made with ♥ by OwnGoal Studio" = "Tạo với ♥ bởi OwnGoal Studio.";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "Không tìm thấy framework đủ điều kiện.";
 
-/* TODO */
+/* No comment provided by engineer. */
 "No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "Không tìm thấy framework hợp lệ.\n\nĐây thường không phải là lỗi của TrollFools, mà là lỗi của ứng dụng đang tiêm. Bạn có thể cài đặt lại ứng dụng đó từ App Store.\n\nBạn không thể sử dụng TrollFools với các ứng dụng được cài đặt qua “Asspp” hoặc các tinh chỉnh như “NoAppThinning”.";
 
 /* No comment provided by engineer. */
@@ -127,10 +127,10 @@
 /* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Post-order" = "Theo thứ tự hậu thứ";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Pre-order" = "Theo thứ tự tiền thứ";
 
 /* No comment provided by engineer. */
@@ -145,7 +145,7 @@
 /* No comment provided by engineer. */
 "Search…" = "Tìm kiếm…";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Select Application to Inject" = "Chọn ứng dụng để tiêm";
 
 /* No comment provided by engineer. */
@@ -160,7 +160,7 @@
 /* No comment provided by engineer. */
 "Source Code" = "Mã nguồn";
 
-/* TODO */
+/* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "Nội dung của tệp văn bản “%@” trống.";
 
 /* No comment provided by engineer. */
@@ -178,7 +178,7 @@
 /* No comment provided by engineer. */
 "User Applications" = "Ứng dụng người dùng";
 
-/* TODO */
+/* No comment provided by engineer. */
 "View Logs" = "Xem nhật ký";
 
 /* No comment provided by engineer. */
