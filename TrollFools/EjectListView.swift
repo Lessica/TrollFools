@@ -7,8 +7,11 @@
 
 import CocoaLumberjackSwift
 import SwiftUI
+import SwiftUIIntrospect
 
 struct EjectListView: View {
+
+    @StateObject var searchViewModel = AppListSearchViewModel()
     @StateObject var ejectList: EjectListModel
 
     init(_ app: App) {
@@ -111,14 +114,14 @@ struct EjectListView: View {
                 )
             } label: { }
         })
-        .onViewWillAppear { viewController in
-            viewControllerHost.viewController = viewController
-        }
     }
 
     var body: some View {
         if #available(iOS 15, *) {
             ejectListView
+                .onViewWillAppear { viewController in
+                    viewControllerHost.viewController = viewController
+                }
                 .refreshable {
                     withAnimation {
                         ejectList.reload()
@@ -134,6 +137,38 @@ struct EjectListView: View {
         } else {
             // Fallback on earlier versions
             ejectListView
+                .onReceive(searchViewModel.$searchKeyword) {
+                    ejectList.filter.searchKeyword = $0
+                }
+                .introspect(.list, on: .iOS(.v14)) { tableView in
+                    if tableView.refreshControl == nil {
+                        tableView.refreshControl = {
+                            let refreshControl = UIRefreshControl()
+                            refreshControl.addAction(UIAction { action in
+                                ejectList.reload()
+                                if let control = action.sender as? UIRefreshControl {
+                                    control.endRefreshing()
+                                }
+                            }, for: .valueChanged)
+                            return refreshControl
+                        }()
+                    }
+                }
+                .introspect(.viewController, on: .iOS(.v14)) { viewController in
+                    viewControllerHost.viewController = viewController
+                    if searchViewModel.searchController == nil {
+                        viewController.navigationItem.hidesSearchBarWhenScrolling = true
+                        viewController.navigationItem.searchController = {
+                            let searchController = UISearchController(searchResultsController: nil)
+                            searchController.searchResultsUpdater = searchViewModel
+                            searchController.obscuresBackgroundDuringPresentation = false
+                            searchController.hidesNavigationBarDuringPresentation = true
+                            searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
+                            return searchController
+                        }()
+                        searchViewModel.searchController = viewController.navigationItem.searchController
+                    }
+                }
         }
     }
 
@@ -198,5 +233,15 @@ struct EjectListView: View {
             lastError = error
             isErrorOccurred = true
         }
+    }
+}
+
+final class EjectListSearchViewModel: NSObject, UISearchResultsUpdating, ObservableObject {
+    @Published var searchKeyword: String = ""
+
+    weak var searchController: UISearchController?
+
+    func updateSearchResults(for searchController: UISearchController) {
+        searchKeyword = searchController.searchBar.text ?? ""
     }
 }

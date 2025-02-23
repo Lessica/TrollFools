@@ -33,6 +33,7 @@
 		61EFA3792D3108BD00159442 /* InjectorV3+Eject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3782D3108B700159442 /* InjectorV3+Eject.swift */; };
 		61EFA37B2D31165700159442 /* InjectorV3+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */; };
 		61EFA37D2D311DA800159442 /* InjectorV3+Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */; };
+		61F595622D6B42340034DD83 /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */; };
 		CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC0E80FA2C54F84000B137B4 /* mv-15 */; };
 		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
 		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
@@ -155,6 +156,7 @@
 				61EFA3692D3026D400159442 /* CocoaLumberjackSwift in Frameworks */,
 				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
 				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
+				61F595622D6B42340034DD83 /* SwiftUIIntrospect-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +338,7 @@
 				61EFA3662D3026D400159442 /* CocoaLumberjack */,
 				61EFA3682D3026D400159442 /* CocoaLumberjackSwift */,
 				61EFA36A2D3026D400159442 /* CocoaLumberjackSwiftLogBackend */,
+				61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */,
 			);
 			productName = TrollFools;
 			productReference = CCF470562C4A4649008D8197 /* TrollFools.app */;
@@ -373,6 +376,7 @@
 				CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */,
 				61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				61F595602D6B42340034DD83 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
 			projectDirPath = "";
@@ -722,6 +726,14 @@
 				minimumVersion = 3.8.5;
 			};
 		};
+		61F595602D6B42340034DD83 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.0;
+			};
+		};
 		CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
@@ -760,6 +772,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjackSwiftLogBackend;
+		};
+		61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61F595602D6B42340034DD83 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = "SwiftUIIntrospect-Static";
 		};
 		CC1548C82C4A6B2100A4173E /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;

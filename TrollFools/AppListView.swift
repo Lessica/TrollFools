@@ -7,8 +7,11 @@
 
 import CocoaLumberjackSwift
 import SwiftUI
+import SwiftUIIntrospect
 
 struct AppListView: View {
+
+    @StateObject var searchViewModel = AppListSearchViewModel()
     @EnvironmentObject var appList: AppListModel
 
     @State var isErrorOccurred: Bool = false
@@ -269,6 +272,44 @@ struct AppListView: View {
             } else {
                 // Fallback on earlier versions
                 appListView
+                    .onChange(of: appList.filter.showPatchedOnly) { showPatchedOnly in
+                        if let searchBar = searchViewModel.searchController?.searchBar {
+                            searchBar.placeholder = (showPatchedOnly
+                                                     ? NSLocalizedString("Search Patched…", comment: "")
+                                                     : NSLocalizedString("Search…", comment: ""))
+                        }
+                    }
+                    .onReceive(searchViewModel.$searchKeyword) {
+                        appList.filter.searchKeyword = $0
+                    }
+                    .introspect(.list, on: .iOS(.v14)) { tableView in
+                        if tableView.refreshControl == nil {
+                            tableView.refreshControl = {
+                                let refreshControl = UIRefreshControl()
+                                refreshControl.addAction(UIAction { action in
+                                    appList.reload()
+                                    if let control = action.sender as? UIRefreshControl {
+                                        control.endRefreshing()
+                                    }
+                                }, for: .valueChanged)
+                                return refreshControl
+                            }()
+                        }
+                    }
+                    .introspect(.viewController, on: .iOS(.v14)) { viewController in
+                        if searchViewModel.searchController == nil {
+                            viewController.navigationItem.hidesSearchBarWhenScrolling = true
+                            viewController.navigationItem.searchController = {
+                                let searchController = UISearchController(searchResultsController: nil)
+                                searchController.searchResultsUpdater = searchViewModel
+                                searchController.obscuresBackgroundDuringPresentation = false
+                                searchController.hidesNavigationBarDuringPresentation = true
+                                searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
+                                return searchController
+                            }()
+                            searchViewModel.searchController = viewController.navigationItem.searchController
+                        }
+                    }
             }
         }
         .sheet(item: $selectorOpenedURL) { url in
@@ -341,4 +382,14 @@ struct AppListView: View {
 
 extension URL: Identifiable {
     public var id: String { absoluteString }
+}
+
+final class AppListSearchViewModel: NSObject, UISearchResultsUpdating, ObservableObject {
+    @Published var searchKeyword: String = ""
+
+    weak var searchController: UISearchController?
+
+    func updateSearchResults(for searchController: UISearchController) {
+        searchKeyword = searchController.searchBar.text ?? ""
+    }
 }
