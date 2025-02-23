@@ -141,11 +141,11 @@ struct AppListCell: View {
                 if #available(iOS 15.0, *) {
                     Text(highlightedId)
                         .font(.subheadline)
-                        .lineLimit(2)
+                        .lineLimit(app.isAdvertisement ? 2 : 1)
                 } else {
                     Text(app.id)
                         .font(.subheadline)
-                        .lineLimit(2)
+                        .lineLimit(app.isAdvertisement ? 2 : 1)
                 }
             }
 

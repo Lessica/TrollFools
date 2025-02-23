@@ -138,8 +138,10 @@ struct AppListView: View {
             }
 
             Section {
-                if !appList.isPaidProductInstalled {
-                    advertisementButton
+                if #available(iOS 15, *) {
+                    if !appList.isPaidProductInstalled {
+                        advertisementButton
+                    }
                 }
 
                 filteredAppList(appList.trollApplications)
