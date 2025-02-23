@@ -62,11 +62,7 @@ extension InjectorV3 {
     // MARK: - ldid
 
     fileprivate static let ldidBinaryURL: URL = {
-        if #available(iOS 15, *) {
-            Bundle.main.url(forResource: "ldid", withExtension: nil)!
-        } else {
-            Bundle.main.url(forResource: "ldid-14", withExtension: nil)!
-        }
+        Bundle.main.url(forResource: "ldid", withExtension: nil)!
     }()
 
     func cmdPseudoSign(_ target: URL, force: Bool = false) throws {

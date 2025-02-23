@@ -60,7 +60,6 @@
 		CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A11A2C4A6066000D75B0 /* InjectView.swift */; };
 		CCC564EB2C4BE8320097C300 /* ldid in Resources */ = {isa = PBXBuildFile; fileRef = CCC564E82C4BE8320097C300 /* ldid */; };
 		CCC564EC2C4BE8470097C300 /* libcrypto.3.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */; };
-		CCC564ED2C4BE8470097C300 /* libplist-2.0.3.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */; };
 		CCECB7CE2C54DC660094C8E6 /* mv in Resources */ = {isa = PBXBuildFile; fileRef = CCECB7CD2C54DC660094C8E6 /* mv */; };
 		CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */; };
 		CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF4705D2C4A464B008D8197 /* Assets.xcassets */; };
@@ -124,7 +123,6 @@
 		CCB6A1182C4A58C7000D75B0 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
 		CCB6A11A2C4A6066000D75B0 /* InjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectView.swift; sourceTree = "<group>"; };
 		CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.3.dylib; sourceTree = "<group>"; };
-		CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libplist-2.0.3.dylib"; sourceTree = "<group>"; };
 		CCC564E82C4BE8320097C300 /* ldid */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ldid; sourceTree = "<group>"; };
 		CCECB7CD2C54DC660094C8E6 /* mv */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mv; sourceTree = "<group>"; };
 		CCF470562C4A4649008D8197 /* TrollFools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrollFools.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,7 +238,6 @@
 				CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */,
 				CC1548E22C4A974400A4173E /* libintl.8.dylib */,
 				CC1548E32C4A974400A4173E /* libiosexec.1.dylib */,
-				CCC564E72C4BE8320097C300 /* libplist-2.0.3.dylib */,
 				CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */,
 				CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */,
 			);
@@ -407,7 +404,6 @@
 				CCC564EC2C4BE8470097C300 /* libcrypto.3.dylib in Resources */,
 				CC1548E62C4A974E00A4173E /* libintl.8.dylib in Resources */,
 				CC1548E72C4A974E00A4173E /* libiosexec.1.dylib in Resources */,
-				CCC564ED2C4BE8470097C300 /* libplist-2.0.3.dylib in Resources */,
 				CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */,
 				CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */,
 				CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */,
