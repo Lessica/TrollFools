@@ -75,7 +75,7 @@
 
     NSMutableArray <UIBarButtonItem *> *rightBarButtonItems = [NSMutableArray arrayWithCapacity:2];
 
-    if (@available(iOS 16.0, *)) {
+    if (@available(iOS 16, *)) {
         if (self.allowShare) {
             [rightBarButtonItems addObject:self.shareItem];
         }
@@ -255,7 +255,7 @@
 
 - (void)shareItemTapped:(UIBarButtonItem *)sender {
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:self.entryPath]] applicationActivities:nil];
-    if (@available(iOS 16.0, *)) {
+    if (@available(iOS 16, *)) {
         activityViewController.popoverPresentationController.sourceItem = sender;
     } else {
         // Fallback on earlier versions

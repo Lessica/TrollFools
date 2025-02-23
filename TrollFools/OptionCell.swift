@@ -11,7 +11,7 @@ struct OptionCell: View {
     let option: Option
 
     var iconName: String {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16, *) {
             option == .attach ? "syringe" : "xmark.bin"
         } else {
             option == .attach ? "tray.and.arrow.down" : "xmark.bin"

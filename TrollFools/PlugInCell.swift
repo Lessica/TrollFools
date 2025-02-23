@@ -19,7 +19,7 @@ struct PlugInCell: View {
 
     let plugIn: InjectedPlugIn
 
-    @available(iOS 15.0, *)
+    @available(iOS 15, *)
     var highlightedName: AttributedString {
         let name = plugIn.url.lastPathComponent
         var attributedString = AttributedString(name)
@@ -52,7 +52,7 @@ struct PlugInCell: View {
                 .foregroundColor(.accentColor)
 
             VStack(alignment: .leading) {
-                if #available(iOS 15.0, *) {
+                if #available(iOS 15, *) {
                     Text(highlightedName)
                         .font(.headline)
                 } else {

@@ -44,7 +44,7 @@ struct AppListView: View {
                     OptionView(app)
                 }
             } label: {
-                if #available(iOS 16.0, *) {
+                if #available(iOS 16, *) {
                     AppListCell(app: app)
                 } else {
                     AppListCell(app: app)
@@ -58,7 +58,7 @@ struct AppListView: View {
         Button {
             UIApplication.shared.open(App.advertisementApp.url)
         } label: {
-            if #available(iOS 16.0, *) {
+            if #available(iOS 16, *) {
                 AppListCell(app: App.advertisementApp)
             } else {
                 AppListCell(app: App.advertisementApp)
@@ -78,6 +78,25 @@ struct AppListView: View {
             } label: {
                 Text(NSLocalizedString("Source Code", comment: ""))
                     .font(.footnote)
+            }
+        }
+    }
+
+    var appListFooter: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            if !appList.filter.showPatchedOnly {
+                Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
+                    .font(.footnote)
+            }
+
+            if !appList.isSelectorMode {
+                if #available(iOS 16, *) {
+                    appListFooterView
+                        .padding(.top, 8)
+                } else {
+                    appListFooterView
+                        .padding(.top, 2)
+                }
             }
         }
     }
@@ -103,7 +122,7 @@ struct AppListView: View {
                             Spacer()
 
                             if appList.isRebuilding {
-                                if #available(iOS 16.0, *) {
+                                if #available(iOS 16, *) {
                                     ProgressView()
                                         .progressViewStyle(CircularProgressViewStyle())
                                         .controlSize(.large)
@@ -128,12 +147,24 @@ struct AppListView: View {
             Section {
                 filteredAppList(appList.userApplications)
             } header: {
-                Text(NSLocalizedString("User Applications", comment: ""))
-                    .font(.footnote)
+                if #available(iOS 15, *) {
+                    Text(NSLocalizedString("User Applications", comment: ""))
+                        .font(.footnote)
+                } else {
+                    Text(NSLocalizedString("User Applications", comment: ""))
+                        .font(.footnote)
+                        .padding(.horizontal, 16)
+                }
             } footer: {
                 if !appList.filter.isSearching && !appList.filter.showPatchedOnly && appList.unsupportedCount > 0 {
-                    Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                        .font(.footnote)
+                    if #available(iOS 15, *) {
+                        Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
+                            .font(.footnote)
+                    } else {
+                        Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
+                            .font(.footnote)
+                            .padding(.horizontal, 16)
+                    }
                 }
             }
 
@@ -146,32 +177,34 @@ struct AppListView: View {
 
                 filteredAppList(appList.trollApplications)
             } header: {
-                Text(NSLocalizedString("TrollStore Applications", comment: ""))
-                    .font(.footnote)
+                if #available(iOS 15, *) {
+                    Text(NSLocalizedString("TrollStore Applications", comment: ""))
+                        .font(.footnote)
+                } else {
+                    Text(NSLocalizedString("TrollStore Applications", comment: ""))
+                        .font(.footnote)
+                        .padding(.horizontal, 16)
+                }
             }
 
             Section {
                 filteredAppList(appList.appleApplications)
             } header: {
-                Text(NSLocalizedString("Injectable System Applications", comment: ""))
-                    .font(.footnote)
+                if #available(iOS 15, *) {
+                    Text(NSLocalizedString("Injectable System Applications", comment: ""))
+                        .font(.footnote)
+                } else {
+                    Text(NSLocalizedString("Injectable System Applications", comment: ""))
+                        .font(.footnote)
+                        .padding(.horizontal, 16)
+                }
             } footer: {
                 if !appList.filter.isSearching {
-                    VStack(alignment: .leading, spacing: 20) {
-                        if !appList.filter.showPatchedOnly {
-                            Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
-                                .font(.footnote)
-                        }
-
-                        if !appList.isSelectorMode {
-                            if #available(iOS 16.0, *) {
-                                appListFooterView
-                                    .padding(.top, 8)
-                            } else {
-                                appListFooterView
-                                    .padding(.top, 2)
-                            }
-                        }
+                    if #available(iOS 15, *) {
+                        appListFooter
+                    } else {
+                        appListFooter
+                            .padding(.horizontal, 16)
                     }
                 }
             }
@@ -200,7 +233,7 @@ struct AppListView: View {
                 Button {
                     appList.filter.showPatchedOnly.toggle()
                 } label: {
-                    if #available(iOS 15.0, *) {
+                    if #available(iOS 15, *) {
                         Image(systemName: appList.filter.showPatchedOnly 
                               ? "line.3.horizontal.decrease.circle.fill"
                               : "line.3.horizontal.decrease.circle")
@@ -217,7 +250,7 @@ struct AppListView: View {
 
     var body: some View {
         NavigationView {
-            if #available(iOS 15.0, *) {
+            if #available(iOS 15, *) {
                 appListView
                     .refreshable {
                         withAnimation {

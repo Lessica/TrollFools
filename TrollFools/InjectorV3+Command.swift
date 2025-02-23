@@ -37,7 +37,7 @@ extension InjectorV3 {
     // MARK: - cp
 
     fileprivate static let cpBinaryURL: URL = {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16, *) {
             Bundle.main.url(forResource: "cp", withExtension: nil)!
         } else {
             Bundle.main.url(forResource: "cp-15", withExtension: nil)!
@@ -62,7 +62,7 @@ extension InjectorV3 {
     // MARK: - ldid
 
     fileprivate static let ldidBinaryURL: URL = {
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15, *) {
             Bundle.main.url(forResource: "ldid", withExtension: nil)!
         } else {
             Bundle.main.url(forResource: "ldid-14", withExtension: nil)!
@@ -164,7 +164,7 @@ extension InjectorV3 {
     // MARK: - mv
 
     fileprivate static let mvBinaryURL: URL = {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16, *) {
             Bundle.main.url(forResource: "mv", withExtension: nil)!
         } else {
             Bundle.main.url(forResource: "mv-15", withExtension: nil)!

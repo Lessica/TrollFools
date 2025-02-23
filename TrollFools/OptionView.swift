@@ -86,7 +86,7 @@ struct OptionView: View {
             isImporterSelected = true
         }
         .sheet(isPresented: $isSettingsPresented) {
-            if #available(iOS 16.0, *) {
+            if #available(iOS 16, *) {
                 SettingsView(app)
                     .presentationDetents([.medium, .large])
             } else {

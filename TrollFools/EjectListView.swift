@@ -33,7 +33,7 @@ struct EjectListView: View {
     }
 
     var deleteAllButton: some View {
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15, *) {
             Button(role: .destructive) {
                 deleteAll()
             } label: {
@@ -48,11 +48,23 @@ struct EjectListView: View {
         }
     }
 
+    var headerView: some View {
+        Text(ejectList.filteredPlugIns.isEmpty
+             ? NSLocalizedString("No Injected Plug-Ins", comment: "")
+             : NSLocalizedString("Injected Plug-Ins", comment: ""))
+            .font(.footnote)
+    }
+
+    var footerView: some View {
+        Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
+            .font(.footnote)
+    }
+
     var ejectListView: some View {
         List {
             Section {
                 ForEach(ejectList.filteredPlugIns) { plugin in
-                    if #available(iOS 16.0, *) {
+                    if #available(iOS 16, *) {
                         PlugInCell(plugIn: plugin)
                             .environmentObject(ejectList)
                     } else {
@@ -63,10 +75,12 @@ struct EjectListView: View {
                 }
                 .onDelete(perform: delete)
             } header: {
-                Text(ejectList.filteredPlugIns.isEmpty
-                     ? NSLocalizedString("No Injected Plug-Ins", comment: "")
-                     : NSLocalizedString("Injected Plug-Ins", comment: ""))
-                    .font(.footnote)
+                if #available(iOS 15, *) {
+                    headerView
+                } else {
+                    headerView
+                        .padding(.horizontal, 16)
+                }
             }
 
             if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
@@ -76,8 +90,12 @@ struct EjectListView: View {
                         .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
                     if ejectList.app.isFromTroll {
-                        Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
-                            .font(.footnote)
+                        if #available(iOS 15, *) {
+                            footerView
+                        } else {
+                            footerView
+                                .padding(.horizontal, 16)
+                        }
                     }
                 }
             }
@@ -99,7 +117,7 @@ struct EjectListView: View {
     }
 
     var body: some View {
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15, *) {
             ejectListView
                 .refreshable {
                     withAnimation {

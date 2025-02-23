@@ -33,9 +33,19 @@ struct SettingsView: View {
                     Toggle(NSLocalizedString("Prefer Main Executable", comment: ""), isOn: $preferMainExecutable)
                     Toggle(NSLocalizedString("Use Weak Reference", comment: ""), isOn: $useWeakReference)
                 } header: {
-                    Text(NSLocalizedString("Injection", comment: ""))
+                    if #available(iOS 15, *) {
+                        Text(NSLocalizedString("Injection", comment: ""))
+                    } else {
+                        Text(NSLocalizedString("Injection", comment: ""))
+                            .padding(.horizontal, 16)
+                    }
                 } footer: {
-                    Text(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
+                    if #available(iOS 15, *) {
+                        Text(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
+                    } else {
+                        Text(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
+                            .padding(.horizontal, 16)
+                    }
                 }
             }
             .navigationTitle(NSLocalizedString("Advanced Settings", comment: ""))

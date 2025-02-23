@@ -72,7 +72,7 @@ struct InjectView: View {
                     )
                 }
             } else {
-                if #available(iOS 16.0, *) {
+                if #available(iOS 16, *) {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding(.all, 20)
