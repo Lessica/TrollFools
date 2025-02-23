@@ -8,5 +8,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-VERSION = 2.11
-BUILD_NUMBER = 26
+VERSION = 2.12
+BUILD_NUMBER = 27
