@@ -14,6 +14,7 @@ final class App: Identifiable, ObservableObject {
     let teamID: String
     let url: URL
     let version: String?
+    let isAdvertisement: Bool
 
     @Published var isDetached: Bool = false
     @Published var isAllowedToAttachOrDetach: Bool
@@ -37,7 +38,8 @@ final class App: Identifiable, ObservableObject {
         teamID: String,
         url: URL,
         version: String? = nil,
-        alternateIcon: UIImage? = nil
+        alternateIcon: UIImage? = nil,
+        isAdvertisement: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -49,6 +51,7 @@ final class App: Identifiable, ObservableObject {
         self.isAllowedToAttachOrDetach = type == "User" && InjectorV3.main.isAllowedToAttachOrDetachMetadataInBundle(url)
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
         self.alternateIcon = alternateIcon
+        self.isAdvertisement = isAdvertisement
     }
 
     func reload() {
@@ -64,4 +67,29 @@ final class App: Identifiable, ObservableObject {
     private func reloadInjectedStatus() {
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
     }
+}
+
+extension App {
+    static let advertisementApp: App = {
+        [
+            App(
+                id: NSLocalizedString("Record your phone calls like never before.", comment: ""),
+                name: NSLocalizedString("TrollRecorder", comment: ""),
+                type: "System",
+                teamID: "GXZ23M5TP2",
+                url: URL(string: "https://havoc.app/package/trollrecorder")!,
+                alternateIcon: .init(named: "tricon-default"),
+                isAdvertisement: true
+            ),
+            App(
+                id: NSLocalizedString("Bringing back the most advanced system and security analysis tool.", comment: ""),
+                name: NSLocalizedString("Reveil", comment: ""),
+                type: "System",
+                teamID: "GXZ23M5TP2",
+                url: URL(string: "https://havoc.app/package/reveil")!,
+                alternateIcon: .init(named: "reveil-default"),
+                isAdvertisement: true
+            ),
+        ].randomElement()!
+    }()
 }

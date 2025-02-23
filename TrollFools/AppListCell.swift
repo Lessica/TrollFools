@@ -141,11 +141,11 @@ struct AppListCell: View {
                 if #available(iOS 15.0, *) {
                     Text(highlightedId)
                         .font(.subheadline)
-                        .lineLimit(1)
+                        .lineLimit(2)
                 } else {
                     Text(app.id)
                         .font(.subheadline)
-                        .lineLimit(1)
+                        .lineLimit(2)
                 }
             }
 
@@ -170,10 +170,13 @@ struct AppListCell: View {
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                 }
+            } else if app.isAdvertisement {
+                Image("badge-ad")
+                    .scaleEffect(1.2)
             }
         }
         .contextMenu {
-            if !appList.isSelectorMode {
+            if !appList.isSelectorMode && !app.isAdvertisement {
                 cellContextMenuWrapper
             }
         }

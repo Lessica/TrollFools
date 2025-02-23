@@ -13,6 +13,9 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "And %d more unsupported user applications.";
 
+/* No comment provided by engineer. */
+"Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
+
 /* StripedTextTableViewController */
 "Cancel" = "Cancel";
 
@@ -140,6 +143,12 @@
 "Rebuild Icon Cache" = "Rebuild Icon Cache";
 
 /* No comment provided by engineer. */
+"Record your phone calls like never before." = "Record your phone calls like never before.";
+
+/* No comment provided by engineer. */
+"Reveil" = "Reveil";
+
+/* No comment provided by engineer. */
 "Search Patched…" = "Search Patched…";
 
 /* No comment provided by engineer. */
@@ -165,6 +174,9 @@
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
+
+/* No comment provided by engineer. */
+"TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "TrollStore Applications";

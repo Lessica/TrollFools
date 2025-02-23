@@ -13,6 +13,9 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
+/* TODO */
+"Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
+
 /* No comment provided by engineer. */
 "Cancel" = "Hủy";
 
@@ -139,6 +142,12 @@
 /* No comment provided by engineer. */
 "Rebuild Icon Cache" = "Làm mới bộ nhớ đệm biểu tượng";
 
+/* TODO */
+"Record your phone calls like never before." = "Record your phone calls like never before.";
+
+/* TODO */
+"Reveil" = "Reveil";
+
 /* No comment provided by engineer. */
 "Search Patched…" = "Tìm kiếm sửa đổi…";
 
@@ -165,6 +174,9 @@
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
+
+/* TODO */
+"TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "Ứng dụng TrollStore";

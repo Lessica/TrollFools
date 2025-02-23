@@ -33,7 +33,7 @@ struct AppListView: View {
 """, appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Made with ♥ by OwnGoal Studio", comment: ""))
     }
 
-    let repoURL = URL(string: "https://github.com/Lessica/TrollFools")
+    let repoURL = URL(string: "https://github.com/Lessica/TrollFools")!
 
     func filteredAppList(_ apps: [App]) -> some View {
         ForEach(apps, id: \.id) { app in
@@ -54,15 +54,27 @@ struct AppListView: View {
         }
     }
 
+    var advertisementButton: some View {
+        Button {
+            UIApplication.shared.open(App.advertisementApp.url)
+        } label: {
+            if #available(iOS 16.0, *) {
+                AppListCell(app: App.advertisementApp)
+            } else {
+                AppListCell(app: App.advertisementApp)
+                    .padding(.vertical, 4)
+            }
+        }
+        .foregroundColor(.primary)
+    }
+
     var appListFooterView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(appString)
                 .font(.footnote)
 
             Button {
-                if let repoURL {
-                    UIApplication.shared.open(repoURL)
-                }
+                UIApplication.shared.open(repoURL)
             } label: {
                 Text(NSLocalizedString("Source Code", comment: ""))
                     .font(.footnote)
@@ -126,6 +138,10 @@ struct AppListView: View {
             }
 
             Section {
+                if !appList.isPaidProductInstalled {
+                    advertisementButton
+                }
+
                 filteredAppList(appList.trollApplications)
             } header: {
                 Text(NSLocalizedString("TrollStore Applications", comment: ""))

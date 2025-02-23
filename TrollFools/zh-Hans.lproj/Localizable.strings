@@ -13,6 +13,9 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用";
 
+/* No comment provided by engineer. */
+"Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
+
 /* StripedTextTableViewController */
 "Cancel" = "取消";
 
@@ -140,6 +143,12 @@
 "Rebuild Icon Cache" = "重建图标缓存";
 
 /* No comment provided by engineer. */
+"Record your phone calls like never before." = "前所未有地录制你的每一通电话。";
+
+/* No comment provided by engineer. */
+"Reveil" = "Reveil";
+
+/* No comment provided by engineer. */
 "Search Patched…" = "搜索 已注入…";
 
 /* No comment provided by engineer. */
@@ -165,6 +174,9 @@
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
+
+/* No comment provided by engineer. */
+"TrollRecorder" = "巨魔录音机";
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "巨魔商店应用";

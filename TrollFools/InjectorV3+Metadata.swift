@@ -34,7 +34,9 @@ extension InjectorV3 {
     // MARK: - Shared Methods
 
     func isMetadataDetachedInBundle(_ target: URL) -> Bool {
-        precondition(checkIsBundle(target), "Not a bundle: \(target.path)")
+        guard checkIsBundle(target) else {
+            return false
+        }
 
         let containerURL = target.deletingLastPathComponent()
         let metaBackupURL = containerURL.appendingPathComponent(Self.metadataPlistBackupName)
@@ -43,7 +45,9 @@ extension InjectorV3 {
     }
 
     func isAllowedToAttachOrDetachMetadataInBundle(_ target: URL) -> Bool {
-        precondition(checkIsBundle(target), "Not a bundle: \(target.path)")
+        guard checkIsBundle(target) else {
+            return false
+        }
 
         let containerURL = target.deletingLastPathComponent()
 
