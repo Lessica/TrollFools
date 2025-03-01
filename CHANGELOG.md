@@ -1,1 +1,1 @@
-- Fixed a bug that caused ejecting to fail when the previous inject was not successful.
+- Added Italian localization.
