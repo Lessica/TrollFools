@@ -98,6 +98,16 @@
 		CCFC78642C4E853D008EB25D /* mkdir in Resources */ = {isa = PBXBuildFile; fileRef = CCFC78632C4E853D008EB25D /* mkdir */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		614C0C642D7C3400007E9184 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CCF4704E2C4A4649008D8197 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 614C0C372D7C243E007E9184;
+			remoteInfo = trollfoolscli;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		614C0C362D7C243E007E9184 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -420,6 +430,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				614C0C652D7C3400007E9184 /* PBXTargetDependency */,
 			);
 			name = TrollFools;
 			packageProductDependencies = (
@@ -581,6 +592,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		614C0C652D7C3400007E9184 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 614C0C372D7C243E007E9184 /* trollfoolscli */;
+			targetProxy = 614C0C642D7C3400007E9184 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CCF4706B2C4A4919008D8197 /* Localizable.strings */ = {
