@@ -57,18 +57,6 @@ struct EjectListView: View {
         }
     }
 
-    var headerView: some View {
-        Text(ejectList.filteredPlugIns.isEmpty
-            ? NSLocalizedString("No Injected Plug-Ins", comment: "")
-            : NSLocalizedString("Injected Plug-Ins", comment: ""))
-            .font(.footnote)
-    }
-
-    var footerView: some View {
-        Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
-            .font(.footnote)
-    }
-
     var ejectListView: some View {
         List {
             Section {
@@ -84,12 +72,9 @@ struct EjectListView: View {
                 }
                 .onDelete(perform: delete)
             } header: {
-                if #available(iOS 15, *) {
-                    headerView
-                } else {
-                    headerView
-                        .padding(.horizontal, 16)
-                }
+                paddedHeaderFooterText(ejectList.filteredPlugIns.isEmpty
+                    ? NSLocalizedString("No Injected Plug-Ins", comment: "")
+                    : NSLocalizedString("Injected Plug-Ins", comment: ""))
             }
 
             if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
@@ -99,12 +84,7 @@ struct EjectListView: View {
                         .foregroundColor(isDeletingAll ? .secondary : .red)
                 } footer: {
                     if ejectList.app.isFromTroll {
-                        if #available(iOS 15, *) {
-                            footerView
-                        } else {
-                            footerView
-                                .padding(.horizontal, 16)
-                        }
+                        paddedHeaderFooterText(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
                     }
                 }
             }
@@ -247,6 +227,18 @@ struct EjectListView: View {
         } catch {
             lastError = error
             isErrorOccurred = true
+        }
+    }
+
+    @ViewBuilder
+    private func paddedHeaderFooterText(_ content: String) -> some View {
+        if #available(iOS 15, *) {
+            Text(content)
+                .font(.footnote)
+        } else {
+            Text(content)
+                .font(.footnote)
+                .padding(.horizontal, 16)
         }
     }
 }

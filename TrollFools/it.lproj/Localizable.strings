@@ -11,7 +11,7 @@
 "Advanced Settings" = "Impostazioni Avanzate";
 
 /* No comment provided by engineer. */
-"And %d more unsupported user applications." = "E %d più non supportate dalle applicazioni.";
+"Advertisement" = "Advertisement";
 
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Portiamo indietro il più avanzato strumento di analisi di sistema e della sicurezza.";
@@ -105,6 +105,9 @@
 
 /* No comment provided by engineer. */
 "Made with ♥ by OwnGoal Studio" = "Fatto col ♥ da OwnGoal Studio";
+
+/* No comment provided by engineer. */
+"No Applications" = "No Applications";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "Nessun framework eleggibile trovato.";

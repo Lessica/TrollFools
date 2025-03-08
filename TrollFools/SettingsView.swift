@@ -12,14 +12,16 @@ struct SettingsView: View {
 
     init(_ app: App) {
         self.app = app
-        self._useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
-        self._preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
-        self._injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
+        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
     }
 
     @AppStorage var useWeakReference: Bool
     @AppStorage var preferMainExecutable: Bool
     @AppStorage var injectStrategy: InjectorV3.Strategy
+
+    @StateObject var viewControllerHost = ViewControllerHost()
 
     var body: some View {
         NavigationView {
@@ -33,23 +35,37 @@ struct SettingsView: View {
                     Toggle(NSLocalizedString("Prefer Main Executable", comment: ""), isOn: $preferMainExecutable)
                     Toggle(NSLocalizedString("Use Weak Reference", comment: ""), isOn: $useWeakReference)
                 } header: {
-                    if #available(iOS 15, *) {
-                        Text(NSLocalizedString("Injection", comment: ""))
-                    } else {
-                        Text(NSLocalizedString("Injection", comment: ""))
-                            .padding(.horizontal, 16)
-                    }
+                    paddedHeaderFooterText(NSLocalizedString("Injection", comment: ""))
                 } footer: {
-                    if #available(iOS 15, *) {
-                        Text(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
-                    } else {
-                        Text(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
-                            .padding(.horizontal, 16)
-                    }
+                    paddedHeaderFooterText(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
                 }
             }
             .navigationTitle(NSLocalizedString("Advanced Settings", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
+            .onViewWillAppear {
+                viewControllerHost.viewController = $0
+            }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        viewControllerHost.viewController?.dismiss(animated: true)
+                    } label: {
+                        Text(NSLocalizedString("Done", comment: ""))
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func paddedHeaderFooterText(_ content: String) -> some View {
+        if #available(iOS 15, *) {
+            Text(content)
+                .font(.footnote)
+        } else {
+            Text(content)
+                .font(.footnote)
+                .padding(.horizontal, 16)
         }
     }
 }

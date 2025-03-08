@@ -11,7 +11,7 @@
 "Advanced Settings" = "Cài đặt nâng cao";
 
 /* No comment provided by engineer. */
-"And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
+"Advertisement" = "Advertisement";
 
 /* TODO */
 "Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
@@ -105,6 +105,9 @@
 
 /* No comment provided by engineer. */
 "Made with ♥ by OwnGoal Studio" = "Tạo với ♥ bởi OwnGoal Studio.";
+
+/* No comment provided by engineer. */
+"No Applications" = "No Applications";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "Không tìm thấy framework đủ điều kiện.";

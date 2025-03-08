@@ -6,6 +6,7 @@
 //
 
 import Combine
+import OrderedCollections
 import SwiftUI
 
 final class AppListModel: ObservableObject {
@@ -16,9 +17,9 @@ final class AppListModel: ObservableObject {
     var isSelectorMode: Bool { selectorURL != nil }
 
     @Published var filter = FilterOptions()
-    @Published var userApplications: [App] = []
-    @Published var trollApplications: [App] = []
-    @Published var appleApplications: [App] = []
+    @Published var userApplications = OrderedDictionary<String, [App]>()
+    @Published var trollApplications = OrderedDictionary<String, [App]>()
+    @Published var appleApplications = OrderedDictionary<String, [App]>()
 
     @Published var isPaidProductInstalled: Bool = false
     @Published var unsupportedCount: Int = 0
@@ -55,7 +56,7 @@ final class AppListModel: ObservableObject {
             .store(in: &cancellables)
 
         let darwinCenter = CFNotificationCenterGetDarwinNotifyCenter()
-        CFNotificationCenterAddObserver(darwinCenter, Unmanaged.passRetained(self).toOpaque(), { center, observer, name, object, userInfo in
+        CFNotificationCenterAddObserver(darwinCenter, Unmanaged.passRetained(self).toOpaque(), { _, observer, _, _, _ in
             guard let observer = Unmanaged<AppListModel>.fromOpaque(observer!).takeUnretainedValue() as AppListModel? else {
                 return
             }
@@ -71,11 +72,11 @@ final class AppListModel: ObservableObject {
     func reload() {
         let allApplications = Self.fetchApplications(&isPaidProductInstalled, &unsupportedCount)
         allApplications.forEach { $0.appList = self }
-        self._allApplications = allApplications
+        _allApplications = allApplications
         if let filzaURL {
-            self.isFilzaInstalled = UIApplication.shared.canOpenURL(filzaURL)
+            isFilzaInstalled = UIApplication.shared.canOpenURL(filzaURL)
         } else {
-            self.isFilzaInstalled = false
+            isFilzaInstalled = false
         }
         performFilter()
     }
@@ -93,9 +94,9 @@ final class AppListModel: ObservableObject {
             filteredApplications = filteredApplications.filter { $0.isInjected }
         }
 
-        userApplications = filteredApplications.filter { $0.isUser }
-        trollApplications = filteredApplications.filter { $0.isFromTroll }
-        appleApplications = filteredApplications.filter { $0.isFromApple }
+        userApplications = Self.groupedAppList(filteredApplications.filter { $0.isUser })
+        trollApplications = Self.groupedAppList(filteredApplications.filter { $0.isFromTroll })
+        appleApplications = Self.groupedAppList(filteredApplications.filter { $0.isFromApple })
     }
 
     private static let excludedIdentifiers: Set<String> = [
@@ -170,5 +171,37 @@ final class AppListModel: ObservableObject {
     func rebuildIconCache() throws {
         // Sadly, we can't call `trollstorehelper` directly because only TrollStore can launch it without error.
         LSApplicationWorkspace.default().openApplication(withBundleID: "com.opa334.TrollStore")
+    }
+
+    static let allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
+    private static let allowedCharacterSet = CharacterSet(charactersIn: allowedCharacters)
+
+    private static func groupedAppList(_ apps: [App]) -> OrderedDictionary<String, [App]> {
+        var groupedApps = OrderedDictionary<String, [App]>()
+
+        for app in apps {
+            var key = app.name
+                .applyingTransform(.stripCombiningMarks, reverse: false)?
+                .applyingTransform(.toLatin, reverse: false)?
+                .applyingTransform(.stripDiacritics, reverse: false)?
+                .prefix(1).uppercased() ?? "#"
+
+            if let scalar = UnicodeScalar(key) {
+                if !allowedCharacterSet.contains(scalar) {
+                    key = "#"
+                }
+            } else {
+                key = "#"
+            }
+
+            if groupedApps[key] == nil {
+                groupedApps[key] = []
+            }
+
+            groupedApps[key]?.append(app)
+        }
+
+        groupedApps.sort { $0.key < $1.key }
+        return groupedApps
     }
 }

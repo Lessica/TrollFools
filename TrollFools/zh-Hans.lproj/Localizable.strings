@@ -11,7 +11,7 @@
 "Advanced Settings" = "高级选项";
 
 /* No comment provided by engineer. */
-"And %d more unsupported user applications." = "另有 %d 个不支持的用户应用";
+"Advertisement" = "广告";
 
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
@@ -107,6 +107,9 @@
 "Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制";
 
 /* No comment provided by engineer. */
+"No Applications" = "没有找到符合条件的应用程序";
+
+/* No comment provided by engineer. */
 "No eligible framework found." = "没有找到符合条件的框架。";
 
 /* No comment provided by engineer. */
@@ -143,7 +146,7 @@
 "Rebuild Icon Cache" = "重建图标缓存";
 
 /* No comment provided by engineer. */
-"Record your phone calls like never before." = "前所未有地录制你的每一通电话。";
+"Record your phone calls like never before." = "通话录音，从未如此简单。";
 
 /* No comment provided by engineer. */
 "Reveil" = "Reveil";
