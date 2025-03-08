@@ -134,6 +134,7 @@
 		614C0C382D7C243E007E9184 /* trollfoolscli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = trollfoolscli; sourceTree = BUILT_PRODUCTS_DIR; };
 		614C0C3A2D7C243E007E9184 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		614C0C602D7C2EBE007E9184 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		614C0C662D7C407E007E9184 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		616800192D364DD400DF485F /* StripedTextTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StripedTextTableViewController.h; sourceTree = "<group>"; };
 		6168001A2D364DD400DF485F /* StripedTextTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StripedTextTableViewController.m; sourceTree = "<group>"; };
 		6168001C2D3652B100DF485F /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
@@ -475,6 +476,7 @@
 				Base,
 				"zh-Hans",
 				vi,
+				it,
 			);
 			mainGroup = CCF4704D2C4A4649008D8197;
 			packageReferences = (
@@ -608,6 +610,7 @@
 				CCF4706A2C4A4919008D8197 /* en */,
 				CCF4706C2C4A491B008D8197 /* zh-Hans */,
 				CC60FBEA2CC5024000A6D21A /* vi */,
+				614C0C662D7C407E007E9184 /* it */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

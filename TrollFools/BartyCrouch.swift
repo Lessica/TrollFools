@@ -8,6 +8,7 @@ enum BartyCrouch {
         case english = "en"
         case chineseSimplified = "zh-Hans"
         case vietnamese = "vi"
+        case italian = "it"
     }
 
     static func translate(key: String, translations: [SupportedLanguage: String], comment _: String? = nil) -> String {
