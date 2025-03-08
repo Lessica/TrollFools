@@ -13,7 +13,7 @@ extension InjectorV3 {
 
     fileprivate static let chownBinaryURL = Bundle.main.url(forResource: "chown", withExtension: nil)!
 
-    func cmdChangeOwner(_ target: URL, owner: String, groupOwner: String? = nil, recursively: Bool = false) throws {
+    func cmdChangeOwner(_ target: URL, owner: uid_t, groupOwner: uid_t? = nil, recursively: Bool = false) throws {
         if isPrivileged {
             try rootChangeOwner(target, owner: owner, groupOwner: groupOwner, recursively: recursively)
             return
@@ -23,9 +23,9 @@ extension InjectorV3 {
             args.append("-R")
         }
         if let groupOwner {
-            args.append(String(format: "%@:%@", owner, groupOwner))
+            args.append(String(format: "%d:%d", owner, groupOwner))
         } else {
-            args.append(owner)
+            args.append(String(format: "%d", owner))
         }
         args.append(target.path)
         let retCode = try Execute.rootSpawn(binary: Self.chownBinaryURL.path, arguments: args, ddlog: logger)
@@ -35,13 +35,13 @@ extension InjectorV3 {
     }
 
     func cmdChangeOwnerToInstalld(_ target: URL, recursively: Bool = false) throws {
-        try cmdChangeOwner(target, owner: "_installd", groupOwner: "_installd", recursively: recursively)
+        try cmdChangeOwner(target, owner: 33, groupOwner: 33, recursively: recursively)
     }
 
-    private func rootChangeOwner(_ target: URL, owner: String, groupOwner: String? = nil, recursively: Bool = false) throws {
+    private func rootChangeOwner(_ target: URL, owner: uid_t, groupOwner: uid_t? = nil, recursively: Bool = false) throws {
         let attrs: [FileAttributeKey: Any] = [
-            .ownerAccountName: owner,
-            .groupOwnerAccountName: groupOwner ?? owner,
+            .ownerAccountID: NSNumber(value: owner),
+            .groupOwnerAccountID: NSNumber(value: groupOwner ?? owner),
         ]
         if !recursively {
             try FileManager.default.setAttributes(attrs, ofItemAtPath: target.path)
