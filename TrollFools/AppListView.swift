@@ -159,18 +159,16 @@ struct AppListView: View {
             switch activeScope {
             case .user:
                 userAppGroup
-                    .transition(.opacity)
             case .troll:
                 trollAppGroup
-                    .transition(.opacity)
             case .system:
                 systemAppGroup
-                    .transition(.opacity)
             }
         }
         .listStyle(.insetGrouped)
         .animation(.smooth, value: activeScope)
         .animation(.smooth, value: shouldShowAdvertisement)
+        .animation(.smooth, value: combines(appList.isPaidProductInstalled, appList.unsupportedCount))
         .navigationTitle(appList.isSelectorMode ?
             NSLocalizedString("Select Application to Inject", comment: "") :
             NSLocalizedString("TrollFools", comment: "")
@@ -214,6 +212,14 @@ struct AppListView: View {
 
     var userAppGroup: some View {
         Group {
+            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && appList.unsupportedCount > 0 {
+                Section {
+                } footer: {
+                    paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
+                }
+                .transition(.opacity)
+            }
+
             if #available(iOS 15, *) {
                 if shouldShowAdvertisement {
                     advertisementSection
@@ -223,24 +229,29 @@ struct AppListView: View {
 
             appSections(appList.userApplications)
         }
+        .transition(.opacity)
     }
 
     var trollAppGroup: some View {
         Group {
             appSections(appList.trollApplications)
         }
+        .transition(.opacity)
     }
 
     var systemAppGroup: some View {
         Group {
-            Section {
-            } footer: {
-                paddedHeaderFooterText(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
-                    .textCase(.none)
+            if !appList.filter.showPatchedOnly {
+                Section {
+                } footer: {
+                    paddedHeaderFooterText(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
+                }
+                .transition(.opacity)
             }
 
             appSections(appList.appleApplications)
         }
+        .transition(.opacity)
     }
 
     func appSections(_ apps: OrderedDictionary<String, [App]>) -> some View {
