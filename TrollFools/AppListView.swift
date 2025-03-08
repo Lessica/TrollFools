@@ -115,6 +115,11 @@ struct AppListView: View {
             }
             selectorOpenedURL = URLIdentifiable(url: preprocessURL(url))
         }
+        .onAppear {
+            if Double.random(in: 0..<1) < 0.1 {
+                isAdvertisementHidden = false
+            }
+        }
     }
 
     var searchableListView: some View {
