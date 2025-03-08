@@ -74,11 +74,8 @@ rm -f $XCCONFIG_NAME-e
 
 fi
 
-# Create the layout directory
-mkdir -p ../layout/DEBIAN
-
 # Write the control file
-cat > ../layout/DEBIAN/control << __EOF__
+cat > ../control << __EOF__
 Package: wiki.qaq.trollfools
 Name: TrollFools
 Version: $VERSION-$new_build_number
@@ -91,4 +88,4 @@ Description: Give me 108 yuan.
 __EOF__
 
 # Set permissions
-chmod 0644 ../layout/DEBIAN/control
+chmod 0644 ../control
