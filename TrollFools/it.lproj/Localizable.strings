@@ -169,6 +169,9 @@
 /* No comment provided by engineer. */
 "Source Code" = "Codice Sorgente";
 
+/* TODO */
+"System" = "System";
+
 /* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "Il contenuto del file “%@” è vuoto.";
 
@@ -178,6 +181,9 @@
 /* No comment provided by engineer. */
 "TrollRecorder" = "TrollRecorder";
 
+/* TODO */
+"TrollStore" = "TrollStore";
+
 /* No comment provided by engineer. */
 "TrollStore Applications" = "Applicazioni TrollStore";
 
@@ -186,6 +192,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "Usa referenza debole";
+
+/* TODO */
+"User" = "User";
 
 /* No comment provided by engineer. */
 "User Applications" = "Applicazioni";

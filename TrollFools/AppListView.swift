@@ -10,9 +10,38 @@ import SwiftUI
 import SwiftUIIntrospect
 
 struct AppListView: View {
+    enum Scope: Int, CaseIterable {
+        case user
+        case troll
+        case system
+
+        var localizedShortName: String {
+            switch self {
+            case .user:
+                NSLocalizedString("User", comment: "")
+            case .troll:
+                NSLocalizedString("TrollStore", comment: "")
+            case .system:
+                NSLocalizedString("System", comment: "")
+            }
+        }
+
+        var localizedName: String {
+            switch self {
+            case .user:
+                NSLocalizedString("User Applications", comment: "")
+            case .troll:
+                NSLocalizedString("TrollStore Applications", comment: "")
+            case .system:
+                NSLocalizedString("Injectable System Applications", comment: "")
+            }
+        }
+    }
 
     @StateObject var searchViewModel = AppListSearchViewModel()
     @EnvironmentObject var appList: AppListModel
+
+    @State var activeScope: Scope = .user
 
     @State var isErrorOccurred: Bool = false
     @State var lastError: Error?
@@ -31,9 +60,9 @@ struct AppListView: View {
 
     var appString: String {
         String(format: """
-%@ %@ %@ © 2024-2025
-%@
-""", appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Made with ♥ by OwnGoal Studio", comment: ""))
+        %@ %@ %@ © 2024-2025
+        %@
+        """, appNameString, appVersionString, NSLocalizedString("Copyright", comment: ""), NSLocalizedString("Made with ♥ by OwnGoal Studio", comment: ""))
     }
 
     let repoURL = URL(string: "https://github.com/Lessica/TrollFools")!
@@ -86,12 +115,7 @@ struct AppListView: View {
     }
 
     var appListFooter: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            if !appList.filter.showPatchedOnly {
-                Text(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
-                    .font(.footnote)
-            }
-
+        Group {
             if !appList.isSelectorMode {
                 if #available(iOS 16, *) {
                     appListFooterView
@@ -104,115 +128,128 @@ struct AppListView: View {
         }
     }
 
-    var appListView: some View {
-        List {
-            if AppListModel.hasTrollStore && appList.isRebuildNeeded {
-                Section {
-                    Button {
-                        rebuildIconCache()
-                    } label: {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(NSLocalizedString("Rebuild Icon Cache", comment: ""))
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
-
-                                Text(NSLocalizedString("You need to rebuild the icon cache in TrollStore to apply changes.", comment: ""))
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-
-                            Spacer()
-
-                            if appList.isRebuilding {
-                                if #available(iOS 16, *) {
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle())
-                                        .controlSize(.large)
-                                } else {
-                                    // Fallback on earlier versions
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle())
-                                        .scaleEffect(2.0)
-                                }
-                            } else {
-                                Image(systemName: "timelapse")
-                                    .font(.title)
-                                    .foregroundColor(.accentColor)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-                    .disabled(appList.isRebuilding)
-                }
-            }
-
-            Section {
-                filteredAppList(appList.userApplications)
-            } header: {
+    var conditionalAppListFooter: some View {
+        Group {
+            if !appList.filter.isSearching {
                 if #available(iOS 15, *) {
-                    Text(NSLocalizedString("User Applications", comment: ""))
-                        .font(.footnote)
+                    appListFooter
                 } else {
-                    Text(NSLocalizedString("User Applications", comment: ""))
-                        .font(.footnote)
+                    appListFooter
                         .padding(.horizontal, 16)
-                }
-            } footer: {
-                if !appList.filter.isSearching && !appList.filter.showPatchedOnly && appList.unsupportedCount > 0 {
-                    if #available(iOS 15, *) {
-                        Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                            .font(.footnote)
-                    } else {
-                        Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                            .font(.footnote)
-                            .padding(.horizontal, 16)
-                    }
-                }
-            }
-
-            Section {
-                if #available(iOS 15, *) {
-                    if !appList.isPaidProductInstalled {
-                        advertisementButton
-                    }
-                }
-
-                filteredAppList(appList.trollApplications)
-            } header: {
-                if #available(iOS 15, *) {
-                    Text(NSLocalizedString("TrollStore Applications", comment: ""))
-                        .font(.footnote)
-                } else {
-                    Text(NSLocalizedString("TrollStore Applications", comment: ""))
-                        .font(.footnote)
-                        .padding(.horizontal, 16)
-                }
-            }
-
-            Section {
-                filteredAppList(appList.appleApplications)
-            } header: {
-                if #available(iOS 15, *) {
-                    Text(NSLocalizedString("Injectable System Applications", comment: ""))
-                        .font(.footnote)
-                } else {
-                    Text(NSLocalizedString("Injectable System Applications", comment: ""))
-                        .font(.footnote)
-                        .padding(.horizontal, 16)
-                }
-            } footer: {
-                if !appList.filter.isSearching {
-                    if #available(iOS 15, *) {
-                        appListFooter
-                    } else {
-                        appListFooter
-                            .padding(.horizontal, 16)
-                    }
                 }
             }
         }
+    }
+
+    var rebuildSection: some View {
+        Section {
+            Button {
+                rebuildIconCache()
+            } label: {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(NSLocalizedString("Rebuild Icon Cache", comment: ""))
+                            .font(.headline)
+                            .foregroundColor(.primary)
+
+                        Text(NSLocalizedString("You need to rebuild the icon cache in TrollStore to apply changes.", comment: ""))
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+
+                    Spacer()
+
+                    if appList.isRebuilding {
+                        if #available(iOS 16, *) {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .controlSize(.large)
+                        } else {
+                            // Fallback on earlier versions
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .scaleEffect(2.0)
+                        }
+                    } else {
+                        Image(systemName: "timelapse")
+                            .font(.title)
+                            .foregroundColor(.accentColor)
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+            .disabled(appList.isRebuilding)
+        }
+    }
+
+    var userSection: some View {
+        Section {
+            filteredAppList(appList.userApplications)
+        } header: {
+            paddedHeaderFooterText(Scope.user.localizedName)
+        } footer: {
+            VStack(alignment: .leading, spacing: 20) {
+                if !appList.filter.isSearching && !appList.filter.showPatchedOnly && appList.unsupportedCount > 0 {
+                    paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
+                }
+
+                conditionalAppListFooter
+            }
+        }
+    }
+
+    var trollSection: some View {
+        Section {
+            if #available(iOS 15, *) {
+                if !appList.isPaidProductInstalled {
+                    advertisementButton
+                }
+            }
+
+            filteredAppList(appList.trollApplications)
+        } header: {
+            paddedHeaderFooterText(Scope.troll.localizedName)
+        } footer: {
+            conditionalAppListFooter
+        }
+    }
+
+    var systemSection: some View {
+        Section {
+            filteredAppList(appList.appleApplications)
+        } header: {
+            paddedHeaderFooterText(Scope.system.localizedName)
+        } footer: {
+            VStack(alignment: .leading, spacing: 20) {
+                if !appList.filter.showPatchedOnly {
+                    paddedHeaderFooterText(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
+                }
+
+                conditionalAppListFooter
+            }
+        }
+    }
+
+    var appListView: some View {
+        List {
+            if AppListModel.hasTrollStore && appList.isRebuildNeeded {
+                rebuildSection
+            }
+
+            switch activeScope {
+            case .user:
+                userSection
+                    .transition(.opacity)
+            case .troll:
+                trollSection
+                    .transition(.opacity)
+            case .system:
+                systemSection
+                    .transition(.opacity)
+            }
+        }
         .listStyle(.insetGrouped)
+        .animation(.smooth, value: activeScope)
         .navigationTitle(appList.isSelectorMode ? NSLocalizedString("Select Application to Inject", comment: "") : NSLocalizedString("TrollFools", comment: ""))
         .navigationBarTitleDisplayMode(appList.isSelectorMode ? .inline : .automatic)
         .background(Group {
@@ -237,13 +274,13 @@ struct AppListView: View {
                     appList.filter.showPatchedOnly.toggle()
                 } label: {
                     if #available(iOS 15, *) {
-                        Image(systemName: appList.filter.showPatchedOnly 
-                              ? "line.3.horizontal.decrease.circle.fill"
-                              : "line.3.horizontal.decrease.circle")
+                        Image(systemName: appList.filter.showPatchedOnly
+                            ? "line.3.horizontal.decrease.circle.fill"
+                            : "line.3.horizontal.decrease.circle")
                     } else {
-                        Image(systemName: appList.filter.showPatchedOnly 
-                              ? "eject.circle.fill"
-                              : "eject.circle")
+                        Image(systemName: appList.filter.showPatchedOnly
+                            ? "eject.circle.fill"
+                            : "eject.circle")
                     }
                 }
                 .accessibilityLabel(NSLocalizedString("Show Patched Only", comment: ""))
@@ -263,9 +300,9 @@ struct AppListView: View {
                     .searchable(
                         text: $appList.filter.searchKeyword,
                         placement: .automatic,
-                        prompt: (appList.filter.showPatchedOnly
-                                 ? NSLocalizedString("Search Patched…", comment: "")
-                                 : NSLocalizedString("Search…", comment: ""))
+                        prompt: appList.filter.showPatchedOnly
+                            ? NSLocalizedString("Search Patched…", comment: "")
+                            : NSLocalizedString("Search…", comment: "")
                     )
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
@@ -275,12 +312,15 @@ struct AppListView: View {
                     .onChange(of: appList.filter.showPatchedOnly) { showPatchedOnly in
                         if let searchBar = searchViewModel.searchController?.searchBar {
                             searchBar.placeholder = (showPatchedOnly
-                                                     ? NSLocalizedString("Search Patched…", comment: "")
-                                                     : NSLocalizedString("Search…", comment: ""))
+                                ? NSLocalizedString("Search Patched…", comment: "")
+                                : NSLocalizedString("Search…", comment: ""))
                         }
                     }
                     .onReceive(searchViewModel.$searchKeyword) {
                         appList.filter.searchKeyword = $0
+                    }
+                    .onReceive(searchViewModel.$searchScopeIndex) {
+                        activeScope = Scope(rawValue: $0) ?? .user
                     }
                     .introspect(.list, on: .iOS(.v14)) { tableView in
                         if tableView.refreshControl == nil {
@@ -304,7 +344,16 @@ struct AppListView: View {
                                 searchController.searchResultsUpdater = searchViewModel
                                 searchController.obscuresBackgroundDuringPresentation = false
                                 searchController.hidesNavigationBarDuringPresentation = true
+                                searchController.automaticallyShowsScopeBar = false
+                                if #available(iOS 16, *) {
+                                    searchController.scopeBarActivation = .manual
+                                }
+                                searchController.searchBar.delegate = searchViewModel
                                 searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
+                                searchController.searchBar.showsScopeBar = true
+                                searchController.searchBar.scopeButtonTitles = Scope.allCases.map { $0.localizedShortName }
+                                searchController.searchBar.autocapitalizationType = .none
+                                searchController.searchBar.autocorrectionType = .no
                                 return searchController
                             }()
                             searchViewModel.searchController = viewController.navigationItem.searchController
@@ -378,18 +427,20 @@ struct AppListView: View {
             return url
         }
     }
+
+    @ViewBuilder
+    private func paddedHeaderFooterText(_ content: String) -> some View {
+        if #available(iOS 15, *) {
+            Text(content)
+                .font(.footnote)
+        } else {
+            Text(content)
+                .font(.footnote)
+                .padding(.horizontal, 16)
+        }
+    }
 }
 
 extension URL: Identifiable {
     public var id: String { absoluteString }
-}
-
-final class AppListSearchViewModel: NSObject, UISearchResultsUpdating, ObservableObject {
-    @Published var searchKeyword: String = ""
-
-    weak var searchController: UISearchController?
-
-    func updateSearchResults(for searchController: UISearchController) {
-        searchKeyword = searchController.searchBar.text ?? ""
-    }
 }

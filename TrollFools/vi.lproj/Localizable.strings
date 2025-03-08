@@ -169,6 +169,9 @@
 /* No comment provided by engineer. */
 "Source Code" = "Mã nguồn";
 
+/* TODO */
+"System" = "System";
+
 /* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "Nội dung của tệp văn bản “%@” trống.";
 
@@ -178,6 +181,9 @@
 /* TODO */
 "TrollRecorder" = "TrollRecorder";
 
+/* TODO */
+"TrollStore" = "TrollStore";
+
 /* No comment provided by engineer. */
 "TrollStore Applications" = "Ứng dụng TrollStore";
 
@@ -186,6 +192,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "Sử dụng tham chiếu yếu";
+
+/* TODO */
+"User" = "User";
 
 /* No comment provided by engineer. */
 "User Applications" = "Ứng dụng người dùng";

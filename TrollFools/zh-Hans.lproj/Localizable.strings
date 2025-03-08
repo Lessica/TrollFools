@@ -170,6 +170,9 @@
 "Source Code" = "获取源代码";
 
 /* No comment provided by engineer. */
+"System" = "系统应用";
+
+/* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "文本文件 “%@” 的内容为空。";
 
 /* No comment provided by engineer. */
@@ -179,6 +182,9 @@
 "TrollRecorder" = "巨魔录音机";
 
 /* No comment provided by engineer. */
+"TrollStore" = "巨魔商店应用";
+
+/* No comment provided by engineer. */
 "TrollStore Applications" = "巨魔商店应用";
 
 /* No comment provided by engineer. */
@@ -186,6 +192,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "创建弱引用";
+
+/* No comment provided by engineer. */
+"User" = "用户应用";
 
 /* No comment provided by engineer. */
 "User Applications" = "用户应用";

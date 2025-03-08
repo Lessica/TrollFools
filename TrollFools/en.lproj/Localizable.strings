@@ -170,6 +170,9 @@
 "Source Code" = "Source Code";
 
 /* No comment provided by engineer. */
+"System" = "System";
+
+/* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "The content of text file “%@” is empty.";
 
 /* No comment provided by engineer. */
@@ -179,6 +182,9 @@
 "TrollRecorder" = "TrollRecorder";
 
 /* No comment provided by engineer. */
+"TrollStore" = "TrollStore";
+
+/* No comment provided by engineer. */
 "TrollStore Applications" = "TrollStore Applications";
 
 /* No comment provided by engineer. */
@@ -186,6 +192,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "Use Weak Reference";
+
+/* No comment provided by engineer. */
+"User" = "User";
 
 /* No comment provided by engineer. */
 "User Applications" = "User Applications";
