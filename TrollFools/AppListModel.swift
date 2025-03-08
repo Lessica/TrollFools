@@ -86,7 +86,13 @@ final class AppListModel: ObservableObject {
 
         if !filter.searchKeyword.isEmpty {
             filteredApplications = filteredApplications.filter {
-                $0.name.localizedCaseInsensitiveContains(filter.searchKeyword) || $0.id.localizedCaseInsensitiveContains(filter.searchKeyword)
+                $0.name.localizedCaseInsensitiveContains(filter.searchKeyword) || $0.id.localizedCaseInsensitiveContains(filter.searchKeyword) ||
+                    (
+                        $0.latinName.localizedCaseInsensitiveContains(
+                            filter.searchKeyword
+                                .components(separatedBy: .whitespaces).joined()
+                        )
+                    )
             }
         }
 

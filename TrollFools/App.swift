@@ -10,6 +10,7 @@ import Foundation
 final class App: Identifiable, ObservableObject {
     let id: String
     let name: String
+    let latinName: String
     let type: String
     let teamID: String
     let url: URL
@@ -52,6 +53,11 @@ final class App: Identifiable, ObservableObject {
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
         self.alternateIcon = alternateIcon
         self.isAdvertisement = isAdvertisement
+        self.latinName = name
+            .applyingTransform(.toLatin, reverse: false)?
+            .applyingTransform(.stripDiacritics, reverse: false)?
+            .components(separatedBy: .whitespaces)
+            .joined() ?? ""
     }
 
     func reload() {

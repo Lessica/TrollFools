@@ -373,6 +373,7 @@ struct AppListView: View {
                         .padding(.top, 2)
                 } else {
                     footerContent
+                        .padding(.top, 8)
                         .padding(.horizontal, 16)
                 }
             }

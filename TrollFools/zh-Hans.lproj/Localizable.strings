@@ -14,7 +14,7 @@
 "Advertisement" = "广告";
 
 /* No comment provided by engineer. */
-"Advertisement" = "广告";
+"And %d more unsupported user applications." = "另有 %d 个不支持的用户应用";
 
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
@@ -72,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "未安装支持 URL Scheme 的 Filza";
+
+/* No comment provided by engineer. */
+"Hide" = "Hide";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";

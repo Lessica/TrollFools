@@ -14,7 +14,7 @@
 "Advertisement" = "Advertisement";
 
 /* No comment provided by engineer. */
-"Advertisement" = "Advertisement";
+"And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
 /* TODO */
 "Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
@@ -72,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) chưa được cài đặt.";
+
+/* No comment provided by engineer. */
+"Hide" = "Hide";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";

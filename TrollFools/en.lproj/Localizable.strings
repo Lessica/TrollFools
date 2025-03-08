@@ -14,7 +14,7 @@
 "Advertisement" = "Advertisement";
 
 /* No comment provided by engineer. */
-"Advertisement" = "Advertisement";
+"And %d more unsupported user applications." = "And %d more unsupported user applications.";
 
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
@@ -72,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
+
+/* No comment provided by engineer. */
+"Hide" = "Hide";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "If you do not know what these options mean, please do not change them.";
