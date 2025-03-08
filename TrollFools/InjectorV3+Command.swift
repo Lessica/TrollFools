@@ -15,6 +15,10 @@ extension InjectorV3 {
     fileprivate static let chownBinaryURL = Bundle.main.url(forResource: "chown", withExtension: nil)!
 
     func cmdChangeOwner(_ target: URL, owner: String, groupOwner: String? = nil, recursively: Bool = false) throws {
+        if isPrivileged {
+            try rootChangeOwner(target, owner: owner, groupOwner: groupOwner, recursively: recursively)
+            return
+        }
         var args = [String]()
         if recursively {
             args.append("-R")
@@ -32,7 +36,23 @@ extension InjectorV3 {
     }
 
     func cmdChangeOwnerToInstalld(_ target: URL, recursively: Bool = false) throws {
-        try cmdChangeOwner(target, owner: "33", groupOwner: "33", recursively: recursively) // _installd
+        try cmdChangeOwner(target, owner: "_installd", groupOwner: "_installd", recursively: recursively)
+    }
+
+    private func rootChangeOwner(_ target: URL, owner: String, groupOwner: String? = nil, recursively: Bool = false) throws {
+        let attrs: [FileAttributeKey : Any] = [
+            .ownerAccountName: owner,
+            .groupOwnerAccountName: groupOwner ?? owner,
+        ]
+        if !recursively {
+            try FileManager.default.setAttributes(attrs, ofItemAtPath: target.path)
+            return
+        }
+        if let enumerator = FileManager.default.enumerator(at: target, includingPropertiesForKeys: nil) {
+            for case let fileURL as URL in enumerator {
+                try FileManager.default.setAttributes(attrs, ofItemAtPath: fileURL.path)
+            }
+        }
     }
 
     // MARK: - cp
@@ -46,6 +66,10 @@ extension InjectorV3 {
     }()
 
     func cmdCopy(from srcURL: URL, to destURL: URL, clone: Bool = false, overwrite: Bool = false) throws {
+        if isPrivileged {
+            try rootCopy(from: srcURL, to: destURL, overwrite: overwrite)
+            return
+        }
         if overwrite {
             try? cmdRemove(destURL, recursively: true)
         }
@@ -58,6 +82,13 @@ extension InjectorV3 {
         guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("cp", reason: retCode)
         }
+    }
+
+    private func rootCopy(from srcURL: URL, to destURL: URL, overwrite: Bool = false) throws {
+        if overwrite {
+            try? rootRemove(destURL, recursively: true)
+        }
+        try FileManager.default.copyItem(at: srcURL, to: destURL)
     }
 
     // MARK: - ldid
@@ -147,6 +178,10 @@ extension InjectorV3 {
     fileprivate static let mkdirBinaryURL = Bundle.main.url(forResource: "mkdir", withExtension: nil)!
 
     func cmdMakeDirectory(at target: URL, withIntermediateDirectories: Bool = false) throws {
+        if isPrivileged {
+            try rootMakeDirectory(at: target, withIntermediateDirectories: withIntermediateDirectories)
+            return
+        }
         var args = [String]()
         if withIntermediateDirectories {
             args.append("-p")
@@ -156,6 +191,10 @@ extension InjectorV3 {
         guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("mkdir", reason: retCode)
         }
+    }
+
+    private func rootMakeDirectory(at target: URL, withIntermediateDirectories: Bool = false) throws {
+        try FileManager.default.createDirectory(at: target, withIntermediateDirectories: withIntermediateDirectories)
     }
 
     // MARK: - mv
@@ -169,6 +208,10 @@ extension InjectorV3 {
     }()
 
     func cmdMove(from srcURL: URL, to destURL: URL, overwrite: Bool = false) throws {
+        if isPrivileged {
+            try rootMove(from: srcURL, to: destURL, overwrite: overwrite)
+            return
+        }
         if overwrite {
             try? cmdRemove(destURL, recursively: true)
         }
@@ -183,17 +226,39 @@ extension InjectorV3 {
         }
     }
 
+    private func rootMove(from srcURL: URL, to destURL: URL, overwrite: Bool = false) throws {
+        if overwrite {
+            try? rootRemove(destURL, recursively: true)
+        }
+        try FileManager.default.moveItem(at: srcURL, to: destURL)
+    }
+
     // MARK: - rm
 
     fileprivate static let rmBinaryURL = Bundle.main.url(forResource: "rm", withExtension: nil)!
 
     func cmdRemove(_ target: URL, recursively: Bool = false) throws {
+        if isPrivileged {
+            try rootRemove(target, recursively: recursively)
+            return
+        }
         let retCode = try Execute.rootSpawn(binary: Self.rmBinaryURL.path, arguments: [
             recursively ? "-rf" : "-f", target.path,
         ], ddlog: logger)
         guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("rm", reason: retCode)
         }
+    }
+
+    private func rootRemove(_ target: URL, recursively: Bool = false) throws {
+        if !recursively {
+            let retCode = target.withUnsafeFileSystemRepresentation { unlink($0) }
+            guard retCode == 0 else {
+                throw POSIXError(POSIXError.Code(rawValue: errno) ?? .EPERM)
+            }
+            return
+        }
+        try FileManager.default.removeItem(at: target)
     }
 
     // MARK: - ct_bypass

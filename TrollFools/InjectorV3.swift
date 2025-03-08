@@ -19,6 +19,7 @@ final class InjectorV3 {
 
     let bundleURL: URL
     let temporaryDirectoryURL: URL
+    let isPrivileged: Bool = geteuid() == 0
 
     var appID: String!
     var teamID: String!
