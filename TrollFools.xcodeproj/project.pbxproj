@@ -17,6 +17,32 @@
 		6124A07D2CD233A700C52253 /* InjectedPlugIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */; };
 		6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07E2CD233BA00C52253 /* PlugInCell.swift */; };
 		6124A0812CD233DA00C52253 /* EjectListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0802CD233DA00C52253 /* EjectListModel.swift */; };
+		614C0C3B2D7C243E007E9184 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614C0C3A2D7C243E007E9184 /* main.swift */; };
+		614C0C422D7C2E0B007E9184 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C412D7C2E0B007E9184 /* CocoaLumberjack */; };
+		614C0C442D7C2E0B007E9184 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C432D7C2E0B007E9184 /* CocoaLumberjackSwift */; };
+		614C0C462D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C452D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend */; };
+		614C0C472D7C2E12007E9184 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A1162C4A540F000D75B0 /* CoreServices.framework */; };
+		614C0C492D7C2E1D007E9184 /* MachOKit in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C482D7C2E1D007E9184 /* MachOKit */; };
+		614C0C4B2D7C2E1D007E9184 /* MachOKitC in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C4A2D7C2E1D007E9184 /* MachOKitC */; };
+		614C0C4D2D7C2E23007E9184 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C4C2D7C2E23007E9184 /* OrderedCollections */; };
+		614C0C4F2D7C2E28007E9184 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C4E2D7C2E28007E9184 /* ZIPFoundation */; };
+		614C0C522D7C2E44007E9184 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C512D7C2E44007E9184 /* ArgumentParser */; };
+		614C0C532D7C2E98007E9184 /* Execute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1548DA2C4A7C7000A4173E /* Execute.swift */; };
+		614C0C542D7C2E98007E9184 /* InjectorV3+MachO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3722D30347600159442 /* InjectorV3+MachO.swift */; };
+		614C0C552D7C2E98007E9184 /* InjectorV3+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3762D30401A00159442 /* InjectorV3+Metadata.swift */; };
+		614C0C562D7C2E98007E9184 /* AuxiliaryExecute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF5A0A32C4D45160097D48D /* AuxiliaryExecute.swift */; };
+		614C0C572D7C2E98007E9184 /* InjectorV3+Eject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3782D3108B700159442 /* InjectorV3+Eject.swift */; };
+		614C0C582D7C2E98007E9184 /* InjectorV3+Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */; };
+		614C0C592D7C2E98007E9184 /* AuxiliaryExecute+Spawn.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF5A0A52C4D45400097D48D /* AuxiliaryExecute+Spawn.swift */; };
+		614C0C5A2D7C2E98007E9184 /* InjectorV3+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */; };
+		614C0C5B2D7C2E98007E9184 /* InjectorV3+Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA36C2D3027AF00159442 /* InjectorV3+Command.swift */; };
+		614C0C5C2D7C2E98007E9184 /* InjectorV3+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA36E2D30338300159442 /* InjectorV3+Bundle.swift */; };
+		614C0C5D2D7C2E98007E9184 /* InjectorV3+Preprocess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3742D303C3700159442 /* InjectorV3+Preprocess.swift */; };
+		614C0C5E2D7C2E98007E9184 /* InjectorV3+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3702D3033B700159442 /* InjectorV3+Error.swift */; };
+		614C0C5F2D7C2E98007E9184 /* InjectorV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA3632D30267200159442 /* InjectorV3.swift */; };
+		614C0C612D7C2EC0007E9184 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614C0C602D7C2EBE007E9184 /* Constants.swift */; };
+		614C0C622D7C2EC0007E9184 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614C0C602D7C2EBE007E9184 /* Constants.swift */; };
+		614C0C632D7C2EDE007E9184 /* TrollFoolsStub.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF470722C4A4E81008D8197 /* TrollFoolsStub.m */; };
 		6168001B2D364DD400DF485F /* StripedTextTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6168001A2D364DD400DF485F /* StripedTextTableViewController.m */; };
 		6168001D2D3652B600DF485F /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6168001C2D3652B100DF485F /* LogsView.swift */; };
 		61946B262D2FD8AB009E0AC4 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 61946B252D2FD8AB009E0AC4 /* OrderedCollections */; };
@@ -72,6 +98,18 @@
 		CCFC78642C4E853D008EB25D /* mkdir in Resources */ = {isa = PBXBuildFile; fileRef = CCFC78632C4E853D008EB25D /* mkdir */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		614C0C362D7C243E007E9184 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		6124A06C2CD2322400C52253 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		6124A06E2CD2324200C52253 /* AppListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListModel.swift; sourceTree = "<group>"; };
@@ -83,6 +121,9 @@
 		6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedPlugIn.swift; sourceTree = "<group>"; };
 		6124A07E2CD233BA00C52253 /* PlugInCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlugInCell.swift; sourceTree = "<group>"; };
 		6124A0802CD233DA00C52253 /* EjectListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListModel.swift; sourceTree = "<group>"; };
+		614C0C382D7C243E007E9184 /* trollfoolscli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = trollfoolscli; sourceTree = BUILT_PRODUCTS_DIR; };
+		614C0C3A2D7C243E007E9184 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		614C0C602D7C2EBE007E9184 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		616800192D364DD400DF485F /* StripedTextTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StripedTextTableViewController.h; sourceTree = "<group>"; };
 		6168001A2D364DD400DF485F /* StripedTextTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StripedTextTableViewController.m; sourceTree = "<group>"; };
 		6168001C2D3652B100DF485F /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
@@ -142,6 +183,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		614C0C352D7C243E007E9184 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				614C0C492D7C2E1D007E9184 /* MachOKit in Frameworks */,
+				614C0C442D7C2E0B007E9184 /* CocoaLumberjackSwift in Frameworks */,
+				614C0C462D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
+				614C0C522D7C2E44007E9184 /* ArgumentParser in Frameworks */,
+				614C0C422D7C2E0B007E9184 /* CocoaLumberjack in Frameworks */,
+				614C0C4B2D7C2E1D007E9184 /* MachOKitC in Frameworks */,
+				614C0C4D2D7C2E23007E9184 /* OrderedCollections in Frameworks */,
+				614C0C472D7C2E12007E9184 /* CoreServices.framework in Frameworks */,
+				614C0C4F2D7C2E28007E9184 /* ZIPFoundation in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCF470532C4A4649008D8197 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -203,6 +260,7 @@
 		6124A0822CD2345300C52253 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				614C0C602D7C2EBE007E9184 /* Constants.swift */,
 				CCF5A0A32C4D45160097D48D /* AuxiliaryExecute.swift */,
 				CCF5A0A52C4D45400097D48D /* AuxiliaryExecute+Spawn.swift */,
 				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
@@ -257,6 +315,14 @@
 			name = CExtension;
 			sourceTree = "<group>";
 		};
+		614C0C402D7C2464007E9184 /* CLI */ = {
+			isa = PBXGroup;
+			children = (
+				614C0C3A2D7C243E007E9184 /* main.swift */,
+			);
+			name = CLI;
+			sourceTree = "<group>";
+		};
 		CC15490F2C4B84DD00A4173E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				CCF470562C4A4649008D8197 /* TrollFools.app */,
+				614C0C382D7C243E007E9184 /* trollfoolscli */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -307,6 +374,7 @@
 				6124A0842CD234E000C52253 /* CExtension */,
 				6124A0832CD2348E00C52253 /* Tools */,
 				CC15490F2C4B84DD00A4173E /* Resources */,
+				614C0C402D7C2464007E9184 /* CLI */,
 			);
 			path = TrollFools;
 			sourceTree = "<group>";
@@ -314,6 +382,33 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		614C0C372D7C243E007E9184 /* trollfoolscli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 614C0C3E2D7C243E007E9184 /* Build configuration list for PBXNativeTarget "trollfoolscli" */;
+			buildPhases = (
+				614C0C342D7C243E007E9184 /* Sources */,
+				614C0C352D7C243E007E9184 /* Frameworks */,
+				614C0C362D7C243E007E9184 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = trollfoolscli;
+			packageProductDependencies = (
+				614C0C412D7C2E0B007E9184 /* CocoaLumberjack */,
+				614C0C432D7C2E0B007E9184 /* CocoaLumberjackSwift */,
+				614C0C452D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend */,
+				614C0C482D7C2E1D007E9184 /* MachOKit */,
+				614C0C4A2D7C2E1D007E9184 /* MachOKitC */,
+				614C0C4C2D7C2E23007E9184 /* OrderedCollections */,
+				614C0C4E2D7C2E28007E9184 /* ZIPFoundation */,
+				614C0C512D7C2E44007E9184 /* ArgumentParser */,
+			);
+			productName = trollfoolscli;
+			productReference = 614C0C382D7C243E007E9184 /* trollfoolscli */;
+			productType = "com.apple.product-type.tool";
+		};
 		CCF470552C4A4649008D8197 /* TrollFools */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CCF470642C4A464B008D8197 /* Build configuration list for PBXNativeTarget "TrollFools" */;
@@ -348,9 +443,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					614C0C372D7C243E007E9184 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					CCF470552C4A4649008D8197 = {
 						CreatedOnToolsVersion = 15.0.1;
 						LastSwiftMigration = 1500;
@@ -374,12 +472,14 @@
 				61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 				61F595602D6B42340034DD83 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				614C0C502D7C2E44007E9184 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				CCF470552C4A4649008D8197 /* TrollFools */,
+				614C0C372D7C243E007E9184 /* trollfoolscli */,
 			);
 		};
 /* End PBXProject section */
@@ -414,6 +514,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		614C0C342D7C243E007E9184 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				614C0C3B2D7C243E007E9184 /* main.swift in Sources */,
+				614C0C532D7C2E98007E9184 /* Execute.swift in Sources */,
+				614C0C542D7C2E98007E9184 /* InjectorV3+MachO.swift in Sources */,
+				614C0C552D7C2E98007E9184 /* InjectorV3+Metadata.swift in Sources */,
+				614C0C562D7C2E98007E9184 /* AuxiliaryExecute.swift in Sources */,
+				614C0C612D7C2EC0007E9184 /* Constants.swift in Sources */,
+				614C0C572D7C2E98007E9184 /* InjectorV3+Eject.swift in Sources */,
+				614C0C582D7C2E98007E9184 /* InjectorV3+Inject.swift in Sources */,
+				614C0C592D7C2E98007E9184 /* AuxiliaryExecute+Spawn.swift in Sources */,
+				614C0C632D7C2EDE007E9184 /* TrollFoolsStub.m in Sources */,
+				614C0C5A2D7C2E98007E9184 /* InjectorV3+Backup.swift in Sources */,
+				614C0C5B2D7C2E98007E9184 /* InjectorV3+Command.swift in Sources */,
+				614C0C5C2D7C2E98007E9184 /* InjectorV3+Bundle.swift in Sources */,
+				614C0C5D2D7C2E98007E9184 /* InjectorV3+Preprocess.swift in Sources */,
+				614C0C5E2D7C2E98007E9184 /* InjectorV3+Error.swift in Sources */,
+				614C0C5F2D7C2E98007E9184 /* InjectorV3.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCF470522C4A4649008D8197 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -453,6 +576,7 @@
 				61EFA36D2D3027C400159442 /* InjectorV3+Command.swift in Sources */,
 				CC1548D52C4A744300A4173E /* FailureView.swift in Sources */,
 				61EFA3732D30347A00159442 /* InjectorV3+MachO.swift in Sources */,
+				614C0C622D7C2EC0007E9184 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +596,40 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		614C0C3C2D7C243E007E9184 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GXZ23M5TP2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		614C0C3D2D7C243E007E9184 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GXZ23M5TP2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		CCF470622C4A464B008D8197 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -533,6 +691,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -589,6 +748,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -614,7 +774,6 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -634,7 +793,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -659,7 +817,6 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -678,13 +835,21 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		614C0C3E2D7C243E007E9184 /* Build configuration list for PBXNativeTarget "trollfoolscli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				614C0C3C2D7C243E007E9184 /* Debug */,
+				614C0C3D2D7C243E007E9184 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CCF470512C4A4649008D8197 /* Build configuration list for PBXProject "TrollFools" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -706,6 +871,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		614C0C502D7C2E44007E9184 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 		61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -749,6 +922,46 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		614C0C412D7C2E0B007E9184 /* CocoaLumberjack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjack;
+		};
+		614C0C432D7C2E0B007E9184 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		614C0C452D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwiftLogBackend;
+		};
+		614C0C482D7C2E1D007E9184 /* MachOKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */;
+			productName = MachOKit;
+		};
+		614C0C4A2D7C2E1D007E9184 /* MachOKitC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */;
+			productName = MachOKitC;
+		};
+		614C0C4C2D7C2E23007E9184 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		614C0C4E2D7C2E28007E9184 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		614C0C512D7C2E44007E9184 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 614C0C502D7C2E44007E9184 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
 		61946B252D2FD8AB009E0AC4 /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 61946B242D2FD8AB009E0AC4 /* XCRemoteSwiftPackageReference "swift-collections" */;

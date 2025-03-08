@@ -5,6 +5,7 @@
 //  Created by 82Flex on 2025/1/9.
 //
 
+import Foundation
 import MachOKit
 
 extension InjectorV3 {

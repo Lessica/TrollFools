@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-let gTrollFoolsIdentifier = "wiki.qaq.TrollFools"
-let gTrollFoolsErrorDomain = "\(gTrollFoolsIdentifier).error"
-
 @main
 struct TrollFoolsApp: SwiftUI.App {
 
