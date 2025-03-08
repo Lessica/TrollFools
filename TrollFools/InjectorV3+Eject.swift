@@ -6,9 +6,9 @@
 //
 
 import CocoaLumberjackSwift
+import Foundation
 
 extension InjectorV3 {
-
     // MARK: - Instance Methods
 
     func ejectAll() throws {

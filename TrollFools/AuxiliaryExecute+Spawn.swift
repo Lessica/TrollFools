@@ -42,19 +42,19 @@ private func WIFEXITED(_ status: Int32) -> Bool {
 }
 
 private func _WSTATUS(_ status: Int32) -> Int32 {
-    status & 0x7f
+    status & 0x7F
 }
 
 private func WIFSIGNALED(_ status: Int32) -> Bool {
-    (_WSTATUS(status) != 0) && (_WSTATUS(status) != 0x7f)
+    (_WSTATUS(status) != 0) && (_WSTATUS(status) != 0x7F)
 }
 
 private func WEXITSTATUS(_ status: Int32) -> Int32 {
-    (status >> 8) & 0xff
+    (status >> 8) & 0xFF
 }
 
 private func WTERMSIG(_ status: Int32) -> Int32 {
-    status & 0x7f
+    status & 0x7F
 }
 
 private let POSIX_SPAWN_PERSONA_FLAGS_OVERRIDE = UInt32(1)
@@ -80,9 +80,7 @@ public extension AuxiliaryExecute {
         ddlog: DDLog = .sharedInstance,
         setPid: ((pid_t) -> Void)? = nil,
         output: ((String) -> Void)? = nil
-    )
-        -> ExecuteReceipt
-    {
+    ) -> ExecuteReceipt {
         let outputLock = NSLock()
         let result = spawn(
             command: command,

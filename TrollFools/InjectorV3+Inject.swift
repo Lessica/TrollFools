@@ -6,9 +6,9 @@
 //
 
 import CocoaLumberjackSwift
+import Foundation
 
 extension InjectorV3 {
-
     enum Strategy: String, CaseIterable {
         case lexicographic
         case fast
@@ -147,12 +147,12 @@ extension InjectorV3 {
         if checkIsBundle(assetURL) {
             precondition(assetURL.pathExtension == "framework", "Invalid framework: \(assetURL.path)")
             let machO = try locateExecutableInBundle(assetURL)
-            name += machO.pathComponents.suffix(2).joined(separator: "/")  // @rpath/XXX.framework/XXX
+            name += machO.pathComponents.suffix(2).joined(separator: "/") // @rpath/XXX.framework/XXX
             precondition(name.contains(".framework/"), "Invalid framework name: \(name)")
         } else {
             precondition(assetURL.pathExtension == "dylib", "Invalid dylib: \(assetURL.path)")
             name += assetURL.lastPathComponent
-            precondition(name.hasSuffix(".dylib"), "Invalid dylib name: \(name)")  // @rpath/XXX.dylib
+            precondition(name.hasSuffix(".dylib"), "Invalid dylib name: \(name)") // @rpath/XXX.dylib
         }
 
         return name
@@ -162,7 +162,7 @@ extension InjectorV3 {
         let name = try loadCommandNameOfAsset(assetURL)
 
         try cmdInsertLoadCommandRuntimePath(target, name: "@executable_path/Frameworks")
-        try cmdInsertLoadCommandDylib(target, name: name, weak: useWeakReference.wrappedValue)
+        try cmdInsertLoadCommandDylib(target, name: name, weak: useWeakReference)
         try standardizeLoadCommandDylib(target, to: name)
     }
 

@@ -9,7 +9,6 @@ import CocoaLumberjackSwift
 import Foundation
 
 enum Execute {
-
     @discardableResult
     static func rootSpawn(
         binary: String,

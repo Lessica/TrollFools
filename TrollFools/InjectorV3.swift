@@ -6,10 +6,9 @@
 //
 
 import CocoaLumberjackSwift
-import SwiftUI
+import Foundation
 
 final class InjectorV3 {
-
     static let temporaryRoot: URL = FileManager.default
         .urls(for: .cachesDirectory, in: .userDomainMask).first!
         .appendingPathComponent(gTrollFoolsIdentifier, isDirectory: true)
@@ -28,22 +27,21 @@ final class InjectorV3 {
     private(set) var frameworksDirectoryURL: URL!
     private(set) var logsDirectoryURL: URL!
 
-    private(set) var useWeakReference: AppStorage<Bool>!
-    private(set) var preferMainExecutable: AppStorage<Bool>!
-    private(set) var injectStrategy: AppStorage<Strategy>!
+    var useWeakReference: Bool = false
+    var preferMainExecutable: Bool = false
+    var injectStrategy: Strategy = .lexicographic
 
     let logger: DDLog
 
     private init() { fatalError("Not implemented") }
 
     init(_ bundleURL: URL) throws {
-
         self.bundleURL = bundleURL
-        self.temporaryDirectoryURL = Self.temporaryRoot
+        temporaryDirectoryURL = Self.temporaryRoot
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try? FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: true)
 
-        self.logger = DDLog()
+        logger = DDLog()
 
         let executableURL = try locateExecutableInBundle(bundleURL)
         let frameworksDirectoryURL = try locateFrameworksDirectoryInBundle(bundleURL)
@@ -54,11 +52,7 @@ final class InjectorV3 {
         self.teamID = teamID
         self.executableURL = executableURL
         self.frameworksDirectoryURL = frameworksDirectoryURL
-        self.logsDirectoryURL = temporaryDirectoryURL.appendingPathComponent("Logs/\(appID)")
-
-        self.useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(appID)")
-        self.preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(appID)")
-        self.injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(appID)")
+        logsDirectoryURL = temporaryDirectoryURL.appendingPathComponent("Logs/\(appID)")
 
         setupLoggers()
     }
@@ -72,7 +66,6 @@ final class InjectorV3 {
     // MARK: - Logger
 
     private func setupLoggers() {
-
         try? FileManager.default.createDirectory(at: logsDirectoryURL, withIntermediateDirectories: true)
 
         let fileLogger = DDFileLogger(logFileManager: DDLogFileManagerDefault(logsDirectory: logsDirectoryURL.path))
@@ -88,7 +81,6 @@ final class InjectorV3 {
     }
 
     var latestLogFileURL: URL? {
-
         guard let enumerator = FileManager.default.enumerator(
             at: logsDirectoryURL,
             includingPropertiesForKeys: [.isRegularFileKey, .creationDateKey]
@@ -99,7 +91,6 @@ final class InjectorV3 {
         var latestLogFileURL: URL?
         var latestCreationDate: Date?
         while let fileURL = enumerator.nextObject() as? URL {
-
             guard let resourceValues = try? fileURL.resourceValues(forKeys: [.isRegularFileKey, .creationDateKey]),
                   let isRegularFile = resourceValues.isRegularFile, isRegularFile,
                   let creationDate = resourceValues.creationDate

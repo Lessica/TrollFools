@@ -8,7 +8,6 @@
 import Foundation
 
 extension InjectorV3 {
-
     // MARK: - Constants
 
     private static let alternateSuffix = "troll-fools.bak"

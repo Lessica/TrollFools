@@ -9,7 +9,6 @@ import Foundation
 import MachOKit
 
 extension InjectorV3 {
-
     // MARK: - chown
 
     fileprivate static let chownBinaryURL = Bundle.main.url(forResource: "chown", withExtension: nil)!
@@ -30,7 +29,7 @@ extension InjectorV3 {
         }
         args.append(target.path)
         let retCode = try Execute.rootSpawn(binary: Self.chownBinaryURL.path, arguments: args, ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("chown", reason: retCode)
         }
     }
@@ -40,7 +39,7 @@ extension InjectorV3 {
     }
 
     private func rootChangeOwner(_ target: URL, owner: String, groupOwner: String? = nil, recursively: Bool = false) throws {
-        let attrs: [FileAttributeKey : Any] = [
+        let attrs: [FileAttributeKey: Any] = [
             .ownerAccountName: owner,
             .groupOwnerAccountName: groupOwner ?? owner,
         ]
@@ -79,7 +78,7 @@ extension InjectorV3 {
         }
         args += ["-rfp", srcURL.path, destURL.path]
         let retCode = try Execute.rootSpawn(binary: Self.cpBinaryURL.path, arguments: args, ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("cp", reason: retCode)
         }
     }
@@ -98,30 +97,29 @@ extension InjectorV3 {
     }()
 
     func cmdPseudoSign(_ target: URL, force: Bool = false) throws {
-
         var hasCodeSign = false
         var preservesEntitlements = false
 
         let targetFile = try MachOKit.loadFromFile(url: target)
         switch targetFile {
-        case .machO(let machOFile):
+        case let .machO(machOFile):
             preservesEntitlements = machOFile.header.fileType == .execute
             for command in machOFile.loadCommands {
                 switch command {
-                case .codeSignature(_):
+                case .codeSignature:
                     hasCodeSign = true
                     break
                 default:
                     continue
                 }
             }
-        case .fat(let fatFile):
+        case let .fat(fatFile):
             let machOFiles = try fatFile.machOFiles()
             for machOFile in machOFiles {
                 preservesEntitlements = machOFile.header.fileType == .execute
                 for command in machOFile.loadCommands {
                     switch command {
-                    case .codeSignature(_):
+                    case .codeSignature:
                         hasCodeSign = true
                         break
                     default:
@@ -136,14 +134,13 @@ extension InjectorV3 {
         }
 
         if preservesEntitlements {
-
             var receipt: AuxiliaryExecute.ExecuteReceipt
 
             receipt = try Execute.rootSpawnWithOutputs(binary: Self.ldidBinaryURL.path, arguments: [
                 "-e", target.path,
             ], ddlog: logger)
 
-            guard case .exit(let code) = receipt.terminationReason, code == EXIT_SUCCESS else {
+            guard case let .exit(code) = receipt.terminationReason, code == EXIT_SUCCESS else {
                 try throwCommandFailure("ldid", reason: receipt.terminationReason)
             }
 
@@ -158,16 +155,15 @@ extension InjectorV3 {
                 "-S\(xmlURL.path)", target.path,
             ], ddlog: logger)
 
-            guard case .exit(let code) = receipt.terminationReason, code == EXIT_SUCCESS else {
+            guard case let .exit(code) = receipt.terminationReason, code == EXIT_SUCCESS else {
                 try throwCommandFailure("ldid", reason: receipt.terminationReason)
             }
         } else {
-
             let retCode = try Execute.rootSpawn(binary: Self.ldidBinaryURL.path, arguments: [
                 "-S", target.path,
             ], ddlog: logger)
 
-            guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+            guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
                 try throwCommandFailure("ldid", reason: retCode)
             }
         }
@@ -188,7 +184,7 @@ extension InjectorV3 {
         }
         args.append(target.path)
         let retCode = try Execute.rootSpawn(binary: Self.mkdirBinaryURL.path, arguments: args, ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("mkdir", reason: retCode)
         }
     }
@@ -221,7 +217,7 @@ extension InjectorV3 {
         }
         args += [srcURL.path, destURL.path]
         let retCode = try Execute.rootSpawn(binary: Self.mvBinaryURL.path, arguments: args, ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("mv", reason: retCode)
         }
     }
@@ -245,7 +241,7 @@ extension InjectorV3 {
         let retCode = try Execute.rootSpawn(binary: Self.rmBinaryURL.path, arguments: [
             recursively ? "-rf" : "-f", target.path,
         ], ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("rm", reason: retCode)
         }
     }
@@ -270,7 +266,7 @@ extension InjectorV3 {
         let retCode = try Execute.rootSpawn(binary: Self.ctBypassBinaryURL.path, arguments: [
             "-r", "-i", target.path, "-t", teamID,
         ], ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("ct_bypass", reason: retCode)
         }
     }
@@ -292,7 +288,7 @@ extension InjectorV3 {
             args.append("--weak")
         }
         let retCode = try Execute.rootSpawn(binary: Self.insertDylibBinaryURL.path, arguments: args, ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("insert_dylib", reason: retCode)
         }
     }
@@ -310,7 +306,7 @@ extension InjectorV3 {
         let retCode = try Execute.rootSpawn(binary: Self.installNameToolBinaryURL.path, arguments: [
             "-add_rpath", name, target.path,
         ], ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("install_name_tool", reason: retCode)
         }
     }
@@ -320,7 +316,7 @@ extension InjectorV3 {
         let retCode = try Execute.rootSpawn(binary: Self.installNameToolBinaryURL.path, arguments: [
             "-change", srcName, destName, target.path,
         ], ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("install-name-tool", reason: retCode)
         }
     }
@@ -337,7 +333,7 @@ extension InjectorV3 {
         let retCode = try Execute.rootSpawn(binary: Self.optoolBinaryURL.path, arguments: [
             "uninstall", "-p", name, "-t", target.path,
         ], ddlog: logger)
-        guard case .exit(let code) = retCode, code == EXIT_SUCCESS else {
+        guard case let .exit(code) = retCode, code == EXIT_SUCCESS else {
             try throwCommandFailure("optool", reason: retCode)
         }
     }
@@ -346,9 +342,9 @@ extension InjectorV3 {
 
     fileprivate func throwCommandFailure(_ command: String, reason: AuxiliaryExecute.TerminationReason) throws -> Never {
         switch reason {
-        case .exit(let code):
+        case let .exit(code):
             throw Error.generic(String(format: NSLocalizedString("%@ exited with code %d", comment: ""), command, code))
-        case .uncaughtSignal(let signal):
+        case let .uncaughtSignal(signal):
             throw Error.generic(String(format: NSLocalizedString("%@ terminated with signal %d", comment: ""), command, signal))
         }
     }

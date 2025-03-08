@@ -6,10 +6,10 @@
 //
 
 import CocoaLumberjackSwift
+import Foundation
 import ZIPFoundation
 
 extension InjectorV3 {
-
     // MARK: - Constants
 
     fileprivate static let allowedPathExtensions: Set<String> = ["bundle", "dylib", "framework"]
@@ -17,17 +17,14 @@ extension InjectorV3 {
     // MARK: - Shared Methods
 
     func preprocessAssets(_ assetURLs: [URL]) throws -> [URL] {
-
         DDLogVerbose("Preprocess \(assetURLs.map { $0.path })", ddlog: logger)
 
         var preparedAssetURLs = [URL]()
         var urlsToMarkAsInjected = [URL]()
 
         for assetURL in assetURLs {
-
             let lowerExt = assetURL.pathExtension.lowercased()
             if lowerExt == "zip" {
-
                 let extractedURL = temporaryDirectoryURL
                     .appendingPathComponent("\(UUID().uuidString)_\(assetURL.lastPathComponent)")
                     .appendingPathExtension("extracted")
@@ -47,10 +44,7 @@ extension InjectorV3 {
 
                 preparedAssetURLs.append(contentsOf: extractedItems)
                 continue
-            }
-
-            else if Self.allowedPathExtensions.contains(lowerExt) {
-
+            } else if Self.allowedPathExtensions.contains(lowerExt) {
                 let copiedURL = temporaryDirectoryURL
                     .appendingPathComponent(assetURL.lastPathComponent)
                 try FileManager.default.copyItem(at: assetURL, to: copiedURL)

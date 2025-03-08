@@ -30,7 +30,7 @@ public class AuxiliaryExecute {
     internal var overwriteTable: [String: String?] = [:]
 
     // this value is used when providing 0 or negative timeout paramete
-    internal static let maxTimeoutValue: Double = 2_147_483_647
+    internal static let maxTimeoutValue: Double = 2147483647
 
     /// when reading from file pipe, must called from async queue
     internal static let pipeControlQueue = DispatchQueue(

@@ -17,9 +17,16 @@ struct InjectView: View {
     @State var injectResult: Result<URL?, Error>?
     @StateObject fileprivate var viewControllerHost = ViewControllerHost()
 
+    @AppStorage var useWeakReference: Bool
+    @AppStorage var preferMainExecutable: Bool
+    @AppStorage var injectStrategy: InjectorV3.Strategy
+
     init(_ app: App, urlList: [URL]) {
         self.app = app
         self.urlList = urlList
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
+        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
     }
 
     func inject() -> Result<URL?, Error> {
@@ -37,11 +44,14 @@ struct InjectView: View {
                 injector.teamID = app.teamID
             }
 
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
+
             try injector.inject(urlList)
             return .success(injector.latestLogFileURL)
 
         } catch {
-
             DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
             var userInfo: [String: Any] = [
@@ -60,12 +70,12 @@ struct InjectView: View {
         VStack {
             if let injectResult {
                 switch injectResult {
-                case .success(let url):
+                case let .success(url):
                     SuccessView(
                         title: NSLocalizedString("Completed", comment: ""),
                         logFileURL: url
                     )
-                case .failure(let error):
+                case let .failure(error):
                     FailureView(
                         title: NSLocalizedString("Failed", comment: ""),
                         error: error

@@ -8,13 +8,12 @@
 import Foundation
 
 extension InjectorV3 {
-
     enum Error: LocalizedError {
         case generic(String)
 
         var errorDescription: String? {
             switch self {
-            case .generic(let reason): reason
+            case let .generic(reason): reason
             }
         }
     }

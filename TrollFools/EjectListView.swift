@@ -10,19 +10,25 @@ import SwiftUI
 import SwiftUIIntrospect
 
 struct EjectListView: View {
-
     @StateObject var searchViewModel = AppListSearchViewModel()
     @StateObject var ejectList: EjectListModel
-
-    init(_ app: App) {
-        _ejectList = StateObject(wrappedValue: EjectListModel(app))
-    }
 
     @State var isErrorOccurred: Bool = false
     @State var lastError: Error?
 
     @State var isDeletingAll = false
     @StateObject var viewControllerHost = ViewControllerHost()
+
+    @AppStorage var useWeakReference: Bool
+    @AppStorage var preferMainExecutable: Bool
+    @AppStorage var injectStrategy: InjectorV3.Strategy
+
+    init(_ app: App) {
+        _ejectList = StateObject(wrappedValue: EjectListModel(app))
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
+        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
+    }
 
     var deleteAllButtonLabel: some View {
         HStack {
@@ -53,8 +59,8 @@ struct EjectListView: View {
 
     var headerView: some View {
         Text(ejectList.filteredPlugIns.isEmpty
-             ? NSLocalizedString("No Injected Plug-Ins", comment: "")
-             : NSLocalizedString("Injected Plug-Ins", comment: ""))
+            ? NSLocalizedString("No Injected Plug-Ins", comment: "")
+            : NSLocalizedString("Injected Plug-Ins", comment: ""))
             .font(.footnote)
     }
 
@@ -176,7 +182,13 @@ struct EjectListView: View {
         do {
             let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
-            try InjectorV3(ejectList.app.url).eject(plugInURLsToRemove)
+
+            let injector = try InjectorV3(ejectList.app.url)
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
+
+            try injector.eject(plugInURLsToRemove)
 
             ejectList.app.reload()
             ejectList.reload()
@@ -191,6 +203,9 @@ struct EjectListView: View {
     func deleteAll() {
         do {
             let injector = try InjectorV3(ejectList.app.url)
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
 
             let view = viewControllerHost.viewController?
                 .navigationController?.view

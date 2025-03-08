@@ -8,7 +8,6 @@
 import Foundation
 
 extension InjectorV3 {
-
     fileprivate static let metadataPlistName = "iTunesMetadata.plist"
     fileprivate static let metadataPlistBackupName = "\(metadataPlistName).bak"
 
