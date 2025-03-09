@@ -8,6 +8,9 @@
 "%@ terminated with signal %d" = "%@ terminated with signal %d";
 
 /* No comment provided by engineer. */
+"%ld Plug-Ins of “%@”" = "%1$ld Plug-Ins of “%2$@”";
+
+/* No comment provided by engineer. */
 "Advanced Settings" = "Advanced Settings";
 
 /* No comment provided by engineer. */
@@ -54,6 +57,9 @@
 
 /* No comment provided by engineer. */
 "Export" = "Export";
+
+/* No comment provided by engineer. */
+"Export All" = "Export All";
 
 /* No comment provided by engineer. */
 "Failed" = "Failed";

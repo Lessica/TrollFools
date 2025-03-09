@@ -90,6 +90,7 @@
 		CCC564EB2C4BE8320097C300 /* ldid in Resources */ = {isa = PBXBuildFile; fileRef = CCC564E82C4BE8320097C300 /* ldid */; };
 		CCC564EC2C4BE8470097C300 /* libcrypto.3.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */; };
 		CCECB7CE2C54DC660094C8E6 /* mv in Resources */ = {isa = PBXBuildFile; fileRef = CCECB7CD2C54DC660094C8E6 /* mv */; };
+		CCF350A22D7DE50900826516 /* EjectListSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF350A12D7DE50800826516 /* EjectListSearchModel.swift */; };
 		CCF4705A2C4A4649008D8197 /* TrollFoolsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */; };
 		CCF4705E2C4A464B008D8197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF4705D2C4A464B008D8197 /* Assets.xcassets */; };
 		CCF470692C4A4919008D8197 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCF4706B2C4A4919008D8197 /* Localizable.strings */; };
@@ -183,6 +184,7 @@
 		CCC564E62C4BE8320097C300 /* libcrypto.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.3.dylib; sourceTree = "<group>"; };
 		CCC564E82C4BE8320097C300 /* ldid */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ldid; sourceTree = "<group>"; };
 		CCECB7CD2C54DC660094C8E6 /* mv */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mv; sourceTree = "<group>"; };
+		CCF350A12D7DE50800826516 /* EjectListSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListSearchModel.swift; sourceTree = "<group>"; };
 		CCF470562C4A4649008D8197 /* TrollFools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrollFools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrollFoolsApp.swift; sourceTree = "<group>"; };
 		CCF4705D2C4A464B008D8197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				6124A06E2CD2324200C52253 /* AppListModel.swift */,
 				614C0C672D7C72AC007E9184 /* AppListSearchModel.swift */,
 				6124A0802CD233DA00C52253 /* EjectListModel.swift */,
+				CCF350A12D7DE50800826516 /* EjectListSearchModel.swift */,
 				6124A0702CD2326500C52253 /* FilterOptions.swift */,
 				6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */,
 				6124A0752CD232C600C52253 /* Option.swift */,
@@ -597,6 +600,7 @@
 				CCF4706E2C4A4BAB008D8197 /* AppListView.swift in Sources */,
 				614C0C6C2D7D72D4007E9184 /* IndexableScroller.swift in Sources */,
 				CC1548D32C4A743200A4173E /* SuccessView.swift in Sources */,
+				CCF350A22D7DE50900826516 /* EjectListSearchModel.swift in Sources */,
 				61EFA36D2D3027C400159442 /* InjectorV3+Command.swift in Sources */,
 				CC1548D52C4A744300A4173E /* FailureView.swift in Sources */,
 				61EFA3732D30347A00159442 /* InjectorV3+MachO.swift in Sources */,

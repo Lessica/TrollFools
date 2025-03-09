@@ -37,19 +37,41 @@ struct EjectListView: View {
         refreshableListView
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        exportAll()
-                    } label: {
-                        if isExportingAll {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .transition(.opacity)
-                        } else {
-                            Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
-                                .transition(.opacity)
+                    if #available(iOS 16.4, *) {
+                        ShareLink(
+                            item: CompressedFileRepresentation(
+                                name: "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip",
+                                urls: ejectList.injectedPlugIns.map(\.url)
+                            ),
+                            preview: SharePreview(
+                                String(format: NSLocalizedString("%ld Plug-Ins of “%@”", comment: ""), ejectList.injectedPlugIns.count, ejectList.app.name)
+                            )
+                        ) {
+                            if isExportingAll {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .transition(.opacity)
+                            } else {
+                                Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
+                                    .transition(.opacity)
+                            }
                         }
+                        .disabled(ejectList.injectedPlugIns.isEmpty)
+                    } else {
+                        Button {
+                            exportAll()
+                        } label: {
+                            if isExportingAll {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .transition(.opacity)
+                            } else {
+                                Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
+                                    .transition(.opacity)
+                            }
+                        }
+                        .disabled(ejectList.injectedPlugIns.isEmpty)
                     }
-                    .disabled(ejectList.injectedPlugIns.isEmpty)
                 }
             }
             .animation(.easeOut, value: isExportingAll)
@@ -334,7 +356,7 @@ struct EjectListView: View {
             .appendingPathComponent(
                 "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip")
 
-        try fileMgr.zipItem(at: exportURL, to: zipURL)
+        try fileMgr.zipItem(at: exportURL, to: zipURL, shouldKeepParent: false)
 
         DispatchQueue.main.async {
             quickLookExport = zipURL
@@ -354,12 +376,30 @@ struct EjectListView: View {
     }
 }
 
-final class EjectListSearchViewModel: NSObject, UISearchResultsUpdating, ObservableObject {
-    @Published var searchKeyword: String = ""
+@available(iOS 16.0, *)
+private struct CompressedFileRepresentation: Transferable {
+    let name: String
+    let urls: [URL]
 
-    weak var searchController: UISearchController?
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(exportedContentType: .zip) { archive in
+            let exportURL = InjectorV3.temporaryRoot
+                .appendingPathComponent("Exports_\(UUID().uuidString)", isDirectory: true)
 
-    func updateSearchResults(for searchController: UISearchController) {
-        searchKeyword = searchController.searchBar.text ?? ""
+            let fileMgr = FileManager.default
+            try fileMgr.createDirectory(at: exportURL, withIntermediateDirectories: true)
+
+            for url in archive.urls {
+                let exportURL = exportURL.appendingPathComponent(url.lastPathComponent)
+                try fileMgr.copyItem(at: url, to: exportURL)
+            }
+
+            let zipURL = InjectorV3.temporaryRoot
+                .appendingPathComponent(archive.name)
+
+            try fileMgr.zipItem(at: exportURL, to: zipURL, shouldKeepParent: false)
+
+            return SentTransferredFile(zipURL)
+        }
     }
 }

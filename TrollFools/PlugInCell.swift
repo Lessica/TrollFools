@@ -73,10 +73,16 @@ struct PlugInCell: View {
             }
         }
         .contextMenu {
-            Button {
-                exportPlugIn()
-            } label: {
-                Label(NSLocalizedString("Export", comment: ""), systemImage: "square.and.arrow.up")
+            if #available(iOS 16.4, *) {
+                ShareLink(item: plugIn.url) {
+                    Label(NSLocalizedString("Export", comment: ""), systemImage: "square.and.arrow.up")
+                }
+            } else {
+                Button {
+                    exportPlugIn()
+                } label: {
+                    Label(NSLocalizedString("Export", comment: ""), systemImage: "square.and.arrow.up")
+                }
             }
 
             Button {

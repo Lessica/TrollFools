@@ -8,6 +8,9 @@
 "%@ terminated with signal %d" = "%@ 意外终止，未捕获的信号 %d";
 
 /* No comment provided by engineer. */
+"%ld Plug-Ins of “%@”" = "“%2$@” 的 %1$ld 个插件";
+
+/* No comment provided by engineer. */
 "Advanced Settings" = "高级选项";
 
 /* No comment provided by engineer. */
@@ -54,6 +57,9 @@
 
 /* No comment provided by engineer. */
 "Export" = "导出";
+
+/* No comment provided by engineer. */
+"Export All" = "全部导出";
 
 /* No comment provided by engineer. */
 "Failed" = "失败";

@@ -7,6 +7,9 @@
 /* No comment provided by engineer. */
 "%@ terminated with signal %d" = "%@ terminato col segnale %d";
 
+/* TODO */
+"%ld Plug-Ins of “%@”" = "%1$ld Plug-Ins of “%2$@”";
+
 /* No comment provided by engineer. */
 "Advanced Settings" = "Impostazioni Avanzate";
 
@@ -54,6 +57,9 @@
 
 /* TODO */
 "Export" = "Export";
+
+/* TODO */
+"Export All" = "Export All";
 
 /* No comment provided by engineer. */
 "Failed" = "Fallito";
