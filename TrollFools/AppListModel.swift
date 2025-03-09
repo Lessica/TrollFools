@@ -223,6 +223,8 @@ extension AppListModel {
 
         for app in apps {
             var key = app.name
+                .trimmingCharacters(in: .controlCharacters)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
                 .applyingTransform(.stripCombiningMarks, reverse: false)?
                 .applyingTransform(.toLatin, reverse: false)?
                 .applyingTransform(.stripDiacritics, reverse: false)?
@@ -243,7 +245,17 @@ extension AppListModel {
             groupedApps[key]?.append(app)
         }
 
-        groupedApps.sort { $0.key < $1.key }
+        groupedApps.sort { app1, app2 in
+            if let c1 = app1.key.first,
+               let c2 = app2.key.first,
+               let idx1 = allowedCharacters.firstIndex(of: c1),
+               let idx2 = allowedCharacters.firstIndex(of: c2)
+            {
+                return idx1 < idx2
+            }
+            return app1.key < app2.key
+        }
+
         return groupedApps
     }
 }
