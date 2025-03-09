@@ -70,6 +70,7 @@ struct AppListView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .animation(.easeOut, value: appList.activeScopeApps.keys)
         .sheet(item: $selectorOpenedURL) { urlWrapper in
             AppListView()

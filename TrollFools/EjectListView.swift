@@ -49,6 +49,7 @@ struct EjectListView: View {
                                 .transition(.opacity)
                         }
                     }
+                    .disabled(ejectList.injectedPlugIns.isEmpty)
                 }
             }
             .animation(.easeOut, value: isExportingAll)
@@ -324,7 +325,7 @@ struct EjectListView: View {
         let fileMgr = FileManager.default
         try fileMgr.createDirectory(at: exportURL, withIntermediateDirectories: true)
 
-        for plugin in ejectList.filteredPlugIns {
+        for plugin in ejectList.injectedPlugIns {
             let exportURL = exportURL.appendingPathComponent(plugin.url.lastPathComponent)
             try fileMgr.copyItem(at: plugin.url, to: exportURL)
         }
