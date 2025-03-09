@@ -21,6 +21,7 @@ struct LogsView: UIViewControllerRepresentable {
         viewController.maximumNumberOfRows = 1000
         viewController.maximumNumberOfLines = 20
         viewController.reversed = true
+        viewController.allowDismissal = true
         viewController.allowTrash = false
         viewController.allowSearch = true
         viewController.allowShare = true

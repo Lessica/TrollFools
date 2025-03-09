@@ -10,6 +10,34 @@ import OrderedCollections
 import SwiftUI
 
 final class AppListModel: ObservableObject {
+    enum Scope: Int, CaseIterable {
+        case user
+        case troll
+        case system
+
+        var localizedShortName: String {
+            switch self {
+            case .user:
+                NSLocalizedString("User", comment: "")
+            case .troll:
+                NSLocalizedString("TrollStore", comment: "")
+            case .system:
+                NSLocalizedString("System", comment: "")
+            }
+        }
+
+        var localizedName: String {
+            switch self {
+            case .user:
+                NSLocalizedString("User Applications", comment: "")
+            case .troll:
+                NSLocalizedString("TrollStore Applications", comment: "")
+            case .system:
+                NSLocalizedString("Injectable System Applications", comment: "")
+            }
+        }
+    }
+
     static let hasTrollStore: Bool = { LSApplicationProxy(forIdentifier: "com.opa334.TrollStore") != nil }()
     private var _allApplications: [App] = []
 
@@ -17,9 +45,8 @@ final class AppListModel: ObservableObject {
     var isSelectorMode: Bool { selectorURL != nil }
 
     @Published var filter = FilterOptions()
-    @Published var userApplications = OrderedDictionary<String, [App]>()
-    @Published var trollApplications = OrderedDictionary<String, [App]>()
-    @Published var appleApplications = OrderedDictionary<String, [App]>()
+    @Published var activeScope: Scope = .user
+    @Published var activeScopeApps: OrderedDictionary<String, [App]> = [:]
 
     @Published var isPaidProductInstalled: Bool = false
     @Published var unsupportedCount: Int = 0
@@ -28,7 +55,6 @@ final class AppListModel: ObservableObject {
     private let filzaURL = URL(string: "filza://")
 
     @Published var isRebuildNeeded: Bool = false
-    @Published var isRebuilding: Bool = false
 
     private let applicationChanged = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -37,21 +63,20 @@ final class AppListModel: ObservableObject {
         self.selectorURL = selectorURL
         reload()
 
-        $filter
-            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] _ in
-                withAnimation {
-                    self?.performFilter()
-                }
-            }
-            .store(in: &cancellables)
+        Publishers.CombineLatest(
+            $filter,
+            $activeScope
+        )
+        .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+        .sink { [weak self] _ in
+            self?.performFilter()
+        }
+        .store(in: &cancellables)
 
         applicationChanged
             .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] _ in
-                withAnimation {
-                    self?.reload()
-                }
+                self?.reload()
             }
             .store(in: &cancellables)
 
@@ -100,9 +125,14 @@ final class AppListModel: ObservableObject {
             filteredApplications = filteredApplications.filter { $0.isInjected }
         }
 
-        userApplications = Self.groupedAppList(filteredApplications.filter { $0.isUser })
-        trollApplications = Self.groupedAppList(filteredApplications.filter { $0.isFromTroll })
-        appleApplications = Self.groupedAppList(filteredApplications.filter { $0.isFromApple })
+        switch activeScope {
+        case .user:
+            activeScopeApps = Self.groupedAppList(filteredApplications.filter { $0.isUser })
+        case .troll:
+            activeScopeApps = Self.groupedAppList(filteredApplications.filter { $0.isFromTroll })
+        case .system:
+            activeScopeApps = Self.groupedAppList(filteredApplications.filter { $0.isFromApple })
+        }
     }
 
     private static let excludedIdentifiers: Set<String> = [
@@ -165,7 +195,9 @@ final class AppListModel: ObservableObject {
 
         return filteredApps
     }
+}
 
+extension AppListModel {
     func openInFilza(_ url: URL) {
         guard let filzaURL else {
             return
@@ -174,11 +206,15 @@ final class AppListModel: ObservableObject {
         UIApplication.shared.open(fileURL)
     }
 
-    func rebuildIconCache() throws {
+    func rebuildIconCache() {
         // Sadly, we can't call `trollstorehelper` directly because only TrollStore can launch it without error.
-        LSApplicationWorkspace.default().openApplication(withBundleID: "com.opa334.TrollStore")
+        DispatchQueue.global(qos: .userInitiated).async {
+            LSApplicationWorkspace.default().openApplication(withBundleID: "com.opa334.TrollStore")
+        }
     }
+}
 
+extension AppListModel {
     static let allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
     private static let allowedCharacterSet = CharacterSet(charactersIn: allowedCharacters)
 

@@ -10,42 +10,14 @@ import OrderedCollections
 import SwiftUI
 import SwiftUIIntrospect
 
+typealias Scope = AppListModel.Scope
+
 struct AppListView: View {
-    enum Scope: Int, CaseIterable {
-        case user
-        case troll
-        case system
-
-        var localizedShortName: String {
-            switch self {
-            case .user:
-                NSLocalizedString("User", comment: "")
-            case .troll:
-                NSLocalizedString("TrollStore", comment: "")
-            case .system:
-                NSLocalizedString("System", comment: "")
-            }
-        }
-
-        var localizedName: String {
-            switch self {
-            case .user:
-                NSLocalizedString("User Applications", comment: "")
-            case .troll:
-                NSLocalizedString("TrollStore Applications", comment: "")
-            case .system:
-                NSLocalizedString("Injectable System Applications", comment: "")
-            }
-        }
-    }
-
-    @StateObject var searchViewModel = AppListSearchViewModel()
+    @StateObject var searchViewModel = AppListSearchModel()
     @EnvironmentObject var appList: AppListModel
 
-    @State var activeScope: Scope = .user
     @State var selectorOpenedURL: URLIdentifiable? = nil
-    @State var isErrorOccurred: Bool = false
-    @State var lastError: Error?
+    @State var selectedIndex: String? = nil
 
     @AppStorage("isAdvertisementHidden")
     var isAdvertisementHidden: Bool = false
@@ -54,7 +26,8 @@ struct AppListView: View {
         !isAdvertisementHidden &&
             !appList.isPaidProductInstalled &&
             !appList.filter.isSearching &&
-            !appList.filter.showPatchedOnly
+            !appList.filter.showPatchedOnly &&
+            !appList.isRebuildNeeded
     }
 
     var appString: String {
@@ -80,12 +53,47 @@ struct AppListView: View {
 
     var body: some View {
         NavigationView {
+            ScrollViewReader { reader in
+                ZStack {
+                    refreshableListView
+                    if appList.activeScopeApps.keys.count > 1 {
+                        IndexableScroller(
+                            indexes: appList.activeScopeApps.keys.elements,
+                            currentIndex: $selectedIndex
+                        )
+                    }
+                }
+                .onChange(of: selectedIndex) { index in
+                    if let index {
+                        reader.scrollTo("AppSection-\(index)", anchor: .top)
+                    }
+                }
+            }
+        }
+        .animation(.easeOut, value: appList.activeScopeApps.keys)
+        .sheet(item: $selectorOpenedURL) { urlWrapper in
+            AppListView()
+                .environmentObject(AppListModel(selectorURL: urlWrapper.url))
+        }
+        .onOpenURL { url in
+            guard url.isFileURL, url.pathExtension.lowercased() == "dylib" else {
+                return
+            }
+            selectorOpenedURL = URLIdentifiable(url: preprocessURL(url))
+        }
+        .onAppear {
+            if Double.random(in: 0 ..< 1) < 0.1 {
+                isAdvertisementHidden = false
+            }
+        }
+    }
+
+    var refreshableListView: some View {
+        Group {
             if #available(iOS 15, *) {
                 searchableListView
                     .refreshable {
-                        withAnimation {
-                            appList.reload()
-                        }
+                        appList.reload()
                     }
             } else {
                 searchableListView
@@ -105,21 +113,6 @@ struct AppListView: View {
                     }
             }
         }
-        .sheet(item: $selectorOpenedURL) { urlWrapper in
-            AppListView()
-                .environmentObject(AppListModel(selectorURL: urlWrapper.url))
-        }
-        .onOpenURL { url in
-            guard url.isFileURL, url.pathExtension.lowercased() == "dylib" else {
-                return
-            }
-            selectorOpenedURL = URLIdentifiable(url: preprocessURL(url))
-        }
-        .onAppear {
-            if Double.random(in: 0..<1) < 0.1 {
-                isAdvertisementHidden = false
-            }
-        }
     }
 
     var searchableListView: some View {
@@ -133,7 +126,7 @@ struct AppListView: View {
                 appList.filter.searchKeyword = $0
             }
             .onReceive(searchViewModel.$searchScopeIndex) {
-                activeScope = Scope(rawValue: $0) ?? .user
+                appList.activeScope = Scope(rawValue: $0) ?? .user
             }
             .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17)) { viewController in
                 if searchViewModel.searchController == nil {
@@ -158,35 +151,31 @@ struct AppListView: View {
     var listView: some View {
         List {
             if AppListModel.hasTrollStore && appList.isRebuildNeeded {
-                rebuildSection
+                rebuildSection.transition(.opacity)
             }
 
-            switch activeScope {
+            switch appList.activeScope {
             case .user:
-                userAppGroup
+                userAppGroup.transition(.opacity)
             case .troll:
-                trollAppGroup
+                trollAppGroup.transition(.opacity)
             case .system:
-                systemAppGroup
+                systemAppGroup.transition(.opacity)
             }
         }
+        .animation(.easeOut, value: combines(
+            appList.isRebuildNeeded,
+            appList.activeScope,
+            appList.filter,
+            appList.unsupportedCount,
+            shouldShowAdvertisement
+        ))
         .listStyle(.insetGrouped)
-        .animation(.smooth, value: activeScope)
-        .animation(.smooth, value: shouldShowAdvertisement)
-        .animation(.smooth, value: combines(appList.isPaidProductInstalled, appList.unsupportedCount))
         .navigationTitle(appList.isSelectorMode ?
             NSLocalizedString("Select Application to Inject", comment: "") :
             NSLocalizedString("TrollFools", comment: "")
         )
         .navigationBarTitleDisplayMode(appList.isSelectorMode ? .inline : .automatic)
-        .background(Group {
-            NavigationLink(isActive: $isErrorOccurred) {
-                FailureView(
-                    title: NSLocalizedString("Error", comment: ""),
-                    error: lastError
-                )
-            } label: { }
-        })
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if appList.isSelectorMode, let selectorURL = appList.selectorURL {
@@ -217,54 +206,48 @@ struct AppListView: View {
 
     var userAppGroup: some View {
         Group {
-            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && appList.unsupportedCount > 0 {
+            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
                 Section {
                 } footer: {
                     paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
                 }
-                .transition(.opacity)
             }
 
             if #available(iOS 15, *) {
                 if shouldShowAdvertisement {
                     advertisementSection
-                        .transition(.opacity)
                 }
             }
 
-            appSections(appList.userApplications)
+            appSections
         }
-        .transition(.opacity)
     }
 
     var trollAppGroup: some View {
         Group {
-            appSections(appList.trollApplications)
+            appSections
         }
-        .transition(.opacity)
     }
 
     var systemAppGroup: some View {
         Group {
-            if !appList.filter.showPatchedOnly {
+            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded {
                 Section {
                 } footer: {
                     paddedHeaderFooterText(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
                 }
-                .transition(.opacity)
             }
 
-            appSections(appList.appleApplications)
+            appSections
         }
-        .transition(.opacity)
     }
 
-    func appSections(_ apps: OrderedDictionary<String, [App]>) -> some View {
+    var appSections: some View {
         Group {
-            if !apps.isEmpty {
-                ForEach(Array(apps.keys), id: \.self) { sectionKey in
+            if !appList.activeScopeApps.isEmpty {
+                ForEach(Array(appList.activeScopeApps.keys), id: \.self) { sectionKey in
                     Section {
-                        ForEach(apps[sectionKey] ?? [], id: \.id) { app in
+                        ForEach(appList.activeScopeApps[sectionKey] ?? [], id: \.id) { app in
                             NavigationLink {
                                 if appList.isSelectorMode, let selectorURL = appList.selectorURL {
                                     InjectView(app, urlList: [selectorURL])
@@ -283,10 +266,11 @@ struct AppListView: View {
                     } header: {
                         paddedHeaderFooterText(sectionKey)
                     } footer: {
-                        if sectionKey == apps.keys.last {
+                        if sectionKey == appList.activeScopeApps.keys.last {
                             footer
                         }
                     }
+                    .id("AppSection-\(sectionKey)")
                 }
             } else {
                 Section {
@@ -303,7 +287,7 @@ struct AppListView: View {
     var rebuildSection: some View {
         Section {
             Button {
-                rebuildIconCache()
+                appList.rebuildIconCache()
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
@@ -318,25 +302,12 @@ struct AppListView: View {
 
                     Spacer()
 
-                    if appList.isRebuilding {
-                        if #available(iOS 16, *) {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .controlSize(.large)
-                        } else {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .scaleEffect(2.0)
-                        }
-                    } else {
-                        Image(systemName: "timelapse")
-                            .font(.title)
-                            .foregroundColor(.accentColor)
-                    }
+                    Image(systemName: "timelapse")
+                        .font(.title)
+                        .foregroundColor(.accentColor)
                 }
                 .padding(.vertical, 4)
             }
-            .disabled(appList.isRebuilding)
         }
     }
 
@@ -396,39 +367,6 @@ struct AppListView: View {
             } label: {
                 Text(NSLocalizedString("Source Code", comment: ""))
                     .font(.footnote)
-            }
-        }
-    }
-
-    private func rebuildIconCache() {
-        withAnimation {
-            appList.isRebuilding = true
-        }
-
-        DispatchQueue.global(qos: .userInteractive).async {
-            defer {
-                DispatchQueue.main.async {
-                    withAnimation {
-                        appList.isRebuilding = false
-                    }
-                }
-            }
-
-            do {
-                try appList.rebuildIconCache()
-
-                DispatchQueue.main.async {
-                    withAnimation {
-                        appList.isRebuildNeeded = false
-                    }
-                }
-            } catch {
-                DDLogError("\(error)", ddlog: InjectorV3.main.logger)
-
-                DispatchQueue.main.async {
-                    lastError = error
-                    isErrorOccurred = true
-                }
             }
         }
     }

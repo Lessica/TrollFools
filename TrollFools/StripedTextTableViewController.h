@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL allowTrash;
 @property (nonatomic, assign) BOOL allowSearch;
 @property (nonatomic, assign) BOOL allowShare;
+@property (nonatomic, assign) BOOL allowDismissal;
 @property (nonatomic, assign) BOOL pullToReload;
 @property (nonatomic, assign) BOOL tapToCopy;
 @property (nonatomic, assign) BOOL pressToCopy;

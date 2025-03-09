@@ -1,5 +1,5 @@
 //
-//  AppListSearchViewModel.swift
+//  AppListSearchModel.swift
 //  TrollFools
 //
 //  Created by 82Flex on 3/8/25.
@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-final class AppListSearchViewModel: NSObject, ObservableObject {
+final class AppListSearchModel: NSObject, ObservableObject {
     @Published var searchKeyword: String = ""
     @Published var searchScopeIndex: Int = 0
 
@@ -16,7 +16,7 @@ final class AppListSearchViewModel: NSObject, ObservableObject {
     weak var forwardSearchBarDelegate: (any UISearchBarDelegate)?
 }
 
-extension AppListSearchViewModel: UISearchBarDelegate, UISearchResultsUpdating {
+extension AppListSearchModel: UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         searchKeyword = searchController.searchBar.text ?? ""
     }

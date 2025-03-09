@@ -24,9 +24,7 @@ final class EjectListModel: ObservableObject {
         $filter
             .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] _ in
-                withAnimation {
-                    self?.performFilter()
-                }
+                self?.performFilter()
             }
             .store(in: &cancellables)
     }

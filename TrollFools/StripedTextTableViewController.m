@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UIBarButtonItem *shareItem;
 @property (nonatomic, strong) UIBarButtonItem *trashItem;
+@property (nonatomic, strong) UIBarButtonItem *dismissItem;
 @property (nonatomic, strong) UISearchController *searchController;
 
 @property (nonatomic, assign) dispatch_source_t autoReloadSource;
@@ -83,6 +84,10 @@
 
     if (self.allowTrash) {
         [rightBarButtonItems addObject:self.trashItem];
+    }
+
+    if (self.allowDismissal) {
+        [rightBarButtonItems addObject:self.dismissItem];
     }
 
     self.navigationItem.rightBarButtonItems = rightBarButtonItems;
@@ -278,6 +283,10 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)dismissItemTapped:(UIBarButtonItem *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -433,6 +442,13 @@
         _trashItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trashItemTapped:)];
     }
     return _trashItem;
+}
+
+- (UIBarButtonItem *)dismissItem {
+    if (!_dismissItem) {
+        _dismissItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose target:self action:@selector(dismissItemTapped:)];
+    }
+    return _dismissItem;
 }
 
 #pragma mark -

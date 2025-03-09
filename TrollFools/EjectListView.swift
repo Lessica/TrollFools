@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftUIIntrospect
 
 struct EjectListView: View {
-    @StateObject var searchViewModel = AppListSearchViewModel()
+    @StateObject var searchViewModel = AppListSearchModel()
     @StateObject var ejectList: EjectListModel
 
     @State var isErrorOccurred: Bool = false
@@ -30,29 +30,72 @@ struct EjectListView: View {
         _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
     }
 
-    var deleteAllButtonLabel: some View {
-        HStack {
-            Label(NSLocalizedString("Eject All", comment: ""), systemImage: "eject")
-            Spacer()
-            if isDeletingAll {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
+    var body: some View {
+        refreshableListView
+    }
+
+    var refreshableListView: some View {
+        Group {
+            if #available(iOS 15, *) {
+                searchableListView
+                    .refreshable {
+                        ejectList.reload()
+                    }
+            } else {
+                searchableListView
+                    .introspect(.list, on: .iOS(.v14)) { tableView in
+                        if tableView.refreshControl == nil {
+                            tableView.refreshControl = {
+                                let refreshControl = UIRefreshControl()
+                                refreshControl.addAction(UIAction { action in
+                                    ejectList.reload()
+                                    if let control = action.sender as? UIRefreshControl {
+                                        control.endRefreshing()
+                                    }
+                                }, for: .valueChanged)
+                                return refreshControl
+                            }()
+                        }
+                    }
             }
         }
     }
 
-    var deleteAllButton: some View {
-        if #available(iOS 15, *) {
-            Button(role: .destructive) {
-                deleteAll()
-            } label: {
-                deleteAllButtonLabel
-            }
-        } else {
-            Button {
-                deleteAll()
-            } label: {
-                deleteAllButtonLabel
+    var searchableListView: some View {
+        Group {
+            if #available(iOS 15, *) {
+                ejectListView
+                    .onViewWillAppear { viewController in
+                        viewControllerHost.viewController = viewController
+                    }
+                    .searchable(
+                        text: $ejectList.filter.searchKeyword,
+                        placement: .automatic,
+                        prompt: NSLocalizedString("Search…", comment: "")
+                    )
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(true)
+            } else {
+                // Fallback on earlier versions
+                ejectListView
+                    .onReceive(searchViewModel.$searchKeyword) {
+                        ejectList.filter.searchKeyword = $0
+                    }
+                    .introspect(.viewController, on: .iOS(.v14)) { viewController in
+                        viewControllerHost.viewController = viewController
+                        if searchViewModel.searchController == nil {
+                            viewController.navigationItem.hidesSearchBarWhenScrolling = true
+                            viewController.navigationItem.searchController = {
+                                let searchController = UISearchController(searchResultsController: nil)
+                                searchController.searchResultsUpdater = searchViewModel
+                                searchController.obscuresBackgroundDuringPresentation = false
+                                searchController.hidesNavigationBarDuringPresentation = true
+                                searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
+                                return searchController
+                            }()
+                            searchViewModel.searchController = viewController.navigationItem.searchController
+                        }
+                    }
             }
         }
     }
@@ -91,7 +134,10 @@ struct EjectListView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(NSLocalizedString("Plug-Ins", comment: ""))
-        .animation(.easeOut, value: ejectList.filter.isSearching)
+        .animation(.easeOut, value: combines(
+            ejectList.filter,
+            isDeletingAll
+        ))
         .background(Group {
             NavigationLink(isActive: $isErrorOccurred) {
                 FailureView(
@@ -102,63 +148,37 @@ struct EjectListView: View {
         })
     }
 
-    var body: some View {
+    var deleteAllButton: some View {
         if #available(iOS 15, *) {
-            ejectListView
-                .onViewWillAppear { viewController in
-                    viewControllerHost.viewController = viewController
-                }
-                .refreshable {
-                    withAnimation {
-                        ejectList.reload()
-                    }
-                }
-                .searchable(
-                    text: $ejectList.filter.searchKeyword,
-                    placement: .automatic,
-                    prompt: NSLocalizedString("Search…", comment: "")
-                )
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
+            Button(role: .destructive) {
+                deleteAll()
+            } label: {
+                deleteAllButtonLabel
+            }
         } else {
-            // Fallback on earlier versions
-            ejectListView
-                .onReceive(searchViewModel.$searchKeyword) {
-                    ejectList.filter.searchKeyword = $0
-                }
-                .introspect(.list, on: .iOS(.v14)) { tableView in
-                    if tableView.refreshControl == nil {
-                        tableView.refreshControl = {
-                            let refreshControl = UIRefreshControl()
-                            refreshControl.addAction(UIAction { action in
-                                ejectList.reload()
-                                if let control = action.sender as? UIRefreshControl {
-                                    control.endRefreshing()
-                                }
-                            }, for: .valueChanged)
-                            return refreshControl
-                        }()
-                    }
-                }
-                .introspect(.viewController, on: .iOS(.v14)) { viewController in
-                    viewControllerHost.viewController = viewController
-                    if searchViewModel.searchController == nil {
-                        viewController.navigationItem.hidesSearchBarWhenScrolling = true
-                        viewController.navigationItem.searchController = {
-                            let searchController = UISearchController(searchResultsController: nil)
-                            searchController.searchResultsUpdater = searchViewModel
-                            searchController.obscuresBackgroundDuringPresentation = false
-                            searchController.hidesNavigationBarDuringPresentation = true
-                            searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
-                            return searchController
-                        }()
-                        searchViewModel.searchController = viewController.navigationItem.searchController
-                    }
-                }
+            Button {
+                deleteAll()
+            } label: {
+                deleteAllButtonLabel
+            }
         }
     }
 
-    func delete(at offsets: IndexSet) {
+    var deleteAllButtonLabel: some View {
+        HStack {
+            Label(NSLocalizedString("Eject All", comment: ""), systemImage: "eject")
+
+            Spacer()
+
+            if isDeletingAll {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .transition(.opacity)
+            }
+        }
+    }
+
+    private func delete(at offsets: IndexSet) {
         do {
             let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
@@ -180,7 +200,7 @@ struct EjectListView: View {
         }
     }
 
-    func deleteAll() {
+    private func deleteAll() {
         do {
             let injector = try InjectorV3(ejectList.app.url)
             injector.useWeakReference = useWeakReference
@@ -192,18 +212,14 @@ struct EjectListView: View {
 
             view?.isUserInteractionEnabled = false
 
-            withAnimation {
-                isDeletingAll = true
-            }
+            isDeletingAll = true
 
             DispatchQueue.global(qos: .userInteractive).async {
                 defer {
                     DispatchQueue.main.async {
-                        withAnimation {
-                            ejectList.app.reload()
-                            ejectList.reload()
-                            isDeletingAll = false
-                        }
+                        ejectList.app.reload()
+                        ejectList.reload()
+                        isDeletingAll = false
 
                         view?.isUserInteractionEnabled = true
                     }
@@ -213,9 +229,7 @@ struct EjectListView: View {
                     try injector.ejectAll()
                 } catch {
                     DispatchQueue.main.async {
-                        withAnimation {
-                            isDeletingAll = false
-                        }
+                        isDeletingAll = false
 
                         DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 

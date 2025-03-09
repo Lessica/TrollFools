@@ -57,10 +57,8 @@ struct AppListCell: View {
                 Button {
                     do {
                         try InjectorV3(app.url).setMetadataDetached(false)
-                        withAnimation {
-                            app.reload()
-                            appList.isRebuildNeeded = true
-                        }
+                        app.reload()
+                        appList.isRebuildNeeded = true
                     } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
                 } label: {
                     Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
@@ -69,10 +67,8 @@ struct AppListCell: View {
                 Button {
                     do {
                         try InjectorV3(app.url).setMetadataDetached(true)
-                        withAnimation {
-                            app.reload()
-                            appList.isRebuildNeeded = true
-                        }
+                        app.reload()
+                        appList.isRebuildNeeded = true
                     } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
                 } label: {
                     Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")

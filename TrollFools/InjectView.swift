@@ -29,40 +29,19 @@ struct InjectView: View {
         _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
     }
 
-    func inject() -> Result<URL?, Error> {
-        var logFileURL: URL?
-
-        do {
-            let injector = try InjectorV3(app.url)
-            logFileURL = injector.latestLogFileURL
-
-            if injector.appID.isEmpty {
-                injector.appID = app.id
-            }
-
-            if injector.teamID.isEmpty {
-                injector.teamID = app.teamID
-            }
-
-            injector.useWeakReference = useWeakReference
-            injector.preferMainExecutable = preferMainExecutable
-            injector.injectStrategy = injectStrategy
-
-            try injector.inject(urlList)
-            return .success(injector.latestLogFileURL)
-
-        } catch {
-            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
-
-            var userInfo: [String: Any] = [
-                NSLocalizedDescriptionKey: error.localizedDescription,
-            ]
-
-            if let logFileURL {
-                userInfo[NSURLErrorKey] = logFileURL
-            }
-
-            return .failure(NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo))
+    var body: some View {
+        if appList.isSelectorMode {
+            bodyContent
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(NSLocalizedString("Done", comment: "")) {
+                            viewControllerHost.viewController?.navigationController?
+                                .dismiss(animated: true)
+                        }
+                    }
+                }
+        } else {
+            bodyContent
         }
     }
 
@@ -100,6 +79,7 @@ struct InjectView: View {
             }
         }
         .padding()
+        .animation(.easeOut, value: injectResult == nil)
         .navigationTitle(app.name)
         .navigationBarTitleDisplayMode(.inline)
         .onViewWillAppear { viewController in
@@ -112,30 +92,49 @@ struct InjectView: View {
                 let result = inject()
 
                 DispatchQueue.main.async {
-                    withAnimation {
-                        injectResult = result
-                        app.reload()
-                        viewControllerHost.viewController?.navigationController?
-                            .view.isUserInteractionEnabled = true
-                    }
+                    injectResult = result
+                    app.reload()
+                    viewControllerHost.viewController?.navigationController?
+                        .view.isUserInteractionEnabled = true
                 }
             }
         }
     }
 
-    var body: some View {
-        if appList.isSelectorMode {
-            bodyContent
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(NSLocalizedString("Done", comment: "")) {
-                            viewControllerHost.viewController?.navigationController?
-                                .dismiss(animated: true)
-                        }
-                    }
-                }
-        } else {
-            bodyContent
+    private func inject() -> Result<URL?, Error> {
+        var logFileURL: URL?
+
+        do {
+            let injector = try InjectorV3(app.url)
+            logFileURL = injector.latestLogFileURL
+
+            if injector.appID.isEmpty {
+                injector.appID = app.id
+            }
+
+            if injector.teamID.isEmpty {
+                injector.teamID = app.teamID
+            }
+
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
+
+            try injector.inject(urlList)
+            return .success(injector.latestLogFileURL)
+
+        } catch {
+            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
+
+            var userInfo: [String: Any] = [
+                NSLocalizedDescriptionKey: error.localizedDescription,
+            ]
+
+            if let logFileURL {
+                userInfo[NSURLErrorKey] = logFileURL
+            }
+
+            return .failure(NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo))
         }
     }
 }

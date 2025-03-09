@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FilterOptions {
+struct FilterOptions: Hashable {
     var searchKeyword = ""
     var showPatchedOnly = false
 
