@@ -76,6 +76,10 @@
 
     NSMutableArray <UIBarButtonItem *> *rightBarButtonItems = [NSMutableArray arrayWithCapacity:2];
 
+    if (self.allowDismissal) {
+        [rightBarButtonItems addObject:self.dismissItem];
+    }
+
     if (@available(iOS 16, *)) {
         if (self.allowShare) {
             [rightBarButtonItems addObject:self.shareItem];
@@ -84,10 +88,6 @@
 
     if (self.allowTrash) {
         [rightBarButtonItems addObject:self.trashItem];
-    }
-
-    if (self.allowDismissal) {
-        [rightBarButtonItems addObject:self.dismissItem];
     }
 
     self.navigationItem.rightBarButtonItems = rightBarButtonItems;
