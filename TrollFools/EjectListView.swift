@@ -13,10 +13,11 @@ struct EjectListView: View {
     @StateObject var searchViewModel = AppListSearchModel()
     @StateObject var ejectList: EjectListModel
 
+    @State var quickLookExport: URL?
+    @State var isDeletingAll = false
     @State var isErrorOccurred: Bool = false
     @State var lastError: Error?
 
-    @State var isDeletingAll = false
     @StateObject var viewControllerHost = ViewControllerHost()
 
     @AppStorage var useWeakReference: Bool
@@ -32,6 +33,7 @@ struct EjectListView: View {
 
     var body: some View {
         refreshableListView
+            .quickLookPreview($quickLookExport)
     }
 
     var refreshableListView: some View {
@@ -103,17 +105,10 @@ struct EjectListView: View {
     var ejectListView: some View {
         List {
             Section {
-                ForEach(ejectList.filteredPlugIns) { plugin in
-                    if #available(iOS 16, *) {
-                        PlugInCell(plugIn: plugin)
-                            .environmentObject(ejectList)
-                    } else {
-                        PlugInCell(plugIn: plugin)
-                            .environmentObject(ejectList)
-                            .padding(.vertical, 4)
-                    }
+                ForEach(ejectList.filteredPlugIns) {
+                    deletablePlugInCell($0)
                 }
-                .onDelete(perform: delete)
+                .onDelete(perform: deletePlugIns)
             } header: {
                 paddedHeaderFooterText(ejectList.filteredPlugIns.isEmpty
                     ? NSLocalizedString("No Injected Plug-Ins", comment: "")
@@ -178,7 +173,20 @@ struct EjectListView: View {
         }
     }
 
-    private func delete(at offsets: IndexSet) {
+    private func deletablePlugInCell(_ plugin: InjectedPlugIn) -> some View {
+        Group {
+            if #available(iOS 16, *) {
+                PlugInCell(plugin, quickLookExport: $quickLookExport)
+                    .environmentObject(ejectList)
+            } else {
+                PlugInCell(plugin, quickLookExport: $quickLookExport)
+                    .environmentObject(ejectList)
+                    .padding(.vertical, 4)
+            }
+        }
+    }
+
+    private func deletePlugIns(at offsets: IndexSet) {
         do {
             let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
@@ -189,6 +197,25 @@ struct EjectListView: View {
             injector.injectStrategy = injectStrategy
 
             try injector.eject(plugInURLsToRemove)
+
+            ejectList.app.reload()
+            ejectList.reload()
+        } catch {
+            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
+
+            lastError = error
+            isErrorOccurred = true
+        }
+    }
+
+    private func deletePlugIn(_ plugin: InjectedPlugIn) {
+        do {
+            let injector = try InjectorV3(ejectList.app.url)
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
+
+            try injector.eject([plugin.url])
 
             ejectList.app.reload()
             ejectList.reload()
@@ -219,8 +246,8 @@ struct EjectListView: View {
                     DispatchQueue.main.async {
                         ejectList.app.reload()
                         ejectList.reload()
-                        isDeletingAll = false
 
+                        isDeletingAll = false
                         view?.isUserInteractionEnabled = true
                     }
                 }

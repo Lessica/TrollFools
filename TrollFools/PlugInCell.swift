@@ -5,6 +5,7 @@
 //  Created by 82Flex on 2024/10/30.
 //
 
+import QuickLook
 import SwiftUI
 
 private let gDateFormatter: DateFormatter = {
@@ -17,7 +18,14 @@ private let gDateFormatter: DateFormatter = {
 struct PlugInCell: View {
     @EnvironmentObject var ejectList: EjectListModel
 
+    @Binding var quickLookExport: URL?
+
     let plugIn: InjectedPlugIn
+
+    init(_ plugIn: InjectedPlugIn, quickLookExport: Binding<URL?>) {
+        self.plugIn = plugIn
+        _quickLookExport = quickLookExport
+    }
 
     @available(iOS 15, *)
     var highlightedName: AttributedString {
@@ -66,6 +74,12 @@ struct PlugInCell: View {
         }
         .contextMenu {
             Button {
+                exportPlugIn()
+            } label: {
+                Label(NSLocalizedString("Export", comment: ""), systemImage: "square.and.arrow.up")
+            }
+
+            Button {
                 openInFilza()
             } label: {
                 if isFilzaInstalled {
@@ -76,6 +90,10 @@ struct PlugInCell: View {
             }
             .disabled(!isFilzaInstalled)
         }
+    }
+
+    private func exportPlugIn() {
+        quickLookExport = plugIn.url
     }
 
     var isFilzaInstalled: Bool { ejectList.app.appList?.isFilzaInstalled ?? false }

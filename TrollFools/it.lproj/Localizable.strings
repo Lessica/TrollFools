@@ -52,6 +52,9 @@
 /* No comment provided by engineer. */
 "Error" = "Errore";
 
+/* TODO */
+"Export" = "Export";
+
 /* No comment provided by engineer. */
 "Failed" = "Fallito";
 
@@ -190,7 +193,7 @@
 /* No comment provided by engineer. */
 "TrollRecorder" = "TrollRecorder";
 
-/* TODO */
+/* No comment provided by engineer. */
 "TrollStore" = "TrollStore";
 
 /* No comment provided by engineer. */

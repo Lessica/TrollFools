@@ -52,6 +52,9 @@
 /* No comment provided by engineer. */
 "Error" = "Lỗi";
 
+/* TODO */
+"Export" = "Export";
+
 /* No comment provided by engineer. */
 "Failed" = "Thất bại";
 
@@ -154,7 +157,7 @@
 /* TODO */
 "Record your phone calls like never before." = "Record your phone calls like never before.";
 
-/* TODO */
+/* No comment provided by engineer. */
 "Reveil" = "Reveil";
 
 /* No comment provided by engineer. */
@@ -187,10 +190,10 @@
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
 
-/* TODO */
+/* No comment provided by engineer. */
 "TrollRecorder" = "TrollRecorder";
 
-/* TODO */
+/* No comment provided by engineer. */
 "TrollStore" = "TrollStore";
 
 /* No comment provided by engineer. */
