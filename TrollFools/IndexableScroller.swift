@@ -22,7 +22,7 @@ struct IndexableScroller: View {
                         .font(.footnote)
                         .fontWeight(.semibold)
                         .foregroundColor(.accentColor)
-                        .padding(.trailing, 8)
+                        .padding(.trailing, 12)
                         .background(dragObserver(index))
                 }
             }
@@ -53,7 +53,7 @@ struct IndexableScroller: View {
                 }
             }
         }
-        return Rectangle().fill(Color.clear)
+        return Rectangle().fill(.background).opacity(0.05)
     }
 }
 
