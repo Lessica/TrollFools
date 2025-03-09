@@ -8,6 +8,7 @@
 import CocoaLumberjackSwift
 import SwiftUI
 import SwiftUIIntrospect
+import ZIPFoundation
 
 struct EjectListView: View {
     @StateObject var searchViewModel = AppListSearchModel()
@@ -15,6 +16,7 @@ struct EjectListView: View {
 
     @State var quickLookExport: URL?
     @State var isDeletingAll = false
+    @State var isExportingAll = false
     @State var isErrorOccurred: Bool = false
     @State var lastError: Error?
 
@@ -33,6 +35,23 @@ struct EjectListView: View {
 
     var body: some View {
         refreshableListView
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        exportAll()
+                    } label: {
+                        if isExportingAll {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .transition(.opacity)
+                        } else {
+                            Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
+                                .transition(.opacity)
+                        }
+                    }
+                }
+            }
+            .animation(.easeOut, value: isExportingAll)
             .quickLookPreview($quickLookExport)
     }
 
@@ -256,8 +275,6 @@ struct EjectListView: View {
                     try injector.ejectAll()
                 } catch {
                     DispatchQueue.main.async {
-                        isDeletingAll = false
-
                         DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
                         lastError = error
@@ -268,6 +285,58 @@ struct EjectListView: View {
         } catch {
             lastError = error
             isErrorOccurred = true
+        }
+    }
+
+    private func exportAll() {
+        let view = viewControllerHost.viewController?
+            .navigationController?.view
+
+        view?.isUserInteractionEnabled = false
+
+        isExportingAll = true
+
+        DispatchQueue.global(qos: .userInteractive).async {
+            defer {
+                DispatchQueue.main.async {
+                    isExportingAll = false
+                    view?.isUserInteractionEnabled = true
+                }
+            }
+
+            do {
+                try _exportAll()
+            } catch {
+                DispatchQueue.main.async {
+                    DDLogError("\(error)", ddlog: InjectorV3.main.logger)
+
+                    lastError = error
+                    isErrorOccurred = true
+                }
+            }
+        }
+    }
+
+    private func _exportAll() throws {
+        let exportURL = InjectorV3.temporaryRoot
+            .appendingPathComponent("Exports_\(UUID().uuidString)", isDirectory: true)
+
+        let fileMgr = FileManager.default
+        try fileMgr.createDirectory(at: exportURL, withIntermediateDirectories: true)
+
+        for plugin in ejectList.filteredPlugIns {
+            let exportURL = exportURL.appendingPathComponent(plugin.url.lastPathComponent)
+            try fileMgr.copyItem(at: plugin.url, to: exportURL)
+        }
+
+        let zipURL = InjectorV3.temporaryRoot
+            .appendingPathComponent(
+                "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip")
+
+        try fileMgr.zipItem(at: exportURL, to: zipURL)
+
+        DispatchQueue.main.async {
+            quickLookExport = zipURL
         }
     }
 
