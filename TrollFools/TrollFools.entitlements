@@ -4,11 +4,29 @@
 <dict>
 	<key>application-identifier</key>
 	<string>GXZ23M5TP2.wiki.qaq.TrollFools</string>
+	<key>checklessPersistentURLTranslation</key>
+	<true/>
+	<key>com.apple.AutoWake-write-access</key>
+	<true/>
 	<key>com.apple.CommCenter.fine-grained</key>
 	<array>
 		<string>spi</string>
 		<string>identity</string>
 	</array>
+	<key>com.apple.QuartzCore.displayable-context</key>
+	<true/>
+	<key>com.apple.QuartzCore.secure-mode</key>
+	<true/>
+	<key>com.apple.SystemConfiguration.SCDynamicStore-write-access</key>
+	<true/>
+	<key>com.apple.SystemConfiguration.SCPreferences-write-access</key>
+	<true/>
+	<key>com.apple.assertiond.app-state-monitor</key>
+	<true/>
+	<key>com.apple.backboard.client</key>
+	<true/>
+	<key>com.apple.backboardd.launchapplications</key>
+	<true/>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>GXZ23M5TP2.iCloud.wiki.qaq.TrollFools.icloud-container</string>
@@ -25,6 +43,37 @@
 	<array>
 		<string>GXZ23M5TP2.iCloud.wiki.qaq.TrollFools.icloud-container</string>
 	</array>
+	<key>com.apple.frontboard.launchapplications</key>
+	<true/>
+	<key>com.apple.frontboard.shutdown</key>
+	<true/>
+	<key>com.apple.mobile.deleted.AllowFreeSpace</key>
+	<true/>
+	<key>com.apple.multitasking.systemappassertions</key>
+	<true/>
+	<key>com.apple.multitasking.termination</key>
+	<true/>
+	<key>com.apple.private.MobileContainerManager.allowed</key>
+	<true/>
+	<key>com.apple.private.MobileContainerManager.lookup</key>
+	<true/>
+	<key>com.apple.private.MobileContainerManager.otherIdLookup</key>
+	<true/>
+	<key>com.apple.private.attribution.usage-reporting-only.implicitly-assumed-identity</key>
+	<dict>
+		<key>type</key>
+		<string>bundleID</string>
+		<key>value</key>
+		<string>wiki.qaq.TrollFools</string>
+	</dict>
+	<key>com.apple.private.coreservices.canmaplsdatabase</key>
+	<true/>
+	<key>com.apple.private.kernel.jetsam</key>
+	<true/>
+	<key>com.apple.private.memorystatus</key>
+	<true/>
+	<key>com.apple.private.network.socket-delegate</key>
+	<true/>
 	<key>com.apple.private.persona-mgmt</key>
 	<true/>
 	<key>com.apple.private.security.container-manager</key>
@@ -34,6 +83,8 @@
 	<key>com.apple.private.security.disk-device-access</key>
 	<true/>
 	<key>com.apple.private.security.no-container</key>
+	<true/>
+	<key>com.apple.private.security.no-sandbox</key>
 	<true/>
 	<key>com.apple.private.security.storage.AppBundles</key>
 	<true/>
@@ -45,7 +96,11 @@
 	<true/>
 	<key>com.apple.private.security.storage.DocumentRevisions</key>
 	<true/>
+	<key>com.apple.private.security.storage.Mail</key>
+	<true/>
 	<key>com.apple.private.security.storage.MobileDocuments</key>
+	<true/>
+	<key>com.apple.private.security.storage.Photos</key>
 	<true/>
 	<key>com.apple.private.security.storage.ciconia</key>
 	<true/>
@@ -67,6 +122,10 @@
 		<string>kTCCServiceSystemPolicyDocumentsFolder</string>
 		<string>kTCCServiceSystemPolicyDownloadsFolder</string>
 	</array>
+	<key>com.apple.private.vfs.allow-low-space-writes</key>
+	<true/>
+	<key>com.apple.private.vfs.open-by-id</key>
+	<true/>
 	<key>com.apple.security.exception.files.absolute-path.read-write</key>
 	<array>
 		<string>/</string>
@@ -76,6 +135,22 @@
 		<string>/Library/CloudStorage/</string>
 		<string>/Library/Mobile Documents/</string>
 	</array>
+	<key>com.apple.security.exception.mach-lookup.global-name</key>
+	<array>
+		<string>com.apple.lsd.modifydb</string>
+	</array>
+	<key>com.apple.security.iokit-user-client-class</key>
+	<array>
+		<string>IOUserClient</string>
+		<string>AGXDeviceUserClient</string>
+		<string>IOHDIXControllerUserClient</string>
+		<string>IOMobileFramebufferUserClient</string>
+		<string>IOSurfaceRootUserClient</string>
+	</array>
+	<key>com.apple.springboard.CFUserNotification</key>
+	<true/>
+	<key>com.apple.springboard.appbackgroundstyle</key>
+	<true/>
 	<key>com.apple.springboard.iconState</key>
 	<true/>
 	<key>com.apple.springboard.iconState.mutate</key>
@@ -88,7 +163,17 @@
 	<true/>
 	<key>com.apple.springboard.openurlswhenlocked</key>
 	<true/>
+	<key>com.apple.usernotification.notificationregistrarproxy</key>
+	<true/>
+	<key>com.apple.usernotification.notificationschedulerproxy</key>
+	<true/>
+	<key>com.apple.usernotification.proxy</key>
+	<true/>
+	<key>com.apple.usernotifications.legacy-extension</key>
+	<true/>
 	<key>file-read-data</key>
+	<true/>
+	<key>inter-app-audio</key>
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
@@ -96,6 +181,12 @@
 		<string>GXZ23M5TP2.wiki.qaq.TrollFools</string>
 	</array>
 	<key>platform-application</key>
+	<true/>
+	<key>uicache.app-data-container-required</key>
+	<true/>
+	<key>user-preference-read</key>
+	<true/>
+	<key>user-preference-write</key>
 	<true/>
 </dict>
 </plist>
