@@ -49,11 +49,11 @@ extension InjectorV3 {
                         guard Self.allowedPathExtensions.contains(itemExt) else {
                             continue
                         }
+                        extractedItems.append(item)
                         if itemExt == "bundle" || itemExt == "framework" {
                             enumerator.skipDescendants()
                             continue
                         }
-                        extractedItems.append(item)
                     }
                 }
 
