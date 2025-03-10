@@ -77,7 +77,10 @@ struct AppListView: View {
                 .environmentObject(AppListModel(selectorURL: urlWrapper.url))
         }
         .onOpenURL { url in
-            guard url.isFileURL, url.pathExtension.lowercased() == "dylib" else {
+            guard url.isFileURL, (
+                url.pathExtension.lowercased() == "dylib" ||
+                url.pathExtension.lowercased() == "deb"
+            ) else {
                 return
             }
             selectorOpenedURL = URLIdentifiable(url: preprocessURL(url))

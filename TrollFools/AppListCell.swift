@@ -138,8 +138,10 @@ struct AppListCell: View {
                             .font(.subheadline)
                             .foregroundColor(.orange)
                             .accessibilityLabel(NSLocalizedString("Patched", comment: ""))
+                            .transition(.opacity)
                     }
                 }
+                .animation(.easeOut, value: app.isInjected)
 
                 if #available(iOS 15, *) {
                     Text(highlightedId)

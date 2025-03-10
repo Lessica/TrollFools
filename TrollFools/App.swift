@@ -5,6 +5,7 @@
 //  Created by 82Flex on 2024/10/30.
 //
 
+import Combine
 import Foundation
 
 final class App: Identifiable, ObservableObject {
@@ -31,6 +32,8 @@ final class App: Identifiable, ObservableObject {
     lazy var isRemovable: Bool = url.path.contains("/var/containers/Bundle/Application/")
 
     weak var appList: AppListModel?
+    private var cancellables: Set<AnyCancellable> = []
+    private static let reloadSubject = PassthroughSubject<String, Never>()
 
     init(
         id: String,
@@ -58,9 +61,19 @@ final class App: Identifiable, ObservableObject {
             .applyingTransform(.stripDiacritics, reverse: false)?
             .components(separatedBy: .whitespaces)
             .joined() ?? ""
+        Self.reloadSubject
+            .filter { $0 == id }
+            .sink { [weak self] _ in
+                self?._reload()
+            }
+            .store(in: &cancellables)
     }
 
     func reload() {
+        Self.reloadSubject.send(id)
+    }
+
+    private func _reload() {
         reloadDetachedStatus()
         reloadInjectedStatus()
     }

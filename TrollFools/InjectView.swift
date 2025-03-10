@@ -54,11 +54,17 @@ struct InjectView: View {
                         title: NSLocalizedString("Completed", comment: ""),
                         logFileURL: url
                     )
+                    .onAppear {
+                        app.reload()
+                    }
                 case let .failure(error):
                     FailureView(
                         title: NSLocalizedString("Failed", comment: ""),
                         error: error
                     )
+                    .onAppear {
+                        app.reload()
+                    }
                 }
             } else {
                 if #available(iOS 16, *) {
