@@ -25,6 +25,9 @@ struct AppListView: View {
     @AppStorage("isAdvertisementHidden")
     var isAdvertisementHidden: Bool = false
 
+    @AppStorage("isWarningHidden")
+    var isWarningHidden: Bool = false
+
     var shouldShowAdvertisement: Bool {
         !isAdvertisementHidden &&
             !appList.isPaidProductInstalled &&
@@ -63,10 +66,16 @@ struct AppListView: View {
                     isPresented: $isWarningPresented,
                     presenting: temporaryOpenedURL
                 ) { result in
-                    Button(role: .destructive) {
+                    Button {
                         selectorOpenedURL = result
                     } label: {
                         Text(NSLocalizedString("Continue", comment: ""))
+                    }
+                    Button(role: .destructive) {
+                        selectorOpenedURL = result
+                        isWarningHidden = true
+                    } label: {
+                        Text(NSLocalizedString("Continue and Don’t Show Again", comment: ""))
                     }
                     Button(role: .cancel) {
                         temporaryOpenedURL = nil
@@ -115,7 +124,7 @@ struct AppListView: View {
                 return
             }
             let urlIdent = URLIdentifiable(url: preprocessURL(url))
-            if ext == "deb" {
+            if !isWarningHidden && ext == "deb" {
                 temporaryOpenedURL = urlIdent
                 isWarningPresented = true
             } else {

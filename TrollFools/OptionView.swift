@@ -20,6 +20,9 @@ struct OptionView: View {
 
     @State var importerResult: Result<[URL], any Error>?
 
+    @AppStorage("isWarningHidden")
+    var isWarningHidden: Bool = false
+
     init(_ app: App) {
         self.app = app
     }
@@ -32,11 +35,18 @@ struct OptionView: View {
                     isPresented: $isWarningPresented,
                     presenting: temporaryResult
                 ) { result in
-                    Button(role: .destructive) {
+                    Button {
                         importerResult = result
                         isImporterSelected = true
                     } label: {
                         Text(NSLocalizedString("Continue", comment: ""))
+                    }
+                    Button(role: .destructive) {
+                        importerResult = result
+                        isImporterSelected = true
+                        isWarningHidden = true
+                    } label: {
+                        Text(NSLocalizedString("Continue and Don’t Show Again", comment: ""))
                     }
                     Button(role: .cancel) {
                         temporaryResult = nil
@@ -118,7 +128,7 @@ struct OptionView: View {
             result in
             switch result {
             case .success(let theSuccess):
-                if theSuccess.contains(where: { $0.pathExtension.lowercased() == "deb" }) {
+                if !isWarningHidden && theSuccess.contains(where: { $0.pathExtension.lowercased() == "deb" }) {
                     temporaryResult = result
                     isWarningPresented = true
                 } else {

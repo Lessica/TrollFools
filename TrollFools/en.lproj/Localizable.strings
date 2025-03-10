@@ -37,6 +37,9 @@
 /* No comment provided by engineer. */
 "Continue" = "Continue";
 
+/* No comment provided by engineer. */
+"Continue and Don’t Show Again" = "Continue and Don’t Show Again";
+
 /* StripedTextTableViewController */
 "Copy" = "Copy";
 

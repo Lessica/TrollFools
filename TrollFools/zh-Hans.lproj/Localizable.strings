@@ -37,6 +37,9 @@
 /* No comment provided by engineer. */
 "Continue" = "继续";
 
+/* No comment provided by engineer. */
+"Continue and Don’t Show Again" = "继续且不再提示";
+
 /* StripedTextTableViewController */
 "Copy" = "拷贝";
 
