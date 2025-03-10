@@ -125,6 +125,9 @@
 "No Applications" = "没有找到符合条件的应用程序";
 
 /* No comment provided by engineer. */
+"No dylib found in the Debian package." = "在 Debian 软件包中找不到可以注入的插件。";
+
+/* No comment provided by engineer. */
 "No eligible framework found." = "没有找到符合条件的框架。";
 
 /* No comment provided by engineer. */
@@ -204,6 +207,9 @@
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "巨魔商店应用";
+
+/* No comment provided by engineer. */
+"Unable to locate the data archive in the Debian package." = "无法在 Debian 软件包中找到数据归档。";
 
 /* No comment provided by engineer. */
 "Unlock Version" = "解锁版本";

@@ -1,6 +1,24 @@
 {
-  "originHash" : "d07175930f3f23d1d15a35a485aa10107c510fc266c5559186ebdfdac1747e68",
+  "originHash" : "e332d5628073e9668a5966a1002a42edf6469c8e9393f2dc4fba34b3e9d2c438",
   "pins" : [
+    {
+      "identity" : "ararchivekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/LebJe/ArArchiveKit.git",
+      "state" : {
+        "revision" : "ec33ce8bcb0be483e80ed49c95413e64e71e157b",
+        "version" : "0.3.0"
+      }
+    },
+    {
+      "identity" : "bitbytedata",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tsolomko/BitByteData",
+      "state" : {
+        "revision" : "cdcdc5177ad536cfb11b95c620f926a81014b7fe",
+        "version" : "2.0.4"
+      }
+    },
     {
       "identity" : "cocoalumberjack",
       "kind" : "remoteSourceControl",
@@ -17,6 +35,15 @@
       "state" : {
         "branch" : "patch/trollfools",
         "revision" : "43c4b5d59ab75c91ad689fb4a39a8a3913229535"
+      }
+    },
+    {
+      "identity" : "swcompression",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tsolomko/SWCompression.git",
+      "state" : {
+        "revision" : "390e0b0af8dd19a600005a242a89e570ff482e09",
+        "version" : "4.8.6"
       }
     },
     {

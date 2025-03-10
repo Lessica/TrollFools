@@ -5,8 +5,10 @@
 //  Created by 82Flex on 2025/1/10.
 //
 
+import ArArchiveKit
 import CocoaLumberjackSwift
 import Foundation
+import SWCompression
 import ZIPFoundation
 
 extension InjectorV3 {
@@ -24,13 +26,17 @@ extension InjectorV3 {
 
         for assetURL in assetURLs {
             let lowerExt = assetURL.pathExtension.lowercased()
-            if lowerExt == "zip" {
+            if lowerExt == "zip" || lowerExt == "deb" {
                 let extractedURL = temporaryDirectoryURL
                     .appendingPathComponent("\(UUID().uuidString)_\(assetURL.lastPathComponent)")
                     .appendingPathExtension("extracted")
 
                 try FileManager.default.createDirectory(at: extractedURL, withIntermediateDirectories: true)
-                try FileManager.default.unzipItem(at: assetURL, to: extractedURL)
+                if lowerExt == "zip" {
+                    try FileManager.default.unzipItem(at: assetURL, to: extractedURL)
+                } else {
+                    try extractDebianPackage(at: assetURL, to: extractedURL)
+                }
 
                 let extractedItems = try FileManager.default
                     .contentsOfDirectory(at: extractedURL, includingPropertiesForKeys: nil)
@@ -66,5 +72,78 @@ extension InjectorV3 {
         }
 
         return preparedAssetURLs
+    }
+}
+
+fileprivate extension InjectorV3 {
+    func extractDebianPackage(at debURL: URL, to targetURL: URL) throws {
+        let fileHandle = try FileHandle(forReadingFrom: debURL)
+        defer {
+            try? fileHandle.close()
+        }
+
+        let archiveData = fileHandle.readDataToEndOfFile()
+        let archiveReader = try ArArchiveReader(archive: [UInt8](archiveData))
+
+        var contentData: Data?
+        for (header, data) in archiveReader {
+            if header.name == "data.tar.gz" {
+                DDLogInfo("Extracting \(header.name)", ddlog: logger)
+                contentData = try GzipArchive.unarchive(archive: Data(data))
+                break
+            } else if header.name == "data.tar.bz2" {
+                DDLogInfo("Extracting \(header.name)", ddlog: logger)
+                contentData = try BZip2.decompress(data: Data(data))
+                break
+            } else if header.name == "data.tar.lzma" {
+                DDLogInfo("Extracting \(header.name)", ddlog: logger)
+                contentData = try LZMA.decompress(data: Data(data))
+                break
+            } else if header.name == "data.tar.xz" {
+                DDLogInfo("Extracting \(header.name)", ddlog: logger)
+                contentData = try XZArchive.unarchive(archive: Data(data))
+                break
+            } else if header.name == "data.tar.lz4" {
+                DDLogInfo("Extracting \(header.name)", ddlog: logger)
+                contentData = try LZ4.decompress(data: Data(data))
+                break
+            } else {
+                continue
+            }
+        }
+
+        guard let contentData else {
+            throw Error.generic(NSLocalizedString("Unable to locate the data archive in the Debian package.", comment: ""))
+        }
+
+        let tarURL = targetURL.appendingPathComponent("data.tar")
+        try contentData.write(to: tarURL)
+
+        let tarHandle = try FileHandle(forReadingFrom: tarURL)
+        defer {
+            try? tarHandle.close()
+        }
+
+        var hasAnyDylib = false
+        var tarReader = TarReader(fileHandle: tarHandle)
+        while let entry = try tarReader.read() {
+            guard entry.info.type == .regular,
+                  entry.info.name.hasSuffix(".dylib"),
+                  let entryData = entry.data
+            else {
+                continue
+            }
+
+            let dylibName = URL(fileURLWithPath: entry.info.name, relativeTo: targetURL).lastPathComponent
+            DDLogWarn("Found dylib \(entry.info.name) name \(dylibName)", ddlog: logger)
+
+            let entryURL = targetURL.appendingPathComponent(dylibName)
+            try entryData.write(to: entryURL)
+            hasAnyDylib = true
+        }
+
+        if !hasAnyDylib {
+            throw Error.generic(NSLocalizedString("No dylib found in the Debian package.", comment: ""))
+        }
     }
 }

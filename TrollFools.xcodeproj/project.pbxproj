@@ -62,6 +62,10 @@
 		61EFA37B2D31165700159442 /* InjectorV3+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */; };
 		61EFA37D2D311DA800159442 /* InjectorV3+Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */; };
 		61F595622D6B42340034DD83 /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */; };
+		CC0D662D2D7F11A2000EADED /* ArArchiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D662C2D7F11A2000EADED /* ArArchiveKit */; };
+		CC0D662F2D7F11AC000EADED /* ArArchiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D662E2D7F11AC000EADED /* ArArchiveKit */; };
+		CC0D66322D7F13A9000EADED /* SWCompression in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D66312D7F13A9000EADED /* SWCompression */; };
+		CC0D66342D7F13B1000EADED /* SWCompression in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D66332D7F13B1000EADED /* SWCompression */; };
 		CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC0E80FA2C54F84000B137B4 /* mv-15 */; };
 		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
 		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
@@ -215,12 +219,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				614C0C492D7C2E1D007E9184 /* MachOKit in Frameworks */,
+				CC0D662F2D7F11AC000EADED /* ArArchiveKit in Frameworks */,
 				614C0C442D7C2E0B007E9184 /* CocoaLumberjackSwift in Frameworks */,
 				614C0C462D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
 				614C0C522D7C2E44007E9184 /* ArgumentParser in Frameworks */,
 				614C0C422D7C2E0B007E9184 /* CocoaLumberjack in Frameworks */,
 				614C0C4B2D7C2E1D007E9184 /* MachOKitC in Frameworks */,
 				614C0C4D2D7C2E23007E9184 /* OrderedCollections in Frameworks */,
+				CC0D66342D7F13B1000EADED /* SWCompression in Frameworks */,
 				614C0C472D7C2E12007E9184 /* CoreServices.framework in Frameworks */,
 				614C0C4F2D7C2E28007E9184 /* ZIPFoundation in Frameworks */,
 			);
@@ -231,12 +237,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				61EFA3672D3026D400159442 /* CocoaLumberjack in Frameworks */,
+				CC0D662D2D7F11A2000EADED /* ArArchiveKit in Frameworks */,
 				61946B262D2FD8AB009E0AC4 /* OrderedCollections in Frameworks */,
 				61EFA36B2D3026D400159442 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
 				CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */,
 				CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */,
 				61EFA3692D3026D400159442 /* CocoaLumberjackSwift in Frameworks */,
 				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
+				CC0D66322D7F13A9000EADED /* SWCompression in Frameworks */,
 				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
 				61F595622D6B42340034DD83 /* SwiftUIIntrospect-Static in Frameworks */,
 			);
@@ -439,6 +447,8 @@
 				614C0C4C2D7C2E23007E9184 /* OrderedCollections */,
 				614C0C4E2D7C2E28007E9184 /* ZIPFoundation */,
 				614C0C512D7C2E44007E9184 /* ArgumentParser */,
+				CC0D662E2D7F11AC000EADED /* ArArchiveKit */,
+				CC0D66332D7F13B1000EADED /* SWCompression */,
 			);
 			productName = trollfoolscli;
 			productReference = 614C0C382D7C243E007E9184 /* trollfoolscli */;
@@ -467,6 +477,8 @@
 				61EFA3682D3026D400159442 /* CocoaLumberjackSwift */,
 				61EFA36A2D3026D400159442 /* CocoaLumberjackSwiftLogBackend */,
 				61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */,
+				CC0D662C2D7F11A2000EADED /* ArArchiveKit */,
+				CC0D66312D7F13A9000EADED /* SWCompression */,
 			);
 			productName = TrollFools;
 			productReference = CCF470562C4A4649008D8197 /* TrollFools.app */;
@@ -510,6 +522,8 @@
 				61EFA3652D3026D400159442 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 				61F595602D6B42340034DD83 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 				614C0C502D7C2E44007E9184 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */,
+				CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
 			projectDirPath = "";
@@ -983,6 +997,22 @@
 				version = 1.0.0;
 			};
 		};
+		CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LebJe/ArArchiveKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
+		CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tsolomko/SWCompression.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.8.6;
+			};
+		};
 		CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
@@ -1066,6 +1096,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 61F595602D6B42340034DD83 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
 			productName = "SwiftUIIntrospect-Static";
+		};
+		CC0D662C2D7F11A2000EADED /* ArArchiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */;
+			productName = ArArchiveKit;
+		};
+		CC0D662E2D7F11AC000EADED /* ArArchiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */;
+			productName = ArArchiveKit;
+		};
+		CC0D66312D7F13A9000EADED /* SWCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */;
+			productName = SWCompression;
+		};
+		CC0D66332D7F13B1000EADED /* SWCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */;
+			productName = SWCompression;
 		};
 		CC1548C82C4A6B2100A4173E /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;

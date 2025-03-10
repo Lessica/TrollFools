@@ -125,6 +125,9 @@
 "No Applications" = "No Applications";
 
 /* No comment provided by engineer. */
+"No dylib found in the Debian package." = "No dylib found in the Debian package.";
+
+/* No comment provided by engineer. */
 "No eligible framework found." = "No eligible framework found.";
 
 /* No comment provided by engineer. */
@@ -204,6 +207,9 @@
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "TrollStore Applications";
+
+/* No comment provided by engineer. */
+"Unable to locate the data archive in the Debian package." = "Unable to locate the data archive in the Debian package.";
 
 /* No comment provided by engineer. */
 "Unlock Version" = "Unlock Version";

@@ -74,6 +74,7 @@ struct OptionView: View {
             isPresented: $isImporterPresented,
             allowedContentTypes: [
                 .init(filenameExtension: "dylib")!,
+                .init(filenameExtension: "deb")!,
                 .bundle,
                 .framework,
                 .package,

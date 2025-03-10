@@ -124,6 +124,9 @@
 /* No comment provided by engineer. */
 "No Applications" = "No Applications";
 
+/* TODO */
+"No dylib found in the Debian package." = "No dylib found in the Debian package.";
+
 /* No comment provided by engineer. */
 "No eligible framework found." = "Không tìm thấy framework đủ điều kiện.";
 
@@ -204,6 +207,9 @@
 
 /* No comment provided by engineer. */
 "TrollStore Applications" = "Ứng dụng TrollStore";
+
+/* TODO */
+"Unable to locate the data archive in the Debian package." = "Unable to locate the data archive in the Debian package.";
 
 /* No comment provided by engineer. */
 "Unlock Version" = "Mở khóa phiên bản";
