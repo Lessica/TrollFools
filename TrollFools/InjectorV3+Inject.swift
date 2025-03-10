@@ -107,7 +107,7 @@ extension InjectorV3 {
 
     // MARK: - Cydia Substrate
 
-    fileprivate static let substrateZipURL = Bundle.main.url(forResource: substrateFwkName, withExtension: "zip")!
+    fileprivate static let substrateZipURL = findResource(substrateFwkName, fileExtension: "zip")
 
     fileprivate func prepareSubstrate() throws -> URL {
         try FileManager.default.unzipItem(at: Self.substrateZipURL, to: temporaryDirectoryURL)
@@ -203,5 +203,31 @@ extension InjectorV3 {
     fileprivate func locateAvailableMachO() throws -> URL? {
         try frameworkMachOsInBundle(bundleURL)
             .first { try !isProtectedMachO($0) }
+    }
+
+    fileprivate static func findResource(_ name: String, fileExtension: String) -> URL {
+        if let url = Bundle.main.url(forResource: name, withExtension: fileExtension) {
+            return url
+        }
+        if let firstArg = ProcessInfo.processInfo.arguments.first {
+            let execURL = URL(fileURLWithPath: firstArg)
+                .deletingLastPathComponent()
+                .appendingPathComponent(name)
+                .appendingPathExtension(fileExtension)
+            if FileManager.default.isReadableFile(atPath: execURL.path) {
+                return execURL
+            }
+        }
+        if let tfProxy = LSApplicationProxy(forIdentifier: gTrollFoolsIdentifier),
+           let tfBundleURL = tfProxy.bundleURL()
+        {
+            let execURL = tfBundleURL
+                .appendingPathComponent(name)
+                .appendingPathExtension(fileExtension)
+            if FileManager.default.isReadableFile(atPath: execURL.path) {
+                return execURL
+            }
+        }
+        fatalError("Unable to locate resource \(name)")
     }
 }
