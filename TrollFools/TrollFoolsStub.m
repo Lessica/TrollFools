@@ -88,3 +88,20 @@ void TFUtilKillAll(NSString *processName, BOOL softly) {
       }
     });
 }
+
+static NSString *TFGetMarketingVersion(void) {
+    return @MARKETING_VERSION;
+}
+
+static NSString *TFGetCurrentProjectVersion(void) {
+    return @CURRENT_PROJECT_VERSION;
+}
+
+NSString *TFGetDisplayVersion(void) {
+    static NSString *displayVersion = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        displayVersion = [NSString stringWithFormat:@"%@ (%@)", TFGetMarketingVersion(), TFGetCurrentProjectVersion()];
+    });
+    return displayVersion;
+}

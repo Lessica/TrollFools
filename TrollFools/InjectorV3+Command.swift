@@ -11,7 +11,7 @@ import MachOKit
 extension InjectorV3 {
     // MARK: - chown
 
-    fileprivate static let chownBinaryURL = Bundle.main.url(forResource: "chown", withExtension: nil)!
+    fileprivate static let chownBinaryURL = findExecutable("chown")
 
     func cmdChangeOwner(_ target: URL, owner: uid_t, groupOwner: uid_t? = nil, recursively: Bool = false) throws {
         if isPrivileged {
@@ -58,9 +58,9 @@ extension InjectorV3 {
 
     fileprivate static let cpBinaryURL: URL = {
         if #available(iOS 16, *) {
-            Bundle.main.url(forResource: "cp", withExtension: nil)!
+            findExecutable("cp")
         } else {
-            Bundle.main.url(forResource: "cp-15", withExtension: nil)!
+            findExecutable("cp-15")
         }
     }()
 
@@ -92,9 +92,7 @@ extension InjectorV3 {
 
     // MARK: - ldid
 
-    fileprivate static let ldidBinaryURL: URL = {
-        Bundle.main.url(forResource: "ldid", withExtension: nil)!
-    }()
+    fileprivate static let ldidBinaryURL: URL = findExecutable("ldid")
 
     func cmdPseudoSign(_ target: URL, force: Bool = false) throws {
         var hasCodeSign = false
@@ -171,7 +169,7 @@ extension InjectorV3 {
 
     // MARK: - mkdir
 
-    fileprivate static let mkdirBinaryURL = Bundle.main.url(forResource: "mkdir", withExtension: nil)!
+    fileprivate static let mkdirBinaryURL = findExecutable("mkdir")
 
     func cmdMakeDirectory(at target: URL, withIntermediateDirectories: Bool = false) throws {
         if isPrivileged {
@@ -197,9 +195,9 @@ extension InjectorV3 {
 
     fileprivate static let mvBinaryURL: URL = {
         if #available(iOS 16, *) {
-            Bundle.main.url(forResource: "mv", withExtension: nil)!
+            findExecutable("mv")
         } else {
-            Bundle.main.url(forResource: "mv-15", withExtension: nil)!
+            findExecutable("mv-15")
         }
     }()
 
@@ -231,7 +229,7 @@ extension InjectorV3 {
 
     // MARK: - rm
 
-    fileprivate static let rmBinaryURL = Bundle.main.url(forResource: "rm", withExtension: nil)!
+    fileprivate static let rmBinaryURL = findExecutable("rm")
 
     func cmdRemove(_ target: URL, recursively: Bool = false) throws {
         if isPrivileged {
@@ -259,7 +257,7 @@ extension InjectorV3 {
 
     // MARK: - ct_bypass
 
-    fileprivate static let ctBypassBinaryURL = Bundle.main.url(forResource: "ct_bypass", withExtension: nil)!
+    fileprivate static let ctBypassBinaryURL = findExecutable("ct_bypass")
 
     func cmdCoreTrustBypass(_ target: URL, teamID: String) throws {
         try cmdPseudoSign(target)
@@ -273,7 +271,7 @@ extension InjectorV3 {
 
     // MARK: - insert_dylib
 
-    fileprivate static let insertDylibBinaryURL = Bundle.main.url(forResource: "insert_dylib", withExtension: nil)!
+    fileprivate static let insertDylibBinaryURL = findExecutable("insert_dylib")
 
     func cmdInsertLoadCommandDylib(_ target: URL, name: String, weak: Bool = false) throws {
         let dylibs = try loadedDylibsOfMachO(target)
@@ -295,7 +293,7 @@ extension InjectorV3 {
 
     // MARK: - install_name_tool
 
-    fileprivate static let installNameToolBinaryURL = Bundle.main.url(forResource: "install_name_tool", withExtension: nil)!
+    fileprivate static let installNameToolBinaryURL = findExecutable("install_name_tool")
 
     func cmdInsertLoadCommandRuntimePath(_ target: URL, name: String) throws {
         let rpaths = try runtimePathsOfMachO(target)
@@ -323,7 +321,7 @@ extension InjectorV3 {
 
     // MARK: - optool
 
-    fileprivate static let optoolBinaryURL = Bundle.main.url(forResource: "optool", withExtension: nil)!
+    fileprivate static let optoolBinaryURL = findExecutable("optool")
 
     func cmdRemoveLoadCommandDylib(_ target: URL, name: String) throws {
         let dylibs = try loadedDylibsOfMachO(target)
@@ -347,5 +345,29 @@ extension InjectorV3 {
         case let .uncaughtSignal(signal):
             throw Error.generic(String(format: NSLocalizedString("%@ terminated with signal %d", comment: ""), command, signal))
         }
+    }
+
+    // MARK: - Path Finder
+
+    fileprivate static func findExecutable(_ name: String) -> URL {
+        if let url = Bundle.main.url(forResource: name, withExtension: nil) {
+            return url
+        }
+        if let firstArg = ProcessInfo.processInfo.arguments.first {
+            let execURL = URL(fileURLWithPath: firstArg)
+                .deletingLastPathComponent().appendingPathComponent(name)
+            if FileManager.default.isExecutableFile(atPath: execURL.path) {
+                return execURL
+            }
+        }
+        if let tfProxy = LSApplicationProxy(forIdentifier: gTrollFoolsIdentifier),
+           let tfBundleURL = tfProxy.bundleURL()
+        {
+            let execURL = tfBundleURL.appendingPathComponent(name)
+            if FileManager.default.isExecutableFile(atPath: execURL.path) {
+                return execURL
+            }
+        }
+        fatalError("Unable to locate executable \(name)")
     }
 }

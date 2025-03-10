@@ -9,6 +9,11 @@ import CocoaLumberjackSwift
 import Foundation
 
 final class InjectorV3 {
+    enum LoggerType {
+        case os
+        case file
+    }
+
     static let temporaryRoot: URL = FileManager.default
         .urls(for: .cachesDirectory, in: .userDomainMask).first!
         .appendingPathComponent(gTrollFoolsIdentifier, isDirectory: true)
@@ -32,16 +37,18 @@ final class InjectorV3 {
     var injectStrategy: Strategy = .lexicographic
 
     let logger: DDLog
+    let loggerType: LoggerType
 
     private init() { fatalError("Not implemented") }
 
-    init(_ bundleURL: URL) throws {
+    init(_ bundleURL: URL, loggerType: LoggerType = .file) throws {
         self.bundleURL = bundleURL
         temporaryDirectoryURL = Self.temporaryRoot
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try? FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: true)
 
         logger = DDLog()
+        self.loggerType = loggerType
 
         let executableURL = try locateExecutableInBundle(bundleURL)
         let frameworksDirectoryURL = try locateFrameworksDirectoryInBundle(bundleURL)
@@ -66,15 +73,18 @@ final class InjectorV3 {
     // MARK: - Logger
 
     private func setupLoggers() {
-        try? FileManager.default.createDirectory(at: logsDirectoryURL, withIntermediateDirectories: true)
+        if loggerType == .file {
+            try? FileManager.default.createDirectory(at: logsDirectoryURL, withIntermediateDirectories: true)
 
-        let fileLogger = DDFileLogger(logFileManager: DDLogFileManagerDefault(logsDirectory: logsDirectoryURL.path))
+            let fileLogger = DDFileLogger(logFileManager: DDLogFileManagerDefault(logsDirectory: logsDirectoryURL.path))
 
-        fileLogger.rollingFrequency = 60 * 60 * 24
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        fileLogger.doNotReuseLogFiles = true
+            fileLogger.rollingFrequency = 60 * 60 * 24
+            fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+            fileLogger.doNotReuseLogFiles = true
 
-        logger.add(fileLogger)
+            logger.add(fileLogger)
+        }
+
         logger.add(DDOSLogger.sharedInstance)
 
         DDLogWarn("Logger setup \(appID!)", asynchronous: false, ddlog: logger)

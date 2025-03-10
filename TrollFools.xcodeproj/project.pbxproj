@@ -17,7 +17,6 @@
 		6124A07D2CD233A700C52253 /* InjectedPlugIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07C2CD233A700C52253 /* InjectedPlugIn.swift */; };
 		6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A07E2CD233BA00C52253 /* PlugInCell.swift */; };
 		6124A0812CD233DA00C52253 /* EjectListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0802CD233DA00C52253 /* EjectListModel.swift */; };
-		614C0C3B2D7C243E007E9184 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614C0C3A2D7C243E007E9184 /* main.swift */; };
 		614C0C422D7C2E0B007E9184 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C412D7C2E0B007E9184 /* CocoaLumberjack */; };
 		614C0C442D7C2E0B007E9184 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C432D7C2E0B007E9184 /* CocoaLumberjackSwift */; };
 		614C0C462D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 614C0C452D7C2E0B007E9184 /* CocoaLumberjackSwiftLogBackend */; };
@@ -84,6 +83,11 @@
 		CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */; };
 		CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */; };
 		CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */ = {isa = PBXBuildFile; fileRef = CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */; };
+		CC8A36712D7EB56500BE90D3 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A366E2D7EB56500BE90D3 /* Entry.swift */; };
+		CC8A36732D7EB57700BE90D3 /* CmdList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A36722D7EB57500BE90D3 /* CmdList.swift */; };
+		CC8A36752D7EB92800BE90D3 /* CmdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A36742D7EB92000BE90D3 /* CmdView.swift */; };
+		CC8A36792D7EC0B500BE90D3 /* CmdEject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A36782D7EC0B100BE90D3 /* CmdEject.swift */; };
+		CC8A367B2D7EC5B700BE90D3 /* CmdInject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A367A2D7EC5B400BE90D3 /* CmdInject.swift */; };
 		CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A1162C4A540F000D75B0 /* CoreServices.framework */; };
 		CCB6A1192C4A58C7000D75B0 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A1182C4A58C7000D75B0 /* OptionView.swift */; };
 		CCB6A11B2C4A6066000D75B0 /* InjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A11A2C4A6066000D75B0 /* InjectView.swift */; };
@@ -136,7 +140,6 @@
 		6124A07E2CD233BA00C52253 /* PlugInCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlugInCell.swift; sourceTree = "<group>"; };
 		6124A0802CD233DA00C52253 /* EjectListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EjectListModel.swift; sourceTree = "<group>"; };
 		614C0C382D7C243E007E9184 /* trollfoolscli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = trollfoolscli; sourceTree = BUILT_PRODUCTS_DIR; };
-		614C0C3A2D7C243E007E9184 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		614C0C602D7C2EBE007E9184 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		614C0C662D7C407E007E9184 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		614C0C672D7C72AC007E9184 /* AppListSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListSearchModel.swift; sourceTree = "<group>"; };
@@ -178,6 +181,11 @@
 		CC60FBEA2CC5024000A6D21A /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartyCrouch.swift; sourceTree = "<group>"; };
 		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
+		CC8A366E2D7EB56500BE90D3 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		CC8A36722D7EB57500BE90D3 /* CmdList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdList.swift; sourceTree = "<group>"; };
+		CC8A36742D7EB92000BE90D3 /* CmdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdView.swift; sourceTree = "<group>"; };
+		CC8A36782D7EC0B100BE90D3 /* CmdEject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdEject.swift; sourceTree = "<group>"; };
+		CC8A367A2D7EC5B400BE90D3 /* CmdInject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdInject.swift; sourceTree = "<group>"; };
 		CCB6A1162C4A540F000D75B0 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		CCB6A1182C4A58C7000D75B0 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
 		CCB6A11A2C4A6066000D75B0 /* InjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectView.swift; sourceTree = "<group>"; };
@@ -338,14 +346,6 @@
 			name = CExtension;
 			sourceTree = "<group>";
 		};
-		614C0C402D7C2464007E9184 /* CLI */ = {
-			isa = PBXGroup;
-			children = (
-				614C0C3A2D7C243E007E9184 /* main.swift */,
-			);
-			name = CLI;
-			sourceTree = "<group>";
-		};
 		CC15490F2C4B84DD00A4173E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,6 +357,18 @@
 				CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		CC8A366F2D7EB56500BE90D3 /* CLI */ = {
+			isa = PBXGroup;
+			children = (
+				CC8A366E2D7EB56500BE90D3 /* Entry.swift */,
+				CC8A36722D7EB57500BE90D3 /* CmdList.swift */,
+				CC8A36742D7EB92000BE90D3 /* CmdView.swift */,
+				CC8A367A2D7EC5B400BE90D3 /* CmdInject.swift */,
+				CC8A36782D7EC0B100BE90D3 /* CmdEject.swift */,
+			);
+			path = CLI;
 			sourceTree = "<group>";
 		};
 		CCB6A1152C4A540E000D75B0 /* Frameworks */ = {
@@ -397,7 +409,7 @@
 				6124A0842CD234E000C52253 /* CExtension */,
 				6124A0832CD2348E00C52253 /* Tools */,
 				CC15490F2C4B84DD00A4173E /* Resources */,
-				614C0C402D7C2464007E9184 /* CLI */,
+				CC8A366F2D7EB56500BE90D3 /* CLI */,
 			);
 			path = TrollFools;
 			sourceTree = "<group>";
@@ -543,19 +555,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				614C0C3B2D7C243E007E9184 /* main.swift in Sources */,
 				614C0C532D7C2E98007E9184 /* Execute.swift in Sources */,
 				614C0C542D7C2E98007E9184 /* InjectorV3+MachO.swift in Sources */,
 				614C0C552D7C2E98007E9184 /* InjectorV3+Metadata.swift in Sources */,
+				CC8A367B2D7EC5B700BE90D3 /* CmdInject.swift in Sources */,
 				614C0C562D7C2E98007E9184 /* AuxiliaryExecute.swift in Sources */,
+				CC8A36732D7EB57700BE90D3 /* CmdList.swift in Sources */,
 				614C0C612D7C2EC0007E9184 /* Constants.swift in Sources */,
 				614C0C572D7C2E98007E9184 /* InjectorV3+Eject.swift in Sources */,
+				CC8A36792D7EC0B500BE90D3 /* CmdEject.swift in Sources */,
 				614C0C582D7C2E98007E9184 /* InjectorV3+Inject.swift in Sources */,
 				614C0C592D7C2E98007E9184 /* AuxiliaryExecute+Spawn.swift in Sources */,
+				CC8A36712D7EB56500BE90D3 /* Entry.swift in Sources */,
 				614C0C632D7C2EDE007E9184 /* TrollFoolsStub.m in Sources */,
 				614C0C5A2D7C2E98007E9184 /* InjectorV3+Backup.swift in Sources */,
 				614C0C5B2D7C2E98007E9184 /* InjectorV3+Command.swift in Sources */,
 				614C0C5C2D7C2E98007E9184 /* InjectorV3+Bundle.swift in Sources */,
+				CC8A36752D7EB92800BE90D3 /* CmdView.swift in Sources */,
 				614C0C5D2D7C2E98007E9184 /* InjectorV3+Preprocess.swift in Sources */,
 				614C0C5E2D7C2E98007E9184 /* InjectorV3+Error.swift in Sources */,
 				614C0C5F2D7C2E98007E9184 /* InjectorV3.swift in Sources */,
@@ -636,9 +652,17 @@
 /* Begin XCBuildConfiguration section */
 		614C0C3C2D7C243E007E9184 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = $DEBUG_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
+					"CURRENT_PROJECT_VERSION=\\\"$(CURRENT_PROJECT_VERSION)\\\"",
+				);
+				MARKETING_VERSION = $DEBUG_VERSION;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -653,9 +677,16 @@
 		};
 		614C0C3D2D7C243E007E9184 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC3485152C71B219007E0E28 /* Version.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = $BUILD_NUMBER;
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
+					"CURRENT_PROJECT_VERSION=\\\"$(CURRENT_PROJECT_VERSION)\\\"",
+				);
+				MARKETING_VERSION = $VERSION;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -670,6 +701,7 @@
 		};
 		CCF470622C4A464B008D8197 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC3485162C71B219007E0E28 /* Version.Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -735,6 +767,7 @@
 		};
 		CCF470632C4A464B008D8197 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC3485152C71B219007E0E28 /* Version.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -802,6 +835,11 @@
 				CURRENT_PROJECT_VERSION = $DEBUG_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
+					"CURRENT_PROJECT_VERSION=\\\"$(CURRENT_PROJECT_VERSION)\\\"",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TrollFools/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;
@@ -845,6 +883,10 @@
 				CURRENT_PROJECT_VERSION = $BUILD_NUMBER;
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
+					"CURRENT_PROJECT_VERSION=\\\"$(CURRENT_PROJECT_VERSION)\\\"",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TrollFools/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TrollFools;

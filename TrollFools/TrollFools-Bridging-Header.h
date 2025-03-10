@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXTERN NSString *TFGetDisplayVersion(void);
 FOUNDATION_EXTERN void TFUtilKillAll(NSString *processPath, BOOL softly);
 
 @interface UIImage (Private)
