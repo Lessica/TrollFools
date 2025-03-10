@@ -41,17 +41,6 @@ struct AppListCell: View {
             Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
         }
 
-        Button {
-            openInFilza()
-        } label: {
-            if isFilzaInstalled {
-                Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
-            } else {
-                Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
-            }
-        }
-        .disabled(!isFilzaInstalled)
-
         if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
             if app.isDetached {
                 Button {
@@ -75,6 +64,17 @@ struct AppListCell: View {
                 }
             }
         }
+
+        Button {
+            openInFilza()
+        } label: {
+            if isFilzaInstalled {
+                Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+            } else {
+                Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
+            }
+        }
+        .disabled(!isFilzaInstalled)
     }
 
     @ViewBuilder
