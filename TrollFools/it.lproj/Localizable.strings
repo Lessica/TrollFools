@@ -34,6 +34,9 @@
 /* StripedTextTableViewController */
 "Confirm" = "Conferma";
 
+/* TODO */
+"Continue" = "Continue";
+
 /* StripedTextTableViewController */
 "Copy" = "Copia";
 
@@ -139,6 +142,9 @@
 /* No comment provided by engineer. */
 "No valid plug-ins found." = "Nessun plug-in valido trovato.";
 
+/* TODO */
+"Notice" = "Notice";
+
 /* No comment provided by engineer. */
 "Only removable system applications are eligible and listed." = "Solo le applicazioni di sistema removibili sono eleggibili e nella lista.";
 
@@ -228,3 +234,6 @@
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "Devi ricostruire la cache delle icone in TrollStore per applicare le modifiche.";
+
+/* TODO */
+"You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.";

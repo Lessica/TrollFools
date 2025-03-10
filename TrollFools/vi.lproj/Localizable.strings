@@ -34,6 +34,9 @@
 /* No comment provided by engineer. */
 "Confirm" = "Xác nhận";
 
+/* TODO */
+"Continue" = "Continue";
+
 /* No comment provided by engineer. */
 "Copy" = "Sao chép";
 
@@ -139,6 +142,9 @@
 /* No comment provided by engineer. */
 "No valid plug-ins found." = "Không tìm thấy plug-in hợp lệ.";
 
+/* TODO */
+"Notice" = "Notice";
+
 /* No comment provided by engineer. */
 "Only removable system applications are eligible and listed." = "Chỉ các ứng dụng hệ thống có thể gỡ bỏ và đủ điều kiện tiêm mới được liệt kê.";
 
@@ -228,3 +234,6 @@
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "Bạn cần làm mới bộ nhớ đệm biểu tượng trong TrollStore để áp dụng các thay đổi.";
+
+/* TODO */
+"You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.";

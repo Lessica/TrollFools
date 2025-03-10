@@ -53,7 +53,7 @@ public class AuxiliaryExecute {
         // no need to setup binary table
         // we will make call to it when you call the shell api
         // if you only use the spawn api
-        // we don't need to setup the hole table cause it‘s time-heavy-task
+        // we do not need to setup the hole table cause it is a time-heavy-task
     }
 
     /// Execution Error, do the localization your self

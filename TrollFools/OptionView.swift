@@ -13,6 +13,9 @@ struct OptionView: View {
     @State var isImporterPresented = false
     @State var isImporterSelected = false
 
+    @State var isWarningPresented = false
+    @State var temporaryResult: Result<[URL], any Error>?
+
     @State var isSettingsPresented = false
 
     @State var importerResult: Result<[URL], any Error>?
@@ -22,6 +25,36 @@ struct OptionView: View {
     }
 
     var body: some View {
+        if #available(iOS 15, *) {
+            content
+                .alert(
+                    NSLocalizedString("Notice", comment: ""),
+                    isPresented: $isWarningPresented,
+                    presenting: temporaryResult
+                ) { result in
+                    Button(role: .destructive) {
+                        importerResult = result
+                        isImporterSelected = true
+                    } label: {
+                        Text(NSLocalizedString("Continue", comment: ""))
+                    }
+                    Button(role: .cancel) {
+                        temporaryResult = nil
+                        isWarningPresented = false
+                    } label: {
+                        Text(NSLocalizedString("Cancel", comment: ""))
+                    }
+                } message: {
+                    if case .success(let urls) = $0 {
+                        Text(warningMessage(urls))
+                    }
+                }
+        } else {
+            content
+        }
+    }
+
+    var content: some View {
         VStack(spacing: 80) {
             HStack {
                 Spacer()
@@ -83,8 +116,19 @@ struct OptionView: View {
             allowsMultipleSelection: true
         ) {
             result in
-            importerResult = result
-            isImporterSelected = true
+            switch result {
+            case .success(let theSuccess):
+                if theSuccess.contains(where: { $0.pathExtension.lowercased() == "deb" }) {
+                    temporaryResult = result
+                    isWarningPresented = true
+                } else {
+                    importerResult = result
+                    isImporterSelected = true
+                }
+            case .failure:
+                importerResult = result
+                isImporterSelected = true
+            }
         }
         .sheet(isPresented: $isSettingsPresented) {
             if #available(iOS 16, *) {
@@ -94,5 +138,12 @@ struct OptionView: View {
                 SettingsView(app)
             }
         }
+    }
+
+    private func warningMessage(_ urls: [URL]) -> String {
+        guard let firstDylibName = urls.first(where: { $0.pathExtension.lowercased() == "deb" })?.lastPathComponent else {
+            fatalError("No debian package found.")
+        }
+        return String(format: NSLocalizedString("You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.", comment: ""), firstDylibName)
     }
 }
