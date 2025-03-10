@@ -46,7 +46,7 @@ struct OptionView: View {
                     }
                 } message: {
                     if case .success(let urls) = $0 {
-                        Text(warningMessage(urls))
+                        Text(Self.warningMessage(urls))
                     }
                 }
         } else {
@@ -140,7 +140,7 @@ struct OptionView: View {
         }
     }
 
-    private func warningMessage(_ urls: [URL]) -> String {
+    static func warningMessage(_ urls: [URL]) -> String {
         guard let firstDylibName = urls.first(where: { $0.pathExtension.lowercased() == "deb" })?.lastPathComponent else {
             fatalError("No debian package found.")
         }

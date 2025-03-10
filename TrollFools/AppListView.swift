@@ -19,6 +19,9 @@ struct AppListView: View {
     @State var selectorOpenedURL: URLIdentifiable? = nil
     @State var selectedIndex: String? = nil
 
+    @State var isWarningPresented = false
+    @State var temporaryOpenedURL: URLIdentifiable? = nil
+
     @AppStorage("isAdvertisementHidden")
     var isAdvertisementHidden: Bool = false
 
@@ -27,7 +30,8 @@ struct AppListView: View {
             !appList.isPaidProductInstalled &&
             !appList.filter.isSearching &&
             !appList.filter.showPatchedOnly &&
-            !appList.isRebuildNeeded
+            !appList.isRebuildNeeded &&
+            !appList.isSelectorMode
     }
 
     var appString: String {
@@ -52,6 +56,33 @@ struct AppListView: View {
     }
 
     var body: some View {
+        if #available(iOS 15, *) {
+            content
+                .alert(
+                    NSLocalizedString("Notice", comment: ""),
+                    isPresented: $isWarningPresented,
+                    presenting: temporaryOpenedURL
+                ) { result in
+                    Button(role: .destructive) {
+                        selectorOpenedURL = result
+                    } label: {
+                        Text(NSLocalizedString("Continue", comment: ""))
+                    }
+                    Button(role: .cancel) {
+                        temporaryOpenedURL = nil
+                        isWarningPresented = false
+                    } label: {
+                        Text(NSLocalizedString("Cancel", comment: ""))
+                    }
+                } message: {
+                    Text(OptionView.warningMessage([$0.url]))
+                }
+        } else {
+            content
+        }
+    }
+
+    var content: some View {
         NavigationView {
             ScrollViewReader { reader in
                 ZStack {
@@ -77,13 +108,19 @@ struct AppListView: View {
                 .environmentObject(AppListModel(selectorURL: urlWrapper.url))
         }
         .onOpenURL { url in
-            guard url.isFileURL, (
-                url.pathExtension.lowercased() == "dylib" ||
-                url.pathExtension.lowercased() == "deb"
-            ) else {
+            let ext = url.pathExtension.lowercased()
+            guard url.isFileURL,
+                  ext == "dylib" || ext == "deb"
+            else {
                 return
             }
-            selectorOpenedURL = URLIdentifiable(url: preprocessURL(url))
+            let urlIdent = URLIdentifiable(url: preprocessURL(url))
+            if ext == "deb" {
+                temporaryOpenedURL = urlIdent
+                isWarningPresented = true
+            } else {
+                selectorOpenedURL = urlIdent
+            }
         }
         .onAppear {
             if Double.random(in: 0 ..< 1) < 0.1 {
