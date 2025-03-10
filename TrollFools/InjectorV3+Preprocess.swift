@@ -38,9 +38,24 @@ extension InjectorV3 {
                     try extractDebianPackage(at: assetURL, to: extractedURL)
                 }
 
-                let extractedItems = try FileManager.default
-                    .contentsOfDirectory(at: extractedURL, includingPropertiesForKeys: nil)
-                    .filter { Self.allowedPathExtensions.contains($0.pathExtension.lowercased()) }
+                var extractedItems = [URL]()
+                if let enumerator = FileManager.default.enumerator(
+                    at: extractedURL,
+                    includingPropertiesForKeys: nil,
+                    options: [.skipsHiddenFiles, .skipsPackageDescendants]
+                ) {
+                    while let item = enumerator.nextObject() as? URL {
+                        let itemExt = item.pathExtension.lowercased()
+                        guard Self.allowedPathExtensions.contains(itemExt) else {
+                            continue
+                        }
+                        if itemExt == "bundle" || itemExt == "framework" {
+                            enumerator.skipDescendants()
+                            continue
+                        }
+                        extractedItems.append(item)
+                    }
+                }
 
                 for extractedItem in extractedItems {
                     if checkIsBundle(extractedItem) {
@@ -135,6 +150,10 @@ fileprivate extension InjectorV3 {
             }
 
             let dylibName = URL(fileURLWithPath: entry.info.name, relativeTo: targetURL).lastPathComponent
+            guard !dylibName.hasPrefix(".") else {
+                continue
+            }
+
             DDLogWarn("Found dylib \(entry.info.name) name \(dylibName)", ddlog: logger)
 
             let entryURL = targetURL.appendingPathComponent(dylibName)
