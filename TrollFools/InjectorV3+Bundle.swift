@@ -15,18 +15,11 @@ extension InjectorV3 {
     static let ignoredDylibAndFrameworkNames: Set<String> = [
         "cydiasubstrate",
         "cydiasubstrate.framework",
-        "CydiaSubstrate",
-        "CydiaSubstrate.framework",
         "ellekit",
         "ellekit.framework",
-        "ElleKit",
-        "ElleKit.framework",
         "libsubstrate.dylib",
-        "libSubstrate.dylib",
         "libsubstitute.dylib",
-        "libSubstitute.dylib",
         "libellekit.dylib",
-        "libElleKit.dylib",
     ]
 
     static let substrateName = "CydiaSubstrate"
@@ -119,7 +112,7 @@ extension InjectorV3 {
         let bundleURLs = bundleContentURLs
             .filter {
                 $0.pathExtension.lowercased() == "bundle" &&
-                    !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
+                !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent.lowercased())
             }
             .filter {
                 (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
@@ -144,14 +137,14 @@ extension InjectorV3 {
             .filter {
                 $0.pathExtension.lowercased() == "dylib" &&
                     !$0.lastPathComponent.hasPrefix("libswift") &&
-                    !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
+                !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent.lowercased())
             }
             .sorted(by: { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending })
 
         let frameworkURLs = frameworksContentURLs
             .filter {
                 $0.pathExtension.lowercased() == "framework" &&
-                    !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent)
+                !Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent.lowercased())
             }
             .filter {
                 (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
