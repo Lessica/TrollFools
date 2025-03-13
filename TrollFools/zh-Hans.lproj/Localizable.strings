@@ -17,6 +17,12 @@
 "Advertisement" = "广告";
 
 /* No comment provided by engineer. */
+"All" = "所有应用";
+
+/* No comment provided by engineer. */
+"All Applications" = "所有应用";
+
+/* No comment provided by engineer. */
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用。";
 
 /* No comment provided by engineer. */
@@ -212,10 +218,10 @@
 "TrollRecorder" = "巨魔录音机";
 
 /* No comment provided by engineer. */
-"TrollStore" = "巨魔商店应用";
+"TrollStore" = "巨魔应用";
 
 /* No comment provided by engineer. */
-"TrollStore Applications" = "巨魔商店应用";
+"TrollStore Applications" = "巨魔应用";
 
 /* No comment provided by engineer. */
 "Unable to locate the data archive in the Debian package." = "无法在 Debian 软件包中找到数据归档。";

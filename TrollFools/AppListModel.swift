@@ -11,12 +11,15 @@ import SwiftUI
 
 final class AppListModel: ObservableObject {
     enum Scope: Int, CaseIterable {
+        case all
         case user
         case troll
         case system
 
         var localizedShortName: String {
             switch self {
+            case .all:
+                NSLocalizedString("All", comment: "")
             case .user:
                 NSLocalizedString("User", comment: "")
             case .troll:
@@ -28,6 +31,8 @@ final class AppListModel: ObservableObject {
 
         var localizedName: String {
             switch self {
+            case .all:
+                NSLocalizedString("All Applications", comment: "")
             case .user:
                 NSLocalizedString("User Applications", comment: "")
             case .troll:
@@ -126,6 +131,8 @@ final class AppListModel: ObservableObject {
         }
 
         switch activeScope {
+        case .all:
+            activeScopeApps = Self.groupedAppList(filteredApplications)
         case .user:
             activeScopeApps = Self.groupedAppList(filteredApplications.filter { $0.isUser })
         case .troll:

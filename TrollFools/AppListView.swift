@@ -205,6 +205,8 @@ struct AppListView: View {
             }
 
             switch appList.activeScope {
+            case .all:
+                allAppGroup.transition(.opacity)
             case .user:
                 userAppGroup.transition(.opacity)
             case .troll:
@@ -254,7 +256,7 @@ struct AppListView: View {
         }
     }
 
-    var userAppGroup: some View {
+    var allAppGroup: some View {
         Group {
             if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
                 Section {
@@ -266,6 +268,19 @@ struct AppListView: View {
             if #available(iOS 15, *) {
                 if shouldShowAdvertisement {
                     advertisementSection
+                }
+            }
+
+            appSections
+        }
+    }
+
+    var userAppGroup: some View {
+        Group {
+            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
+                Section {
+                } footer: {
+                    paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
                 }
             }
 
