@@ -176,7 +176,7 @@ struct AppListView: View {
                 appList.filter.searchKeyword = $0
             }
             .onReceive(searchViewModel.$searchScopeIndex) {
-                appList.activeScope = Scope(rawValue: $0) ?? .user
+                appList.activeScope = Scope(rawValue: $0) ?? .all
             }
             .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17)) { viewController in
                 if searchViewModel.searchController == nil {

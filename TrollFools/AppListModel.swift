@@ -50,7 +50,7 @@ final class AppListModel: ObservableObject {
     var isSelectorMode: Bool { selectorURL != nil }
 
     @Published var filter = FilterOptions()
-    @Published var activeScope: Scope = .user
+    @Published var activeScope: Scope = .all
     @Published var activeScopeApps: OrderedDictionary<String, [App]> = [:]
 
     @Published var isPaidProductInstalled: Bool = false
