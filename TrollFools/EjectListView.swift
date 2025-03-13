@@ -35,45 +35,7 @@ struct EjectListView: View {
 
     var body: some View {
         refreshableListView
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    if #available(iOS 16.4, *) {
-                        ShareLink(
-                            item: CompressedFileRepresentation(
-                                name: "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip",
-                                urls: ejectList.injectedPlugIns.map(\.url)
-                            ),
-                            preview: SharePreview(
-                                String(format: NSLocalizedString("%ld Plug-Ins of “%@”", comment: ""), ejectList.injectedPlugIns.count, ejectList.app.name)
-                            )
-                        ) {
-                            if isExportingAll {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle())
-                                    .transition(.opacity)
-                            } else {
-                                Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
-                                    .transition(.opacity)
-                            }
-                        }
-                        .disabled(ejectList.injectedPlugIns.isEmpty)
-                    } else {
-                        Button {
-                            exportAll()
-                        } label: {
-                            if isExportingAll {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle())
-                                    .transition(.opacity)
-                            } else {
-                                Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
-                                    .transition(.opacity)
-                            }
-                        }
-                        .disabled(ejectList.injectedPlugIns.isEmpty)
-                    }
-                }
-            }
+            .toolbar { toolbarContent }
             .animation(.easeOut, value: isExportingAll)
             .quickLookPreview($quickLookExport)
     }
@@ -211,6 +173,47 @@ struct EjectListView: View {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
                     .transition(.opacity)
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if #available(iOS 16.4, *) {
+                ShareLink(
+                    item: CompressedFileRepresentation(
+                        name: "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip",
+                        urls: ejectList.injectedPlugIns.map(\.url)
+                    ),
+                    preview: SharePreview(
+                        String(format: NSLocalizedString("%ld Plug-Ins of “%@”", comment: ""), ejectList.injectedPlugIns.count, ejectList.app.name)
+                    )
+                ) {
+                    if isExportingAll {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .transition(.opacity)
+                    } else {
+                        Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
+                            .transition(.opacity)
+                    }
+                }
+                .disabled(ejectList.injectedPlugIns.isEmpty)
+            } else {
+                Button {
+                    exportAll()
+                } label: {
+                    if isExportingAll {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .transition(.opacity)
+                    } else {
+                        Label(NSLocalizedString("Export All", comment: ""), systemImage: "square.and.arrow.up")
+                            .transition(.opacity)
+                    }
+                }
+                .disabled(ejectList.injectedPlugIns.isEmpty)
             }
         }
     }

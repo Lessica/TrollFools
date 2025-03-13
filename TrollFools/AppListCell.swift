@@ -33,81 +33,6 @@ struct AppListCell: View {
         return attributedString
     }
 
-    @ViewBuilder
-    var cellContextMenu: some View {
-        Button {
-            launch()
-        } label: {
-            Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
-        }
-
-        if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
-            if app.isDetached {
-                Button {
-                    do {
-                        try InjectorV3(app.url).setMetadataDetached(false)
-                        app.reload()
-                        appList.isRebuildNeeded = true
-                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
-                } label: {
-                    Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
-                }
-            } else {
-                Button {
-                    do {
-                        try InjectorV3(app.url).setMetadataDetached(true)
-                        app.reload()
-                        appList.isRebuildNeeded = true
-                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
-                } label: {
-                    Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
-                }
-            }
-        }
-
-        Button {
-            openInFilza()
-        } label: {
-            if isFilzaInstalled {
-                Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
-            } else {
-                Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
-            }
-        }
-        .disabled(!isFilzaInstalled)
-    }
-
-    @ViewBuilder
-    var cellContextMenuWrapper: some View {
-        if #available(iOS 16, *) {
-            // iOS 16
-            cellContextMenu
-        } else {
-            if #available(iOS 15, *) { }
-            else {
-                // iOS 14
-                cellContextMenu
-            }
-        }
-    }
-
-    @ViewBuilder
-    var cellBackground: some View {
-        if #available(iOS 15, *) {
-            if #available(iOS 16, *) { }
-            else {
-                // iOS 15
-                Color.clear
-                    .contextMenu {
-                        if !appList.isSelectorMode {
-                            cellContextMenu
-                        }
-                    }
-                    .id(app.isDetached)
-            }
-        }
-    }
-
     var body: some View {
         HStack(spacing: 12) {
             if #available(iOS 15, *) {
@@ -186,6 +111,81 @@ struct AppListCell: View {
             }
         }
         .background(cellBackground)
+    }
+
+    @ViewBuilder
+    var cellContextMenu: some View {
+        Button {
+            launch()
+        } label: {
+            Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
+        }
+
+        if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
+            if app.isDetached {
+                Button {
+                    do {
+                        try InjectorV3(app.url).setMetadataDetached(false)
+                        app.reload()
+                        appList.isRebuildNeeded = true
+                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
+                } label: {
+                    Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
+                }
+            } else {
+                Button {
+                    do {
+                        try InjectorV3(app.url).setMetadataDetached(true)
+                        app.reload()
+                        appList.isRebuildNeeded = true
+                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
+                } label: {
+                    Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
+                }
+            }
+        }
+
+        Button {
+            openInFilza()
+        } label: {
+            if isFilzaInstalled {
+                Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
+            } else {
+                Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
+            }
+        }
+        .disabled(!isFilzaInstalled)
+    }
+
+    @ViewBuilder
+    var cellContextMenuWrapper: some View {
+        if #available(iOS 16, *) {
+            // iOS 16
+            cellContextMenu
+        } else {
+            if #available(iOS 15, *) { }
+            else {
+                // iOS 14
+                cellContextMenu
+            }
+        }
+    }
+
+    @ViewBuilder
+    var cellBackground: some View {
+        if #available(iOS 15, *) {
+            if #available(iOS 16, *) { }
+            else {
+                // iOS 15
+                Color.clear
+                    .contextMenu {
+                        if !appList.isSelectorMode {
+                            cellContextMenu
+                        }
+                    }
+                    .id(app.isDetached)
+            }
+        }
     }
 
     private func launch() {
