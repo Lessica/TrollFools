@@ -81,7 +81,7 @@ extension InjectorV3 {
 
         try markBundlesAsInjected(urlsToMarkAsInjected, privileged: false)
 
-        preparedAssetURLs.removeAll(where: { Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent) })
+        preparedAssetURLs.removeAll(where: { Self.ignoredDylibAndFrameworkNames.contains($0.lastPathComponent.lowercased()) })
         guard !preparedAssetURLs.isEmpty else {
             throw Error.generic(NSLocalizedString("No valid plug-ins found.", comment: ""))
         }

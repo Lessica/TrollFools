@@ -133,7 +133,7 @@ extension InjectorV3 {
 
         let dylibs = try loadedDylibsOfMachO(machO)
         for dylib in dylibs {
-            if Self.ignoredDylibAndFrameworkNames.firstIndex(where: { dylib.hasSuffix("/\($0)") }) != nil {
+            if Self.ignoredDylibAndFrameworkNames.firstIndex(where: { dylib.lowercased().hasSuffix("/\($0)") }) != nil {
                 try cmdChangeLoadCommandDylib(machO, from: dylib, to: "@executable_path/Frameworks/\(Self.substrateFwkName)/\(Self.substrateName)")
             }
         }
