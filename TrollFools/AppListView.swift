@@ -13,6 +13,8 @@ import SwiftUIIntrospect
 typealias Scope = AppListModel.Scope
 
 struct AppListView: View {
+    let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+
     @StateObject var searchViewModel = AppListSearchModel()
     @EnvironmentObject var appList: AppListModel
 
@@ -92,6 +94,47 @@ struct AppListView: View {
     }
 
     var content: some View {
+        styledNavigationView
+            .animation(.easeOut, value: appList.activeScopeApps.keys)
+            .sheet(item: $selectorOpenedURL) { urlWrapper in
+                AppListView()
+                    .environmentObject(AppListModel(selectorURL: urlWrapper.url))
+            }
+            .onOpenURL { url in
+                let ext = url.pathExtension.lowercased()
+                guard url.isFileURL,
+                      ext == "dylib" || ext == "deb"
+                else {
+                    return
+                }
+                let urlIdent = URLIdentifiable(url: preprocessURL(url))
+                if !isWarningHidden && ext == "deb" {
+                    temporaryOpenedURL = urlIdent
+                    isWarningPresented = true
+                } else {
+                    selectorOpenedURL = urlIdent
+                }
+            }
+            .onAppear {
+                if Double.random(in: 0 ..< 1) < 0.1 {
+                    isAdvertisementHidden = false
+                }
+            }
+    }
+
+    var styledNavigationView: some View {
+        Group {
+            if isPad {
+                navigationView
+                    .navigationViewStyle(.automatic)
+            } else {
+                navigationView
+                    .navigationViewStyle(.stack)
+            }
+        }
+    }
+
+    var navigationView: some View {
         NavigationView {
             ScrollViewReader { reader in
                 ZStack {
@@ -108,32 +151,6 @@ struct AppListView: View {
                         reader.scrollTo("AppSection-\(index)", anchor: .top)
                     }
                 }
-            }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .animation(.easeOut, value: appList.activeScopeApps.keys)
-        .sheet(item: $selectorOpenedURL) { urlWrapper in
-            AppListView()
-                .environmentObject(AppListModel(selectorURL: urlWrapper.url))
-        }
-        .onOpenURL { url in
-            let ext = url.pathExtension.lowercased()
-            guard url.isFileURL,
-                  ext == "dylib" || ext == "deb"
-            else {
-                return
-            }
-            let urlIdent = URLIdentifiable(url: preprocessURL(url))
-            if !isWarningHidden && ext == "deb" {
-                temporaryOpenedURL = urlIdent
-                isWarningPresented = true
-            } else {
-                selectorOpenedURL = urlIdent
-            }
-        }
-        .onAppear {
-            if Double.random(in: 0 ..< 1) < 0.1 {
-                isAdvertisementHidden = false
             }
         }
     }
