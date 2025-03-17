@@ -1016,7 +1016,7 @@
 			repositoryURL = "https://github.com/siteline/swiftui-introspect.git";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.0;
+				version = 1.3.0;
 			};
 		};
 		CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */ = {

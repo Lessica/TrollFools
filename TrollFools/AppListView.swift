@@ -195,7 +195,7 @@ struct AppListView: View {
             .onReceive(searchViewModel.$searchScopeIndex) {
                 appList.activeScope = Scope(rawValue: $0) ?? .all
             }
-            .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17)) { viewController in
+            .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17, .v18)) { viewController in
                 if searchViewModel.searchController == nil {
                     viewController.navigationItem.hidesSearchBarWhenScrolling = true
                     viewController.navigationItem.searchController = {
