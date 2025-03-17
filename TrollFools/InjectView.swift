@@ -140,7 +140,9 @@ struct InjectView: View {
                 userInfo[NSURLErrorKey] = logFileURL
             }
 
-            return .failure(NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo))
+            let nsErr = NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo)
+
+            return .failure(nsErr)
         }
     }
 }

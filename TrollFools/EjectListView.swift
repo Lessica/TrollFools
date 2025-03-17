@@ -232,11 +232,23 @@ struct EjectListView: View {
     }
 
     private func deletePlugIns(at offsets: IndexSet) {
+        var logFileURL: URL?
+
         do {
             let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
             let plugInURLsToRemove = plugInsToRemove.map { $0.url }
 
             let injector = try InjectorV3(ejectList.app.url)
+            logFileURL = injector.latestLogFileURL
+
+            if injector.appID.isEmpty {
+                injector.appID = ejectList.app.id
+            }
+
+            if injector.teamID.isEmpty {
+                injector.teamID = ejectList.app.teamID
+            }
+
             injector.useWeakReference = useWeakReference
             injector.preferMainExecutable = preferMainExecutable
             injector.injectStrategy = injectStrategy
@@ -248,33 +260,36 @@ struct EjectListView: View {
         } catch {
             DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
-            lastError = error
-            isErrorOccurred = true
-        }
-    }
+            var userInfo: [String: Any] = [
+                NSLocalizedDescriptionKey: error.localizedDescription,
+            ]
 
-    private func deletePlugIn(_ plugin: InjectedPlugIn) {
-        do {
-            let injector = try InjectorV3(ejectList.app.url)
-            injector.useWeakReference = useWeakReference
-            injector.preferMainExecutable = preferMainExecutable
-            injector.injectStrategy = injectStrategy
+            if let logFileURL {
+                userInfo[NSURLErrorKey] = logFileURL
+            }
 
-            try injector.eject([plugin.url])
+            let nsErr = NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo)
 
-            ejectList.app.reload()
-            ejectList.reload()
-        } catch {
-            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
-
-            lastError = error
+            lastError = nsErr
             isErrorOccurred = true
         }
     }
 
     private func deleteAll() {
+        var logFileURL: URL?
+
         do {
             let injector = try InjectorV3(ejectList.app.url)
+            logFileURL = injector.latestLogFileURL
+
+            if injector.appID.isEmpty {
+                injector.appID = ejectList.app.id
+            }
+
+            if injector.teamID.isEmpty {
+                injector.teamID = ejectList.app.teamID
+            }
+
             injector.useWeakReference = useWeakReference
             injector.preferMainExecutable = preferMainExecutable
             injector.injectStrategy = injectStrategy
@@ -303,7 +318,17 @@ struct EjectListView: View {
                     DispatchQueue.main.async {
                         DDLogError("\(error)", ddlog: InjectorV3.main.logger)
 
-                        lastError = error
+                        var userInfo: [String: Any] = [
+                            NSLocalizedDescriptionKey: error.localizedDescription,
+                        ]
+
+                        if let logFileURL {
+                            userInfo[NSURLErrorKey] = logFileURL
+                        }
+
+                        let nsErr = NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo)
+
+                        lastError = nsErr
                         isErrorOccurred = true
                     }
                 }
