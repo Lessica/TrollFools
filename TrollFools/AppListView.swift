@@ -152,6 +152,11 @@ struct AppListView: View {
                     }
                 }
             }
+
+            // Detail view shown when nothing has been selected
+            if !appList.isSelectorMode {
+                PlaceholderView()
+            }
         }
     }
 
