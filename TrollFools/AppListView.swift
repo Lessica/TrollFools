@@ -103,7 +103,7 @@ struct AppListView: View {
             .onOpenURL { url in
                 let ext = url.pathExtension.lowercased()
                 guard url.isFileURL,
-                      ext == "dylib" || ext == "deb"
+                      (ext == "dylib" || ext == "deb" || ext == "zip")
                 else {
                     return
                 }

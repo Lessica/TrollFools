@@ -20,6 +20,18 @@
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
+			<string>ZIP Archive</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.zip-archive</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
 			<string>Sileo Deb Package</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
@@ -41,8 +53,6 @@
 			</array>
 			<key>UTTypeIdentifier</key>
 			<string>org.debian.deb-archive</string>
-			<key>UTTypeIconFiles</key>
-			<array/>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
