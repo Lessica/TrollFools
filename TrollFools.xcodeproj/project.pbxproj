@@ -470,6 +470,7 @@
 				CCF470522C4A4649008D8197 /* Sources */,
 				CCF470532C4A4649008D8197 /* Frameworks */,
 				CCF470542C4A4649008D8197 /* Resources */,
+				CCE543232DE7C174007A2F64 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -573,6 +574,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CCE543232DE7C174007A2F64 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$CODE_SIGNING_ALLOWED\" = \"NO\" ]; then\n  ldid -S${CODE_SIGN_ENTITLEMENTS} ${CODESIGNING_FOLDER_PATH}\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		614C0C342D7C243E007E9184 /* Sources */ = {
@@ -867,10 +889,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_ENTITLEMENTS = TrollFools/TrollFools.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = $DEBUG_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
@@ -915,10 +940,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_ENTITLEMENTS = TrollFools/TrollFools.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = $BUILD_NUMBER;
 				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
 					"CURRENT_PROJECT_VERSION=\\\"$(CURRENT_PROJECT_VERSION)\\\"",
