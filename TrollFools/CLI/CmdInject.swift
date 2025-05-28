@@ -28,6 +28,7 @@ struct CmdInject: ParsableCommand {
 
     func run() throws {
         guard let app = LSApplicationProxy(forIdentifier: bundleIdentifier),
+              let appID = app.applicationIdentifier(),
               let bundleURL = app.bundleURL()
         else {
             throw ArgumentParser.ValidationError("The specified application does not exist.")
@@ -39,6 +40,16 @@ struct CmdInject: ParsableCommand {
         }
         let pluginURLs = pluginPaths.compactMap { URL(fileURLWithPath: $0) }
         let injector = try InjectorV3(bundleURL, loggerType: .os)
+        if injector.appID.isEmpty {
+            injector.appID = appID
+        }
+        if injector.teamID.isEmpty {
+            if let teamID = app.teamID() {
+                injector.teamID = teamID
+            } else {
+                injector.teamID = "0000000000"
+            }
+        }
         injector.useWeakReference = weakReference
         injector.injectStrategy = fastInjection ? .fast : .lexicographic
         try injector.inject(pluginURLs)

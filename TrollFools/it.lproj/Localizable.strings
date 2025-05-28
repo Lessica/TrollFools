@@ -190,6 +190,9 @@
 /* No comment provided by engineer. */
 "Search…" = "Cerca…";
 
+/* TODO */
+"Select an application to view details." = "Select an application to view details.";
+
 /* No comment provided by engineer. */
 "Select Application to Inject" = "Scegli Applicazione da Iniettare";
 

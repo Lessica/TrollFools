@@ -59,7 +59,7 @@ jobs:
       - name: Build Packages
         run: |
           make package
-          cp packages/*.tipa .
+          cp packages/*.tipa packages/*.deb .
           find .theos/obj -name "*.dSYM" -exec cp -r {} . \;
 
       - name: Upload Packages
@@ -68,6 +68,7 @@ jobs:
           name: packages-${{ env.VERSION }}
           path: |
             *.tipa
+            *.deb
             *.dSYM
 
       - name: Release

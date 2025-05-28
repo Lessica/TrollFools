@@ -13,6 +13,8 @@ import SwiftUIIntrospect
 typealias Scope = AppListModel.Scope
 
 struct AppListView: View {
+    let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+
     @StateObject var searchViewModel = AppListSearchModel()
     @EnvironmentObject var appList: AppListModel
 
@@ -92,6 +94,47 @@ struct AppListView: View {
     }
 
     var content: some View {
+        styledNavigationView
+            .animation(.easeOut, value: appList.activeScopeApps.keys)
+            .sheet(item: $selectorOpenedURL) { urlWrapper in
+                AppListView()
+                    .environmentObject(AppListModel(selectorURL: urlWrapper.url))
+            }
+            .onOpenURL { url in
+                let ext = url.pathExtension.lowercased()
+                guard url.isFileURL,
+                      (ext == "dylib" || ext == "deb" || ext == "zip")
+                else {
+                    return
+                }
+                let urlIdent = URLIdentifiable(url: preprocessURL(url))
+                if !isWarningHidden && ext == "deb" {
+                    temporaryOpenedURL = urlIdent
+                    isWarningPresented = true
+                } else {
+                    selectorOpenedURL = urlIdent
+                }
+            }
+            .onAppear {
+                if Double.random(in: 0 ..< 1) < 0.1 {
+                    isAdvertisementHidden = false
+                }
+            }
+    }
+
+    var styledNavigationView: some View {
+        Group {
+            if isPad {
+                navigationView
+                    .navigationViewStyle(.automatic)
+            } else {
+                navigationView
+                    .navigationViewStyle(.stack)
+            }
+        }
+    }
+
+    var navigationView: some View {
         NavigationView {
             ScrollViewReader { reader in
                 ZStack {
@@ -109,31 +152,10 @@ struct AppListView: View {
                     }
                 }
             }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .animation(.easeOut, value: appList.activeScopeApps.keys)
-        .sheet(item: $selectorOpenedURL) { urlWrapper in
-            AppListView()
-                .environmentObject(AppListModel(selectorURL: urlWrapper.url))
-        }
-        .onOpenURL { url in
-            let ext = url.pathExtension.lowercased()
-            guard url.isFileURL,
-                  ext == "dylib" || ext == "deb"
-            else {
-                return
-            }
-            let urlIdent = URLIdentifiable(url: preprocessURL(url))
-            if !isWarningHidden && ext == "deb" {
-                temporaryOpenedURL = urlIdent
-                isWarningPresented = true
-            } else {
-                selectorOpenedURL = urlIdent
-            }
-        }
-        .onAppear {
-            if Double.random(in: 0 ..< 1) < 0.1 {
-                isAdvertisementHidden = false
+
+            // Detail view shown when nothing has been selected
+            if !appList.isSelectorMode {
+                PlaceholderView()
             }
         }
     }
@@ -178,7 +200,7 @@ struct AppListView: View {
             .onReceive(searchViewModel.$searchScopeIndex) {
                 appList.activeScope = Scope(rawValue: $0) ?? .all
             }
-            .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17)) { viewController in
+            .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17, .v18)) { viewController in
                 if searchViewModel.searchController == nil {
                     viewController.navigationItem.hidesSearchBarWhenScrolling = true
                     viewController.navigationItem.searchController = {
