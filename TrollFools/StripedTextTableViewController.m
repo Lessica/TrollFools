@@ -259,7 +259,17 @@
 }
 
 - (void)shareItemTapped:(UIBarButtonItem *)sender {
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:self.entryPath]] applicationActivities:nil];
+    if (!self.entryPath) {
+        return;
+    }
+    if (![[NSFileManager defaultManager] fileExistsAtPath:self.entryPath]) {
+        return;
+    }
+    NSURL *fileURL = [NSURL fileURLWithPath:self.entryPath];
+    if (!fileURL) {
+        return;
+    }
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[fileURL] applicationActivities:nil];
     if (@available(iOS 16, *)) {
         activityViewController.popoverPresentationController.sourceItem = sender;
     } else {
