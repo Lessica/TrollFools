@@ -138,6 +138,7 @@ struct AppListView: View {
             ScrollViewReader { reader in
                 ZStack {
                     refreshableListView
+
                     if appList.activeScopeApps.keys.count > 1 {
                         IndexableScroller(
                             indexes: appList.activeScopeApps.keys.elements,
@@ -147,7 +148,7 @@ struct AppListView: View {
                 }
                 .onChange(of: selectedIndex) { index in
                     if let index {
-                        reader.scrollTo("AppSection-\(index)", anchor: .top)
+                        reader.scrollTo("AppSection-\(index)", anchor: .center)
                     }
                 }
             }
@@ -350,7 +351,7 @@ struct AppListView: View {
                             }
                         }
                     } header: {
-                        paddedHeaderFooterText(sectionKey)
+                        paddedHeaderFooterText(sectionKey == selectedIndex ? "→ \(sectionKey)" : sectionKey)
                     } footer: {
                         if sectionKey == appList.activeScopeApps.keys.last {
                             footer

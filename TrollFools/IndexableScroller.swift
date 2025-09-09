@@ -31,6 +31,9 @@ struct IndexableScroller: View {
                     .updating($dragLocation) { value, state, _ in
                         state = value.location
                     }
+                    .onEnded { value in
+                        currentIndex = nil
+                    }
             )
 
             Spacer()
