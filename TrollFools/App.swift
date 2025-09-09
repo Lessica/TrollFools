@@ -87,28 +87,3 @@ final class App: Identifiable, ObservableObject {
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
     }
 }
-
-extension App {
-    static let advertisementApp: App = {
-        [
-            App(
-                id: NSLocalizedString("Record your phone calls like never before.", comment: ""),
-                name: NSLocalizedString("TrollRecorder", comment: ""),
-                type: "System",
-                teamID: "GXZ23M5TP2",
-                url: URL(string: "https://havoc.app/package/trollrecorder")!,
-                alternateIcon: .init(named: "tricon-default"),
-                isAdvertisement: true
-            ),
-            App(
-                id: NSLocalizedString("Bringing back the most advanced system and security analysis tool.", comment: ""),
-                name: NSLocalizedString("Reveil", comment: ""),
-                type: "System",
-                teamID: "GXZ23M5TP2",
-                url: URL(string: "https://havoc.app/package/reveil")!,
-                alternateIcon: .init(named: "reveil-default"),
-                isAdvertisement: true
-            ),
-        ].randomElement()!
-    }()
-}

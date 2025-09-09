@@ -53,7 +53,6 @@ final class AppListModel: ObservableObject {
     @Published var activeScope: Scope = .all
     @Published var activeScopeApps: OrderedDictionary<String, [App]> = [:]
 
-    @Published var isPaidProductInstalled: Bool = false
     @Published var unsupportedCount: Int = 0
 
     @Published var isFilzaInstalled: Bool = false
@@ -100,7 +99,7 @@ final class AppListModel: ObservableObject {
     }
 
     func reload() {
-        let allApplications = Self.fetchApplications(&isPaidProductInstalled, &unsupportedCount)
+        let allApplications = Self.fetchApplications(&unsupportedCount)
         allApplications.forEach { $0.appList = self }
         _allApplications = allApplications
         if let filzaURL {
@@ -148,7 +147,7 @@ final class AppListModel: ObservableObject {
         "xyz.willy.Zebra",
     ]
 
-    private static func fetchApplications(_ isPaidProductInstalled: inout Bool, _ unsupportedCount: inout Int) -> [App] {
+    private static func fetchApplications(_ unsupportedCount: inout Int) -> [App] {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
             .compactMap { proxy in
@@ -161,11 +160,7 @@ final class AppListModel: ObservableObject {
                     return nil
                 }
 
-                if id == "wiki.qaq.trapp" || id == "com.82flex.reveil" {
-                    isPaidProductInstalled = true
-                }
-
-                guard !id.hasPrefix("wiki.qaq.") && !id.hasPrefix("com.82flex.") else {
+                guard !id.hasPrefix("wiki.qaq.") && !id.hasPrefix("com.82flex.") && !id.hasPrefix("ch.xxtou.") else {
                     return nil
                 }
 

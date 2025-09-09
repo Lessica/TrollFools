@@ -22,6 +22,9 @@
 /* TODO */
 "All Applications" = "All Applications";
 
+/* TODO */
+"An awesome music visualizer." = "An awesome music visualizer.";
+
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "E %d più non supportate dalle applicazioni.";
 
@@ -91,8 +94,14 @@
 /* No comment provided by engineer. */
 "Fast" = "Veloce";
 
+/* TODO */
+"Fast, feature-rich VNC server for iOS: remote control made simple." = "Fast, feature-rich VNC server for iOS: remote control made simple.";
+
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Non Installato";
+
+/* TODO */
+"Full-Fledged Automation Framework for TrollStore." = "Full-Fledged Automation Framework for TrollStore.";
 
 /* No comment provided by engineer. */
 "Hide" = "Hide";
@@ -121,6 +130,12 @@
 /* No comment provided by engineer. */
 "Launch" = "Lancia";
 
+/* TODO */
+"Lessica, iosdump and other contributors" = "Lessica, iosdump and other contributors";
+
+/* TODO */
+"Letterpress" = "Letterpress";
+
 /* No comment provided by engineer. */
 "Lexicographic" = "Lessicografico";
 
@@ -129,9 +144,6 @@
 
 /* StripedTextTableViewController */
 "Log Viewer" = "Visualizzatore Log";
-
-/* No comment provided by engineer. */
-"Made with ♥ by OwnGoal Studio" = "Fatto col ♥ da OwnGoal Studio";
 
 /* No comment provided by engineer. */
 "No Applications" = "No Applications";
@@ -162,6 +174,9 @@
 
 /* No comment provided by engineer. */
 "Pinned Version" = "Versione Fissata";
+
+/* TODO */
+"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
 
 /* No comment provided by engineer. */
 "Plug-Ins" = "Plug-In";
@@ -227,6 +242,9 @@
 "TrollStore Applications" = "Applicazioni TrollStore";
 
 /* TODO */
+"TrollVNC" = "TrollVNC";
+
+/* TODO */
 "Unable to locate the data archive in the Debian package." = "Unable to locate the data archive in the Debian package.";
 
 /* No comment provided by engineer. */
@@ -243,6 +261,9 @@
 
 /* No comment provided by engineer. */
 "View Logs" = "Mostra Log";
+
+/* TODO */
+"XXTouch Elite TS" = "XXTouch Elite TS";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "Devi ricostruire la cache delle icone in TrollStore per applicare le modifiche.";

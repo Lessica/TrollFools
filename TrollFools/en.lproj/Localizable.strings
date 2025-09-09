@@ -23,6 +23,9 @@
 "All Applications" = "All Applications";
 
 /* No comment provided by engineer. */
+"An awesome music visualizer." = "An awesome music visualizer.";
+
+/* No comment provided by engineer. */
 "And %d more unsupported user applications." = "And %d more unsupported user applications.";
 
 /* No comment provided by engineer. */
@@ -92,7 +95,13 @@
 "Fast" = "Fast";
 
 /* No comment provided by engineer. */
+"Fast, feature-rich VNC server for iOS: remote control made simple." = "Fast, feature-rich VNC server for iOS: remote control made simple.";
+
+/* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Not Installed";
+
+/* No comment provided by engineer. */
+"Full-Fledged Automation Framework for TrollStore." = "Full-Fledged Automation Framework for TrollStore.";
 
 /* No comment provided by engineer. */
 "Hide" = "Hide";
@@ -122,6 +131,12 @@
 "Launch" = "Launch";
 
 /* No comment provided by engineer. */
+"Lessica, iosdump and other contributors" = "Lessica, iosdump and other contributors";
+
+/* No comment provided by engineer. */
+"Letterpress" = "Letterpress";
+
+/* No comment provided by engineer. */
 "Lexicographic" = "Lexicographic";
 
 /* No comment provided by engineer. */
@@ -129,9 +144,6 @@
 
 /* StripedTextTableViewController */
 "Log Viewer" = "Log Viewer";
-
-/* No comment provided by engineer. */
-"Made with ♥ by OwnGoal Studio" = "Made with ♥ by OwnGoal Studio";
 
 /* No comment provided by engineer. */
 "No Applications" = "No Applications";
@@ -162,6 +174,9 @@
 
 /* No comment provided by engineer. */
 "Pinned Version" = "Pinned Version";
+
+/* No comment provided by engineer. */
+"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
 
 /* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
@@ -227,6 +242,9 @@
 "TrollStore Applications" = "TrollStore Applications";
 
 /* No comment provided by engineer. */
+"TrollVNC" = "TrollVNC";
+
+/* No comment provided by engineer. */
 "Unable to locate the data archive in the Debian package." = "Unable to locate the data archive in the Debian package.";
 
 /* No comment provided by engineer. */
@@ -243,6 +261,9 @@
 
 /* No comment provided by engineer. */
 "View Logs" = "View Logs";
+
+/* No comment provided by engineer. */
+"XXTouch Elite TS" = "XXTouch Elite TS";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "You need to rebuild the icon cache in TrollStore to apply changes.";

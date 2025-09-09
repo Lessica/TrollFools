@@ -23,6 +23,9 @@
 "All Applications" = "所有应用";
 
 /* No comment provided by engineer. */
+"An awesome music visualizer." = "一款超棒的音乐可视化工具。";
+
+/* No comment provided by engineer. */
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用。";
 
 /* No comment provided by engineer. */
@@ -92,7 +95,13 @@
 "Fast" = "快速";
 
 /* No comment provided by engineer. */
+"Fast, feature-rich VNC server for iOS: remote control made simple." = "功能强大的 iOS VNC 服务器：远程控制，从未如此简单。";
+
+/* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "未安装支持 URL Scheme 的 Filza";
+
+/* No comment provided by engineer. */
+"Full-Fledged Automation Framework for TrollStore." = "适用于 TrollStore 的全功能自动化框架。";
 
 /* No comment provided by engineer. */
 "Hide" = "Hide";
@@ -122,6 +131,12 @@
 "Launch" = "启动";
 
 /* No comment provided by engineer. */
+"Lessica, iosdump and other contributors" = "Lessica, iosdump 及其他贡献者";
+
+/* No comment provided by engineer. */
+"Letterpress" = "活字印刷术";
+
+/* No comment provided by engineer. */
 "Lexicographic" = "字典序";
 
 /* No comment provided by engineer. */
@@ -129,9 +144,6 @@
 
 /* StripedTextTableViewController */
 "Log Viewer" = "日志查看器";
-
-/* No comment provided by engineer. */
-"Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制";
 
 /* No comment provided by engineer. */
 "No Applications" = "没有找到符合条件的应用程序";
@@ -162,6 +174,9 @@
 
 /* No comment provided by engineer. */
 "Pinned Version" = "已固定版本";
+
+/* No comment provided by engineer. */
+"Buy our paid products to support us if you like TrollFools!" = "如果你喜欢 TrollFools，请购买我们的付费产品以支持我们！";
 
 /* No comment provided by engineer. */
 "Plug-Ins" = "插件列表";
@@ -227,6 +242,9 @@
 "TrollStore Applications" = "巨魔应用";
 
 /* No comment provided by engineer. */
+"TrollVNC" = "TrollVNC";
+
+/* No comment provided by engineer. */
 "Unable to locate the data archive in the Debian package." = "无法在 Debian 软件包中找到数据归档。";
 
 /* No comment provided by engineer. */
@@ -243,6 +261,9 @@
 
 /* No comment provided by engineer. */
 "View Logs" = "查看日志";
+
+/* No comment provided by engineer. */
+"XXTouch Elite TS" = "XXTouch Elite TS";
 
 /* No comment provided by engineer. */
 "You need to rebuild the icon cache in TrollStore to apply changes." = "你需要在 TrollStore 中重建图标缓存以应用更改。";

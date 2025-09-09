@@ -24,7 +24,7 @@ struct AppListView: View {
     @State var isWarningPresented = false
     @State var temporaryOpenedURL: URLIdentifiable? = nil
 
-    @AppStorage("isAdvertisementHidden")
+    @AppStorage("isAdvertisementHiddenV2")
     var isAdvertisementHidden: Bool = false
 
     @AppStorage("isWarningHidden")
@@ -32,7 +32,6 @@ struct AppListView: View {
 
     var shouldShowAdvertisement: Bool {
         !isAdvertisementHidden &&
-            !appList.isPaidProductInstalled &&
             !appList.filter.isSearching &&
             !appList.filter.showPatchedOnly &&
             !appList.isRebuildNeeded &&
@@ -48,15 +47,15 @@ struct AppListView: View {
         )
 
         let appStringFormat = """
-        %@ %@ %@ © 2024-2025
-        %@
+        %@ %@
+        %@ © 2024-2025 %@
         """
 
         return String(
             format: appStringFormat,
             appNameString, appVersionString,
             NSLocalizedString("Copyright", comment: ""),
-            NSLocalizedString("Made with ♥ by OwnGoal Studio", comment: "")
+            NSLocalizedString("Lessica, iosdump and other contributors", comment: "")
         )
     }
 
@@ -422,6 +421,8 @@ struct AppListView: View {
             }
         } header: {
             paddedHeaderFooterText(NSLocalizedString("Advertisement", comment: ""))
+        } footer: {
+            paddedHeaderFooterText(NSLocalizedString("Buy our paid products to support us if you like TrollFools!", comment: ""))
         }
     }
 
