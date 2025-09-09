@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		193E4BE62E6E820600F4ED14 /* PluginPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193E4BE52E6E820400F4ED14 /* PluginPersistenceManager.swift */; };
 		6124A06D2CD2322400C52253 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A06C2CD2322400C52253 /* App.swift */; };
 		6124A06F2CD2324200C52253 /* AppListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A06E2CD2324200C52253 /* AppListModel.swift */; };
 		6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0702CD2326500C52253 /* FilterOptions.swift */; };
@@ -136,6 +137,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		193E4BE52E6E820400F4ED14 /* PluginPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginPersistenceManager.swift; sourceTree = "<group>"; };
 		6124A06C2CD2322400C52253 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		6124A06E2CD2324200C52253 /* AppListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListModel.swift; sourceTree = "<group>"; };
 		6124A0702CD2326500C52253 /* FilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptions.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */,
+				193E4BE52E6E820400F4ED14 /* PluginPersistenceManager.swift */,
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
 				6124A0822CD2345300C52253 /* Core */,
 				6124A0722CD2327E00C52253 /* View */,
@@ -649,6 +652,7 @@
 				6168001B2D364DD400DF485F /* StripedTextTableViewController.m in Sources */,
 				614C0C6A2D7CB458007E9184 /* Hashable+Combines.swift in Sources */,
 				6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */,
+				193E4BE62E6E820600F4ED14 /* PluginPersistenceManager.swift in Sources */,
 				61EFA3792D3108BD00159442 /* InjectorV3+Eject.swift in Sources */,
 				6124A07B2CD2337500C52253 /* ViewControllerHost.swift in Sources */,
 				61EFA3752D303C3C00159442 /* InjectorV3+Preprocess.swift in Sources */,
@@ -822,6 +826,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -930,6 +935,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = TROLLFOOLS_APP;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -980,6 +986,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = TROLLFOOLS_APP;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "TrollFools/TrollFools-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
