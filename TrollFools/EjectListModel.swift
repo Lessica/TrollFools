@@ -15,7 +15,7 @@ final class EjectListModel: ObservableObject {
     @Published var filter = FilterOptions()
     @Published var filteredPlugIns: [InjectedPlugIn] = []
     @Published var lastOperationError: Error? = nil
-
+    // z
     @Published var isOperationInProgress: Bool = false
     private let operationQueue = DispatchQueue(label: "wiki.qaq.trollfools.plugin-operations")
 
