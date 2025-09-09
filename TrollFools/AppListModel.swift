@@ -55,7 +55,13 @@ final class AppListModel: ObservableObject {
 
     @Published var unsupportedCount: Int = 0
 
-    @Published var isFilzaInstalled: Bool = false
+    lazy var isFilzaInstalled: Bool = {
+        if let filzaURL {
+            UIApplication.shared.canOpenURL(filzaURL)
+        } else {
+            false
+        }
+    }()
     private let filzaURL = URL(string: "filza://")
 
     @Published var isRebuildNeeded: Bool = false
@@ -102,11 +108,6 @@ final class AppListModel: ObservableObject {
         let allApplications = Self.fetchApplications(&unsupportedCount)
         allApplications.forEach { $0.appList = self }
         _allApplications = allApplications
-        if let filzaURL {
-            isFilzaInstalled = UIApplication.shared.canOpenURL(filzaURL)
-        } else {
-            isFilzaInstalled = false
-        }
         performFilter()
     }
 
