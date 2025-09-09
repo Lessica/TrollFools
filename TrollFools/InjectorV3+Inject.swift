@@ -38,6 +38,8 @@ extension InjectorV3 {
 
         try injectDylibsAndFrameworks(preparedAssetURLs
             .filter { $0.pathExtension.lowercased() == "dylib" || $0.pathExtension.lowercased() == "framework" })
+
+        try persist(assetURLs)
     }
 
     // MARK: - Private Methods

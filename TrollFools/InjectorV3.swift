@@ -116,4 +116,18 @@ final class InjectorV3 {
 
         return latestLogFileURL
     }
+
+    // MARK: - Persistent
+
+    fileprivate static let persistentPlugInsRootURL: URL = {
+        let url = URL(fileURLWithPath: "/var/mobile/Library/TrollFools/PersistentPlugins")
+        try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        return url
+    }()
+
+    lazy var persistentPlugInsDirectoryURL: URL = {
+        let url = Self.persistentPlugInsRootURL.appendingPathComponent(appID, isDirectory: true)
+        try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        return url
+    }()
 }

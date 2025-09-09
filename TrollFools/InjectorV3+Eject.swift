@@ -19,6 +19,8 @@ extension InjectorV3 {
         precondition(!assetURLs.isEmpty, "No asset to eject.")
         terminateApp()
 
+        try desist(assetURLs)
+
         try ejectBundles(assetURLs
             .filter { $0.pathExtension.lowercased() == "bundle" })
 
