@@ -31,12 +31,7 @@ struct AppListView: View {
     var isWarningHidden: Bool = false
 
     var shouldShowAdvertisement: Bool {
-        !isAdvertisementHidden &&
-            !appList.isPaidProductInstalled &&
-            !appList.filter.isSearching &&
-            !appList.filter.showPatchedOnly &&
-            !appList.isRebuildNeeded &&
-            !appList.isSelectorMode
+        return false
     }
 
     var appString: String {
@@ -153,7 +148,6 @@ struct AppListView: View {
                 }
             }
 
-            // Detail view shown when nothing has been selected
             if !appList.isSelectorMode {
                 PlaceholderView()
             }

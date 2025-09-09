@@ -31,6 +31,27 @@ extension InjectorV3 {
         let preparedAssetURLs = try preprocessAssets(assetURLs)
 
         precondition(!preparedAssetURLs.isEmpty, "No asset to inject.")
+        
+#if TROLLFOOLS_APP
+    do {
+        let tempAppObjectForPersistence = App(
+            id: self.appID,
+            name: "",
+            type: "",
+            teamID: self.teamID,
+            url: self.bundleURL
+        )
+        for assetURL in preparedAssetURLs {
+             let persistentDir = PluginPersistenceManager.shared.getDisabledDirectory(for: tempAppObjectForPersistence.id)
+             try? FileManager.default.createDirectory(at: persistentDir, withIntermediateDirectories: true, attributes: nil)
+             let destinationURL = persistentDir.appendingPathComponent(assetURL.lastPathComponent)
+             try self.cmdCopy(from: assetURL, to: destinationURL, overwrite: true)
+        }
+    } catch {
+        DDLogError("Failed to persist injected plugins: \(error)", ddlog: logger)
+    }
+#endif
+        
         terminateApp()
 
         try injectBundles(preparedAssetURLs

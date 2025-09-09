@@ -131,7 +131,7 @@
 "Log Viewer" = "日志查看器";
 
 /* No comment provided by engineer. */
-"Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制";
+"Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制\niosdump 改版（20250909）";
 
 /* No comment provided by engineer. */
 "No Applications" = "没有找到符合条件的应用程序";
@@ -249,3 +249,8 @@
 
 /* No comment provided by engineer. */
 "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "你至少选择了一个 Debian 软件包 “%@”。请留意，它通常不会像在越狱环境当中那样工作，甚至完全不起作用。请确保你知道自己在做些什么。";
+"Enable All" = "全部启用";
+"Disable All" = "全部禁用";
+"Eject All Permanently" = "移除全部插件";
+"No Injected Plug-Ins" = "没有已注入的插件";
+"Injected Plug-Ins" = "已注入的插件";
