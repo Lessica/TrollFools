@@ -249,3 +249,8 @@
 
 /* TODO */
 "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.";
+"Enable All" = "Bật tất cả";
+"Disable All" = "Tắt tất cả";
+"Eject All Permanently" = "Gỡ bỏ tất cả plugin";
+"No Injected Plug-Ins" = "Không có plugin đã chèn";
+"Injected Plug-Ins" = "Plugin đã chèn";

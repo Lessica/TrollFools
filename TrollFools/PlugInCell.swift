@@ -17,14 +17,14 @@ private let gDateFormatter: DateFormatter = {
 
 struct PlugInCell: View {
     @EnvironmentObject var ejectList: EjectListModel
-
     @Binding var quickLookExport: URL?
-
     let plugIn: InjectedPlugIn
+    let replaceAction: () -> Void
 
-    init(_ plugIn: InjectedPlugIn, quickLookExport: Binding<URL?>) {
+    init(_ plugIn: InjectedPlugIn, quickLookExport: Binding<URL?>, onReplace: @escaping () -> Void) {
         self.plugIn = plugIn
         _quickLookExport = quickLookExport
+        self.replaceAction = onReplace
     }
 
     @available(iOS 15, *)
@@ -53,24 +53,37 @@ struct PlugInCell: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: iconName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundColor(.accentColor)
+            HStack(spacing: 12) {
+                Image(systemName: iconName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(.accentColor)
 
-            VStack(alignment: .leading) {
-                if #available(iOS 15, *) {
-                    Text(highlightedName)
-                        .font(.headline)
-                } else {
-                    Text(plugIn.url.lastPathComponent)
-                        .font(.headline)
+                VStack(alignment: .leading) {
+                    if #available(iOS 15, *) {
+                        Text(highlightedName)
+                            .font(.headline)
+                    } else {
+                        Text(plugIn.url.lastPathComponent)
+                            .font(.headline)
+                    }
+                    Text(gDateFormatter.string(from: plugIn.createdAt))
+                        .font(.subheadline)
                 }
-
-                Text(gDateFormatter.string(from: plugIn.createdAt))
-                    .font(.subheadline)
+                .opacity(plugIn.isEnabled ? 1.0 : 0.5)
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                self.replaceAction()
+            }
+            
+            Spacer()
+            Toggle(isOn: .constant(plugIn.isEnabled)) { Text("") }
+                .labelsHidden()
+                .onTapGesture {
+                    ejectList.toggleEnableState(for: plugIn)
+                }
         }
         .contextMenu {
             if #available(iOS 16.4, *) {
@@ -84,7 +97,6 @@ struct PlugInCell: View {
                     Label(NSLocalizedString("Export", comment: ""), systemImage: "square.and.arrow.up")
                 }
             }
-
             Button {
                 openInFilza()
             } label: {
