@@ -72,7 +72,13 @@ struct EjectListView: View {
             .toolbar { toolbarContent }
             .animation(.easeOut, value: isExportingAll)
             .quickLookPreview($quickLookExport)
-    }
+            .onReceive(ejectList.$lastOperationError) { error in
+                if let error {
+                    self.lastError = error
+                    self.isErrorOccurred = true
+                }
+            }
+        }
 
     var refreshableListView: some View {
         Group {
@@ -184,21 +190,24 @@ struct EjectListView: View {
                     Button(action: ejectList.enableAll) {
                         Label(NSLocalizedString("Enable All", comment: ""), systemImage: "square.stack.3d.up.fill")
                     }
+                    .disabled(ejectList.isOperationInProgress)
                 }
-                
+
                 Section {
-                    Button(action: { ejectList.disableAll() }) {
+                    Button(action: ejectList.disableAll) {
                         Label(NSLocalizedString("Disable All", comment: ""), systemImage: "square.stack.3d.up.slash.fill")
-                            .foregroundColor(.orange)
+                        .foregroundColor(.orange)
                     }
+                    .disabled(ejectList.isOperationInProgress)
                 }
             }
-
+            
             if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
                 Section {
                     deleteAllButton
-                        .disabled(isDeletingAll)
-                        .foregroundColor(isDeletingAll ? .secondary : .red)
+
+                        .disabled(ejectList.isOperationInProgress)
+                        .foregroundColor(ejectList.isOperationInProgress ? .secondary : .red)
                 } footer: {
                     if #available(iOS 15, *) {
                         Text(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
@@ -257,13 +266,13 @@ struct EjectListView: View {
     var deleteAllButton: some View {
         if #available(iOS 15, *) {
             Button(role: .destructive) {
-                deleteAll()
+                ejectList.deleteAll()
             } label: {
                 deleteAllButtonLabel
             }
         } else {
             Button {
-                deleteAll()
+                ejectList.deleteAll()
             } label: {
                 deleteAllButtonLabel
             }
@@ -325,14 +334,7 @@ struct EjectListView: View {
 
     private func deletePlugIns(at offsets: IndexSet) {
         let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
-        DispatchQueue.global(qos: .userInitiated).async {
-            for plugin in plugInsToRemove {
-                try? PluginPersistenceManager.shared.delete(pluginURL: plugin.url, for: ejectList.app)
-            }
-            DispatchQueue.main.async {
-                ejectList.reload()
-            }
-        }
+        ejectList.delete(plugins: plugInsToRemove)
     }
     
     private func deleteAll() {

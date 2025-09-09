@@ -84,6 +84,7 @@ struct PlugInCell: View {
                 .onTapGesture {
                     ejectList.toggleEnableState(for: plugIn)
                 }
+                .disabled(ejectList.isOperationInProgress)
         }
         .contextMenu {
             if #available(iOS 16.4, *) {
