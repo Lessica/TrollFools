@@ -25,6 +25,8 @@ struct AppListView: View {
     @State var isWarningPresented = false
     @State var temporaryOpenedURL: URLIdentifiable? = nil
 
+    @State var latestVersionString: String?
+
     @AppStorage("isAdvertisementHiddenV2")
     var isAdvertisementHidden: Bool = false
 
@@ -118,6 +120,14 @@ struct AppListView: View {
             .onAppear {
                 if Double.random(in: 0 ..< 1) < 0.1 {
                     isAdvertisementHidden = false
+                }
+
+                CheckUpdateManager.shared.checkUpdateIfNeeded { latestVersion, _ in
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            latestVersionString = latestVersion?.tagName
+                        }
+                    }
                 }
             }
     }
@@ -282,11 +292,11 @@ struct AppListView: View {
 
     var allAppGroup: some View {
         Group {
-            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
-                Section {
-                } footer: {
-                    paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                }
+            if latestVersionString != nil {
+                upgradeSection
+            }
+            else if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
+                unsupportedSection
             }
 
             if #available(iOS 15, *) {
@@ -398,6 +408,34 @@ struct AppListView: View {
                 .padding(.vertical, 4)
             }
         }
+    }
+
+    var upgradeSection: some View {
+        Section {
+        } footer: {
+            VStack(alignment: .leading, spacing: 8) {
+                Button {
+                    CheckUpdateManager.shared.executeUpgrade()
+                } label: {
+                    Text(String(format: NSLocalizedString("New version %@ available!", comment: ""), latestVersionString ?? "(null)"))
+                        .font(.footnote)
+                }
+
+                Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
+                    .font(.footnote)
+            }
+        }
+        .textCase(.none)
+        .transition(.opacity)
+    }
+
+    var unsupportedSection: some View {
+        Section {
+        } footer: {
+            paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
+        }
+        .textCase(.none)
+        .transition(.opacity)
     }
 
     @available(iOS 15.0, *)

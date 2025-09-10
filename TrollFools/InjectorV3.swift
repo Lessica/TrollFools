@@ -16,7 +16,7 @@ final class InjectorV3 {
 
     static let temporaryRoot: URL = FileManager.default
         .urls(for: .cachesDirectory, in: .userDomainMask).first!
-        .appendingPathComponent(gTrollFoolsIdentifier, isDirectory: true)
+        .appendingPathComponent(Constants.gAppIdentifier, isDirectory: true)
         .appendingPathComponent("InjectorV3", isDirectory: true)
 
     static let main = try! InjectorV3(Bundle.main.bundleURL)

@@ -1,5 +1,5 @@
 {
-  "originHash" : "fcdbf6cfa7a3a4ec5d531775250bf50c00698f54fe6ced65e20943f02920334b",
+  "originHash" : "b4a467f7839e623b36e36a942a8dfb5e98f737024cd8ddbf4cc7a440400c5b07",
   "pins" : [
     {
       "identity" : "ararchivekit",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "4b8714a7fb84d42393314ce897127b3939885ec3",
         "version" : "3.8.5"
+      }
+    },
+    {
+      "identity" : "dpkgversion",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lakr233/DpkgVersion",
+      "state" : {
+        "revision" : "64f192ac8c74f334e5b610c3da9aa9b456502ced",
+        "version" : "1.0.4"
       }
     },
     {

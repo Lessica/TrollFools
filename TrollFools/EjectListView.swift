@@ -326,7 +326,7 @@ struct EjectListView: View {
                 userInfo[NSURLErrorKey] = logFileURL
             }
 
-            let nsErr = NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo)
+            let nsErr = NSError(domain: Constants.gErrorDomain, code: 0, userInfo: userInfo)
 
             lastError = nsErr
             isErrorOccurred = true
@@ -392,7 +392,7 @@ struct EjectListView: View {
                             userInfo[NSURLErrorKey] = logFileURL
                         }
 
-                        let nsErr = NSError(domain: gTrollFoolsErrorDomain, code: 0, userInfo: userInfo)
+                        let nsErr = NSError(domain: Constants.gErrorDomain, code: 0, userInfo: userInfo)
 
                         lastError = nsErr
                         isErrorOccurred = true

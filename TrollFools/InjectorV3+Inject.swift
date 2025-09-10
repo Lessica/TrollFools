@@ -220,7 +220,7 @@ extension InjectorV3 {
                 return execURL
             }
         }
-        if let tfProxy = LSApplicationProxy(forIdentifier: gTrollFoolsIdentifier),
+        if let tfProxy = LSApplicationProxy(forIdentifier: Constants.gAppIdentifier),
            let tfBundleURL = tfProxy.bundleURL()
         {
             let execURL = tfBundleURL

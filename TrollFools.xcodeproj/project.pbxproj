@@ -90,6 +90,9 @@
 		CC5E54BF2C4E131000FDE4A8 /* libxar.1.dylib in Resources */ = {isa = PBXBuildFile; fileRef = CC5E54BB2C4E12F900FDE4A8 /* libxar.1.dylib */; };
 		CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */; };
 		CC61A87C2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip in Resources */ = {isa = PBXBuildFile; fileRef = CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */; };
+		CC80616D2E71632E00B1AA3E /* CheckUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC80616B2E71632E00B1AA3E /* CheckUpdateManager.swift */; };
+		CC80616E2E71632E00B1AA3E /* CodableStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC80616C2E71632E00B1AA3E /* CodableStorage.swift */; };
+		CC8061712E71636500B1AA3E /* DpkgVersion in Frameworks */ = {isa = PBXBuildFile; productRef = CC8061702E71636500B1AA3E /* DpkgVersion */; };
 		CC8A36712D7EB56500BE90D3 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A366E2D7EB56500BE90D3 /* Entry.swift */; };
 		CC8A36732D7EB57700BE90D3 /* CmdList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A36722D7EB57500BE90D3 /* CmdList.swift */; };
 		CC8A36752D7EB92800BE90D3 /* CmdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A36742D7EB92000BE90D3 /* CmdView.swift */; };
@@ -197,6 +200,8 @@
 		CC60FBEA2CC5024000A6D21A /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartyCrouch.swift; sourceTree = "<group>"; };
 		CC61A87B2C4A677B003BD9A0 /* CydiaSubstrate.framework.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = CydiaSubstrate.framework.zip; sourceTree = "<group>"; };
+		CC80616B2E71632E00B1AA3E /* CheckUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUpdateManager.swift; sourceTree = "<group>"; };
+		CC80616C2E71632E00B1AA3E /* CodableStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableStorage.swift; sourceTree = "<group>"; };
 		CC8A366E2D7EB56500BE90D3 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		CC8A36722D7EB57500BE90D3 /* CmdList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdList.swift; sourceTree = "<group>"; };
 		CC8A36742D7EB92000BE90D3 /* CmdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CmdView.swift; sourceTree = "<group>"; };
@@ -257,6 +262,7 @@
 				CCB6A1172C4A540F000D75B0 /* CoreServices.framework in Frameworks */,
 				CC1548FE2C4AADBB00A4173E /* MachOKitC in Frameworks */,
 				61EFA3692D3026D400159442 /* CocoaLumberjackSwift in Frameworks */,
+				CC8061712E71636500B1AA3E /* DpkgVersion in Frameworks */,
 				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
 				CC0D66322D7F13A9000EADED /* SWCompression in Frameworks */,
 				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
@@ -318,6 +324,8 @@
 			children = (
 				CCF5A0A32C4D45160097D48D /* AuxiliaryExecute.swift */,
 				CCF5A0A52C4D45400097D48D /* AuxiliaryExecute+Spawn.swift */,
+				CC80616B2E71632E00B1AA3E /* CheckUpdateManager.swift */,
+				CC80616C2E71632E00B1AA3E /* CodableStorage.swift */,
 				614C0C602D7C2EBE007E9184 /* Constants.swift */,
 				CC1548DA2C4A7C7000A4173E /* Execute.swift */,
 				61EFA3632D30267200159442 /* InjectorV3.swift */,
@@ -499,6 +507,7 @@
 				61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */,
 				CC0D662C2D7F11A2000EADED /* ArArchiveKit */,
 				CC0D66312D7F13A9000EADED /* SWCompression */,
+				CC8061702E71636500B1AA3E /* DpkgVersion */,
 			);
 			productName = TrollFools;
 			productReference = CCF470562C4A4649008D8197 /* TrollFools.app */;
@@ -512,7 +521,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					614C0C372D7C243E007E9184 = {
 						CreatedOnToolsVersion = 16.2;
@@ -544,6 +553,7 @@
 				614C0C502D7C2E44007E9184 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */,
 				CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */,
+				CC80616F2E71636500B1AA3E /* XCRemoteSwiftPackageReference "DpkgVersion" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
 			projectDirPath = "";
@@ -656,6 +666,8 @@
 				6168001D2D3652B600DF485F /* LogsView.swift in Sources */,
 				CCF5A0A42C4D45160097D48D /* AuxiliaryExecute.swift in Sources */,
 				6168001B2D364DD400DF485F /* StripedTextTableViewController.m in Sources */,
+				CC80616D2E71632E00B1AA3E /* CheckUpdateManager.swift in Sources */,
+				CC80616E2E71632E00B1AA3E /* CodableStorage.swift in Sources */,
 				CCD3FCB92E70949700AEF7F0 /* InjectorV3+Persistent.swift in Sources */,
 				614C0C6A2D7CB458007E9184 /* Hashable+Combines.swift in Sources */,
 				6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */,
@@ -728,7 +740,6 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = $DEBUG_BUILD_NUMBER;
-				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
@@ -753,7 +764,6 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = $BUILD_NUMBER;
-				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"MARKETING_VERSION=\\\"$(MARKETING_VERSION)\\\"",
 					"CURRENT_PROJECT_VERSION=\\\"$(CURRENT_PROJECT_VERSION)\\\"",
@@ -808,6 +818,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -874,6 +885,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -907,7 +919,6 @@
 				CODE_SIGN_ENTITLEMENTS = TrollFools/TrollFools.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = $DEBUG_BUILD_NUMBER;
-				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -958,7 +969,6 @@
 				CODE_SIGN_ENTITLEMENTS = TrollFools/TrollFools.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = $BUILD_NUMBER;
-				DEVELOPMENT_TEAM = GXZ23M5TP2;
 				ENABLE_PREVIEWS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1093,6 +1103,14 @@
 				kind = branch;
 			};
 		};
+		CC80616F2E71636500B1AA3E /* XCRemoteSwiftPackageReference "DpkgVersion" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/DpkgVersion";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1195,6 +1213,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CC1548FA2C4AADBB00A4173E /* XCRemoteSwiftPackageReference "MachOKit" */;
 			productName = MachOKitC;
+		};
+		CC8061702E71636500B1AA3E /* DpkgVersion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC80616F2E71636500B1AA3E /* XCRemoteSwiftPackageReference "DpkgVersion" */;
+			productName = DpkgVersion;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
