@@ -12,6 +12,7 @@ extension InjectorV3 {
         for filteredURL in filteredURLs(assetURLs) {
             let destURL = persistentPlugInsDirectoryURL.appendingPathComponent(filteredURL.lastPathComponent)
             try cmdCopy(from: filteredURL, to: destURL, overwrite: true)
+            try cmdChangeOwner(destURL, owner: 501, groupOwner: 501, recursively: checkIsDirectory(destURL))
         }
     }
 
@@ -32,6 +33,16 @@ extension InjectorV3 {
             let destURL = persistentPlugInsDirectoryURL.appendingPathComponent(filteredURL.lastPathComponent)
             try? cmdRemove(destURL, recursively: checkIsDirectory(destURL))
         }
+    }
+
+    func persistedAssetURLs(id: String) -> [URL] {
+        let base = Self.persistentPlugInsRootURL.appendingPathComponent(id, isDirectory: true)
+        guard let contents = try? FileManager.default.contentsOfDirectory(atPath: base.path) else {
+            return []
+        }
+        return contents
+            .sorted { $0.localizedStandardCompare($1) == .orderedAscending }
+            .map { base.appendingPathComponent($0) }
     }
 
     fileprivate func filteredURLs(_ assetURLs: [URL]) -> [URL] {

@@ -15,6 +15,9 @@ final class EjectListModel: ObservableObject {
     @Published var filter = FilterOptions()
     @Published var filteredPlugIns: [InjectedPlugIn] = []
 
+    @Published var isOkToEnableAll = false
+    @Published var isOkToDisableAll = false
+
     private var cancellables = Set<AnyCancellable>()
 
     init(_ app: App) {
@@ -30,8 +33,18 @@ final class EjectListModel: ObservableObject {
     }
 
     func reload() {
-        self.injectedPlugIns = InjectorV3.main.injectedAssetURLsInBundle(app.url)
+        var plugIns = [InjectedPlugIn]()
+        plugIns += InjectorV3.main.injectedAssetURLsInBundle(app.url)
             .map { InjectedPlugIn(url: $0, isEnabled: true) }
+
+        let enabledNames = plugIns.map { $0.url.lastPathComponent }
+        plugIns += InjectorV3.main.persistedAssetURLs(id: app.id)
+            .filter { !enabledNames.contains($0.lastPathComponent) }
+            .map { InjectedPlugIn(url: $0, isEnabled: false) }
+
+        injectedPlugIns = plugIns
+            .sorted { $0.url.lastPathComponent.localizedStandardCompare($1.url.lastPathComponent) == .orderedAscending }
+
         performFilter()
     }
 
@@ -45,5 +58,7 @@ final class EjectListModel: ObservableObject {
         }
 
         self.filteredPlugIns = filteredPlugIns
+        self.isOkToEnableAll = filteredPlugIns.contains { !$0.isEnabled }
+        self.isOkToDisableAll = filteredPlugIns.contains { $0.isEnabled }
     }
 }

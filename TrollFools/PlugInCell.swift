@@ -20,14 +20,13 @@ struct PlugInCell: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
     @Binding var quickLookExport: URL?
-    @State var isEnabled: Bool = true
+    @State var isEnabled: Bool = false
 
     let plugIn: InjectedPlugIn
 
     init(_ plugIn: InjectedPlugIn, quickLookExport: Binding<URL?>) {
         self.plugIn = plugIn
         _quickLookExport = quickLookExport
-        isEnabled = plugIn.isEnabled
     }
 
     @available(iOS 15, *)
@@ -81,6 +80,9 @@ struct PlugInCell: View {
                         .lineLimit(1)
                 }
             }
+        }
+        .onAppear {
+            isEnabled = plugIn.isEnabled
         }
         .contextMenu {
             if #available(iOS 16.4, *) {

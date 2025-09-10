@@ -119,7 +119,7 @@ final class InjectorV3 {
 
     // MARK: - Persistent
 
-    fileprivate static let persistentPlugInsRootURL: URL = {
+    static let persistentPlugInsRootURL: URL = {
         let url = URL(fileURLWithPath: "/var/mobile/Library/TrollFools/PersistentPlugins")
         try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         return url

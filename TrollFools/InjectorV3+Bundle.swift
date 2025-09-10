@@ -102,7 +102,7 @@ extension InjectorV3 {
             .sorted(by: { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending })
     }
 
-    func injectedBundleURLsInBundle(_ target: URL) -> [URL] {
+    fileprivate func injectedBundleURLsInBundle(_ target: URL) -> [URL] {
         precondition(checkIsBundle(target), "Not a bundle: \(target.path)")
 
         guard let bundleContentURLs = try? FileManager.default.contentsOfDirectory(at: target, includingPropertiesForKeys: [.isDirectoryKey]) else {
@@ -125,7 +125,7 @@ extension InjectorV3 {
         return bundleURLs
     }
 
-    func injectedDylibAndFrameworkURLsInBundle(_ target: URL) -> [URL] {
+    fileprivate func injectedDylibAndFrameworkURLsInBundle(_ target: URL) -> [URL] {
         precondition(checkIsBundle(target), "Not a bundle: \(target.path)")
 
         let frameworksURL = target.appendingPathComponent("Frameworks")

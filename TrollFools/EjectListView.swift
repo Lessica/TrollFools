@@ -126,11 +126,11 @@ struct EjectListView: View {
             if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
                 Section {
                     enableAllButton
-                        .disabled(isEnablingAll)
+                        .disabled(isEnablingAll || !ejectList.isOkToEnableAll)
                         .foregroundColor(isEnablingAll ? .secondary : .accentColor)
 
                     disableAllButton
-                        .disabled(isDisablingAll)
+                        .disabled(isDisablingAll || !ejectList.isOkToDisableAll)
                         .foregroundColor(isDisablingAll ? .secondary : .accentColor)
                 }
 
