@@ -17,6 +17,7 @@ struct AppListView: View {
 
     @StateObject var searchViewModel = AppListSearchModel()
     @EnvironmentObject var appList: AppListModel
+    @Environment(\.verticalSizeClass) var verticalSizeClass
 
     @State var selectorOpenedURL: URLIdentifiable? = nil
     @State var selectedIndex: String? = nil
@@ -139,7 +140,7 @@ struct AppListView: View {
                 ZStack {
                     refreshableListView
 
-                    if appList.activeScopeApps.keys.count > 1 {
+                    if verticalSizeClass == .regular && appList.activeScopeApps.keys.count > 1 {
                         IndexableScroller(
                             indexes: appList.activeScopeApps.keys.elements,
                             currentIndex: $selectedIndex

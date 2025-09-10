@@ -10,6 +10,8 @@ import SwiftUI
 struct OptionView: View {
     let app: App
 
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+
     @State var isImporterPresented = false
     @State var isImporterSelected = false
 
@@ -29,7 +31,7 @@ struct OptionView: View {
 
     var body: some View {
         if #available(iOS 15, *) {
-            content
+            wrappedContent
                 .alert(
                     NSLocalizedString("Notice", comment: ""),
                     isPresented: $isWarningPresented,
@@ -60,8 +62,12 @@ struct OptionView: View {
                     }
                 }
         } else {
-            content
+            wrappedContent
         }
+    }
+
+    var wrappedContent: some View {
+        content.toolbar { toolbarContent }
     }
 
     var content: some View {
@@ -88,11 +94,13 @@ struct OptionView: View {
                 Spacer()
             }
 
-            Button {
-                isSettingsPresented = true
-            } label: {
-                Label(NSLocalizedString("Advanced Settings", comment: ""),
-                      systemImage: "gear")
+            if verticalSizeClass == .regular {
+                Button {
+                    isSettingsPresented = true
+                } label: {
+                    Label(NSLocalizedString("Advanced Settings", comment: ""),
+                          systemImage: "gear")
+                }
             }
         }
         .padding()
@@ -146,6 +154,20 @@ struct OptionView: View {
                     .presentationDetents([.medium, .large])
             } else {
                 SettingsView(app)
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            if verticalSizeClass == .compact {
+                Button {
+                    isSettingsPresented = true
+                } label: {
+                    Label(NSLocalizedString("Advanced Settings", comment: ""),
+                          systemImage: "gear")
+                }
             }
         }
     }
