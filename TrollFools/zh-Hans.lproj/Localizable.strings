@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
 
+/* No comment provided by engineer. */
+"Buy our paid products to support us if you like TrollFools!" = "如果你喜欢 TrollFools，请购买我们的付费产品以支持我们！";
+
 /* StripedTextTableViewController */
 "Cancel" = "取消";
 
@@ -55,6 +58,9 @@
 /* No comment provided by engineer. */
 "Copyright" = "版权所有";
 
+/* No comment provided by engineer. */
+"Disable All" = "全部禁用";
+
 /* StripedTextTableViewController */
 "Do you want to clear this log file “%@”?" = "你确定要清空日志文件 “%@” 吗？";
 
@@ -66,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Eject All" = "全部推出";
+
+/* No comment provided by engineer. */
+"Enable All" = "全部启用";
 
 /* No comment provided by engineer. */
 "Error" = "错误";
@@ -146,6 +155,9 @@
 "Log Viewer" = "日志查看器";
 
 /* No comment provided by engineer. */
+"Manage" = "管理";
+
+/* No comment provided by engineer. */
 "No Applications" = "没有找到符合条件的应用程序";
 
 /* No comment provided by engineer. */
@@ -174,9 +186,6 @@
 
 /* No comment provided by engineer. */
 "Pinned Version" = "已固定版本";
-
-/* No comment provided by engineer. */
-"Buy our paid products to support us if you like TrollFools!" = "如果你喜欢 TrollFools，请购买我们的付费产品以支持我们！";
 
 /* No comment provided by engineer. */
 "Plug-Ins" = "插件列表";
@@ -228,6 +237,9 @@
 
 /* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "文本文件 “%@” 的内容为空。";
+
+/* No comment provided by engineer. */
+"This is an advertisement." = "这是一则广告。";
 
 /* No comment provided by engineer. */
 "TrollFools" = "巨魔注入器";

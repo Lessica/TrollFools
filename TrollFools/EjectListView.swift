@@ -135,7 +135,7 @@ struct EjectListView: View {
                 Section {
                     deleteAllButton
                         .disabled(isDeletingAll)
-                        .foregroundColor(isDeletingAll ? .secondary : .red)
+                        .foregroundColor(isDeletingAll ? .secondary : Color(.systemRed))
                 } footer: {
                     if ejectList.app.isFromTroll {
                         paddedHeaderFooterText(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))

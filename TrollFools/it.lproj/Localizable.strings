@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Portiamo indietro il più avanzato strumento di analisi di sistema e della sicurezza.";
 
+/* TODO */
+"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
+
 /* StripedTextTableViewController */
 "Cancel" = "Cancella";
 
@@ -55,6 +58,9 @@
 /* No comment provided by engineer. */
 "Copyright" = "Copyright";
 
+/* TODO */
+"Disable All" = "Disable All";
+
 /* StripedTextTableViewController */
 "Do you want to clear this log file “%@”?" = "Vuoi cancellare questo log “%@”?";
 
@@ -66,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Eject All" = "Espelli Tutti";
+
+/* TODO */
+"Enable All" = "Enable All";
 
 /* No comment provided by engineer. */
 "Error" = "Errore";
@@ -145,6 +154,9 @@
 /* StripedTextTableViewController */
 "Log Viewer" = "Visualizzatore Log";
 
+/* TODO */
+"Manage" = "Manage";
+
 /* No comment provided by engineer. */
 "No Applications" = "No Applications";
 
@@ -174,9 +186,6 @@
 
 /* No comment provided by engineer. */
 "Pinned Version" = "Versione Fissata";
-
-/* TODO */
-"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
 
 /* No comment provided by engineer. */
 "Plug-Ins" = "Plug-In";
@@ -228,6 +237,9 @@
 
 /* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "Il contenuto del file “%@” è vuoto.";
+
+/* TODO */
+"This is an advertisement." = "This is an advertisement.";
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";

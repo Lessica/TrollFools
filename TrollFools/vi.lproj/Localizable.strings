@@ -31,6 +31,9 @@
 /* TODO */
 "Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
 
+/* TODO */
+"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
+
 /* No comment provided by engineer. */
 "Cancel" = "Hủy";
 
@@ -55,6 +58,9 @@
 /* No comment provided by engineer. */
 "Copyright" = "Bản quyền";
 
+/* TODO */
+"Disable All" = "Disable All";
+
 /* No comment provided by engineer. */
 "Do you want to clear this log file “%@”?" = "Bạn có muốn xóa tệp nhật ký này “%@”?";
 
@@ -66,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Eject All" = "Gỡ bỏ tất cả";
+
+/* TODO */
+"Enable All" = "Enable All";
 
 /* No comment provided by engineer. */
 "Error" = "Lỗi";
@@ -145,6 +154,9 @@
 /* No comment provided by engineer. */
 "Log Viewer" = "Trình xem nhật ký";
 
+/* TODO */
+"Manage" = "Manage";
+
 /* No comment provided by engineer. */
 "No Applications" = "No Applications";
 
@@ -174,9 +186,6 @@
 
 /* No comment provided by engineer. */
 "Pinned Version" = "Phiên bản ghim";
-
-/* TODO */
-"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
 
 /* No comment provided by engineer. */
 "Plug-Ins" = "Plug-Ins";
@@ -228,6 +237,9 @@
 
 /* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "Nội dung của tệp văn bản “%@” trống.";
+
+/* TODO */
+"This is an advertisement." = "This is an advertisement.";
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";

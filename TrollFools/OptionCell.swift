@@ -19,7 +19,7 @@ struct OptionCell: View {
     }
 
     var tintColor: Color {
-        option == .attach ? .green : .accentColor
+        option == .attach ? Color(.systemGreen) : .accentColor
     }
 
     var body: some View {

@@ -103,6 +103,7 @@ struct AppListCell: View {
             } else if app.isAdvertisement {
                 Image("badge-ad")
                     .scaleEffect(1.2)
+                    .accessibilityLabel(NSLocalizedString("This is an advertisement.", comment: ""))
             }
         }
         .contextMenu {

@@ -144,6 +144,7 @@ struct AppListView: View {
                             indexes: appList.activeScopeApps.keys.elements,
                             currentIndex: $selectedIndex
                         )
+                        .accessibilityHidden(true)
                     }
                 }
                 .onChange(of: selectedIndex) { index in
