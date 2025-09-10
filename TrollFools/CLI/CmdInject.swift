@@ -52,6 +52,6 @@ struct CmdInject: ParsableCommand {
         }
         injector.useWeakReference = weakReference
         injector.injectStrategy = fastInjection ? .fast : .lexicographic
-        try injector.inject(pluginURLs)
+        try injector.inject(pluginURLs, shouldPersist: false)
     }
 }

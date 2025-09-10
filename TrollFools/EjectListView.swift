@@ -149,6 +149,10 @@ struct EjectListView: View {
         .navigationTitle(NSLocalizedString("Plug-Ins", comment: ""))
         .animation(.easeOut, value: combines(
             ejectList.filter,
+            ejectList.isOkToEnableAll,
+            ejectList.isOkToDisableAll,
+            isEnablingAll,
+            isDisablingAll,
             isDeletingAll
         ))
         .background(Group {
@@ -334,7 +338,76 @@ struct EjectListView: View {
     }
 
     private func enableAll() {
+        let disabledPlugInURLs = ejectList.injectedPlugIns
+            .filter { !$0.isEnabled }
+            .map { $0.url }
 
+        var logFileURL: URL?
+
+        do {
+            let injector = try InjectorV3(ejectList.app.url)
+            logFileURL = injector.latestLogFileURL
+
+            if injector.appID.isEmpty {
+                injector.appID = ejectList.app.id
+            }
+
+            if injector.teamID.isEmpty {
+                injector.teamID = ejectList.app.teamID
+            }
+
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
+
+            let view = viewControllerHost.viewController?
+                .navigationController?.view
+
+            view?.isUserInteractionEnabled = false
+
+            isEnablingAll = true
+            isDisablingAll = false
+            isDeletingAll = false
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                defer {
+                    DispatchQueue.main.async {
+                        ejectList.app.reload()
+                        ejectList.reload()
+
+                        isEnablingAll = false
+                        isDisablingAll = false
+                        isDeletingAll = false
+
+                        view?.isUserInteractionEnabled = true
+                    }
+                }
+
+                do {
+                    try injector.inject(disabledPlugInURLs, shouldPersist: false)
+                } catch {
+                    DispatchQueue.main.async {
+                        DDLogError("\(error)", ddlog: InjectorV3.main.logger)
+
+                        var userInfo: [String: Any] = [
+                            NSLocalizedDescriptionKey: error.localizedDescription,
+                        ]
+
+                        if let logFileURL {
+                            userInfo[NSURLErrorKey] = logFileURL
+                        }
+
+                        let nsErr = NSError(domain: Constants.gErrorDomain, code: 0, userInfo: userInfo)
+
+                        lastError = nsErr
+                        isErrorOccurred = true
+                    }
+                }
+            }
+        } catch {
+            lastError = error
+            isErrorOccurred = true
+        }
     }
 
     private func disableAll() {
@@ -365,15 +438,20 @@ struct EjectListView: View {
 
             view?.isUserInteractionEnabled = false
 
+            isEnablingAll = false
+            isDisablingAll = !shouldDesist
             isDeletingAll = shouldDesist
 
-            DispatchQueue.global(qos: .userInteractive).async {
+            DispatchQueue.global(qos: .userInitiated).async {
                 defer {
                     DispatchQueue.main.async {
                         ejectList.app.reload()
                         ejectList.reload()
 
+                        isEnablingAll = false
+                        isDisablingAll = false
                         isDeletingAll = false
+
                         view?.isUserInteractionEnabled = true
                     }
                 }
@@ -413,7 +491,7 @@ struct EjectListView: View {
 
         isExportingAll = true
 
-        DispatchQueue.global(qos: .userInteractive).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             defer {
                 DispatchQueue.main.async {
                     isExportingAll = false

@@ -27,7 +27,7 @@ extension InjectorV3 {
 
     // MARK: - Instance Methods
 
-    func inject(_ assetURLs: [URL]) throws {
+    func inject(_ assetURLs: [URL], shouldPersist: Bool) throws {
         let preparedAssetURLs = try preprocessAssets(assetURLs)
 
         precondition(!preparedAssetURLs.isEmpty, "No asset to inject.")
@@ -39,7 +39,9 @@ extension InjectorV3 {
         try injectDylibsAndFrameworks(preparedAssetURLs
             .filter { $0.pathExtension.lowercased() == "dylib" || $0.pathExtension.lowercased() == "framework" })
 
-        try persist(assetURLs)
+        if shouldPersist {
+            try persist(assetURLs)
+        }
     }
 
     // MARK: - Private Methods

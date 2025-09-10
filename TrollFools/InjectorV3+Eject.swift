@@ -12,7 +12,19 @@ extension InjectorV3 {
     // MARK: - Instance Methods
 
     func ejectAll(shouldDesist: Bool) throws {
-        try eject(injectedAssetURLsInBundle(bundleURL), shouldDesist: shouldDesist)
+        var assetURLs: [URL]
+
+        assetURLs = injectedAssetURLsInBundle(bundleURL)
+        if !assetURLs.isEmpty {
+            try eject(assetURLs, shouldDesist: shouldDesist)
+        }
+
+        if shouldDesist {
+            assetURLs = persistedAssetURLs(id: appID)
+            if !assetURLs.isEmpty {
+                desist(assetURLs)
+            }
+        }
     }
 
     func eject(_ assetURLs: [URL], shouldDesist: Bool) throws {

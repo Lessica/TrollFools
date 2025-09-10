@@ -94,7 +94,7 @@ struct InjectView: View {
             viewControllerHost.viewController = viewController
         }
         .onAppear {
-            DispatchQueue.global(qos: .userInteractive).async {
+            DispatchQueue.global(qos: .userInitiated).async {
                 let result = inject()
 
                 DispatchQueue.main.async {
@@ -126,7 +126,7 @@ struct InjectView: View {
             injector.preferMainExecutable = preferMainExecutable
             injector.injectStrategy = injectStrategy
 
-            try injector.inject(urlList)
+            try injector.inject(urlList, shouldPersist: true)
             return .success(injector.latestLogFileURL)
 
         } catch {
