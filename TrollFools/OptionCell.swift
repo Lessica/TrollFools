@@ -12,25 +12,28 @@ struct OptionCell: View {
 
     var iconName: String {
         if #available(iOS 16, *) {
-            option == .attach ? "syringe" : "xmark.bin"
+            option == .attach ? "syringe" : "folder.badge.gear"
         } else {
-            option == .attach ? "tray.and.arrow.down" : "xmark.bin"
+            option == .attach ? "tray.and.arrow.down" : "folder.badge.gear"
         }
+    }
+
+    var tintColor: Color {
+        option == .attach ? .green : .accentColor
     }
 
     var body: some View {
         VStack(spacing: 12) {
             ZStack {
                 Image(systemName: iconName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 32, height: 32)
-                .foregroundColor(option == .attach
-                                 ? .accentColor : .red)
-                .padding(.all, 40)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+                    .foregroundColor(tintColor)
+                    .padding(.all, 40)
             }
             .background(
-                (option == .attach ? Color.accentColor : Color.red)
+                tintColor
                     .opacity(0.1)
                     .clipShape(RoundedRectangle(
                         cornerRadius: 10,
@@ -39,11 +42,10 @@ struct OptionCell: View {
             )
 
             Text(option == .attach
-                 ? NSLocalizedString("Inject", comment: "")
-                 : NSLocalizedString("Eject", comment: ""))
+                ? NSLocalizedString("Inject", comment: "")
+                : NSLocalizedString("Manage", comment: ""))
                 .font(.headline)
-                .foregroundColor(option == .attach
-                                 ? .accentColor : .red)
+                .foregroundColor(tintColor)
         }
     }
 }

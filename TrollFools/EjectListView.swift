@@ -129,7 +129,7 @@ struct EjectListView: View {
 
                     disableAllButton
                         .disabled(isDisablingAll)
-                        .foregroundColor(isDisablingAll ? .secondary : .orange)
+                        .foregroundColor(isDisablingAll ? .secondary : .accentColor)
                 }
 
                 Section {
