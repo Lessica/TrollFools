@@ -15,6 +15,8 @@ struct EjectListView: View {
     @StateObject var ejectList: EjectListModel
 
     @State var quickLookExport: URL?
+    @State var isEnablingAll = false
+    @State var isDisablingAll = false
     @State var isDeletingAll = false
     @State var isExportingAll = false
     @State var isErrorOccurred: Bool = false
@@ -121,6 +123,16 @@ struct EjectListView: View {
 
             if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
                 Section {
+                    enableAllButton
+                        .disabled(isEnablingAll)
+                        .foregroundColor(isEnablingAll ? .secondary : .accentColor)
+
+                    disableAllButton
+                        .disabled(isDisablingAll)
+                        .foregroundColor(isDisablingAll ? .secondary : .orange)
+                }
+
+                Section {
                     deleteAllButton
                         .disabled(isDeletingAll)
                         .foregroundColor(isDeletingAll ? .secondary : .red)
@@ -147,16 +159,60 @@ struct EjectListView: View {
         })
     }
 
+    var enableAllButton: some View {
+        Button {
+            enableAll()
+        } label: {
+            enableAllButtonLabel
+        }
+    }
+
+    var enableAllButtonLabel: some View {
+        HStack {
+            Label(NSLocalizedString("Enable All", comment: ""), systemImage: "square.stack.3d.up")
+
+            Spacer()
+
+            if isEnablingAll {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .transition(.opacity)
+            }
+        }
+    }
+
+    var disableAllButton: some View {
+        Button {
+            disableAll()
+        } label: {
+            disableAllButtonLabel
+        }
+    }
+
+    var disableAllButtonLabel: some View {
+        HStack {
+            Label(NSLocalizedString("Disable All", comment: ""), systemImage: "square.stack.3d.up.slash")
+
+            Spacer()
+
+            if isDisablingAll {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .transition(.opacity)
+            }
+        }
+    }
+
     var deleteAllButton: some View {
         if #available(iOS 15, *) {
             Button(role: .destructive) {
-                deleteAll()
+                deleteAll(shouldDesist: true)
             } label: {
                 deleteAllButtonLabel
             }
         } else {
             Button {
-                deleteAll()
+                deleteAll(shouldDesist: true)
             } label: {
                 deleteAllButtonLabel
             }
@@ -253,7 +309,7 @@ struct EjectListView: View {
             injector.preferMainExecutable = preferMainExecutable
             injector.injectStrategy = injectStrategy
 
-            try injector.eject(plugInURLsToRemove)
+            try injector.eject(plugInURLsToRemove, shouldDesist: true)
 
             ejectList.app.reload()
             ejectList.reload()
@@ -275,7 +331,15 @@ struct EjectListView: View {
         }
     }
 
-    private func deleteAll() {
+    private func enableAll() {
+
+    }
+
+    private func disableAll() {
+        deleteAll(shouldDesist: false)
+    }
+
+    private func deleteAll(shouldDesist: Bool) {
         var logFileURL: URL?
 
         do {
@@ -299,7 +363,7 @@ struct EjectListView: View {
 
             view?.isUserInteractionEnabled = false
 
-            isDeletingAll = true
+            isDeletingAll = shouldDesist
 
             DispatchQueue.global(qos: .userInteractive).async {
                 defer {
@@ -313,7 +377,7 @@ struct EjectListView: View {
                 }
 
                 do {
-                    try injector.ejectAll()
+                    try injector.ejectAll(shouldDesist: shouldDesist)
                 } catch {
                     DispatchQueue.main.async {
                         DDLogError("\(error)", ddlog: InjectorV3.main.logger)

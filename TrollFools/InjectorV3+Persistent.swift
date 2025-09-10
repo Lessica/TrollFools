@@ -15,7 +15,19 @@ extension InjectorV3 {
         }
     }
 
-    func desist(_ assetURLs: [URL]) throws {
+    func persistIfNecessary(_ assetURLs: [URL]) {
+        var urlsToPersist = [URL]()
+        let fileManager = FileManager.default
+        for filteredURL in filteredURLs(assetURLs) {
+            let destURL = persistentPlugInsDirectoryURL.appendingPathComponent(filteredURL.lastPathComponent)
+            if !fileManager.fileExists(atPath: destURL.path) {
+                urlsToPersist.append(filteredURL)
+            }
+        }
+        try? persist(urlsToPersist)
+    }
+
+    func desist(_ assetURLs: [URL]) {
         for filteredURL in filteredURLs(assetURLs) {
             let destURL = persistentPlugInsDirectoryURL.appendingPathComponent(filteredURL.lastPathComponent)
             try? cmdRemove(destURL, recursively: checkIsDirectory(destURL))

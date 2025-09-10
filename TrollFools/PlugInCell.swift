@@ -17,14 +17,15 @@ private let gDateFormatter: DateFormatter = {
 
 struct PlugInCell: View {
     @EnvironmentObject var ejectList: EjectListModel
-
     @Binding var quickLookExport: URL?
+    @State var isEnabled: Bool = true
 
     let plugIn: InjectedPlugIn
 
     init(_ plugIn: InjectedPlugIn, quickLookExport: Binding<URL?>) {
         self.plugIn = plugIn
         _quickLookExport = quickLookExport
+        isEnabled = plugIn.isEnabled
     }
 
     @available(iOS 15, *)
@@ -37,39 +38,22 @@ struct PlugInCell: View {
         return attributedString
     }
 
-    var iconName: String {
-        let pathExt = plugIn.url.pathExtension.lowercased()
-        if pathExt == "bundle" {
-            return "archivebox"
-        }
-        if pathExt == "dylib" {
-            return "bandage"
-        }
-        if pathExt == "framework" {
-            return "shippingbox"
-        }
-        return "puzzlepiece"
-    }
-
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: iconName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundColor(.accentColor)
-
+        Toggle(isOn: $isEnabled) {
             VStack(alignment: .leading) {
                 if #available(iOS 15, *) {
                     Text(highlightedName)
                         .font(.headline)
+                        .lineLimit(2)
                 } else {
                     Text(plugIn.url.lastPathComponent)
                         .font(.headline)
+                        .lineLimit(2)
                 }
 
                 Text(gDateFormatter.string(from: plugIn.createdAt))
                     .font(.subheadline)
+                    .lineLimit(1)
             }
         }
         .contextMenu {
