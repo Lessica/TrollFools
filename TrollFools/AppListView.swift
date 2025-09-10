@@ -51,14 +51,15 @@ struct AppListView: View {
 
         let appStringFormat = """
         %@ %@
-        %@ © 2024-2025 %@
+        %@ © 2024-%d %@
         """
 
         return String(
             format: appStringFormat,
             appNameString, appVersionString,
             NSLocalizedString("Copyright", comment: ""),
-            NSLocalizedString("Lessica, iosdump and other contributors", comment: "")
+            Calendar.current.component(.year, from: Date()),
+            NSLocalizedString("Lessica, huami1314, iosdump and other contributors", comment: "")
         )
     }
 
