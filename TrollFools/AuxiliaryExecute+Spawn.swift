@@ -346,8 +346,9 @@ public extension AuxiliaryExecute {
         let wallTimeout = DispatchTime.now() + (
             TimeInterval(exactly: realTimeout) ?? maxTimeoutValue
         )
+
         var status: Int32 = 0
-        var wait: pid_t = 0
+        var waitResult: Int32 = 0
         var isTimeout = false
 
         let timerSource = DispatchSource.makeTimerSource(flags: [], queue: processControlQueue)
@@ -358,7 +359,9 @@ public extension AuxiliaryExecute {
 
         let processSource = DispatchSource.makeProcessSource(identifier: pid, eventMask: .exit, queue: processControlQueue)
         processSource.setEventHandler {
-            wait = waitpid(pid, &status, 0)
+            repeat {
+                waitResult = waitpid(pid, &status, 0)
+            } while waitResult == -1 && errno == EINTR
 
             processSource.cancel()
             timerSource.cancel()
@@ -388,7 +391,7 @@ public extension AuxiliaryExecute {
             let receipt = ExecuteReceipt(
                 terminationReason: terminationReason,
                 pid: Int(exactly: pid) ?? -1,
-                wait: Int(exactly: wait) ?? -1,
+                wait: Int(exactly: waitResult) ?? -1,
                 error: isTimeout ? .timeout : nil,
                 stdout: stdoutStr,
                 stderr: stderrStr
