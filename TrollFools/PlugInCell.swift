@@ -84,6 +84,9 @@ struct PlugInCell: View {
         .onAppear {
             isEnabled = plugIn.isEnabled
         }
+        .onChange(of: isEnabled) { value in
+            ejectList.togglePlugIn(plugIn, isEnabled: value)
+        }
         .contextMenu {
             if #available(iOS 16.4, *) {
                 ShareLink(item: plugIn.url) {

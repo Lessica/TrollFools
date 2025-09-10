@@ -18,6 +18,8 @@ final class EjectListModel: ObservableObject {
     @Published var isOkToEnableAll = false
     @Published var isOkToDisableAll = false
 
+    @Published var processingPlugIn: InjectedPlugIn?
+
     private var cancellables = Set<AnyCancellable>()
 
     init(_ app: App) {
@@ -58,7 +60,14 @@ final class EjectListModel: ObservableObject {
         }
 
         self.filteredPlugIns = filteredPlugIns
-        self.isOkToEnableAll = filteredPlugIns.contains { !$0.isEnabled }
-        self.isOkToDisableAll = filteredPlugIns.contains { $0.isEnabled }
+        isOkToEnableAll = filteredPlugIns.contains { !$0.isEnabled }
+        isOkToDisableAll = filteredPlugIns.contains { $0.isEnabled }
+    }
+
+    func togglePlugIn(_ plugIn: InjectedPlugIn, isEnabled: Bool) {
+        guard plugIn.isEnabled != isEnabled else {
+            return
+        }
+        processingPlugIn = plugIn
     }
 }

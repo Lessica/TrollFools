@@ -163,6 +163,11 @@ struct EjectListView: View {
                 )
             } label: { }
         })
+        .onChange(of: ejectList.processingPlugIn) { plugIn in
+            if let plugIn {
+                togglePlugIn(plugIn)
+            }
+        }
     }
 
     var enableAllButton: some View {
@@ -316,6 +321,53 @@ struct EjectListView: View {
             injector.injectStrategy = injectStrategy
 
             try injector.eject(plugInURLsToRemove, shouldDesist: true)
+
+            ejectList.app.reload()
+            ejectList.reload()
+        } catch {
+            DDLogError("\(error)", ddlog: InjectorV3.main.logger)
+
+            var userInfo: [String: Any] = [
+                NSLocalizedDescriptionKey: error.localizedDescription,
+            ]
+
+            if let logFileURL {
+                userInfo[NSURLErrorKey] = logFileURL
+            }
+
+            let nsErr = NSError(domain: Constants.gErrorDomain, code: 0, userInfo: userInfo)
+
+            lastError = nsErr
+            isErrorOccurred = true
+        }
+    }
+
+    private func togglePlugIn(_ plugIn: InjectedPlugIn) {
+        var logFileURL: URL?
+
+        do {
+            let plugInURLsToProcess = [plugIn.url]
+
+            let injector = try InjectorV3(ejectList.app.url)
+            logFileURL = injector.latestLogFileURL
+
+            if injector.appID.isEmpty {
+                injector.appID = ejectList.app.id
+            }
+
+            if injector.teamID.isEmpty {
+                injector.teamID = ejectList.app.teamID
+            }
+
+            injector.useWeakReference = useWeakReference
+            injector.preferMainExecutable = preferMainExecutable
+            injector.injectStrategy = injectStrategy
+
+            if plugIn.isEnabled {
+                try injector.eject(plugInURLsToProcess, shouldDesist: false)
+            } else {
+                try injector.inject(plugInURLsToProcess, shouldPersist: false)
+            }
 
             ejectList.app.reload()
             ejectList.reload()

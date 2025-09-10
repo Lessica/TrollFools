@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InjectedPlugIn: Identifiable, Hashable {
+struct InjectedPlugIn: Equatable, Identifiable, Hashable {
     let id: String
     let url: URL
     let createdAt: Date

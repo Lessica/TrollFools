@@ -40,7 +40,7 @@ extension InjectorV3 {
             .filter { $0.pathExtension.lowercased() == "dylib" || $0.pathExtension.lowercased() == "framework" })
 
         if shouldPersist {
-            try persist(assetURLs)
+            try persist(preparedAssetURLs)
         }
     }
 
