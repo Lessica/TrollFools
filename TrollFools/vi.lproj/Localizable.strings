@@ -17,6 +17,9 @@
 "Advertisement" = "Advertisement";
 
 /* TODO */
+"After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them." = "After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them.";
+
+/* TODO */
 "All" = "All";
 
 /* TODO */

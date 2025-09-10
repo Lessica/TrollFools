@@ -17,6 +17,9 @@
 "Advertisement" = "广告";
 
 /* No comment provided by engineer. */
+"After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them." = "App 更新后，所有已注入的插件都会被禁用。你需要手动重新启用它们。";
+
+/* No comment provided by engineer. */
 "All" = "所有应用";
 
 /* No comment provided by engineer. */

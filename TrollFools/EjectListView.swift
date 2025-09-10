@@ -119,6 +119,8 @@ struct EjectListView: View {
                 paddedHeaderFooterText(ejectList.filteredPlugIns.isEmpty
                     ? NSLocalizedString("No Injected Plug-Ins", comment: "")
                     : NSLocalizedString("Injected Plug-Ins", comment: ""))
+            } footer: {
+                paddedHeaderFooterText(NSLocalizedString("After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them.", comment: ""))
             }
 
             if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {

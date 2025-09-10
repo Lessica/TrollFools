@@ -17,6 +17,9 @@
 "Advertisement" = "Advertisement";
 
 /* No comment provided by engineer. */
+"After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them." = "After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them.";
+
+/* No comment provided by engineer. */
 "All" = "All";
 
 /* No comment provided by engineer. */
