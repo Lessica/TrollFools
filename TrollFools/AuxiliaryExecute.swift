@@ -35,6 +35,7 @@ public class AuxiliaryExecute {
     /// when reading from file pipe, must called from async queue
     internal static let pipeControlQueue = DispatchQueue(
         label: "wiki.qaq.AuxiliaryExecute.pipeRead",
+        qos: .userInteractive,
         attributes: .concurrent
     )
 
@@ -42,6 +43,7 @@ public class AuxiliaryExecute {
     /// we are making this queue serial queue so won't called at the same time when timeout
     internal static let processControlQueue = DispatchQueue(
         label: "wiki.qaq.AuxiliaryExecute.processControl",
+        qos: .userInteractive,
         attributes: []
     )
 
