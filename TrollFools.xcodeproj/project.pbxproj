@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		192F2BE62E73339A0054FB6C /* UnsupportedAppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F2BE52E7333960054FB6C /* UnsupportedAppListView.swift */; };
-		199A9C5B2E72C5D900407E7B /* RenameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199A9C5A2E72C5D600407E7B /* RenameManager.swift */; };
 		6124A06D2CD2322400C52253 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A06C2CD2322400C52253 /* App.swift */; };
 		6124A06F2CD2324200C52253 /* AppListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A06E2CD2324200C52253 /* AppListModel.swift */; };
 		6124A0712CD2326500C52253 /* FilterOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124A0702CD2326500C52253 /* FilterOptions.swift */; };
@@ -144,8 +142,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		192F2BE52E7333960054FB6C /* UnsupportedAppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedAppListView.swift; sourceTree = "<group>"; };
-		199A9C5A2E72C5D600407E7B /* RenameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameManager.swift; sourceTree = "<group>"; };
 		6124A06C2CD2322400C52253 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		6124A06E2CD2324200C52253 /* AppListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListModel.swift; sourceTree = "<group>"; };
 		6124A0702CD2326500C52253 /* FilterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptions.swift; sourceTree = "<group>"; };
@@ -282,7 +278,6 @@
 			children = (
 				6124A06C2CD2322400C52253 /* App.swift */,
 				CCD3FCA92E7033A300AEF7F0 /* App+Ads.swift */,
-				192F2BE52E7333960054FB6C /* UnsupportedAppListView.swift */,
 				6124A06E2CD2324200C52253 /* AppListModel.swift */,
 				614C0C672D7C72AC007E9184 /* AppListSearchModel.swift */,
 				6124A0802CD233DA00C52253 /* EjectListModel.swift */,
@@ -441,7 +436,6 @@
 			isa = PBXGroup;
 			children = (
 				CC60FBEB2CC50F5A00A6D21A /* BartyCrouch.swift */,
-				199A9C5A2E72C5D600407E7B /* RenameManager.swift */,
 				CCF470592C4A4649008D8197 /* TrollFoolsApp.swift */,
 				6124A0822CD2345300C52253 /* Core */,
 				6124A0722CD2327E00C52253 /* View */,
@@ -663,7 +657,6 @@
 				6124A06D2CD2322400C52253 /* App.swift in Sources */,
 				CC15490E2C4B80AF00A4173E /* EjectListView.swift in Sources */,
 				CC60FBEC2CC50F5A00A6D21A /* BartyCrouch.swift in Sources */,
-				192F2BE62E73339A0054FB6C /* UnsupportedAppListView.swift in Sources */,
 				61EFA3772D30403900159442 /* InjectorV3+Metadata.swift in Sources */,
 				CCD3FCAA2E7033A700AEF7F0 /* App+Ads.swift in Sources */,
 				6124A0762CD232C600C52253 /* Option.swift in Sources */,
@@ -686,7 +679,6 @@
 				CC19E4BB2C561D7300E0F1B5 /* SettingsView.swift in Sources */,
 				61EFA36F2D30338B00159442 /* InjectorV3+Bundle.swift in Sources */,
 				61EFA3642D30267E00159442 /* InjectorV3.swift in Sources */,
-				199A9C5B2E72C5D900407E7B /* RenameManager.swift in Sources */,
 				61743CDA2D882CE80032696C /* PlaceholderView.swift in Sources */,
 				61C7D54C2D82DBAD0064D626 /* DisclaimerView.swift in Sources */,
 				6124A07F2CD233BA00C52253 /* PlugInCell.swift in Sources */,
