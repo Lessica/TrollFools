@@ -110,13 +110,17 @@ struct AppListView: View {
                 else {
                     return
                 }
+
                 let urlIdent = URLIdentifiable(url: preprocessURL(url))
-                if !isWarningHidden && ext == "deb" {
-                    temporaryOpenedURL = urlIdent
-                    isWarningPresented = true
-                } else {
-                    selectorOpenedURL = urlIdent
+                if #available(iOS 15, *) {
+                    if !isWarningHidden && ext == "deb" {
+                        temporaryOpenedURL = urlIdent
+                        isWarningPresented = true
+                        return
+                    }
                 }
+
+                selectorOpenedURL = urlIdent
             }
             .onAppear {
                 if Double.random(in: 0 ..< 1) < 0.1 {

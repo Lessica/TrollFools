@@ -144,13 +144,14 @@ struct OptionView: View {
             result in
             switch result {
             case let .success(theSuccess):
-                if !isWarningHidden && theSuccess.contains(where: { $0.pathExtension.lowercased() == "deb" }) {
-                    temporaryResult = result
-                    isWarningPresented = true
-                } else {
-                    importerResult = result
-                    isImporterSelected = true
+                if #available(iOS 15, *) {
+                    if !isWarningHidden && theSuccess.contains(where: { $0.pathExtension.lowercased() == "deb" }) {
+                        temporaryResult = result
+                        isWarningPresented = true
+                        return
+                    }
                 }
+                fallthrough
             case .failure:
                 importerResult = result
                 isImporterSelected = true

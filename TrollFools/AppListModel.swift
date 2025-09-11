@@ -63,7 +63,7 @@ final class AppListModel: ObservableObject {
             false
         }
     }()
-    private let filzaURL = URL(string: "filza://")
+    private let filzaURL = URL(string: "filza://view")
 
     @Published var isRebuildNeeded: Bool = false
 
@@ -206,7 +206,14 @@ extension AppListModel {
         guard let filzaURL else {
             return
         }
-        let fileURL = filzaURL.appendingPathComponent(url.path)
+
+        let fileURL: URL
+        if #available(iOS 16, *) {
+            fileURL = filzaURL.appending(path: url.path)
+        } else {
+            fileURL = URL(string: filzaURL.absoluteString + (url.path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""))!
+        }
+
         UIApplication.shared.open(fileURL)
     }
 
