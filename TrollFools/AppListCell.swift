@@ -105,6 +105,7 @@ struct AppListCell: View {
                 }
             } else if app.isAdvertisement {
                 Image("badge-ad")
+                    .foregroundColor(.secondary)
                     .scaleEffect(1.2)
                     .accessibilityLabel(NSLocalizedString("This is an advertisement.", comment: ""))
             }

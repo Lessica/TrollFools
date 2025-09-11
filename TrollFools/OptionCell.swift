@@ -24,7 +24,7 @@ struct OptionCell: View {
     }
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
             ZStack {
                 Image(systemName: iconName)
                     .resizable()
@@ -33,14 +33,6 @@ struct OptionCell: View {
                     .foregroundColor(tintColor)
                     .padding(.all, 40)
                     .accessibilityHidden(true)
-
-                if option == .detach, detachCount > 0 {
-                    Text("\(detachCount)")
-                        .font(.footnote)
-                        .foregroundColor(tintColor)
-                        .offset(x: -2.5, y: 3)
-                        .accessibilityHidden(true)
-                }
             }
             .background(
                 tintColor
@@ -51,12 +43,29 @@ struct OptionCell: View {
                     ))
             )
 
-            Text(option == .attach
-                ? NSLocalizedString("Inject", comment: "")
-                : NSLocalizedString("Manage", comment: ""))
-                .font(.headline)
-                .foregroundColor(tintColor)
-                .accessibilityHidden(true)
+            HStack {
+                Text(option == .attach
+                    ? NSLocalizedString("Inject", comment: "")
+                    : NSLocalizedString("Manage", comment: ""))
+                    .font(.headline)
+                    .foregroundColor(tintColor)
+                    .padding(.vertical, 12)
+                    .accessibilityHidden(true)
+
+                if option == .detach, detachCount > 0 {
+                    ZStack {
+                        Text("\(min(detachCount, 99))")
+                            .font(.footnote)
+                            .foregroundColor(tintColor)
+                            .padding(6)
+                            .accessibilityHidden(true)
+                    }
+                    .background(
+                        Circle()
+                            .fill(tintColor.opacity(0.1))
+                    )
+                }
+            }
         }
     }
 }
