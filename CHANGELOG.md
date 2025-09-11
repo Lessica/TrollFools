@@ -1,67 +1,45 @@
 # Changelog
 
-## 4.1 (2025-09-11)
+## 4.2 (2025-09-12)
 
-本次版本聚焦“可见性与交互优化、稳定性提升与本地化完善”。以下为按模块归纳的实际变更：
-
-### 新增
-
-- 可见性：
-  - 选项视图（Options）显示已安装插件数量，信息更直观。
-  - 应用列表为存在“已禁用插件”的 App 增加徽标标记（Badge），便于快速识别。
-
-### 变更
-
-- 交互与安全性：
-  - 全部推出（Eject All）新增“二次确认”流程，降低误操作风险。
+本次版本为一次“兼容性与结构优化”小步更新，核心聚焦：旧系统适配（iOS 14 列表兼容）、徽标逻辑精细化、通用结构/代码整理与本地化补充。
 
 ### 修复
 
-- 稳定性与性能：
-  - 调整子进程执行优先级/调度策略（spawn priority），改善响应性并降低卡顿概率。
+- 兼容性：修复在 iOS 14 上包含“动态数量 Section”的列表（List）组件渲染/刷新异常问题，确保分段增减时 UI 与交互稳定。
+
+### 优化 / 重构
+
+- 徽标：优化禁用插件 App 的徽标判断与展示逻辑，减少重复计算并提升视觉一致性。
+- 通用结构：对应用列表、插件管理、注入/卸载流程、设置视图等多个模块进行内部重构（不改变外部行为）以提升可维护性。
 
 ### 本地化
 
-- 更新本地化词条，覆盖“插件计数展示、禁用徽标、全部推出确认”等新增与交互变更。
-
-### 文档与合规
-
-- 更新 `LICENSE` 文本。
+- 补充/更新越南语（vi）词条，保持与最新交互及文案一致。
 
 ### 工程
 
-- 本地化配置维护（`.bartycrouch.toml`），与字符串更新保持一致。
+- 代码清理与结构对齐（未引入破坏性改动），为后续特性迭代准备。
 
 ------
 
-## 4.1 (2025-09-11) [EN]
+## 4.2 (2025-09-12) [EN]
 
-This release focuses on visibility and interaction polish, stability improvements, and localization updates. The changes are summarized by module below:
-
-### Added
-
-- Visibility:
-  - Show the number of installed plugins in the Options view for clearer status at a glance.
-  - Badge apps that have disabled plugins in the app list to make them easy to identify.
-
-### Changed
-
-- Interaction & Safety:
-  - Add a confirmation step to “Eject All” to reduce accidental bulk actions.
+This is a focused compatibility & structural refinement update: iOS 14 dynamic list stability, refined badge logic, internal refactors, and a localization supplement.
 
 ### Fixed
 
-- Stability & Performance:
-  - Adjust child-process execution priority/scheduling (spawn priority) to improve responsiveness and reduce stutter.
+- Compatibility: Resolve rendering/refresh issues on iOS 14 when a List contains a dynamic number of Sections, ensuring stable UI and interaction when sections are added or removed.
+
+### Optimization / Refactor
+
+- Badging: Refine logic for marking apps with disabled plugins to reduce redundant evaluation and keep visuals consistent.
+- Internal structure: Non‑behavioral refactors across app list, plugin management, inject/eject flows, settings view, and related persistence modules to improve maintainability.
 
 ### Localization
 
-- Update strings covering plugin count, disabled-plugin badge, and the confirmation for “Eject All”.
-
-### Docs & Compliance
-
-- Update the `LICENSE` text.
+- Update / supplement Vietnamese (vi) strings to align with current UI and interactions.
 
 ### Engineering
 
-- Maintain localization configuration (`.bartycrouch.toml`) in sync with string updates.
+- Code cleanup and structural alignment (no breaking changes) preparing groundwork for upcoming features.
