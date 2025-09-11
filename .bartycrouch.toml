@@ -1,35 +1,17 @@
 [update]
-tasks = ["interfaces", "code", "transform", "normalize"]
-
-[update.interfaces]
-paths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
-defaultToBase = true
-ignoreEmptyStrings = false
-unstripped = false
-ignoreKeys = ["#bartycrouch-ignore!", "#bc-ignore!", "#i!"]
+tasks = ["code", "normalize"]
 
 [update.code]
 codePaths = ["."]
 subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
 localizablePaths = ["TrollFools"]
 defaultToKeys = true
-additive = false
+additive = true
 customFunction = "LocalizedStringResource"
 unstripped = false
 plistArguments = true
 ignoreKeys = ["#bartycrouch-ignore!", "#bc-ignore!", "#i!"]
 overrideComments = false
-
-[update.transform]
-codePaths = ["TrollFools"]
-subpathsToIgnore = [".git", "carthage", "pods", "build", ".build", "docs"]
-localizablePaths = ["TrollFools"]
-transformer = "foundation"
-supportedLanguageEnumPath = "."
-typeName = "BartyCrouch"
-translateMethodName = "translate"
-separateWithEmptyLine = true
 
 [update.normalize]
 paths = ["TrollFools"]

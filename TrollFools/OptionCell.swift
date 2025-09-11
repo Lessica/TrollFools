@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OptionCell: View {
     let option: Option
+    let detachCount: Int
 
     var iconName: String {
         if #available(iOS 16, *) {
@@ -31,6 +32,15 @@ struct OptionCell: View {
                     .frame(width: 32, height: 32)
                     .foregroundColor(tintColor)
                     .padding(.all, 40)
+                    .accessibilityHidden(true)
+
+                if option == .detach, detachCount > 0 {
+                    Text("\(detachCount)")
+                        .font(.footnote)
+                        .foregroundColor(tintColor)
+                        .offset(x: -2.5, y: 3)
+                        .accessibilityHidden(true)
+                }
             }
             .background(
                 tintColor
@@ -46,6 +56,7 @@ struct OptionCell: View {
                 : NSLocalizedString("Manage", comment: ""))
                 .font(.headline)
                 .foregroundColor(tintColor)
+                .accessibilityHidden(true)
         }
     }
 }

@@ -167,6 +167,9 @@
 "Manage" = "Manage";
 
 /* TODO */
+"Manage %d Plug-Ins" = "Manage %d Plug-Ins";
+
+/* TODO */
 "New version %@ available!" = "New version %@ available!";
 
 /* No comment provided by engineer. */

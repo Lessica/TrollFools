@@ -167,6 +167,9 @@
 "Manage" = "管理";
 
 /* No comment provided by engineer. */
+"Manage %d Plug-Ins" = "管理 %d 个插件";
+
+/* No comment provided by engineer. */
 "New version %@ available!" = "有新版本 %@ 可用！";
 
 /* No comment provided by engineer. */
