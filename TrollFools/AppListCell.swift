@@ -58,15 +58,18 @@ struct AppListCell: View {
                             .lineLimit(1)
                     }
 
-                    if app.isInjected {
-                        Image(systemName: "bandage")
+                    if app.isInjected || app.hasPersistedAssets {
+                        Image(systemName: app.isInjected ? "bandage" : "exclamationmark.triangle")
                             .font(.subheadline)
                             .foregroundColor(.orange)
-                            .accessibilityLabel(NSLocalizedString("Patched", comment: ""))
+                            .accessibilityLabel(app.isInjected ? NSLocalizedString("Patched", comment: "") : NSLocalizedString("Includes Disabled PlugIns", comment: ""))
                             .transition(.opacity)
                     }
                 }
-                .animation(.easeOut, value: app.isInjected)
+                .animation(.easeOut, value: combines(
+                    app.isInjected,
+                    app.hasPersistedAssets
+                ))
 
                 if #available(iOS 15, *) {
                     Text(highlightedId)

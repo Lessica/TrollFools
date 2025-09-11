@@ -18,9 +18,10 @@ final class App: Identifiable, ObservableObject {
     let version: String?
     let isAdvertisement: Bool
 
-    @Published var isDetached: Bool = false
+    @Published var isDetached: Bool
     @Published var isAllowedToAttachOrDetach: Bool
-    @Published var isInjected: Bool = false
+    @Published var isInjected: Bool
+    @Published var hasPersistedAssets: Bool
 
     lazy var icon: UIImage? = UIImage._applicationIconImage(forBundleIdentifier: id, format: 0, scale: 3.0)
     var alternateIcon: UIImage?
@@ -54,6 +55,7 @@ final class App: Identifiable, ObservableObject {
         self.isDetached = InjectorV3.main.isMetadataDetachedInBundle(url)
         self.isAllowedToAttachOrDetach = type == "User" && InjectorV3.main.isAllowedToAttachOrDetachMetadataInBundle(url)
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
+        self.hasPersistedAssets = InjectorV3.main.hasPersistedAssets(id: id)
         self.alternateIcon = alternateIcon
         self.isAdvertisement = isAdvertisement
         self.latinName = name
@@ -85,5 +87,6 @@ final class App: Identifiable, ObservableObject {
 
     private func reloadInjectedStatus() {
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
+        self.hasPersistedAssets = InjectorV3.main.hasPersistedAssets(id: id)
     }
 }

@@ -116,10 +116,13 @@
 "Full-Fledged Automation Framework for TrollStore." = "适用于 TrollStore 的全功能自动化框架。";
 
 /* No comment provided by engineer. */
-"Hide" = "Hide";
+"Hide" = "隐藏";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
+
+/* No comment provided by engineer. */
+"Includes Disabled PlugIns" = "包含已禁用的插件";
 
 /* No comment provided by engineer. */
 "Inject" = "注入";

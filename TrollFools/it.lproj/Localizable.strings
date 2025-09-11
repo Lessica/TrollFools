@@ -121,6 +121,9 @@
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Se non sai cosa significano queste opzioni, non cambiarle.";
 
+/* TODO */
+"Includes Disabled PlugIns" = "Includes Disabled PlugIns";
+
 /* No comment provided by engineer. */
 "Inject" = "Inietta";
 

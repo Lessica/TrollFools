@@ -127,7 +127,7 @@ final class AppListModel: ObservableObject {
         }
 
         if filter.showPatchedOnly {
-            filteredApplications = filteredApplications.filter { $0.isInjected }
+            filteredApplications = filteredApplications.filter { $0.isInjected || $0.hasPersistedAssets }
         }
 
         switch activeScope {

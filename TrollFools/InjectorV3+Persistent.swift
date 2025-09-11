@@ -40,9 +40,17 @@ extension InjectorV3 {
         guard let contents = try? FileManager.default.contentsOfDirectory(atPath: base.path) else {
             return []
         }
-        return contents
+        return filteredURLs(contents
             .sorted { $0.localizedStandardCompare($1) == .orderedAscending }
-            .map { base.appendingPathComponent($0) }
+            .map { base.appendingPathComponent($0) })
+    }
+
+    func hasPersistedAssets(id: String) -> Bool {
+        let base = Self.persistentPlugInsRootURL.appendingPathComponent(id, isDirectory: true)
+        guard let contents = try? FileManager.default.contentsOfDirectory(atPath: base.path) else {
+            return false
+        }
+        return !filteredURLs(contents.map { base.appendingPathComponent($0) }).isEmpty
     }
 
     fileprivate func filteredURLs(_ assetURLs: [URL]) -> [URL] {
