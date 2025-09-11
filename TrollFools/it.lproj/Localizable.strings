@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "E %d più non supportate dalle applicazioni.";
 
+/* TODO */
+"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Are you sure you want to eject all plug-ins? This action cannot be undone.";
+
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Portiamo indietro il più avanzato strumento di analisi di sistema e della sicurezza.";
 

@@ -19,8 +19,10 @@ struct EjectListView: View {
     @State var isDisablingAll = false
     @State var isDeletingAll = false
     @State var isExportingAll = false
-    @State var isErrorOccurred: Bool = false
+    @State var isErrorOccurred = false
     @State var lastError: Error?
+
+    @State var isWarningPresented = false
 
     @StateObject var viewControllerHost = ViewControllerHost()
 
@@ -36,6 +38,28 @@ struct EjectListView: View {
     }
 
     var body: some View {
+        if #available(iOS 15, *) {
+            content
+                .alert(NSLocalizedString("Eject All", comment: ""), isPresented: $isWarningPresented) {
+                    Button(role: .destructive) {
+                        deleteAll(shouldDesist: true)
+                    } label: {
+                        Text(NSLocalizedString("Confirm", comment: ""))
+                    }
+                    Button(role: .cancel) {
+                        isWarningPresented = false
+                    } label: {
+                        Text(NSLocalizedString("Cancel", comment: ""))
+                    }
+                } message: {
+                    Text(NSLocalizedString("Are you sure you want to eject all plug-ins? This action cannot be undone.", comment: ""))
+                }
+        } else {
+            content
+        }
+    }
+
+    var content: some View {
         refreshableListView
             .toolbar { toolbarContent }
             .animation(.easeOut, value: isExportingAll)
@@ -217,7 +241,7 @@ struct EjectListView: View {
     var deleteAllButton: some View {
         if #available(iOS 15, *) {
             Button(role: .destructive) {
-                deleteAll(shouldDesist: true)
+                isWarningPresented = true
             } label: {
                 deleteAllButtonLabel
             }
