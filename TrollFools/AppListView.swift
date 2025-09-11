@@ -215,7 +215,7 @@ struct AppListView: View {
             }
             .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17, .v18)) { viewController in
                 if searchViewModel.searchController == nil {
-                    viewController.navigationItem.hidesSearchBarWhenScrolling = true
+                    viewController.navigationItem.hidesSearchBarWhenScrolling = false
                     viewController.navigationItem.searchController = {
                         let searchController = UISearchController(searchResultsController: nil)
                         searchController.searchResultsUpdater = searchViewModel
