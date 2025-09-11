@@ -26,7 +26,6 @@ struct AppListView: View {
     @State var temporaryOpenedURL: URLIdentifiable? = nil
 
     @State var latestVersionString: String?
-    @State private var isUnsupportedSheetPresented = false
 
     @AppStorage("isAdvertisementHiddenV2")
     var isAdvertisementHidden: Bool = false
@@ -123,8 +122,7 @@ struct AppListView: View {
                 if Double.random(in: 0 ..< 1) < 0.1 {
                     isAdvertisementHidden = false
                 }
-            }
-                /*
+
                 CheckUpdateManager.shared.checkUpdateIfNeeded { latestVersion, _ in
                     DispatchQueue.main.async {
                         withAnimation {
@@ -132,7 +130,7 @@ struct AppListView: View {
                         }
                     }
                 }
-                 */
+            }
     }
 
     var styledNavigationView: some View {
@@ -172,10 +170,6 @@ struct AppListView: View {
             if !appList.isSelectorMode {
                 PlaceholderView()
             }
-        }
-        
-        .sheet(isPresented: $isUnsupportedSheetPresented) {
-               UnsupportedAppListView(unsupportedApps: appList.unsupportedApps, isPresented: $isUnsupportedSheetPresented)
         }
     }
 
@@ -305,13 +299,13 @@ struct AppListView: View {
             else if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
                 unsupportedSection
             }
-            /*
+
             if #available(iOS 15, *) {
                 if shouldShowAdvertisement {
                     advertisementSection
                 }
             }
-             */
+
             appSections
         }
     }
@@ -439,11 +433,7 @@ struct AppListView: View {
     var unsupportedSection: some View {
         Section {
         } footer: {
-            Button {
-                isUnsupportedSheetPresented = true
-            } label: {
-                paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-            }
+            paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
         }
         .textCase(.none)
         .transition(.opacity)

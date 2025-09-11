@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "E %d più non supportate dalle applicazioni.";
 
+/* TODO */
+"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Are you sure you want to eject all plug-ins? This action cannot be undone.";
+
 /* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Portiamo indietro il più avanzato strumento di analisi di sistema e della sicurezza.";
 
@@ -121,6 +124,9 @@
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Se non sai cosa significano queste opzioni, non cambiarle.";
 
+/* TODO */
+"Includes Disabled PlugIns" = "Includes Disabled PlugIns";
+
 /* No comment provided by engineer. */
 "Inject" = "Inietta";
 
@@ -159,6 +165,9 @@
 
 /* TODO */
 "Manage" = "Manage";
+
+/* TODO */
+"Manage %d Plug-Ins" = "Manage %d Plug-Ins";
 
 /* TODO */
 "New version %@ available!" = "New version %@ available!";
@@ -288,35 +297,3 @@
 
 /* TODO */
 "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.";
-
-/* No comment provided by engineer. */
-"Rename" = "Rinomina";
-
-/* No comment provided by engineer. */
-"Replace" = "Sostituisci";
-
-/* No comment provided by engineer. */
-"Custom Name" = "Nome personalizzato";
-
-/* No comment provided by engineer. */
-"Enter new name" = "Inserisci un nuovo nome";
-
-/* No comment provided by engineer. */
-"Leave it empty to restore the original name." = "Lascia vuoto per ripristinare il nome originale.";
-
-/* No comment provided by engineer. */
-"Cancel" = "Annulla";
-
-/* No comment provided by engineer. */
-"Save" = "Salva";
-
-/* For the accessibility label on the Manage button */
-"Manage %d Plug-Ins" = "Gestisci %d plugin";
-
-/* For the confirmation alert when ejecting all plugins */
-"Eject All" = "Espelli tutto";
-"Confirm" = "Conferma";
-"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Sei sicuro di voler espellere tutti i plugin? Questa azione non può essere annullata.";
-
-/* For the badge on apps with only disabled plugins */
-"Includes Disabled PlugIns" = "Include plugin disabilitati";

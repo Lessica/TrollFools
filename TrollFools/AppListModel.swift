@@ -54,7 +54,6 @@ final class AppListModel: ObservableObject {
     @Published var activeScopeApps: OrderedDictionary<String, [App]> = [:]
 
     @Published var unsupportedCount: Int = 0
-    @Published var unsupportedApps: [App] = []
 
     lazy var isFilzaInstalled: Bool = {
         if let filzaURL {
@@ -106,10 +105,9 @@ final class AppListModel: ObservableObject {
     }
 
     func reload() {
-        let (supportedApps, unsupportedApps) = Self.fetchApplications(&unsupportedCount)
-        supportedApps.forEach { $0.appList = self }
-        self.unsupportedApps = unsupportedApps
-        _allApplications = supportedApps
+        let allApplications = Self.fetchApplications(&unsupportedCount)
+        allApplications.forEach { $0.appList = self }
+        _allApplications = allApplications
         performFilter()
     }
 
@@ -150,7 +148,7 @@ final class AppListModel: ObservableObject {
         "xyz.willy.Zebra",
     ]
 
-    private static func fetchApplications(_ unsupportedCount: inout Int) -> (supported: [App], unsupported: [App]) {
+    private static func fetchApplications(_ unsupportedCount: inout Int) -> [App] {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
             .compactMap { proxy in
@@ -197,33 +195,22 @@ final class AppListModel: ObservableObject {
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 
         unsupportedCount = allApps.count - filteredApps.count
-        
-        let allAppsSet = Set(allApps)
-        let filteredAppsSet = Set(filteredApps)
-        let unsupportedAppsList = allAppsSet.subtracting(filteredAppsSet)
-            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 
-        return (filteredApps, unsupportedAppsList)
+        return filteredApps
     }
 }
 
 extension AppListModel {
     func openInFilza(_ url: URL) {
-        let rawPath = url.path
-
-        guard let encodedPath = rawPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
-            UIApplication.shared.open(url)
+        guard let filzaURL else {
             return
         }
-
-        let finalURLString = "filza://view" + encodedPath
-
-        guard let finalURL = URL(string: finalURLString) else { return }
-
-        UIApplication.shared.open(finalURL)
+        let fileURL = filzaURL.appendingPathComponent(url.path)
+        UIApplication.shared.open(fileURL)
     }
 
     func rebuildIconCache() {
+        // Sadly, we can't call `trollstorehelper` directly because only TrollStore can launch it without error.
         DispatchQueue.global(qos: .userInitiated).async {
             LSApplicationWorkspace.default().openApplication(withBundleID: "com.opa334.TrollStore")
         }

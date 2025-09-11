@@ -32,6 +32,9 @@
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
 /* TODO */
+"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Are you sure you want to eject all plug-ins? This action cannot be undone.";
+
+/* TODO */
 "Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
 
 /* TODO */
@@ -121,6 +124,9 @@
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
 
+/* TODO */
+"Includes Disabled PlugIns" = "Includes Disabled PlugIns";
+
 /* No comment provided by engineer. */
 "Inject" = "Tiêm";
 
@@ -159,6 +165,9 @@
 
 /* TODO */
 "Manage" = "Manage";
+
+/* TODO */
+"Manage %d Plug-Ins" = "Manage %d Plug-Ins";
 
 /* TODO */
 "New version %@ available!" = "New version %@ available!";
@@ -288,35 +297,3 @@
 
 /* TODO */
 "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.";
-
-/* No comment provided by engineer. */
-"Rename" = "Đổi tên";
-
-/* No comment provided by engineer. */
-"Replace" = "Thay thế";
-
-/* No comment provided by engineer. */
-"Custom Name" = "Tên tùy chỉnh";
-
-/* No comment provided by engineer. */
-"Enter new name" = "Nhập tên mới";
-
-/* No comment provided by engineer. */
-"Leave it empty to restore the original name." = "Để trống để khôi phục tên gốc.";
-
-/* No comment provided by engineer. */
-"Cancel" = "Hủy";
-
-/* No comment provided by engineer. */
-"Save" = "Lưu";
-
-/* For the accessibility label on the Manage button */
-"Manage %d Plug-Ins" = "Quan ly %d plugin";
-
-/* For the confirmation alert when ejecting all plugins */
-"Eject All" = "Go bo tat ca";
-"Confirm" = "Xac nhan";
-"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Ban co chac chan muon go bo tat ca cac plugin khong? Hanh dong nay khong the hoan tac.";
-
-/* For the badge on apps with only disabled plugins */
-"Includes Disabled PlugIns" = "Bao gom cac plugin da bi vo hieu hoa";

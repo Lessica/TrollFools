@@ -32,6 +32,8 @@ struct OptionCell: View {
                     .frame(width: 32, height: 32)
                     .foregroundColor(tintColor)
                     .padding(.all, 40)
+                    .accessibilityHidden(true)
+
                 if option == .detach, detachCount > 0 {
                     Text("\(detachCount)")
                         .font(.footnote)
@@ -54,6 +56,7 @@ struct OptionCell: View {
                 : NSLocalizedString("Manage", comment: ""))
                 .font(.headline)
                 .foregroundColor(tintColor)
+                .accessibilityHidden(true)
         }
     }
 }
