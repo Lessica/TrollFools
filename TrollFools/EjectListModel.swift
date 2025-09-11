@@ -19,6 +19,7 @@ final class EjectListModel: ObservableObject {
     @Published var isOkToDisableAll = false
 
     @Published var processingPlugIn: InjectedPlugIn?
+    @Published var plugInToReplace: InjectedPlugIn?
 
     private var cancellables = Set<AnyCancellable>()
 

@@ -54,6 +54,7 @@ final class AppListModel: ObservableObject {
     @Published var activeScopeApps: OrderedDictionary<String, [App]> = [:]
 
     @Published var unsupportedCount: Int = 0
+    @Published var unsupportedApps: [App] = []
 
     lazy var isFilzaInstalled: Bool = {
         if let filzaURL {
@@ -105,9 +106,10 @@ final class AppListModel: ObservableObject {
     }
 
     func reload() {
-        let allApplications = Self.fetchApplications(&unsupportedCount)
-        allApplications.forEach { $0.appList = self }
-        _allApplications = allApplications
+        let (supportedApps, unsupportedApps) = Self.fetchApplications(&unsupportedCount)
+        supportedApps.forEach { $0.appList = self }
+        self.unsupportedApps = unsupportedApps
+        _allApplications = supportedApps
         performFilter()
     }
 
@@ -148,7 +150,7 @@ final class AppListModel: ObservableObject {
         "xyz.willy.Zebra",
     ]
 
-    private static func fetchApplications(_ unsupportedCount: inout Int) -> [App] {
+    private static func fetchApplications(_ unsupportedCount: inout Int) -> (supported: [App], unsupported: [App]) {
         let allApps: [App] = LSApplicationWorkspace.default()
             .allApplications()
             .compactMap { proxy in
@@ -195,18 +197,21 @@ final class AppListModel: ObservableObject {
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 
         unsupportedCount = allApps.count - filteredApps.count
+        
+        let allAppsSet = Set(allApps)
+        let filteredAppsSet = Set(filteredApps)
+        let unsupportedAppsList = allAppsSet.subtracting(filteredAppsSet)
+            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 
-        return filteredApps
+        return (filteredApps, unsupportedAppsList)
     }
 }
 
 extension AppListModel {
     func openInFilza(_ url: URL) {
-        // 获取原始文件路径字符串
         let rawPath = url.path
-        // 对路径进行百分号编码
+
         guard let encodedPath = rawPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
-            // 如果编码失败，尝试打开
             UIApplication.shared.open(url)
             return
         }
@@ -219,7 +224,6 @@ extension AppListModel {
     }
 
     func rebuildIconCache() {
-        // Sadly, we can't call `trollstorehelper` directly because only TrollStore can launch it without error.
         DispatchQueue.global(qos: .userInitiated).async {
             LSApplicationWorkspace.default().openApplication(withBundleID: "com.opa334.TrollStore")
         }

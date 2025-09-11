@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-final class App: Identifiable, ObservableObject {
+final class App: Identifiable, ObservableObject, Hashable {
     let id: String
     let name: String
     let latinName: String
@@ -88,5 +88,13 @@ final class App: Identifiable, ObservableObject {
     private func reloadInjectedStatus() {
         self.isInjected = InjectorV3.main.checkIsInjectedAppBundle(url)
         self.hasPersistedAssets = InjectorV3.main.hasPersistedAssets(id: id)
+    }
+    
+    static func == (lhs: App, rhs: App) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

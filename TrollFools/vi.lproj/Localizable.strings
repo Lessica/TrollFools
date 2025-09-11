@@ -14,31 +14,28 @@
 "Advanced Settings" = "Cài đặt nâng cao";
 
 /* No comment provided by engineer. */
-"Advertisement" = "Quảng Cáo";
+"Advertisement" = "Advertisement";
 
 /* TODO */
-"After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them." = "Sau khi nâng cấp ứng dụng, bất kỳ plugin nào đã được tiêm sẽ bị vô hiệu hóa. Bạn sẽ cần phải kích hoạt lại chúng một cách thủ công.";
+"After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them." = "After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them.";
 
 /* TODO */
-"All" = "Tất cả";
+"All" = "All";
 
 /* TODO */
-"All Applications" = "Tất cả ứng dụng";
+"All Applications" = "All Applications";
 
 /* TODO */
-"An awesome music visualizer." = "Một trình tạo hình ảnh âm nhạc tuyệt vời.";
+"An awesome music visualizer." = "An awesome music visualizer.";
 
 /* No comment provided by engineer. */
 "And %d more unsupported user applications." = "Có %d ứng dụng người dùng không được hỗ trợ.";
 
 /* TODO */
-"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Bạn có chắc chắn muốn gỡ bỏ tất cả plug-in không? Hành động này không thể hoàn tác.";
+"Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
 
 /* TODO */
-"Bringing back the most advanced system and security analysis tool." = "Mang trở lại công cụ phân tích hệ thống và bảo mật tiên tiến nhất.";
-
-/* TODO */
-"Buy our paid products to support us if you like TrollFools!" = "Mua sản phẩm trả phí của chúng tôi để ủng hộ chúng tôi nếu bạn thích TrollFools!";
+"Buy our paid products to support us if you like TrollFools!" = "Buy our paid products to support us if you like TrollFools!";
 
 /* No comment provided by engineer. */
 "Cancel" = "Hủy";
@@ -53,10 +50,10 @@
 "Confirm" = "Xác nhận";
 
 /* TODO */
-"Continue" = "Tiếp tục";
+"Continue" = "Continue";
 
 /* TODO */
-"Continue and Don’t Show Again" = "Tiếp tục và không hiển thị lại";
+"Continue and Don’t Show Again" = "Continue and Don’t Show Again";
 
 /* No comment provided by engineer. */
 "Copy" = "Sao chép";
@@ -65,7 +62,7 @@
 "Copyright" = "Bản quyền";
 
 /* TODO */
-"Disable All" = "Vô hiệu hóa tất cả";
+"Disable All" = "Disable All";
 
 /* No comment provided by engineer. */
 "Do you want to clear this log file “%@”?" = "Bạn có muốn xóa tệp nhật ký này “%@”?";
@@ -86,10 +83,10 @@
 "Error" = "Lỗi";
 
 /* TODO */
-"Export" = "Xuất ra";
+"Export" = "Export";
 
 /* TODO */
-"Export All" = "Xuất tất cả";
+"Export All" = "Export All";
 
 /* No comment provided by engineer. */
 "Failed" = "Thất bại";
@@ -110,22 +107,19 @@
 "Fast" = "Tiêm nhanh";
 
 /* TODO */
-"Fast, feature-rich VNC server for iOS: remote control made simple." = "Máy chủ VNC nhanh, nhiều tính năng cho iOS: điều khiển từ xa trở nên đơn giản.";
+"Fast, feature-rich VNC server for iOS: remote control made simple." = "Fast, feature-rich VNC server for iOS: remote control made simple.";
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) chưa được cài đặt.";
 
 /* TODO */
-"Full-Fledged Automation Framework for TrollStore." = "Framework tự động hóa toàn diện cho TrollStore.";
+"Full-Fledged Automation Framework for TrollStore." = "Full-Fledged Automation Framework for TrollStore.";
 
 /* No comment provided by engineer. */
-"Hide" = "Ẩn";
+"Hide" = "Hide";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
-
-/* TODO */
-"Includes Disabled PlugIns" = "Bao gồm PlugIns bị vô hiệu hóa";
 
 /* No comment provided by engineer. */
 "Inject" = "Tiêm";
@@ -149,7 +143,7 @@
 "Launch" = "Mở ứng dụng";
 
 /* TODO */
-"Lessica, huami1314, iosdump and other contributors" = "Lessica, huami1314, iosdump và các cộng tác viên khác";
+"Lessica, huami1314, iosdump and other contributors" = "Lessica, huami1314, iosdump and other contributors";
 
 /* TODO */
 "Letterpress" = "Letterpress";
@@ -164,19 +158,16 @@
 "Log Viewer" = "Trình xem nhật ký";
 
 /* TODO */
-"Manage" = "Quản lý";
+"Manage" = "Manage";
 
 /* TODO */
-"Manage %d Plug-Ins" = "Quản lý %d Plug-Ins";
-
-/* TODO */
-"New version %@ available!" = "Phiên bản mới %@ có sẵn!";
+"New version %@ available!" = "New version %@ available!";
 
 /* No comment provided by engineer. */
-"No Applications" = "Không có ứng dụng nào";
+"No Applications" = "No Applications";
 
 /* TODO */
-"No dylib found in the Debian package." = "Không tìm thấy dylib trong gói Debian.";
+"No dylib found in the Debian package." = "No dylib found in the Debian package.";
 
 /* No comment provided by engineer. */
 "No eligible framework found." = "Không tìm thấy framework đủ điều kiện.";
@@ -191,7 +182,7 @@
 "No valid plug-ins found." = "Không tìm thấy plug-in hợp lệ.";
 
 /* TODO */
-"Notice" = "Lưu Ý";
+"Notice" = "Notice";
 
 /* No comment provided by engineer. */
 "Only removable system applications are eligible and listed." = "Chỉ các ứng dụng hệ thống có thể gỡ bỏ và đủ điều kiện tiêm mới được liệt kê.";
@@ -218,7 +209,7 @@
 "Rebuild Icon Cache" = "Làm mới bộ nhớ đệm biểu tượng";
 
 /* TODO */
-"Record your phone calls like never before." = "Ghi âm cuộc gọi điện thoại của Bạn chưa từng có trước đây.";
+"Record your phone calls like never before." = "Record your phone calls like never before.";
 
 /* No comment provided by engineer. */
 "Reveil" = "Reveil";
@@ -230,7 +221,7 @@
 "Search…" = "Tìm kiếm…";
 
 /* TODO */
-"Select an application to view details." = "Chọn một ứng dụng để xem chi tiết.";
+"Select an application to view details." = "Select an application to view details.";
 
 /* No comment provided by engineer. */
 "Select Application to Inject" = "Chọn ứng dụng để tiêm";
@@ -254,7 +245,7 @@
 "The content of text file “%@” is empty." = "Nội dung của tệp văn bản “%@” trống.";
 
 /* TODO */
-"This is an advertisement." = "Đây là một quảng cáo.";
+"This is an advertisement." = "This is an advertisement.";
 
 /* No comment provided by engineer. */
 "TrollFools" = "TrollFools";
@@ -272,7 +263,7 @@
 "TrollVNC" = "TrollVNC";
 
 /* TODO */
-"Unable to locate the data archive in the Debian package." = "Không thể tìm thấy kho lưu trữ dữ liệu trong gói Debian.";
+"Unable to locate the data archive in the Debian package." = "Unable to locate the data archive in the Debian package.";
 
 /* No comment provided by engineer. */
 "Unlock Version" = "Mở khóa phiên bản";
@@ -296,4 +287,36 @@
 "You need to rebuild the icon cache in TrollStore to apply changes." = "Bạn cần làm mới bộ nhớ đệm biểu tượng trong TrollStore để áp dụng các thay đổi.";
 
 /* TODO */
-"You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "Bạn đã chọn ít nhất một Gói Debian “%@”. Chúng tôi xin nhắc bạn rằng gói này sẽ không hoạt động như khi sử dụng trong môi trường đã bẻ khóa. Vui lòng đảm bảo bạn biết rõ mình đang làm gì.";
+"You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing.";
+
+/* No comment provided by engineer. */
+"Rename" = "Đổi tên";
+
+/* No comment provided by engineer. */
+"Replace" = "Thay thế";
+
+/* No comment provided by engineer. */
+"Custom Name" = "Tên tùy chỉnh";
+
+/* No comment provided by engineer. */
+"Enter new name" = "Nhập tên mới";
+
+/* No comment provided by engineer. */
+"Leave it empty to restore the original name." = "Để trống để khôi phục tên gốc.";
+
+/* No comment provided by engineer. */
+"Cancel" = "Hủy";
+
+/* No comment provided by engineer. */
+"Save" = "Lưu";
+
+/* For the accessibility label on the Manage button */
+"Manage %d Plug-Ins" = "Quan ly %d plugin";
+
+/* For the confirmation alert when ejecting all plugins */
+"Eject All" = "Go bo tat ca";
+"Confirm" = "Xac nhan";
+"Are you sure you want to eject all plug-ins? This action cannot be undone." = "Ban co chac chan muon go bo tat ca cac plugin khong? Hanh dong nay khong the hoan tac.";
+
+/* For the badge on apps with only disabled plugins */
+"Includes Disabled PlugIns" = "Bao gom cac plugin da bi vo hieu hoa";

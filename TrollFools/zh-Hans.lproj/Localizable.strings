@@ -32,9 +32,6 @@
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用。";
 
 /* No comment provided by engineer. */
-"Are you sure you want to eject all plug-ins? This action cannot be undone." = "你确定要推出所有插件吗？此操作无法撤销。";
-
-/* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
 
 /* No comment provided by engineer. */
@@ -119,13 +116,10 @@
 "Full-Fledged Automation Framework for TrollStore." = "适用于 TrollStore 的全功能自动化框架。";
 
 /* No comment provided by engineer. */
-"Hide" = "隐藏";
+"Hide" = "Hide";
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
-
-/* No comment provided by engineer. */
-"Includes Disabled PlugIns" = "包含已禁用的插件";
 
 /* No comment provided by engineer. */
 "Inject" = "注入";
@@ -165,9 +159,6 @@
 
 /* No comment provided by engineer. */
 "Manage" = "管理";
-
-/* No comment provided by engineer. */
-"Manage %d Plug-Ins" = "管理 %d 个插件";
 
 /* No comment provided by engineer. */
 "New version %@ available!" = "有新版本 %@ 可用！";
@@ -297,3 +288,34 @@
 
 /* No comment provided by engineer. */
 "You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "你至少选择了一个 Debian 软件包 “%@”。请留意，它通常不会像在越狱环境当中那样工作，甚至完全不起作用。请确保你知道自己在做些什么。";
+
+/* No comment provided by engineer. */
+"Rename" = "重命名";
+
+/* No comment provided by engineer. */
+"Replace" = "替换";
+
+/* No comment provided by engineer. */
+"Custom Name" = "自定义名称";
+
+/* No comment provided by engineer. */
+"Enter new name" = "输入新名称";
+
+/* No comment provided by engineer. */
+"Leave it empty to restore the original name." = "留空以恢复原始名称。";
+
+/* No comment provided by engineer. */
+"Cancel" = "取消";
+
+/* No comment provided by engineer. */
+"Save" = "保存";
+/* For the accessibility label on the Manage button */
+"Manage %d Plug-Ins" = "管理 %d 个插件";
+
+/* For the confirmation alert when ejecting all plugins */
+"Eject All" = "清空所有插件";
+"Confirm" = "确认";
+"Are you sure you want to eject all plug-ins? This action cannot be undone." = "你确定要清空所有插件吗？此操作无法撤销。";
+
+/* For the badge on apps with only disabled plugins */
+"Includes Disabled PlugIns" = "包含已禁用的插件";
