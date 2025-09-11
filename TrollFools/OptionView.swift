@@ -64,6 +64,24 @@ struct OptionView: View {
                 }
         } else {
             wrappedContent
+            .alert(isPresented: $isWarningPresented) {
+                guard case .success(let urls) = temporaryResult else {
+                    return Alert(title: Text("Error"))
+                }
+                
+                return Alert(
+                    title: Text(NSLocalizedString("Notice", comment: "")),
+                    message: Text(Self.warningMessage(urls)),
+                    primaryButton: .destructive(Text(NSLocalizedString("Continue and Don’t Show Again", comment: ""))) {
+                        importerResult = temporaryResult
+                        isImporterSelected = true
+                        isWarningHidden = true
+                    },
+                    secondaryButton: .cancel() {
+                        temporaryResult = nil
+                    }
+                )
+            }
         }
     }
 
