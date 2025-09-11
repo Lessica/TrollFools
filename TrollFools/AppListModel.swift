@@ -202,11 +202,20 @@ final class AppListModel: ObservableObject {
 
 extension AppListModel {
     func openInFilza(_ url: URL) {
-        guard let filzaURL else {
+        // 获取原始文件路径字符串
+        let rawPath = url.path
+        // 对路径进行百分号编码
+        guard let encodedPath = rawPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+            // 如果编码失败，尝试打开
+            UIApplication.shared.open(url)
             return
         }
-        let fileURL = filzaURL.appendingPathComponent(url.path)
-        UIApplication.shared.open(fileURL)
+
+        let finalURLString = "filza://view" + encodedPath
+
+        guard let finalURL = URL(string: finalURLString) else { return }
+
+        UIApplication.shared.open(finalURL)
     }
 
     func rebuildIconCache() {
