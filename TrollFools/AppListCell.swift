@@ -25,8 +25,8 @@ struct AppListCell: View {
 
     @available(iOS 15, *)
     var highlightedId: AttributedString {
-        let id = app.id
-        var attributedString = AttributedString(id)
+        let bid = app.bid
+        var attributedString = AttributedString(bid)
         if let range = attributedString.range(of: appList.filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
             attributedString[range].foregroundColor = .accentColor
         }
@@ -76,7 +76,7 @@ struct AppListCell: View {
                         .font(.subheadline)
                         .lineLimit(app.isAdvertisement ? 2 : 1)
                 } else {
-                    Text(app.id)
+                    Text(app.bid)
                         .font(.subheadline)
                         .lineLimit(app.isAdvertisement ? 2 : 1)
                 }
@@ -193,7 +193,7 @@ struct AppListCell: View {
     }
 
     private func launch() {
-        LSApplicationWorkspace.default().openApplication(withBundleID: app.id)
+        LSApplicationWorkspace.default().openApplication(withBundleID: app.bid)
     }
 
     var isFilzaInstalled: Bool { appList.isFilzaInstalled }

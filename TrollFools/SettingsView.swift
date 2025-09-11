@@ -12,9 +12,9 @@ struct SettingsView: View {
 
     init(_ app: App) {
         self.app = app
-        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
-        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
-        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.bid)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.bid)")
+        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.bid)")
     }
 
     @AppStorage var useWeakReference: Bool

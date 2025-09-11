@@ -43,6 +43,7 @@ final class AppListModel: ObservableObject {
         }
     }
 
+    static let isLegacyDevice: Bool = { UIScreen.main.fixedCoordinateSpace.bounds.height <= 736.0 }()
     static let hasTrollStore: Bool = { LSApplicationProxy(forIdentifier: "com.opa334.TrollStore") != nil }()
     private var _allApplications: [App] = []
 
@@ -116,7 +117,7 @@ final class AppListModel: ObservableObject {
 
         if !filter.searchKeyword.isEmpty {
             filteredApplications = filteredApplications.filter {
-                $0.name.localizedCaseInsensitiveContains(filter.searchKeyword) || $0.id.localizedCaseInsensitiveContains(filter.searchKeyword) ||
+                $0.name.localizedCaseInsensitiveContains(filter.searchKeyword) || $0.bid.localizedCaseInsensitiveContains(filter.searchKeyword) ||
                     (
                         $0.latinName.localizedCaseInsensitiveContains(
                             filter.searchKeyword
@@ -171,7 +172,7 @@ final class AppListModel: ObservableObject {
 
                 let shortVersionString: String? = proxy.shortVersionString()
                 let app = App(
-                    id: id,
+                    bid: id,
                     name: localizedName,
                     type: appType,
                     teamID: teamID,

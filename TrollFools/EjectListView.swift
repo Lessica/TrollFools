@@ -30,11 +30,19 @@ struct EjectListView: View {
     @AppStorage var preferMainExecutable: Bool
     @AppStorage var injectStrategy: InjectorV3.Strategy
 
+    var shouldShowActions: Bool {
+        !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty
+    }
+
+    var shouldDisableActions: Bool {
+        isEnablingAll || isDisablingAll || isDeletingAll
+    }
+
     init(_ app: App) {
         _ejectList = StateObject(wrappedValue: EjectListModel(app))
-        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
-        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
-        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.bid)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.bid)")
+        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.bid)")
     }
 
     var body: some View {
@@ -66,69 +74,67 @@ struct EjectListView: View {
             .quickLookPreview($quickLookExport)
     }
 
+    @ViewBuilder
     var refreshableListView: some View {
-        Group {
-            if #available(iOS 15, *) {
-                searchableListView
-                    .refreshable {
-                        ejectList.reload()
+        if #available(iOS 15, *) {
+            searchableListView
+                .refreshable {
+                    ejectList.reload()
+                }
+        } else {
+            searchableListView
+                .introspect(.list, on: .iOS(.v14)) { tableView in
+                    if tableView.refreshControl == nil {
+                        tableView.refreshControl = {
+                            let refreshControl = UIRefreshControl()
+                            refreshControl.addAction(UIAction { action in
+                                ejectList.reload()
+                                if let control = action.sender as? UIRefreshControl {
+                                    control.endRefreshing()
+                                }
+                            }, for: .valueChanged)
+                            return refreshControl
+                        }()
                     }
-            } else {
-                searchableListView
-                    .introspect(.list, on: .iOS(.v14)) { tableView in
-                        if tableView.refreshControl == nil {
-                            tableView.refreshControl = {
-                                let refreshControl = UIRefreshControl()
-                                refreshControl.addAction(UIAction { action in
-                                    ejectList.reload()
-                                    if let control = action.sender as? UIRefreshControl {
-                                        control.endRefreshing()
-                                    }
-                                }, for: .valueChanged)
-                                return refreshControl
-                            }()
-                        }
-                    }
-            }
+                }
         }
     }
 
+    @ViewBuilder
     var searchableListView: some View {
-        Group {
-            if #available(iOS 15, *) {
-                ejectListView
-                    .onViewWillAppear { viewController in
-                        viewControllerHost.viewController = viewController
+        if #available(iOS 15, *) {
+            ejectListView
+                .onViewWillAppear { viewController in
+                    viewControllerHost.viewController = viewController
+                }
+                .searchable(
+                    text: $ejectList.filter.searchKeyword,
+                    placement: .automatic,
+                    prompt: NSLocalizedString("Search…", comment: "")
+                )
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled(true)
+        } else {
+            // Fallback on earlier versions
+            ejectListView
+                .onReceive(searchViewModel.$searchKeyword) {
+                    ejectList.filter.searchKeyword = $0
+                }
+                .introspect(.viewController, on: .iOS(.v14)) { viewController in
+                    viewController.navigationItem.hidesSearchBarWhenScrolling = true
+                    viewControllerHost.viewController = viewController
+                    if searchViewModel.searchController == nil {
+                        viewController.navigationItem.searchController = {
+                            let searchController = UISearchController(searchResultsController: nil)
+                            searchController.searchResultsUpdater = searchViewModel
+                            searchController.obscuresBackgroundDuringPresentation = false
+                            searchController.hidesNavigationBarDuringPresentation = true
+                            searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
+                            return searchController
+                        }()
+                        searchViewModel.searchController = viewController.navigationItem.searchController
                     }
-                    .searchable(
-                        text: $ejectList.filter.searchKeyword,
-                        placement: .automatic,
-                        prompt: NSLocalizedString("Search…", comment: "")
-                    )
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled(true)
-            } else {
-                // Fallback on earlier versions
-                ejectListView
-                    .onReceive(searchViewModel.$searchKeyword) {
-                        ejectList.filter.searchKeyword = $0
-                    }
-                    .introspect(.viewController, on: .iOS(.v14)) { viewController in
-                        viewControllerHost.viewController = viewController
-                        if searchViewModel.searchController == nil {
-                            viewController.navigationItem.hidesSearchBarWhenScrolling = true
-                            viewController.navigationItem.searchController = {
-                                let searchController = UISearchController(searchResultsController: nil)
-                                searchController.searchResultsUpdater = searchViewModel
-                                searchController.obscuresBackgroundDuringPresentation = false
-                                searchController.hidesNavigationBarDuringPresentation = true
-                                searchController.searchBar.placeholder = NSLocalizedString("Search…", comment: "")
-                                return searchController
-                            }()
-                            searchViewModel.searchController = viewController.navigationItem.searchController
-                        }
-                    }
-            }
+                }
         }
     }
 
@@ -147,25 +153,27 @@ struct EjectListView: View {
                 paddedHeaderFooterText(NSLocalizedString("After the app upgrade, any injected plugins will be disabled. You will need to manually re-enable them.", comment: ""))
             }
 
-            if !ejectList.filter.isSearching && !ejectList.filteredPlugIns.isEmpty {
-                Section {
+            Section {
+                if shouldShowActions {
                     enableAllButton
-                        .disabled(isEnablingAll || !ejectList.isOkToEnableAll)
-                        .foregroundColor(isEnablingAll ? .secondary : .accentColor)
+                        .disabled(shouldDisableActions || !ejectList.isOkToEnableAll)
+                        .foregroundColor(shouldDisableActions ? .secondary : .accentColor)
 
                     disableAllButton
-                        .disabled(isDisablingAll || !ejectList.isOkToDisableAll)
-                        .foregroundColor(isDisablingAll ? .secondary : .accentColor)
+                        .disabled(shouldDisableActions || !ejectList.isOkToDisableAll)
+                        .foregroundColor(shouldDisableActions ? .secondary : .accentColor)
                 }
+            }
 
-                Section {
+            Section {
+                if shouldShowActions {
                     deleteAllButton
-                        .disabled(isDeletingAll)
-                        .foregroundColor(isDeletingAll ? .secondary : Color(.systemRed))
-                } footer: {
-                    if ejectList.app.isFromTroll {
-                        paddedHeaderFooterText(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
-                    }
+                        .disabled(shouldDisableActions)
+                        .foregroundColor(shouldDisableActions ? .secondary : Color(.systemRed))
+                }
+            } footer: {
+                if shouldShowActions && ejectList.app.isFromTroll {
+                    paddedHeaderFooterText(NSLocalizedString("Some plug-ins were not injected by TrollFools, please eject them with caution.", comment: ""))
                 }
             }
         }
@@ -179,14 +187,12 @@ struct EjectListView: View {
             isDisablingAll,
             isDeletingAll
         ))
-        .background(Group {
-            NavigationLink(isActive: $isErrorOccurred) {
-                FailureView(
-                    title: NSLocalizedString("Error", comment: ""),
-                    error: lastError
-                )
-            } label: { }
-        })
+        .background(NavigationLink(isActive: $isErrorOccurred) {
+            FailureView(
+                title: NSLocalizedString("Error", comment: ""),
+                error: lastError
+            )
+        } label: { })
         .onChange(of: ejectList.processingPlugIn) { plugIn in
             if let plugIn {
                 togglePlugIn(plugIn)
@@ -274,7 +280,7 @@ struct EjectListView: View {
             if #available(iOS 16.4, *) {
                 ShareLink(
                     item: CompressedFileRepresentation(
-                        name: "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip",
+                        name: "\(ejectList.app.name)_\(ejectList.app.bid)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip",
                         urls: ejectList.injectedPlugIns.map(\.url)
                     ),
                     preview: SharePreview(
@@ -309,16 +315,15 @@ struct EjectListView: View {
         }
     }
 
+    @ViewBuilder
     private func deletablePlugInCell(_ plugin: InjectedPlugIn) -> some View {
-        Group {
-            if #available(iOS 16, *) {
-                PlugInCell(plugin, quickLookExport: $quickLookExport)
-                    .environmentObject(ejectList)
-            } else {
-                PlugInCell(plugin, quickLookExport: $quickLookExport)
-                    .environmentObject(ejectList)
-                    .padding(.vertical, 4)
-            }
+        if #available(iOS 16, *) {
+            PlugInCell(plugin, quickLookExport: $quickLookExport)
+                .environmentObject(ejectList)
+        } else {
+            PlugInCell(plugin, quickLookExport: $quickLookExport)
+                .environmentObject(ejectList)
+                .padding(.vertical, 4)
         }
     }
 
@@ -333,7 +338,7 @@ struct EjectListView: View {
             logFileURL = injector.latestLogFileURL
 
             if injector.appID.isEmpty {
-                injector.appID = ejectList.app.id
+                injector.appID = ejectList.app.bid
             }
 
             if injector.teamID.isEmpty {
@@ -376,7 +381,7 @@ struct EjectListView: View {
             logFileURL = injector.latestLogFileURL
 
             if injector.appID.isEmpty {
-                injector.appID = ejectList.app.id
+                injector.appID = ejectList.app.bid
             }
 
             if injector.teamID.isEmpty {
@@ -425,7 +430,7 @@ struct EjectListView: View {
             logFileURL = injector.latestLogFileURL
 
             if injector.appID.isEmpty {
-                injector.appID = ejectList.app.id
+                injector.appID = ejectList.app.bid
             }
 
             if injector.teamID.isEmpty {
@@ -498,7 +503,7 @@ struct EjectListView: View {
             logFileURL = injector.latestLogFileURL
 
             if injector.appID.isEmpty {
-                injector.appID = ejectList.app.id
+                injector.appID = ejectList.app.bid
             }
 
             if injector.teamID.isEmpty {
@@ -602,7 +607,7 @@ struct EjectListView: View {
 
         let zipURL = InjectorV3.temporaryRoot
             .appendingPathComponent(
-                "\(ejectList.app.name)_\(ejectList.app.id)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip")
+                "\(ejectList.app.name)_\(ejectList.app.bid)_\(UUID().uuidString.components(separatedBy: "-").last ?? "").zip")
 
         try fileMgr.zipItem(at: exportURL, to: zipURL, shouldKeepParent: false)
 

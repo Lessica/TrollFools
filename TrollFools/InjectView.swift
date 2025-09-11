@@ -24,9 +24,9 @@ struct InjectView: View {
     init(_ app: App, urlList: [URL]) {
         self.app = app
         self.urlList = urlList
-        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.id)")
-        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.id)")
-        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.id)")
+        _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.bid)")
+        _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.bid)")
+        _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.bid)")
     }
 
     var body: some View {
@@ -115,7 +115,7 @@ struct InjectView: View {
             logFileURL = injector.latestLogFileURL
 
             if injector.appID.isEmpty {
-                injector.appID = app.id
+                injector.appID = app.bid
             }
 
             if injector.teamID.isEmpty {

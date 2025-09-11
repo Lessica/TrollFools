@@ -20,7 +20,7 @@ extension InjectorV3 {
         }
 
         if shouldDesist {
-            assetURLs = persistedAssetURLs(id: appID)
+            assetURLs = persistedAssetURLs(bid: appID)
             if !assetURLs.isEmpty {
                 desist(assetURLs)
             }

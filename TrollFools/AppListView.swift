@@ -106,7 +106,7 @@ struct AppListView: View {
             .onOpenURL { url in
                 let ext = url.pathExtension.lowercased()
                 guard url.isFileURL,
-                      (ext == "dylib" || ext == "deb" || ext == "zip")
+                      ext == "dylib" || ext == "deb" || ext == "zip"
                 else {
                     return
                 }
@@ -133,15 +133,14 @@ struct AppListView: View {
             }
     }
 
+    @ViewBuilder
     var styledNavigationView: some View {
-        Group {
-            if isPad {
-                navigationView
-                    .navigationViewStyle(.automatic)
-            } else {
-                navigationView
-                    .navigationViewStyle(.stack)
-            }
+        if isPad {
+            navigationView
+                .navigationViewStyle(.automatic)
+        } else {
+            navigationView
+                .navigationViewStyle(.stack)
         }
     }
 
@@ -173,30 +172,29 @@ struct AppListView: View {
         }
     }
 
+    @ViewBuilder
     var refreshableListView: some View {
-        Group {
-            if #available(iOS 15, *) {
-                searchableListView
-                    .refreshable {
-                        appList.reload()
+        if #available(iOS 15, *) {
+            searchableListView
+                .refreshable {
+                    appList.reload()
+                }
+        } else {
+            searchableListView
+                .introspect(.list, on: .iOS(.v14)) { tableView in
+                    if tableView.refreshControl == nil {
+                        tableView.refreshControl = {
+                            let refreshControl = UIRefreshControl()
+                            refreshControl.addAction(UIAction { action in
+                                appList.reload()
+                                if let control = action.sender as? UIRefreshControl {
+                                    control.endRefreshing()
+                                }
+                            }, for: .valueChanged)
+                            return refreshControl
+                        }()
                     }
-            } else {
-                searchableListView
-                    .introspect(.list, on: .iOS(.v14)) { tableView in
-                        if tableView.refreshControl == nil {
-                            tableView.refreshControl = {
-                                let refreshControl = UIRefreshControl()
-                                refreshControl.addAction(UIAction { action in
-                                    appList.reload()
-                                    if let control = action.sender as? UIRefreshControl {
-                                        control.endRefreshing()
-                                    }
-                                }, for: .valueChanged)
-                                return refreshControl
-                            }()
-                        }
-                    }
-            }
+                }
         }
     }
 
@@ -214,8 +212,8 @@ struct AppListView: View {
                 appList.activeScope = Scope(rawValue: $0) ?? .all
             }
             .introspect(.viewController, on: .iOS(.v14, .v15, .v16, .v17, .v18)) { viewController in
+                viewController.navigationItem.hidesSearchBarWhenScrolling = true
                 if searchViewModel.searchController == nil {
-                    viewController.navigationItem.hidesSearchBarWhenScrolling = true
                     viewController.navigationItem.searchController = {
                         let searchController = UISearchController(searchResultsController: nil)
                         searchController.searchResultsUpdater = searchViewModel
@@ -235,20 +233,15 @@ struct AppListView: View {
 
     var listView: some View {
         List {
-            if AppListModel.hasTrollStore && appList.isRebuildNeeded {
-                rebuildSection.transition(.opacity)
+            topSection
+
+            if #available(iOS 15, *) {
+                if appList.activeScope == .all && shouldShowAdvertisement {
+                    advertisementSection
+                }
             }
 
-            switch appList.activeScope {
-            case .all:
-                allAppGroup.transition(.opacity)
-            case .user:
-                userAppGroup.transition(.opacity)
-            case .troll:
-                trollAppGroup.transition(.opacity)
-            case .system:
-                systemAppGroup.transition(.opacity)
-            }
+            appSections
         }
         .animation(.easeOut, value: combines(
             appList.isRebuildNeeded,
@@ -262,7 +255,7 @@ struct AppListView: View {
             NSLocalizedString("Select Application to Inject", comment: "") :
             NSLocalizedString("TrollFools", comment: "")
         )
-        .navigationBarTitleDisplayMode(appList.isSelectorMode ? .inline : .automatic)
+        .navigationBarTitleDisplayMode((AppListModel.isLegacyDevice || appList.isSelectorMode) ? .inline : .automatic)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if appList.isSelectorMode, let selectorURL = appList.selectorURL {
@@ -291,152 +284,109 @@ struct AppListView: View {
         }
     }
 
-    var allAppGroup: some View {
-        Group {
-            if latestVersionString != nil {
-                upgradeSection
+    var topSection: some View {
+        Section {
+            if AppListModel.hasTrollStore && appList.isRebuildNeeded {
+                rebuildButton
+                    .transition(.opacity)
             }
-            else if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
-                unsupportedSection
+        } header: {
+            if AppListModel.hasTrollStore && appList.isRebuildNeeded {
+                Text("")
             }
+        } footer: {
+            VStack(alignment: .leading, spacing: 8) {
+                if appList.activeScope == .all && latestVersionString != nil {
+                    upgradeButton
+                        .transition(.opacity)
+                }
 
-            if #available(iOS 15, *) {
-                if shouldShowAdvertisement {
-                    advertisementSection
+                if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded {
+                    paddedHeaderFooterText(
+                        appList.activeScope == .system
+                            ? NSLocalizedString("Only removable system applications are eligible and listed.", comment: "")
+                            : (appList.activeScope != .troll && appList.unsupportedCount > 0
+                                ? String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount)
+                                : "")
+                    )
+                    .transition(.opacity)
                 }
             }
+        }
+        .id("TopSection")
+    }
 
-            appSections
+    var rebuildButton: some View {
+        Button {
+            appList.rebuildIconCache()
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(NSLocalizedString("Rebuild Icon Cache", comment: ""))
+                        .font(.headline)
+                        .foregroundColor(.primary)
+
+                    Text(NSLocalizedString("You need to rebuild the icon cache in TrollStore to apply changes.", comment: ""))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "timelapse")
+                    .font(.title)
+                    .foregroundColor(.accentColor)
+            }
+            .padding(.vertical, 4)
         }
     }
 
-    var userAppGroup: some View {
-        Group {
-            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded && appList.unsupportedCount > 0 {
-                Section {
-                } footer: {
-                    paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                }
-            }
-
-            appSections
-        }
-    }
-
-    var trollAppGroup: some View {
-        Group {
-            appSections
-        }
-    }
-
-    var systemAppGroup: some View {
-        Group {
-            if !appList.filter.isSearching && !appList.filter.showPatchedOnly && !appList.isRebuildNeeded {
-                Section {
-                } footer: {
-                    paddedHeaderFooterText(NSLocalizedString("Only removable system applications are eligible and listed.", comment: ""))
-                }
-            }
-
-            appSections
+    var upgradeButton: some View {
+        Button {
+            CheckUpdateManager.shared.executeUpgrade()
+        } label: {
+            Text(String(format: NSLocalizedString("New version %@ available!", comment: ""), latestVersionString ?? "(null)"))
+                .font(.footnote)
         }
     }
 
     var appSections: some View {
-        Group {
-            if !appList.activeScopeApps.isEmpty {
-                ForEach(Array(appList.activeScopeApps.keys), id: \.self) { sectionKey in
-                    Section {
-                        ForEach(appList.activeScopeApps[sectionKey] ?? [], id: \.id) { app in
-                            NavigationLink {
-                                if appList.isSelectorMode, let selectorURL = appList.selectorURL {
-                                    InjectView(app, urlList: [selectorURL])
-                                } else {
-                                    OptionView(app)
-                                }
-                            } label: {
-                                if #available(iOS 16, *) {
-                                    AppListCell(app: app)
-                                } else {
-                                    AppListCell(app: app)
-                                        .padding(.vertical, 4)
-                                }
-                            }
-                        }
-                    } header: {
-                        paddedHeaderFooterText(sectionKey == selectedIndex ? "→ \(sectionKey)" : sectionKey)
-                    } footer: {
-                        if sectionKey == appList.activeScopeApps.keys.last {
-                            footer
-                        }
-                    }
-                    .id("AppSection-\(sectionKey)")
-                }
-            } else {
-                Section {
-                } header: {
-                    paddedHeaderFooterText(NSLocalizedString("No Applications", comment: ""))
-                        .textCase(.none)
-                } footer: {
-                    footer
-                }
-            }
+        ForEach(appList.activeScopeApps.isEmpty ? ["_"] : Array(appList.activeScopeApps.keys), id: \.self) { sectionKey in
+            appSection(forKey: sectionKey)
         }
     }
 
-    var rebuildSection: some View {
+    func appSection(forKey sectionKey: String) -> some View {
         Section {
-            Button {
-                appList.rebuildIconCache()
-            } label: {
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(NSLocalizedString("Rebuild Icon Cache", comment: ""))
-                            .font(.headline)
-                            .foregroundColor(.primary)
-
-                        Text(NSLocalizedString("You need to rebuild the icon cache in TrollStore to apply changes.", comment: ""))
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+            ForEach(appList.activeScopeApps[sectionKey] ?? [], id: \.bid) { app in
+                NavigationLink {
+                    if appList.isSelectorMode, let selectorURL = appList.selectorURL {
+                        InjectView(app, urlList: [selectorURL])
+                    } else {
+                        OptionView(app)
                     }
-
-                    Spacer()
-
-                    Image(systemName: "timelapse")
-                        .font(.title)
-                        .foregroundColor(.accentColor)
-                }
-                .padding(.vertical, 4)
-            }
-        }
-    }
-
-    var upgradeSection: some View {
-        Section {
-        } footer: {
-            VStack(alignment: .leading, spacing: 8) {
-                Button {
-                    CheckUpdateManager.shared.executeUpgrade()
                 } label: {
-                    Text(String(format: NSLocalizedString("New version %@ available!", comment: ""), latestVersionString ?? "(null)"))
-                        .font(.footnote)
+                    if #available(iOS 16, *) {
+                        AppListCell(app: app)
+                    } else {
+                        AppListCell(app: app)
+                            .padding(.vertical, 4)
+                    }
                 }
-
-                Text(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                    .font(.footnote)
+            }
+        } header: {
+            if sectionKey == "_" {
+                paddedHeaderFooterText(NSLocalizedString("No Applications", comment: ""))
+                    .textCase(.none)
+            } else {
+                paddedHeaderFooterText(sectionKey == selectedIndex ? "→ \(sectionKey)" : sectionKey)
+            }
+        } footer: {
+            if (sectionKey == "_" || sectionKey == appList.activeScopeApps.keys.last) && !appList.isSelectorMode && !appList.filter.isSearching {
+                footer
             }
         }
-        .textCase(.none)
-        .transition(.opacity)
-    }
-
-    var unsupportedSection: some View {
-        Section {
-        } footer: {
-            paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-        }
-        .textCase(.none)
-        .transition(.opacity)
+        .id("AppSection-\(sectionKey)")
     }
 
     @available(iOS 15.0, *)
@@ -463,28 +413,26 @@ struct AppListView: View {
             }
         } header: {
             paddedHeaderFooterText(NSLocalizedString("Advertisement", comment: ""))
+                .textCase(.none)
         } footer: {
             paddedHeaderFooterText(NSLocalizedString("Buy our paid products to support us if you like TrollFools!", comment: ""))
         }
+        .id("AdsSection")
     }
 
+    @ViewBuilder
     var footer: some View {
-        Group {
-            if !appList.isSelectorMode && !appList.filter.isSearching {
-                if #available(iOS 16, *) {
-                    footerContent
-                        .padding(.top, 8)
-                } else if #available(iOS 15, *) {
-                    footerContent
-                        .padding(.top, 2)
-                } else {
-                    footerContent
-                        .padding(.top, 8)
-                        .padding(.horizontal, 16)
-                }
-            }
+        if #available(iOS 16, *) {
+            footerContent
+                .padding(.vertical, 16)
+        } else if #available(iOS 15, *) {
+            footerContent
+                .padding(.top, 10)
+                .padding(.bottom, 16)
+        } else {
+            footerContent
+                .padding(.all, 16)
         }
-        .padding(.bottom, 16)
     }
 
     var footerContent: some View {

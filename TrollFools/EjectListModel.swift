@@ -40,7 +40,7 @@ final class EjectListModel: ObservableObject {
             .map { InjectedPlugIn(url: $0, isEnabled: true) }
 
         let enabledNames = plugIns.map { $0.url.lastPathComponent }
-        plugIns += InjectorV3.main.persistedAssetURLs(id: app.id)
+        plugIns += InjectorV3.main.persistedAssetURLs(bid: app.bid)
             .filter { !enabledNames.contains($0.lastPathComponent) }
             .map { InjectedPlugIn(url: $0, isEnabled: false) }
 
