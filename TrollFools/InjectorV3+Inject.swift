@@ -8,6 +8,18 @@
 import CocoaLumberjackSwift
 import Foundation
 
+fileprivate var gCachedLibraryIndex: [String: InjectorV3.LibraryModuleEntry] = [:]
+fileprivate var gPreparedLibraryURLs: [ObjectIdentifier: [String: URL]] = [:]
+fileprivate let gLibraryAliasMap: [String: String] = [
+    "ellekit": "CydiaSubstrate",
+    "ellekit.framework": "CydiaSubstrate",
+    "libellekit.dylib": "CydiaSubstrate",
+    "libsubstitute.dylib": "CydiaSubstrate",
+    "libsubstrate.dylib": "CydiaSubstrate",
+    "cydiasubstrate": "CydiaSubstrate",
+    "cydiasubstrate.framework": "CydiaSubstrate",
+]
+
 extension InjectorV3 {
     enum Strategy: String, CaseIterable {
         case lexicographic
@@ -64,12 +76,29 @@ extension InjectorV3 {
             return
         }
 
+        Self.cachedLibraryIndex = [:]
+        Self.buildLibraryIndexIfNeeded()
+
         try assetURLs.forEach {
-            try standardizeLoadCommandDylibToSubstrate($0)
+            try standardizeLoadCommandDylibToLocalLibrary($0)
             try applyCoreTrustBypass($0)
         }
 
-        let substrateFwkURL = try prepareSubstrate()
+        var allNeededKeys: Set<String> = []
+        for assetURL in assetURLs {
+            let machO: URL = try checkIsBundle(assetURL) ? locateExecutableInBundle(assetURL) : assetURL
+            let dylibs = try loadedDylibsOfMachO(machO)
+            for imported in dylibs {
+                if let (rawKey, _) = libraryKey(fromImportedPath: imported) {
+                    let lowered = rawKey.lowercased()
+                    let destKey = Self.libraryAliasMap[lowered] ?? rawKey
+                    if Self.cachedLibraryIndex[destKey.lowercased()] != nil {
+                        allNeededKeys.insert(destKey)
+                    }
+                }
+            }
+        }
+        let preparedLibs = try prepareLibraryModulesIfNeeded(keys: allNeededKeys)
         guard let targetMachO = try locateAvailableMachO() else {
             DDLogError("All Mach-Os are protected", ddlog: logger)
 
@@ -78,7 +107,7 @@ extension InjectorV3 {
 
         DDLogInfo("Best matched Mach-O is \(targetMachO.path)", ddlog: logger)
 
-        let resourceURLs: [URL] = [substrateFwkURL] + assetURLs
+        let resourceURLs: [URL] = preparedLibs + assetURLs
         try makeAlternate(targetMachO)
         do {
             try copyfiles(resourceURLs)
@@ -109,25 +138,117 @@ extension InjectorV3 {
         try cmdChangeOwnerToInstalld(target, recursively: isFramework)
     }
 
-    // MARK: - Cydia Substrate
+    // MARK: - Library Replace
 
-    fileprivate static let substrateZipURL = findResource(substrateFwkName, fileExtension: "zip")
-
-    fileprivate func prepareSubstrate() throws -> URL {
-        try FileManager.default.unzipItem(at: Self.substrateZipURL, to: temporaryDirectoryURL)
-
-        let fwkURL = temporaryDirectoryURL.appendingPathComponent(Self.substrateFwkName)
-        try markBundlesAsInjected([fwkURL], privileged: false)
-
-        let machO = fwkURL.appendingPathComponent(Self.substrateName)
-
-        try cmdCoreTrustBypass(machO, teamID: teamID)
-        try cmdChangeOwnerToInstalld(fwkURL, recursively: true)
-
-        return fwkURL
+    fileprivate struct LibraryModuleEntry {
+        enum Kind { case framework, dylib }
+        let kind: Kind
+        let key: String
+        let zipURL: URL
     }
 
-    fileprivate func standardizeLoadCommandDylibToSubstrate(_ assetURL: URL) throws {
+    fileprivate static var cachedLibraryIndex: [String: LibraryModuleEntry] {
+        get { gCachedLibraryIndex }
+        set { gCachedLibraryIndex = newValue }
+    }
+    fileprivate var preparedLibraryURLs: [String: URL] {
+        get { gPreparedLibraryURLs[ObjectIdentifier(self)] ?? [:] }
+        set { gPreparedLibraryURLs[ObjectIdentifier(self)] = newValue }
+    }
+
+    fileprivate static var libraryAliasMap: [String: String] { gLibraryAliasMap }
+
+    fileprivate static func buildLibraryIndexIfNeeded() {
+        if !cachedLibraryIndex.isEmpty { return }
+
+        var index: [String: LibraryModuleEntry] = [:]
+
+        let searchRoots: [URL] = [Bundle.main.bundleURL, userLibrariesDirectoryURL]
+        for root in searchRoots {
+            if root == userLibrariesDirectoryURL {
+                // 确保用户库目录存在
+                try? FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+            }
+            guard let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: [.isRegularFileKey]) else { continue }
+            for case let fileURL as URL in enumerator {
+                guard let isRegular = try? fileURL.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile, isRegular == true else { continue }
+                let name = fileURL.lastPathComponent
+                if name.hasSuffix(".framework.zip") {
+                    let moduleName = String(name.dropLast(".framework.zip".count))
+                    // 用户库优先覆盖内置
+                    index[moduleName.lowercased()] = LibraryModuleEntry(kind: .framework, key: moduleName, zipURL: fileURL)
+                } else if name.hasSuffix(".dylib.zip") {
+                    let dylibName = String(name.dropLast(".zip".count))
+                    index[dylibName.lowercased()] = LibraryModuleEntry(kind: .dylib, key: dylibName, zipURL: fileURL)
+                }
+            }
+        }
+
+        cachedLibraryIndex = index
+    }
+
+    /// 用户自定义库目录：App Support/<bundle-id>/Libraries
+    fileprivate static var userLibrariesDirectoryURL: URL {
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        return base.appendingPathComponent(gTrollFoolsIdentifier, isDirectory: true)
+            .appendingPathComponent("Libraries", isDirectory: true)
+    }
+
+    fileprivate func libraryKey(fromImportedPath imported: String) -> (key: String, kind: LibraryModuleEntry.Kind)? {
+        let lower = imported.lowercased()
+        if let range = lower.range(of: ".framework/") {
+            let prefix = lower[..<range.lowerBound]
+            if let lastSlash = prefix.lastIndex(of: "/") {
+                let start = lower.index(after: lastSlash)
+                let name = lower[start..<range.lowerBound]
+                return (String(name), .framework)
+            } else {
+                let name = lower[..<range.lowerBound]
+                return (String(name), .framework)
+            }
+        }
+        if let lastSlash = lower.lastIndex(of: "/") {
+            let fileName = String(lower[lower.index(after: lastSlash)...])
+            if fileName.hasSuffix(".dylib") { return (fileName, .dylib) }
+        } else if lower.hasSuffix(".dylib") {
+            return (lower, .dylib)
+        }
+        return nil
+    }
+
+    fileprivate func prepareLibraryModulesIfNeeded(keys: Set<String>) throws -> [URL] {
+        Self.buildLibraryIndexIfNeeded()
+        var prepared: [URL] = []
+        for rawKey in keys {
+            let key = rawKey.lowercased()
+            guard let entry = Self.cachedLibraryIndex[key] else { continue }
+            if let existing = preparedLibraryURLs[key] {
+                prepared.append(existing)
+                continue
+            }
+            try FileManager.default.unzipItem(at: entry.zipURL, to: temporaryDirectoryURL)
+            let targetURL: URL
+            switch entry.kind {
+            case .framework:
+                let fwkURL = temporaryDirectoryURL.appendingPathComponent("\(entry.key).framework")
+                targetURL = fwkURL
+                try markBundlesAsInjected([fwkURL], privileged: false)
+                let macho = fwkURL.appendingPathComponent(entry.key)
+                try cmdCoreTrustBypass(macho, teamID: teamID)
+                try cmdChangeOwnerToInstalld(fwkURL, recursively: true)
+            case .dylib:
+                let dylibURL = temporaryDirectoryURL.appendingPathComponent(entry.key)
+                targetURL = dylibURL
+                try cmdCoreTrustBypass(dylibURL, teamID: teamID)
+                try cmdChangeOwnerToInstalld(dylibURL, recursively: false)
+            }
+            preparedLibraryURLs[key] = targetURL
+            prepared.append(targetURL)
+        }
+        return prepared
+    }
+
+    fileprivate func standardizeLoadCommandDylibToLocalLibrary(_ assetURL: URL) throws {
         let machO: URL
         if checkIsBundle(assetURL) {
             machO = try locateExecutableInBundle(assetURL)
@@ -136,10 +257,29 @@ extension InjectorV3 {
         }
 
         let dylibs = try loadedDylibsOfMachO(machO)
-        for dylib in dylibs {
-            if Self.ignoredDylibAndFrameworkNames.firstIndex(where: { dylib.lowercased().hasSuffix("/\($0)") }) != nil {
-                try cmdChangeLoadCommandDylib(machO, from: dylib, to: "@executable_path/Frameworks/\(Self.substrateFwkName)/\(Self.substrateName)")
+        var neededKeys: Set<String> = []
+        for imported in dylibs {
+            if let (rawKey, _) = libraryKey(fromImportedPath: imported) {
+                let lower = rawKey.lowercased()
+                let destKey = Self.libraryAliasMap[lower] ?? rawKey
+                if Self.cachedLibraryIndex[destKey.lowercased()] != nil {
+                    neededKeys.insert(destKey)
+                }
             }
+        }
+        let _ = try prepareLibraryModulesIfNeeded(keys: neededKeys)
+        for imported in dylibs {
+            guard let (rawKey, _) = libraryKey(fromImportedPath: imported) else { continue }
+            let destKey = Self.libraryAliasMap[rawKey.lowercased()] ?? rawKey
+            guard let entry = Self.cachedLibraryIndex[destKey.lowercased()] else { continue }
+            let newName: String
+            switch entry.kind {
+            case .framework:
+                newName = "@executable_path/Frameworks/\(entry.key).framework/\(entry.key)"
+            case .dylib:
+                newName = "@executable_path/Frameworks/\(entry.key)"
+            }
+            try cmdChangeLoadCommandDylib(machO, from: imported, to: newName)
         }
     }
 

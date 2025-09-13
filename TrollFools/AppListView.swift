@@ -21,6 +21,7 @@ struct AppListView: View {
 
     @State var selectorOpenedURL: URLIdentifiable? = nil
     @State var selectedIndex: String? = nil
+    @State private var isLibraryManagerPresented: Bool = false
 
     @State var isWarningPresented = false
     @State var temporaryOpenedURL: URLIdentifiable? = nil
@@ -269,6 +270,14 @@ struct AppListView: View {
                     }
                 }
             }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    isLibraryManagerPresented = true
+                } label: {
+                    Image(systemName: "shippingbox")
+                }
+                .accessibilityLabel(NSLocalizedString("Libraries", comment: ""))
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     appList.filter.showPatchedOnly.toggle()
@@ -284,6 +293,11 @@ struct AppListView: View {
                     }
                 }
                 .accessibilityLabel(NSLocalizedString("Show Patched Only", comment: ""))
+            }
+        }
+        .sheet(isPresented: $isLibraryManagerPresented) {
+            NavigationView {
+                LibraryManagerView()
             }
         }
     }

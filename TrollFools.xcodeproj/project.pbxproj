@@ -65,6 +65,7 @@
 		61EFA37B2D31165700159442 /* InjectorV3+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */; };
 		61EFA37D2D311DA800159442 /* InjectorV3+Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */; };
 		61F595622D6B42340034DD83 /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */; };
+		86B80B3B2E4CE82500543291 /* LibraryManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B80B3A2E4CE82500543291 /* LibraryManagerView.swift */; };
 		CC0D662D2D7F11A2000EADED /* ArArchiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D662C2D7F11A2000EADED /* ArArchiveKit */; };
 		CC0D662F2D7F11AC000EADED /* ArArchiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D662E2D7F11AC000EADED /* ArArchiveKit */; };
 		CC0D66322D7F13A9000EADED /* SWCompression in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D66312D7F13A9000EADED /* SWCompression */; };
@@ -177,6 +178,7 @@
 		61EFA3782D3108B700159442 /* InjectorV3+Eject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Eject.swift"; sourceTree = "<group>"; };
 		61EFA37A2D31165000159442 /* InjectorV3+Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Backup.swift"; sourceTree = "<group>"; };
 		61EFA37C2D311DA300159442 /* InjectorV3+Inject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InjectorV3+Inject.swift"; sourceTree = "<group>"; };
+		86B80B3A2E4CE82500543291 /* LibraryManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryManagerView.swift; sourceTree = "<group>"; };
 		CC0E80FA2C54F84000B137B4 /* mv-15 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "mv-15"; sourceTree = "<group>"; };
 		CC1548CF2C4A6B8200A4173E /* ct_bypass */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ct_bypass; sourceTree = "<group>"; };
 		CC1548D22C4A743200A4173E /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 		6124A0722CD2327E00C52253 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				86B80B3A2E4CE82500543291 /* LibraryManagerView.swift */,
 				6124A0732CD2328600C52253 /* AppListCell.swift */,
 				CCF4706D2C4A4BAB008D8197 /* AppListView.swift */,
 				61C7D54B2D82DBAC0064D626 /* DisclaimerView.swift */,
@@ -695,6 +698,7 @@
 				61EFA3732D30347A00159442 /* InjectorV3+MachO.swift in Sources */,
 				614C0C682D7C72AD007E9184 /* AppListSearchModel.swift in Sources */,
 				614C0C622D7C2EC0007E9184 /* Constants.swift in Sources */,
+				86B80B3B2E4CE82500543291 /* LibraryManagerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
