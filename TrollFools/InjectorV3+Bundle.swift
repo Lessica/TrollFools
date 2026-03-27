@@ -36,19 +36,15 @@ extension InjectorV3 {
 
     // MARK: - Shared Methods
 
-    func frameworkMachOsInBundle(_ target: URL) throws -> OrderedSet<URL> {
+    func allFrameworkMachOsInBundle(_ target: URL) -> OrderedSet<URL> {
         precondition(checkIsBundle(target), "Not a bundle: \(target.path)")
 
-        let executableURL = try locateExecutableInBundle(target)
-        precondition(isMachO(executableURL), "Not a Mach-O: \(executableURL.path)")
-
         let frameworksURL = target.appendingPathComponent("Frameworks")
-        let linkedDylibs = try linkedDylibsRecursivelyOfMachO(executableURL)
 
         var enumeratedURLs = OrderedSet<URL>()
         if let enumerator = FileManager.default.enumerator(
             at: frameworksURL,
-            includingPropertiesForKeys: [.fileSizeKey],
+            includingPropertiesForKeys: [.isRegularFileKey],
             options: [.skipsHiddenFiles]
         ) {
             for case let itemURL as URL in enumerator {
@@ -56,11 +52,27 @@ extension InjectorV3 {
                     enumerator.skipDescendants()
                     continue
                 }
-                if enumerator.level == 2 {
+                if enumerator.level == 2,
+                   isMachO(itemURL),
+                   !itemURL.lastPathComponent.hasSuffix(".\(Self.injectedMarkerName).bak"),
+                   !itemURL.lastPathComponent.hasSuffix(".troll-fools.bak")
+                {
                     enumeratedURLs.append(itemURL)
                 }
             }
         }
+
+        return enumeratedURLs
+    }
+
+    func frameworkMachOsInBundle(_ target: URL) throws -> OrderedSet<URL> {
+        precondition(checkIsBundle(target), "Not a bundle: \(target.path)")
+
+        let executableURL = try locateExecutableInBundle(target)
+        precondition(isMachO(executableURL), "Not a Mach-O: \(executableURL.path)")
+
+        let linkedDylibs = try linkedDylibsRecursivelyOfMachO(executableURL)
+        let enumeratedURLs = allFrameworkMachOsInBundle(target)
 
         let machOs = linkedDylibs.intersection(enumeratedURLs)
         var sortedMachOs: [URL] =

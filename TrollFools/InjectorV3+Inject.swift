@@ -205,7 +205,14 @@ extension InjectorV3 {
     // MARK: - Path Finder
 
     fileprivate func locateAvailableMachO() throws -> URL? {
-        try frameworkMachOsInBundle(bundleURL)
+        let preferredMachO = try frameworkMachOsInBundle(bundleURL)
+            .first { try !isProtectedMachO($0) }
+        if let preferredMachO {
+            return preferredMachO
+        }
+
+        DDLogWarn("Fallback to traversal strategy", ddlog: logger)
+        return try allFrameworkMachOsInBundle(bundleURL)
             .first { try !isProtectedMachO($0) }
     }
 

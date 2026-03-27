@@ -94,7 +94,14 @@ extension InjectorV3 {
     }
 
     fileprivate func collectModifiedMachOs() throws -> [URL] {
-        try frameworkMachOsInBundle(bundleURL)
+        let preferredMachOs = try frameworkMachOsInBundle(bundleURL)
+            .filter { hasAlternate($0) }.elements
+        if !preferredMachOs.isEmpty {
+            return preferredMachOs
+        }
+
+        DDLogWarn("Fallback to traversal strategy", ddlog: logger)
+        return allFrameworkMachOsInBundle(bundleURL)
             .filter { hasAlternate($0) }.elements
     }
 
