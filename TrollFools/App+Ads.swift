@@ -29,15 +29,6 @@ extension App {
                 isAdvertisement: true
             ),
             App(
-                bid: NSLocalizedString("An awesome music visualizer.", comment: ""),
-                name: NSLocalizedString("Letterpress", comment: ""),
-                type: "System",
-                teamID: "GXZ23M5TP2",
-                url: URL(string: "https://havoc.app/package/letterpress")!,
-                alternateIcon: .init(named: "letter-default"),
-                isAdvertisement: true
-            ),
-            App(
                 bid: NSLocalizedString("Full-Fledged Automation Framework for TrollStore.", comment: ""),
                 name: NSLocalizedString("XXTouch Elite TS", comment: ""),
                 type: "System",
