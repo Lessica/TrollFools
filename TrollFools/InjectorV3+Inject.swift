@@ -205,8 +205,33 @@ extension InjectorV3 {
     // MARK: - Path Finder
 
     fileprivate func locateAvailableMachO() throws -> URL? {
-        try frameworkMachOsInBundle(bundleURL)
-            .first { try !isProtectedMachO($0) }
+        let allMachOs = try frameworkMachOsInBundle(bundleURL)
+
+        DDLogInfo("Mach-O scan: \(allMachOs.count) candidates in \(bundleURL.lastPathComponent)", ddlog: logger)
+
+        var selectedMachO: URL?
+        for (index, machO) in allMachOs.enumerated() {
+            let isProtected = (try? isProtectedMachO(machO)) ?? true
+            let fileSize = (try? machO.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+            let sizeStr = ByteCountFormatter.string(fromByteCount: Int64(fileSize), countStyle: .file)
+
+            if isProtected {
+                DDLogInfo("  [\(index + 1)/\(allMachOs.count)] ENCRYPTED \(machO.lastPathComponent) (\(sizeStr))", ddlog: logger)
+            } else {
+                DDLogInfo("  [\(index + 1)/\(allMachOs.count)] AVAILABLE \(machO.lastPathComponent) (\(sizeStr))", ddlog: logger)
+                if selectedMachO == nil {
+                    selectedMachO = machO
+                }
+            }
+        }
+
+        if let selected = selectedMachO {
+            DDLogInfo("Selected Mach-O: \(selected.lastPathComponent)", ddlog: logger)
+        } else {
+            DDLogError("No available Mach-O found, all \(allMachOs.count) candidates are encrypted", ddlog: logger)
+        }
+
+        return selectedMachO
     }
 
     fileprivate static func findResource(_ name: String, fileExtension: String) -> URL {

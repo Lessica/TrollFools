@@ -43,9 +43,16 @@ extension InjectorV3 {
         precondition(isMachO(executableURL), "Not a Mach-O: \(executableURL.path)")
 
         let frameworksURL = target.appendingPathComponent("Frameworks")
+        let frameworksExist = FileManager.default.fileExists(atPath: frameworksURL.path)
+
+        DDLogInfo("Scanning Mach-Os in \(target.lastPathComponent), Frameworks exists: \(frameworksExist)", ddlog: logger)
+
         let linkedDylibs = try linkedDylibsRecursivelyOfMachO(executableURL)
+        DDLogInfo("Linked dylibs (\(linkedDylibs.count)): \(linkedDylibs.map { $0.lastPathComponent })", ddlog: logger)
 
         var enumeratedURLs = OrderedSet<URL>()
+        var allMachOsInFrameworks = OrderedSet<URL>()
+
         if let enumerator = FileManager.default.enumerator(
             at: frameworksURL,
             includingPropertiesForKeys: [.fileSizeKey],
@@ -58,11 +65,30 @@ extension InjectorV3 {
                 }
                 if enumerator.level == 2 {
                     enumeratedURLs.append(itemURL)
+                    if isMachO(itemURL) {
+                        allMachOsInFrameworks.append(itemURL)
+                    }
+                }
+                // Scan bare dylibs at level 1 (directly in Frameworks/)
+                if enumerator.level == 1 && itemURL.pathExtension.lowercased() == "dylib" && isMachO(itemURL) {
+                    allMachOsInFrameworks.append(itemURL)
+                    enumeratedURLs.append(itemURL)
                 }
             }
         }
 
-        let machOs = linkedDylibs.intersection(enumeratedURLs)
+        DDLogInfo("Enumerated \(enumeratedURLs.count) items, \(allMachOsInFrameworks.count) Mach-Os in Frameworks/", ddlog: logger)
+
+        var machOs = linkedDylibs.intersection(enumeratedURLs)
+        DDLogInfo("Intersection: \(machOs.count) linked Mach-Os in Frameworks/", ddlog: logger)
+
+        // Fallback: if none of the Mach-Os in Frameworks/ are statically linked
+        // by the main binary (e.g. Unity apps use dlopen), use all available Mach-Os.
+        if machOs.isEmpty && !allMachOsInFrameworks.isEmpty {
+            DDLogWarn("No statically linked Mach-Os found, falling back to all \(allMachOsInFrameworks.count) Mach-Os in Frameworks/", ddlog: logger)
+            machOs = allMachOsInFrameworks
+        }
+
         var sortedMachOs: [URL] =
             switch injectStrategy {
         case .lexicographic:
