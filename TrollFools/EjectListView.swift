@@ -115,7 +115,6 @@ struct EjectListView: View {
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
         } else {
-            // Fallback on earlier versions
             ejectListView
                 .onReceive(searchViewModel.$searchKeyword) {
                     ejectList.filter.searchKeyword = $0
@@ -332,7 +331,14 @@ struct EjectListView: View {
 
         do {
             let plugInsToRemove = offsets.map { ejectList.filteredPlugIns[$0] }
-            let plugInURLsToRemove = plugInsToRemove.map { $0.url }
+
+            let enabledURLsToRemove = plugInsToRemove
+                .filter { $0.isEnabled }
+                .map { $0.url }
+
+            let disabledURLsToRemove = plugInsToRemove
+                .filter { !$0.isEnabled }
+                .map { $0.url }
 
             let injector = try InjectorV3(ejectList.app.url)
             logFileURL = injector.latestLogFileURL
@@ -349,7 +355,13 @@ struct EjectListView: View {
             injector.preferMainExecutable = preferMainExecutable
             injector.injectStrategy = injectStrategy
 
-            try injector.eject(plugInURLsToRemove, shouldDesist: true)
+            if !enabledURLsToRemove.isEmpty {
+                try injector.eject(enabledURLsToRemove, shouldDesist: true)
+            }
+
+            if !disabledURLsToRemove.isEmpty {
+                injector.desist(disabledURLsToRemove)
+            }
 
             ejectList.app.reload()
             ejectList.reload()
