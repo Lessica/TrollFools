@@ -83,7 +83,7 @@
 "Eject All" = "Gỡ bỏ tất cả";
 
 /* TODO */
-"Enable All" = "Enable All";
+"Enable All" = "Bật tất cả";
 
 /* No comment provided by engineer. */
 "Error" = "Lỗi";
@@ -116,7 +116,7 @@
 "Fast, feature-rich VNC server for iOS: remote control made simple." = "Máy chủ VNC nhanh, nhiều tính năng cho iOS: điều khiển từ xa trở nên đơn giản.";
 
 /* TODO */
-"If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended." = "If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended.";
+"If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended." = "Nếu cần, TrollFools sẽ sử dụng chế độ tương thích để cải thiện tỷ lệ thành công. Nên bật chế độ này.";
 
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) chưa được cài đặt.";
@@ -131,7 +131,7 @@
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
 
 /* TODO */
-"Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option." = "Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option.";
+"Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option." = "Chọn cách TrollFools thử các mục tiêu tiềm năng. Nếu plugin không hoạt động như mong đợi, hãy thử tùy chọn khác.";
 
 /* No comment provided by engineer. */
 "Includes Disabled PlugIns" = "Bao gồm PlugIns bị vô hiệu hóa";
@@ -221,7 +221,7 @@
 "Prefer Main Executable" = "Ưu tiên tệp thực thi chính";
 
 /* TODO */
-"Try the app’s main file first. Turn this on when the plug-in does not seem active." = "Try the app’s main file first. Turn this on when the plug-in does not seem active.";
+"Try the app’s main file first. Turn this on when the plug-in does not seem active." = "Hãy thử tệp chính của ứng dụng trước. Bật tệp này lên khi plugin dường như không hoạt động.";
 
 /* No comment provided by engineer. */
 "Rebuild Icon Cache" = "Làm mới bộ nhớ đệm biểu tượng";
@@ -257,7 +257,7 @@
 "Source Code" = "Mã nguồn";
 
 /* TODO */
-"System" = "System";
+"System" = "Hệ Thống";
 
 /* No comment provided by engineer. */
 "The content of text file “%@” is empty." = "Nội dung của tệp văn bản “%@” trống.";
@@ -290,10 +290,10 @@
 "Use Weak Reference" = "Sử dụng tham chiếu yếu";
 
 /* TODO */
-"Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases." = "Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases.";
+"Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases." = "Tùy chọn này kiểm soát việc ứng dụng có bị sập khi không tìm thấy plugin hay không. Bật tùy chọn này có thể giảm thiểu các sự cố sập ứng dụng đột ngột trong một số trường hợp, nhưng plugin sẽ không hoạt động trong những trường hợp đó.";
 
 /* TODO */
-"User" = "User";
+"User" = "Người Dùng";
 
 /* No comment provided by engineer. */
 "User Applications" = "Ứng dụng người dùng";
