@@ -85,8 +85,19 @@ extension InjectorV3 {
         // Fallback: if none of the Mach-Os in Frameworks/ are statically linked
         // by the main binary (e.g. Unity apps use dlopen), use all available Mach-Os.
         if machOs.isEmpty && !allMachOsInFrameworks.isEmpty {
-            DDLogWarn("No statically linked Mach-Os found, falling back to all \(allMachOsInFrameworks.count) Mach-Os in Frameworks/", ddlog: logger)
-            machOs = allMachOsInFrameworks
+            let filteredMachOs = allMachOsInFrameworks.filter { url in
+                let name = url.lastPathComponent
+                let nameLower = name.lowercased()
+                if name.hasPrefix("libswift") {
+                    return false
+                }
+                if Self.ignoredDylibAndFrameworkNames.contains(nameLower) {
+                    return false
+                }
+                return true
+            }
+            DDLogWarn("No statically linked Mach-Os found, falling back to \(filteredMachOs.count) filtered Mach-Os in Frameworks/ (excluded \(allMachOsInFrameworks.count - filteredMachOs.count) ignored)", ddlog: logger)
+            machOs = OrderedSet(filteredMachOs)
         }
 
         var sortedMachOs: [URL] =
