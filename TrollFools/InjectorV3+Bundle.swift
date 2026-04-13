@@ -86,9 +86,8 @@ extension InjectorV3 {
         // by the main binary (e.g. Unity apps use dlopen), use all available Mach-Os.
         if machOs.isEmpty && !allMachOsInFrameworks.isEmpty {
             let filteredMachOs = allMachOsInFrameworks.filter { url in
-                let name = url.lastPathComponent
-                let nameLower = name.lowercased()
-                if name.hasPrefix("libswift") {
+                let nameLower = url.lastPathComponent.lowercased()
+                if nameLower.hasPrefix("libswift") {
                     return false
                 }
                 if Self.ignoredDylibAndFrameworkNames.contains(nameLower) {
