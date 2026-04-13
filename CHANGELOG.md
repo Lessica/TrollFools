@@ -1,45 +1,57 @@
 # Changelog
 
-## 4.2 (2025-09-12)
+## 4.3 (2026-04-13)
 
-本次版本为一次“兼容性与结构优化”小步更新，核心聚焦：旧系统适配（iOS 14 列表兼容）、徽标逻辑精细化、通用结构/代码整理与本地化补充。
+本次版本聚焦于“动态加载框架兼容性”和“页面说明可理解性”，并包含插件管理流程调整与资源清理。
 
 ### 修复
 
-- 兼容性：修复在 iOS 14 上包含“动态数量 Section”的列表（List）组件渲染/刷新异常问题，确保分段增减时 UI 与交互稳定。
+- 注入兼容性：修复部分 Unity/运行时 `dlopen` 场景下无法命中可注入目标的问题。  
+  当主程序静态链接交集为空时，改为回退扫描 `Frameworks/` 中可用 Mach-O（含一级目录下 `.dylib`）。
+- 插件管理：调整“移除插件”流程，区分已启用与已禁用插件：  
+  已启用插件执行卸载；已禁用插件执行标记清理，降低批量处理风险。
 
-### 优化 / 重构
+### 新增
 
-- 徽标：优化禁用插件 App 的徽标判断与展示逻辑，减少重复计算并提升视觉一致性。
-- 通用结构：对应用列表、插件管理、注入/卸载流程、设置视图等多个模块进行内部重构（不改变外部行为）以提升可维护性。
+- 高级选项：新增“启用兼容模式回退”开关（默认开启），可控制是否在无静态链接命中时启用回退候选。
+- 结果页提示：当本次注入通过兼容模式完成时，在“已完成”下方显示额外提示。
+
+### 优化
+
+- 候选筛选：回退候选新增过滤，排除 `libswift*` 与已忽略注入相关动态库/框架，并统一大小写处理。
+- 诊断日志：增强 Mach-O 扫描日志，输出候选数量、文件大小、加密/不可读统计与最终选择结果，便于定位“无可用目标”问题。
+- 设置说明：优化高级选项页面结构与说明文案，减少非技术用户理解成本。
+- 广告与资源：移除内置广告位 `Letterpress` 及相关本地化词条/图标资源；更新营销图素材。
 
 ### 本地化
 
-- 补充/更新越南语（vi）词条，保持与最新交互及文案一致。
-
-### 工程
-
-- 代码清理与结构对齐（未引入破坏性改动），为后续特性迭代准备。
+- 更新 `en/zh-Hans/it/vi` 词条，补充兼容模式与设置说明相关文案，并清理移除条目对应文案。
 
 ------
 
-## 4.2 (2025-09-12) [EN]
+## 4.3 (2026-04-13) [EN]
 
-This is a focused compatibility & structural refinement update: iOS 14 dynamic list stability, refined badge logic, internal refactors, and a localization supplement.
+This release focuses on dynamic-framework injection compatibility and clearer user guidance, plus plugin-management flow adjustments and resource cleanup.
 
 ### Fixed
 
-- Compatibility: Resolve rendering/refresh issues on iOS 14 when a List contains a dynamic number of Sections, ensuring stable UI and interaction when sections are added or removed.
+- Injection compatibility: Fixed cases (notably Unity/runtime `dlopen` flows) where no injectable target could be selected.  
+  When the static-link intersection is empty, TrollFools now falls back to scanning eligible Mach-O files under `Frameworks/` (including top-level `.dylib`).
+- Plugin management: Updated plugin removal flow to handle enabled vs disabled plugins separately:  
+  enabled plugins are ejected, while disabled plugins are cleaned via desist/marker path handling.
 
-### Optimization / Refactor
+### Added
 
-- Badging: Refine logic for marking apps with disabled plugins to reduce redundant evaluation and keep visuals consistent.
-- Internal structure: Non‑behavioral refactors across app list, plugin management, inject/eject flows, settings view, and related persistence modules to improve maintainability.
+- Advanced Settings: Added **Enable Compatibility Fallback** (default ON) to control fallback candidate behavior when no static-link match is found.
+- Result-page notice: Added a subtitle under **Completed** when injection succeeds through compatibility fallback.
+
+### Improved
+
+- Candidate filtering: Fallback candidates now exclude `libswift*` and ignored injection-related dylib/framework names, with consistent case-insensitive handling.
+- Diagnostics: Expanded Mach-O scan logs with candidate counts, file sizes, encrypted/unreadable stats, and final target selection.
+- Settings clarity: Refined Advanced Settings layout and explanatory copy for better non-technical readability.
+- Ads/assets: Removed built-in `Letterpress` ad entry and related localization/icon assets; refreshed marketing artwork.
 
 ### Localization
 
-- Update / supplement Vietnamese (vi) strings to align with current UI and interactions.
-
-### Engineering
-
-- Code cleanup and structural alignment (no breaking changes) preparing groundwork for upcoming features.
+- Updated `en/zh-Hans/it/vi` strings for compatibility-fallback and settings guidance, and removed strings for deleted entries.
