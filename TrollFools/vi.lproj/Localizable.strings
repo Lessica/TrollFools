@@ -46,6 +46,9 @@
 /* No comment provided by engineer. */
 "Completed" = "Hoàn thành";
 
+/* TODO */
+"Completed with compatibility mode. The plug-in may start working after opening some app features." = "Completed with compatibility mode. The plug-in may start working after opening some app features.";
+
 /* No comment provided by engineer. */
 "Confirm" = "Xác nhận";
 
@@ -69,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Done" = "Hoàn thành";
+
+/* TODO */
+"Enable Compatibility Fallback" = "Enable Compatibility Fallback";
 
 /* No comment provided by engineer. */
 "Eject" = "Gỡ bỏ";
@@ -109,6 +115,9 @@
 /* No comment provided by engineer. */
 "Fast, feature-rich VNC server for iOS: remote control made simple." = "Máy chủ VNC nhanh, nhiều tính năng cho iOS: điều khiển từ xa trở nên đơn giản.";
 
+/* TODO */
+"If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended." = "If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended.";
+
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) chưa được cài đặt.";
 
@@ -120,6 +129,9 @@
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Nếu bạn không biết các tùy chọn này có ý nghĩa gì, đừng thay đổi chúng.";
+
+/* TODO */
+"Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option." = "Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option.";
 
 /* No comment provided by engineer. */
 "Includes Disabled PlugIns" = "Bao gồm PlugIns bị vô hiệu hóa";
@@ -208,6 +220,9 @@
 /* No comment provided by engineer. */
 "Prefer Main Executable" = "Ưu tiên tệp thực thi chính";
 
+/* TODO */
+"Try the app’s main file first. Turn this on when the plug-in does not seem active." = "Try the app’s main file first. Turn this on when the plug-in does not seem active.";
+
 /* No comment provided by engineer. */
 "Rebuild Icon Cache" = "Làm mới bộ nhớ đệm biểu tượng";
 
@@ -273,6 +288,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "Sử dụng tham chiếu yếu";
+
+/* TODO */
+"Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases." = "Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases.";
 
 /* TODO */
 "User" = "User";

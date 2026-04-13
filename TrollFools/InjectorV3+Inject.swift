@@ -28,6 +28,7 @@ extension InjectorV3 {
     // MARK: - Instance Methods
 
     func inject(_ assetURLs: [URL], shouldPersist: Bool) throws {
+        didUseMachOEnumerationFallback = false
         let preparedAssetURLs = try preprocessAssets(assetURLs)
 
         precondition(!preparedAssetURLs.isEmpty, "No asset to inject.")

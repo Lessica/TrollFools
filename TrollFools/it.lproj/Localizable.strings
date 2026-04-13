@@ -46,6 +46,9 @@
 /* No comment provided by engineer. */
 "Completed" = "Completato";
 
+/* TODO */
+"Completed with compatibility mode. The plug-in may start working after opening some app features." = "Completed with compatibility mode. The plug-in may start working after opening some app features.";
+
 /* StripedTextTableViewController */
 "Confirm" = "Conferma";
 
@@ -69,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Done" = "Fatto";
+
+/* TODO */
+"Enable Compatibility Fallback" = "Enable Compatibility Fallback";
 
 /* No comment provided by engineer. */
 "Eject" = "Espelli";
@@ -109,6 +115,9 @@
 /* TODO */
 "Fast, feature-rich VNC server for iOS: remote control made simple." = "Fast, feature-rich VNC server for iOS: remote control made simple.";
 
+/* TODO */
+"If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended." = "If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended.";
+
 /* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "Filza (URL Scheme) Non Installato";
 
@@ -120,6 +129,9 @@
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "Se non sai cosa significano queste opzioni, non cambiarle.";
+
+/* TODO */
+"Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option." = "Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option.";
 
 /* TODO */
 "Includes Disabled PlugIns" = "Includes Disabled PlugIns";
@@ -208,6 +220,9 @@
 /* No comment provided by engineer. */
 "Prefer Main Executable" = "Preferisci Eseguibile Principale";
 
+/* TODO */
+"Try the app’s main file first. Turn this on when the plug-in does not seem active." = "Try the app’s main file first. Turn this on when the plug-in does not seem active.";
+
 /* No comment provided by engineer. */
 "Rebuild Icon Cache" = "Ricrostruisci Cache Icone";
 
@@ -273,6 +288,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "Usa referenza debole";
+
+/* TODO */
+"Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases." = "Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases.";
 
 /* TODO */
 "User" = "User";

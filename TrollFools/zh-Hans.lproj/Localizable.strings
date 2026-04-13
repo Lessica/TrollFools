@@ -46,6 +46,9 @@
 /* No comment provided by engineer. */
 "Completed" = "已完成";
 
+/* No comment provided by engineer. */
+"Completed with compatibility mode. The plug-in may start working after opening some app features." = "已通过兼容模式完成注入。插件可能在打开应用内部分功能后才会生效。";
+
 /* StripedTextTableViewController */
 "Confirm" = "确认";
 
@@ -69,6 +72,9 @@
 
 /* No comment provided by engineer. */
 "Done" = "完成";
+
+/* No comment provided by engineer. */
+"Enable Compatibility Fallback" = "启用兼容模式回退";
 
 /* No comment provided by engineer. */
 "Eject" = "推出";
@@ -110,6 +116,9 @@
 "Fast, feature-rich VNC server for iOS: remote control made simple." = "功能强大的 iOS VNC 服务器：远程控制，从未如此简单。";
 
 /* No comment provided by engineer. */
+"If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended." = "当常规方式效果不稳定时，TrollFools 会自动尝试兼容模式以提高成功率。建议保持开启。";
+
+/* No comment provided by engineer. */
 "Filza (URL Scheme) Not Installed" = "未安装支持 URL Scheme 的 Filza";
 
 /* No comment provided by engineer. */
@@ -120,6 +129,9 @@
 
 /* No comment provided by engineer. */
 "If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
+
+/* No comment provided by engineer. */
+"Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option." = "选择 TrollFools 尝试注入目标的方式。如果插件没有按预期工作，可以切换到其他选项再试。";
 
 /* No comment provided by engineer. */
 "Includes Disabled PlugIns" = "包含已禁用的插件";
@@ -209,6 +221,9 @@
 "Prefer Main Executable" = "优先处理主要可执行文件";
 
 /* No comment provided by engineer. */
+"Try the app’s main file first. Turn this on when the plug-in does not seem active." = "先尝试应用主程序。若插件没有生效，可开启此项再试。";
+
+/* No comment provided by engineer. */
 "Rebuild Icon Cache" = "重建图标缓存";
 
 /* No comment provided by engineer. */
@@ -273,6 +288,9 @@
 
 /* No comment provided by engineer. */
 "Use Weak Reference" = "创建弱引用";
+
+/* No comment provided by engineer. */
+"Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases." = "控制插件找不到时 App 是否闪退。在某些场景下，保持开启可减少意外闪退，尽管此时插件无法生效。";
 
 /* No comment provided by engineer. */
 "User" = "用户应用";

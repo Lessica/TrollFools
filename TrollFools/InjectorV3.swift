@@ -34,7 +34,9 @@ final class InjectorV3 {
 
     var useWeakReference: Bool = false
     var preferMainExecutable: Bool = false
+    var useFrameworkEnumerationFallback: Bool = true
     var injectStrategy: Strategy = .lexicographic
+    var didUseMachOEnumerationFallback: Bool = false
 
     let logger: DDLog
     let loggerType: LoggerType

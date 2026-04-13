@@ -85,27 +85,32 @@ extension InjectorV3 {
         // Fallback: if none of the Mach-Os in Frameworks/ are statically linked
         // by the main binary (e.g. Unity apps use dlopen), use all available Mach-Os.
         if machOs.isEmpty && !allMachOsInFrameworks.isEmpty {
-            var excludedSwiftRuntimeCount = 0
-            var excludedIgnoredNameCount = 0
-            let filteredMachOs = allMachOsInFrameworks.filter { url in
-                let nameLower = url.lastPathComponent.lowercased()
-                if nameLower.hasPrefix("libswift") {
-                    excludedSwiftRuntimeCount += 1
-                    return false
+            if useFrameworkEnumerationFallback {
+                didUseMachOEnumerationFallback = true
+                var excludedSwiftRuntimeCount = 0
+                var excludedIgnoredNameCount = 0
+                let filteredMachOs = allMachOsInFrameworks.filter { url in
+                    let nameLower = url.lastPathComponent.lowercased()
+                    if nameLower.hasPrefix("libswift") {
+                        excludedSwiftRuntimeCount += 1
+                        return false
+                    }
+                    if Self.ignoredDylibAndFrameworkNames.contains(nameLower) {
+                        excludedIgnoredNameCount += 1
+                        return false
+                    }
+                    return true
                 }
-                if Self.ignoredDylibAndFrameworkNames.contains(nameLower) {
-                    excludedIgnoredNameCount += 1
-                    return false
-                }
-                return true
+                let excludedCount = allMachOsInFrameworks.count - filteredMachOs.count
+                DDLogWarn(
+                    "No statically linked Mach-Os found, falling back to \(filteredMachOs.count) filtered Mach-Os in Frameworks/ " +
+                        "(excluded \(excludedCount): \(excludedSwiftRuntimeCount) Swift runtime, \(excludedIgnoredNameCount) ignored by name)",
+                    ddlog: logger
+                )
+                machOs = OrderedSet(filteredMachOs)
+            } else {
+                DDLogWarn("No statically linked Mach-Os found, fallback is disabled by settings", ddlog: logger)
             }
-            let excludedCount = allMachOsInFrameworks.count - filteredMachOs.count
-            DDLogWarn(
-                "No statically linked Mach-Os found, falling back to \(filteredMachOs.count) filtered Mach-Os in Frameworks/ " +
-                    "(excluded \(excludedCount): \(excludedSwiftRuntimeCount) Swift runtime, \(excludedIgnoredNameCount) ignored by name)",
-                ddlog: logger
-            )
-            machOs = OrderedSet(filteredMachOs)
         }
 
         var sortedMachOs: [URL] =

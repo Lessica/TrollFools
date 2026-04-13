@@ -14,11 +14,13 @@ struct SettingsView: View {
         self.app = app
         _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.bid)")
         _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.bid)")
+        _useFrameworkEnumerationFallback = AppStorage(wrappedValue: true, "UseFrameworkEnumerationFallback-\(app.bid)")
         _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.bid)")
     }
 
     @AppStorage var useWeakReference: Bool
     @AppStorage var preferMainExecutable: Bool
+    @AppStorage var useFrameworkEnumerationFallback: Bool
     @AppStorage var injectStrategy: InjectorV3.Strategy
 
     @StateObject var viewControllerHost = ViewControllerHost()
@@ -32,12 +34,26 @@ struct SettingsView: View {
                             Text(strategy.localizedDescription).tag(strategy)
                         }
                     }
-                    Toggle(NSLocalizedString("Prefer Main Executable", comment: ""), isOn: $preferMainExecutable)
-                    Toggle(NSLocalizedString("Use Weak Reference", comment: ""), isOn: $useWeakReference)
-                } header: {
-                    paddedHeaderFooterText(NSLocalizedString("Injection", comment: ""))
                 } footer: {
-                    paddedHeaderFooterText(NSLocalizedString("If you do not know what these options mean, please do not change them.", comment: ""))
+                    paddedHeaderFooterText(NSLocalizedString("Choose how TrollFools tries possible targets. If the plug-in does not work as expected, try another option.", comment: ""))
+                }
+
+                Section {
+                    Toggle(NSLocalizedString("Enable Compatibility Fallback", comment: ""), isOn: $useFrameworkEnumerationFallback)
+                } footer: {
+                    paddedHeaderFooterText(NSLocalizedString("If needed, TrollFools will use a compatibility mode to improve success rate. Keeping this on is recommended.", comment: ""))
+                }
+
+                Section {
+                    Toggle(NSLocalizedString("Prefer Main Executable", comment: ""), isOn: $preferMainExecutable)
+                } footer: {
+                    paddedHeaderFooterText(NSLocalizedString("Try the app’s main file first. Turn this on when the plug-in does not seem active.", comment: ""))
+                }
+
+                Section {
+                    Toggle(NSLocalizedString("Use Weak Reference", comment: ""), isOn: $useWeakReference)
+                } footer: {
+                    paddedHeaderFooterText(NSLocalizedString("Controls whether the app crashes when the plug-in cannot be found. Keeping this on can reduce unexpected crashes in some scenarios, but the plug-in will not work in those cases.", comment: ""))
                 }
             }
             .navigationTitle(NSLocalizedString("Advanced Settings", comment: ""))

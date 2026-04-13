@@ -17,8 +17,7 @@ Expected to work on all iOS versions supported by opa334’s TrollStore (i.e. iO
 
 ## Build
 
-See GitHub Actions for the latest build status.
-
+See GitHub Actions for the latest build status.  
 PRs are always welcome.
 
 ## Milestones

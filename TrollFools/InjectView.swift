@@ -9,16 +9,22 @@ import CocoaLumberjackSwift
 import SwiftUI
 
 struct InjectView: View {
+    struct SuccessPayload {
+        let logFileURL: URL?
+        let didUseFallback: Bool
+    }
+
     @EnvironmentObject var appList: AppListModel
 
     let app: App
     let urlList: [URL]
 
-    @State var injectResult: Result<URL?, Error>?
+    @State var injectResult: Result<SuccessPayload, Error>?
     @StateObject fileprivate var viewControllerHost = ViewControllerHost()
 
     @AppStorage var useWeakReference: Bool
     @AppStorage var preferMainExecutable: Bool
+    @AppStorage var useFrameworkEnumerationFallback: Bool
     @AppStorage var injectStrategy: InjectorV3.Strategy
 
     init(_ app: App, urlList: [URL]) {
@@ -26,6 +32,7 @@ struct InjectView: View {
         self.urlList = urlList
         _useWeakReference = AppStorage(wrappedValue: true, "UseWeakReference-\(app.bid)")
         _preferMainExecutable = AppStorage(wrappedValue: false, "PreferMainExecutable-\(app.bid)")
+        _useFrameworkEnumerationFallback = AppStorage(wrappedValue: true, "UseFrameworkEnumerationFallback-\(app.bid)")
         _injectStrategy = AppStorage(wrappedValue: .lexicographic, "InjectStrategy-\(app.bid)")
     }
 
@@ -49,10 +56,13 @@ struct InjectView: View {
         VStack {
             if let injectResult {
                 switch injectResult {
-                case let .success(url):
+                case let .success(payload):
                     SuccessView(
                         title: NSLocalizedString("Completed", comment: ""),
-                        logFileURL: url
+                        subtitle: payload.didUseFallback
+                            ? NSLocalizedString("Completed with compatibility mode. The plug-in may start working after opening some app features.", comment: "")
+                            : nil,
+                        logFileURL: payload.logFileURL
                     )
                     .onAppear {
                         app.reload()
@@ -107,7 +117,7 @@ struct InjectView: View {
         }
     }
 
-    private func inject() -> Result<URL?, Error> {
+    private func inject() -> Result<SuccessPayload, Error> {
         var logFileURL: URL?
 
         do {
@@ -124,10 +134,14 @@ struct InjectView: View {
 
             injector.useWeakReference = useWeakReference
             injector.preferMainExecutable = preferMainExecutable
+            injector.useFrameworkEnumerationFallback = useFrameworkEnumerationFallback
             injector.injectStrategy = injectStrategy
 
             try injector.inject(urlList, shouldPersist: true)
-            return .success(injector.latestLogFileURL)
+            return .success(SuccessPayload(
+                logFileURL: injector.latestLogFileURL,
+                didUseFallback: injector.didUseMachOEnumerationFallback
+            ))
 
         } catch {
             DDLogError("\(error)", ddlog: InjectorV3.main.logger)
