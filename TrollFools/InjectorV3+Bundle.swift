@@ -63,6 +63,10 @@ extension InjectorV3 {
                     enumerator.skipDescendants()
                     continue
                 }
+                // Skip backup files created before injection
+                if itemURL.path.hasSuffix(".\(Self.alternateSuffix)") {
+                    continue
+                }
                 if enumerator.level == 2 {
                     enumeratedURLs.append(itemURL)
                     if isMachO(itemURL) {
@@ -110,6 +114,30 @@ extension InjectorV3 {
                 machOs = OrderedSet(filteredMachOs)
             } else {
                 DDLogWarn("No statically linked Mach-Os found, fallback is disabled by settings", ddlog: logger)
+            }
+        }
+
+        // Filter out previously-injected Mach-Os by diffing current vs. backup load commands.
+        // Any load command present in the current binary but absent from its backup was added by injection.
+        var injectedAssetNames = Set<String>()
+        for machO in (allMachOsInFrameworks.elements + [executableURL]) where hasAlternate(machO) {
+            if let current = try? loadedDylibsOfMachO(machO),
+               let original = try? loadedDylibsOfMachO(Self.alternateURL(for: machO))
+            {
+                for name in current where !original.contains(name) {
+                    injectedAssetNames.insert(URL(fileURLWithPath: name).lastPathComponent)
+                }
+            }
+        }
+        if !injectedAssetNames.isEmpty {
+            let preFilterCount = machOs.count
+            machOs = machOs.filter { !injectedAssetNames.contains($0.lastPathComponent) }
+            let excludedCount = preFilterCount - machOs.count
+            if excludedCount > 0 {
+                DDLogInfo(
+                    "Excluded \(excludedCount) previously-injected Mach-Os by backup diff: \(injectedAssetNames.sorted())",
+                    ddlog: logger
+                )
             }
         }
 
