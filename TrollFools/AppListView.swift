@@ -99,11 +99,10 @@ struct AppListView: View {
     var content: some View {
         styledNavigationView
             .animation(.easeOut, value: appList.activeScopeApps.keys)
-            .sheet(item: $selectorOpenedURL) { urlWrapper in
-                AppListView()
-                    .environmentObject(AppListModel(selectorURL: urlWrapper.url))
-            }
+            .modifier(SelectorSheetModifier(isSelectorMode: appList.isSelectorMode, selectorOpenedURL: $selectorOpenedURL))
             .onOpenURL { url in
+                guard !appList.isSelectorMode else { return }
+                
                 let ext = url.pathExtension.lowercased()
                 guard url.isFileURL,
                       ext == "dylib" || ext == "deb" || ext == "zip"
@@ -120,7 +119,14 @@ struct AppListView: View {
                     }
                 }
 
-                selectorOpenedURL = urlIdent
+                if selectorOpenedURL != nil {
+                    selectorOpenedURL = nil
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        selectorOpenedURL = urlIdent
+                    }
+                } else {
+                    selectorOpenedURL = urlIdent
+                }
             }
             .onAppear {
                 if Double.random(in: 0 ..< 1) < 0.1 {
@@ -504,6 +510,22 @@ struct AppListView: View {
             Text(content)
                 .font(.footnote)
                 .padding(.horizontal, 16)
+        }
+    }
+}
+
+struct SelectorSheetModifier: ViewModifier {
+    let isSelectorMode: Bool
+    @Binding var selectorOpenedURL: URLIdentifiable?
+
+    func body(content: Content) -> some View {
+        if isSelectorMode {
+            content 
+        } else {
+            content.sheet(item: $selectorOpenedURL) { urlWrapper in
+                AppListView()
+                    .environmentObject(AppListModel(selectorURL: urlWrapper.url))
+            }
         }
     }
 }
