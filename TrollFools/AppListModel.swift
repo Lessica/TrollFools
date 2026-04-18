@@ -92,11 +92,10 @@ final class AppListModel: ObservableObject {
             .store(in: &cancellables)
 
         let darwinCenter = CFNotificationCenterGetDarwinNotifyCenter()
-        CFNotificationCenterAddObserver(darwinCenter, Unmanaged.passRetained(self).toOpaque(), { _, observer, _, _, _ in
-            guard let observer = Unmanaged<AppListModel>.fromOpaque(observer!).takeUnretainedValue() as AppListModel? else {
-                return
-            }
-            observer.applicationChanged.send()
+        CFNotificationCenterAddObserver(darwinCenter, Unmanaged.passUnretained(self).toOpaque(), { _, observer, _, _, _ in
+            guard let observerPtr = observer else { return }
+            let observerObj = Unmanaged<AppListModel>.fromOpaque(observerPtr).takeUnretainedValue()
+            observerObj.applicationChanged.send()
         }, "com.apple.LaunchServices.ApplicationsChanged" as CFString, nil, .coalesce)
     }
 
