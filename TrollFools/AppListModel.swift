@@ -5,6 +5,7 @@
 //  Created by 82Flex on 2024/10/30.
 //
 
+import notify
 import Combine
 import OrderedCollections
 import SwiftUI
@@ -69,6 +70,7 @@ final class AppListModel: ObservableObject {
 
     private let applicationChanged = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
+    private var darwinNotifyToken: Int32 = NOTIFY_TOKEN_INVALID
 
     init(selectorURL: URL? = nil) {
         self.selectorURL = selectorURL
@@ -91,18 +93,19 @@ final class AppListModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        let darwinCenter = CFNotificationCenterGetDarwinNotifyCenter()
-        CFNotificationCenterAddObserver(darwinCenter, Unmanaged.passRetained(self).toOpaque(), { _, observer, _, _, _ in
-            guard let observer = Unmanaged<AppListModel>.fromOpaque(observer!).takeUnretainedValue() as AppListModel? else {
-                return
-            }
-            observer.applicationChanged.send()
-        }, "com.apple.LaunchServices.ApplicationsChanged" as CFString, nil, .coalesce)
+        // Uses notify_register_dispatch instead of CFNotificationCenterAddObserver to avoid
+        // Unmanaged pointer management. Unlike CFNotificationCenterAddObserver with .coalesce,
+        // notify_register_dispatch may deliver queued notifications individually upon app resume,
+        // but the .throttle(for: 0.5, ...) on applicationChanged already coalesces rapid bursts.
+        notify_register_dispatch("com.apple.LaunchServices.ApplicationsChanged", &darwinNotifyToken, .main) { [weak self] _ in
+            self?.applicationChanged.send()
+        }
     }
 
     deinit {
-        let darwinCenter = CFNotificationCenterGetDarwinNotifyCenter()
-        CFNotificationCenterRemoveObserver(darwinCenter, Unmanaged.passUnretained(self).toOpaque(), nil, nil)
+        if darwinNotifyToken != NOTIFY_TOKEN_INVALID {
+            notify_cancel(darwinNotifyToken)
+        }
     }
 
     func reload() {
