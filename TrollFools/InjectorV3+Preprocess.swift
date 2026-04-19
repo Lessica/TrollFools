@@ -234,43 +234,46 @@ fileprivate enum ZStd {
             throw SWCompression.DataError.corrupted
         }
 
-        let contentSize = data.withUnsafeBytes { sourceBuffer in
-            ZSTD_getFrameContentSize(sourceBuffer.baseAddress, sourceBuffer.count)
+        guard let stream = ZSTD_createDStream() else {
+            throw SWCompression.DataError.corrupted
+        }
+        defer {
+            _ = ZSTD_freeDStream(stream)
         }
 
-        if contentSize == ZSTD_CONTENTSIZE_ERROR {
+        let initResult = ZSTD_initDStream(stream)
+        guard ZSTD_isError(initResult) == 0 else {
             throw SWCompression.DataError.corrupted
-        }
-        if contentSize == ZSTD_CONTENTSIZE_UNKNOWN {
-            throw SWCompression.DataError.corrupted
-        }
-        if contentSize > UInt64(Int.max) {
-            throw SWCompression.DataError.corrupted
-        }
-        if contentSize == 0 {
-            return Data()
         }
 
-        var output = Data(count: Int(contentSize))
-        let result = output.withUnsafeMutableBytes { destinationBuffer in
-            data.withUnsafeBytes { sourceBuffer in
-                ZSTD_decompress(
-                    destinationBuffer.baseAddress,
-                    destinationBuffer.count,
-                    sourceBuffer.baseAddress,
-                    sourceBuffer.count
-                )
+        let chunkSize = max(Int(ZSTD_DStreamOutSize()), 1)
+        var chunk = [UInt8](repeating: 0, count: chunkSize)
+        var output = Data()
+
+        try data.withUnsafeBytes { sourceBuffer in
+            var input = ZSTD_inBuffer(src: sourceBuffer.baseAddress, size: sourceBuffer.count, pos: 0)
+            var streamResult: size_t = 1
+
+            while input.pos < input.size || streamResult != 0 {
+                let produced = try chunk.withUnsafeMutableBytes { destinationBuffer in
+                    var outBuffer = ZSTD_outBuffer(
+                        dst: destinationBuffer.baseAddress,
+                        size: destinationBuffer.count,
+                        pos: 0
+                    )
+                    streamResult = ZSTD_decompressStream(stream, &outBuffer, &input)
+                    guard ZSTD_isError(streamResult) == 0 else {
+                        throw SWCompression.DataError.corrupted
+                    }
+                    return outBuffer.pos
+                }
+
+                if produced > 0 {
+                    output.append(contentsOf: chunk[..<Int(produced)])
+                }
             }
         }
 
-        guard ZSTD_isError(result) == 0 else {
-            let description = String(cString: ZSTD_getErrorName(result))
-            throw SWCompression.DataError.corrupted
-        }
-
-        if result < output.count {
-            output.removeSubrange(Int(result) ..< output.count)
-        }
         return output
     }
 }
