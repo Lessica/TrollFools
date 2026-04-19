@@ -69,6 +69,8 @@
 		CC0D662F2D7F11AC000EADED /* ArArchiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D662E2D7F11AC000EADED /* ArArchiveKit */; };
 		CC0D66322D7F13A9000EADED /* SWCompression in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D66312D7F13A9000EADED /* SWCompression */; };
 		CC0D66342D7F13B1000EADED /* SWCompression in Frameworks */ = {isa = PBXBuildFile; productRef = CC0D66332D7F13B1000EADED /* SWCompression */; };
+		A1B2C3D72F12345000112233 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D52F12345000112233 /* libzstd */; };
+		A1B2C3D82F12345000112233 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D62F12345000112233 /* libzstd */; };
 		CC0E80FB2C54F84000B137B4 /* mv-15 in Resources */ = {isa = PBXBuildFile; fileRef = CC0E80FA2C54F84000B137B4 /* mv-15 */; };
 		CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CC1548C82C4A6B2100A4173E /* ZIPFoundation */; };
 		CC1548D12C4A6B8200A4173E /* ct_bypass in Resources */ = {isa = PBXBuildFile; fileRef = CC1548CF2C4A6B8200A4173E /* ct_bypass */; };
@@ -246,6 +248,7 @@
 				614C0C4B2D7C2E1D007E9184 /* MachOKitC in Frameworks */,
 				614C0C4D2D7C2E23007E9184 /* OrderedCollections in Frameworks */,
 				CC0D66342D7F13B1000EADED /* SWCompression in Frameworks */,
+				A1B2C3D82F12345000112233 /* libzstd in Frameworks */,
 				614C0C472D7C2E12007E9184 /* CoreServices.framework in Frameworks */,
 				614C0C4F2D7C2E28007E9184 /* ZIPFoundation in Frameworks */,
 			);
@@ -265,6 +268,7 @@
 				CC8061712E71636500B1AA3E /* DpkgVersion in Frameworks */,
 				CC1548FC2C4AADBB00A4173E /* MachOKit in Frameworks */,
 				CC0D66322D7F13A9000EADED /* SWCompression in Frameworks */,
+				A1B2C3D72F12345000112233 /* libzstd in Frameworks */,
 				CC1548C92C4A6B2100A4173E /* ZIPFoundation in Frameworks */,
 				61F595622D6B42340034DD83 /* SwiftUIIntrospect-Static in Frameworks */,
 			);
@@ -476,6 +480,7 @@
 				614C0C512D7C2E44007E9184 /* ArgumentParser */,
 				CC0D662E2D7F11AC000EADED /* ArArchiveKit */,
 				CC0D66332D7F13B1000EADED /* SWCompression */,
+				A1B2C3D62F12345000112233 /* libzstd */,
 			);
 			productName = trollfoolscli;
 			productReference = 614C0C382D7C243E007E9184 /* trollfoolscli */;
@@ -507,6 +512,7 @@
 				61F595612D6B42340034DD83 /* SwiftUIIntrospect-Static */,
 				CC0D662C2D7F11A2000EADED /* ArArchiveKit */,
 				CC0D66312D7F13A9000EADED /* SWCompression */,
+				A1B2C3D52F12345000112233 /* libzstd */,
 				CC8061702E71636500B1AA3E /* DpkgVersion */,
 			);
 			productName = TrollFools;
@@ -553,6 +559,7 @@
 				614C0C502D7C2E44007E9184 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				CC0D662B2D7F11A2000EADED /* XCRemoteSwiftPackageReference "ArArchiveKit" */,
 				CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */,
+				A1B2C3D42F12345000112233 /* XCRemoteSwiftPackageReference "zstd" */,
 				CC80616F2E71636500B1AA3E /* XCRemoteSwiftPackageReference "DpkgVersion" */,
 			);
 			productRefGroup = CCF470572C4A4649008D8197 /* Products */;
@@ -1087,6 +1094,14 @@
 				minimumVersion = 4.8.6;
 			};
 		};
+		A1B2C3D42F12345000112233 /* XCRemoteSwiftPackageReference "zstd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/zstd.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.7;
+			};
+		};
 		CC1548C72C4A6B2100A4173E /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
@@ -1198,6 +1213,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CC0D66302D7F13A9000EADED /* XCRemoteSwiftPackageReference "SWCompression" */;
 			productName = SWCompression;
+		};
+		A1B2C3D52F12345000112233 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3D42F12345000112233 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		A1B2C3D62F12345000112233 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3D42F12345000112233 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
 		};
 		CC1548C82C4A6B2100A4173E /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;

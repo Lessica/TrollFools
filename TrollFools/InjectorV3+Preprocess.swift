@@ -10,6 +10,7 @@ import CocoaLumberjackSwift
 import Foundation
 import SWCompression
 import ZIPFoundation
+import libzstd
 
 extension InjectorV3 {
     // MARK: - Constants
@@ -122,6 +123,10 @@ fileprivate extension InjectorV3 {
                 DDLogInfo("Extracting \(header.name)", ddlog: logger)
                 contentData = try LZ4.decompress(data: Data(data))
                 break
+            } else if header.name == "data.tar.zst" {
+                DDLogInfo("Extracting \(header.name)", ddlog: logger)
+                contentData = try ZStd.unarchive(archive: Data(data))
+                break
             } else {
                 continue
             }
@@ -216,5 +221,56 @@ fileprivate extension InjectorV3 {
 
             DDLogInfo("Successfully copied bundle \(bundleName)", ddlog: logger)
         }
+    }
+}
+
+fileprivate enum ZStd {
+    static func unarchive(archive: Data) throws -> Data {
+        try decompress(data: archive)
+    }
+
+    static func decompress(data: Data) throws -> Data {
+        guard !data.isEmpty else {
+            throw SWCompression.DataError.corrupted
+        }
+
+        let contentSize = data.withUnsafeBytes { sourceBuffer in
+            ZSTD_getFrameContentSize(sourceBuffer.baseAddress, sourceBuffer.count)
+        }
+
+        if contentSize == ZSTD_CONTENTSIZE_ERROR {
+            throw SWCompression.DataError.corrupted
+        }
+        if contentSize == ZSTD_CONTENTSIZE_UNKNOWN {
+            throw SWCompression.DataError.corrupted
+        }
+        if contentSize > UInt64(Int.max) {
+            throw SWCompression.DataError.corrupted
+        }
+        if contentSize == 0 {
+            return Data()
+        }
+
+        var output = Data(count: Int(contentSize))
+        let result = output.withUnsafeMutableBytes { destinationBuffer in
+            data.withUnsafeBytes { sourceBuffer in
+                ZSTD_decompress(
+                    destinationBuffer.baseAddress,
+                    destinationBuffer.count,
+                    sourceBuffer.baseAddress,
+                    sourceBuffer.count
+                )
+            }
+        }
+
+        guard ZSTD_isError(result) == 0 else {
+            let description = String(cString: ZSTD_getErrorName(result))
+            throw SWCompression.DataError.corrupted
+        }
+
+        if result < output.count {
+            output.removeSubrange(Int(result) ..< output.count)
+        }
+        return output
     }
 }
