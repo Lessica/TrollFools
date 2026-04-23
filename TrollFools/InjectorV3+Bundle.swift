@@ -50,9 +50,7 @@ extension InjectorV3 {
         let linkedDylibs = try linkedDylibsRecursivelyOfMachO(executableURL)
         DDLogInfo("Linked dylibs (\(linkedDylibs.count)): \(linkedDylibs.map { $0.lastPathComponent })", ddlog: logger)
 
-        var enumeratedURLs = OrderedSet<URL>()
-        var allMachOsInFrameworks = OrderedSet<URL>()
-
+        var enumeratedMachOs = OrderedSet<URL>()
         if let enumerator = FileManager.default.enumerator(
             at: frameworksURL,
             includingPropertiesForKeys: [.fileSizeKey],
@@ -63,37 +61,40 @@ extension InjectorV3 {
                     enumerator.skipDescendants()
                     continue
                 }
+
                 // Skip backup files created before injection
                 if itemURL.path.hasSuffix(".\(Self.alternateSuffix)") {
                     continue
                 }
-                if enumerator.level == 2 {
-                    enumeratedURLs.append(itemURL)
-                    if isMachO(itemURL) {
-                        allMachOsInFrameworks.append(itemURL)
-                    }
+
+                let itemExt = itemURL.pathExtension.lowercased()
+                if enumerator.level == 2 && (itemExt.isEmpty || itemExt == "dylib") && isMachO(itemURL) {
+                    enumeratedMachOs.append(itemURL)
+                    continue
                 }
+
                 // Scan bare dylibs at level 1 (directly in Frameworks/)
-                if enumerator.level == 1 && itemURL.pathExtension.lowercased() == "dylib" && isMachO(itemURL) {
-                    allMachOsInFrameworks.append(itemURL)
-                    enumeratedURLs.append(itemURL)
+                if enumerator.level == 1 && itemExt == "dylib" && isMachO(itemURL) {
+                    enumeratedMachOs.append(itemURL)
+                    continue
                 }
             }
         }
 
-        DDLogInfo("Enumerated \(enumeratedURLs.count) items, \(allMachOsInFrameworks.count) Mach-Os in Frameworks/", ddlog: logger)
+        DDLogInfo("Enumerated \(enumeratedMachOs.count) items", ddlog: logger)
 
-        var machOs = linkedDylibs.intersection(enumeratedURLs)
+        var machOs = linkedDylibs.intersection(enumeratedMachOs)
         DDLogInfo("Intersection: \(machOs.count) linked Mach-Os in Frameworks/", ddlog: logger)
 
         // Fallback: if none of the Mach-Os in Frameworks/ are statically linked
         // by the main binary (e.g. Unity apps use dlopen), use all available Mach-Os.
-        if machOs.isEmpty && !allMachOsInFrameworks.isEmpty {
+        if machOs.isEmpty && !enumeratedMachOs.isEmpty {
             if useFrameworkEnumerationFallback {
                 didUseMachOEnumerationFallback = true
+
                 var excludedSwiftRuntimeCount = 0
                 var excludedIgnoredNameCount = 0
-                let filteredMachOs = allMachOsInFrameworks.filter { url in
+                let filteredMachOs = enumeratedMachOs.filter { url in
                     let nameLower = url.lastPathComponent.lowercased()
                     if nameLower.hasPrefix("libswift") {
                         excludedSwiftRuntimeCount += 1
@@ -105,11 +106,13 @@ extension InjectorV3 {
                     }
                     return true
                 }
-                let excludedCount = allMachOsInFrameworks.count - filteredMachOs.count
+
+                let excludedCount = enumeratedMachOs.count - filteredMachOs.count
                 DDLogWarn(
                     "No statically linked Mach-Os found, falling back to \(filteredMachOs.count) filtered Mach-Os in Frameworks/ (excluded \(excludedCount): \(excludedSwiftRuntimeCount) Swift runtime, \(excludedIgnoredNameCount) ignored by name)",
                     ddlog: logger
                 )
+
                 machOs = OrderedSet(filteredMachOs)
             } else {
                 DDLogWarn("No statically linked Mach-Os found, fallback is disabled by settings", ddlog: logger)
@@ -119,7 +122,7 @@ extension InjectorV3 {
         // Filter out previously-injected Mach-Os by diffing current vs. backup load commands.
         // Any load command present in the current binary but absent from its backup was added by injection.
         var injectedAssetNames = Set<String>()
-        for machO in (allMachOsInFrameworks.elements + [executableURL]) where hasAlternate(machO) {
+        for machO in (enumeratedMachOs.elements + [executableURL]) where hasAlternate(machO) {
             if let current = try? loadedDylibsOfMachO(machO),
                let original = try? loadedDylibsOfMachO(Self.alternateURL(for: machO))
             {
