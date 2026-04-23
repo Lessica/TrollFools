@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.3 Build 253 (2026-04-23)
+
+修复与 MachOKit 有关的一处断言崩溃。
+
+------
+
+## 4.3 Build 253 (2026-04-23) [EN]
+
+Fixed an assertion crash related to MachOKit.
+
+------
+
 ## 4.3 Build 246 (2026-04-16)
 
 修复二次注入时可能误选已注入动态库作为目标 Mach-O 的问题。
