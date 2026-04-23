@@ -107,8 +107,7 @@ extension InjectorV3 {
                 }
                 let excludedCount = allMachOsInFrameworks.count - filteredMachOs.count
                 DDLogWarn(
-                    "No statically linked Mach-Os found, falling back to \(filteredMachOs.count) filtered Mach-Os in Frameworks/ " +
-                        "(excluded \(excludedCount): \(excludedSwiftRuntimeCount) Swift runtime, \(excludedIgnoredNameCount) ignored by name)",
+                    "No statically linked Mach-Os found, falling back to \(filteredMachOs.count) filtered Mach-Os in Frameworks/ (excluded \(excludedCount): \(excludedSwiftRuntimeCount) Swift runtime, \(excludedIgnoredNameCount) ignored by name)",
                     ddlog: logger
                 )
                 machOs = OrderedSet(filteredMachOs)

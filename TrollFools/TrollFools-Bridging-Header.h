@@ -10,6 +10,7 @@
 
 FOUNDATION_EXTERN NSString *TFGetDisplayVersion(void);
 FOUNDATION_EXTERN void TFUtilKillAll(NSString *processPath, BOOL softly);
+FOUNDATION_EXTERN NSData * _Nullable TFZStdDecompressData(NSData * _Nonnull data);
 
 @interface UIImage (Private)
 + (instancetype)_applicationIconImageForBundleIdentifier:(NSString *)bundleIdentifier 

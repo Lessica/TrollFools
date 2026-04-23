@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <zstd.h>
 
 #import <spawn.h>
 #import <stdio.h>
@@ -87,6 +88,66 @@ void TFUtilKillAll(NSString *processName, BOOL softly) {
           }
       }
     });
+}
+
+NSData * _Nullable TFZStdDecompressData(NSData * _Nonnull data) {
+    if (data.length == 0) {
+        return nil;
+    }
+
+    ZSTD_DStream *stream = ZSTD_createDStream();
+    if (!stream) {
+        return nil;
+    }
+
+    size_t initResult = ZSTD_initDStream(stream);
+    if (ZSTD_isError(initResult)) {
+        ZSTD_freeDStream(stream);
+        return nil;
+    }
+
+    size_t chunkSize = ZSTD_DStreamOutSize();
+    if (chunkSize == 0) {
+        chunkSize = 1;
+    }
+
+    void *chunk = malloc(chunkSize);
+    if (!chunk) {
+        ZSTD_freeDStream(stream);
+        return nil;
+    }
+
+    NSMutableData *output = [NSMutableData data];
+    ZSTD_inBuffer input = { .src = data.bytes, .size = data.length, .pos = 0 };
+    size_t streamResult = 1;
+    BOOL succeeded = YES;
+
+    while (input.pos < input.size || streamResult != 0) {
+        size_t previousPos = input.pos;
+        ZSTD_outBuffer outBuffer = { .dst = chunk, .size = chunkSize, .pos = 0 };
+        streamResult = ZSTD_decompressStream(stream, &outBuffer, &input);
+        if (ZSTD_isError(streamResult)) {
+            succeeded = NO;
+            break;
+        }
+
+        if (outBuffer.pos > 0) {
+            [output appendBytes:chunk length:outBuffer.pos];
+        } else if (input.pos == previousPos && input.pos >= input.size && streamResult != 0) {
+            // No progress and frame not complete usually means truncated input.
+            succeeded = NO;
+            break;
+        }
+    }
+
+    free(chunk);
+    ZSTD_freeDStream(stream);
+
+    if (!succeeded) {
+        return nil;
+    }
+
+    return output;
 }
 
 static NSString *TFGetMarketingVersion(void) {

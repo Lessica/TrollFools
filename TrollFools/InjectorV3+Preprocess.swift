@@ -10,7 +10,6 @@ import CocoaLumberjackSwift
 import Foundation
 import SWCompression
 import ZIPFoundation
-import libzstd
 
 extension InjectorV3 {
     // MARK: - Constants
@@ -230,50 +229,9 @@ fileprivate enum ZStd {
     }
 
     static func decompress(data: Data) throws -> Data {
-        guard !data.isEmpty else {
+        guard let output = TFZStdDecompressData(data) else {
             throw SWCompression.DataError.corrupted
         }
-
-        guard let stream = ZSTD_createDStream() else {
-            throw SWCompression.DataError.corrupted
-        }
-        defer {
-            _ = ZSTD_freeDStream(stream)
-        }
-
-        let initResult = ZSTD_initDStream(stream)
-        guard ZSTD_isError(initResult) == 0 else {
-            throw SWCompression.DataError.corrupted
-        }
-
-        let chunkSize = max(Int(ZSTD_DStreamOutSize()), 1)
-        var chunk = [UInt8](repeating: 0, count: chunkSize)
-        var output = Data()
-
-        try data.withUnsafeBytes { sourceBuffer in
-            var input = ZSTD_inBuffer(src: sourceBuffer.baseAddress, size: sourceBuffer.count, pos: 0)
-            var streamResult: size_t = 1
-
-            while input.pos < input.size || streamResult != 0 {
-                let produced = try chunk.withUnsafeMutableBytes { destinationBuffer in
-                    var outBuffer = ZSTD_outBuffer(
-                        dst: destinationBuffer.baseAddress,
-                        size: destinationBuffer.count,
-                        pos: 0
-                    )
-                    streamResult = ZSTD_decompressStream(stream, &outBuffer, &input)
-                    guard ZSTD_isError(streamResult) == 0 else {
-                        throw SWCompression.DataError.corrupted
-                    }
-                    return outBuffer.pos
-                }
-
-                if produced > 0 {
-                    output.append(contentsOf: chunk[..<Int(produced)])
-                }
-            }
-        }
-
         return output
     }
 }
