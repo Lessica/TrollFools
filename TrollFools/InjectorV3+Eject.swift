@@ -94,8 +94,45 @@ extension InjectorV3 {
     }
 
     fileprivate func collectModifiedMachOs() throws -> [URL] {
-        try frameworkMachOsInBundle(bundleURL)
-            .filter { hasAlternate($0) }.elements
+        // Eject only needs Mach-Os that have a `.troll-fools.bak` sibling (signifying
+        // prior modification). Routing through frameworkMachOsInBundle drags in
+        // loadedDylibsOfMachO → MachOKit load-command iteration, which can hit a
+        // Swift runtime trap (brk #1) inside MachOKit's DyldCache handling that
+        // `try?` cannot catch. Do a plain filesystem scan instead.
+        var modifiedMachOs: [URL] = []
+
+        if hasAlternate(executableURL) {
+            modifiedMachOs.append(executableURL)
+        }
+
+        let frameworksURL = bundleURL.appendingPathComponent("Frameworks")
+        guard let enumerator = FileManager.default.enumerator(
+            at: frameworksURL,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        ) else {
+            return modifiedMachOs
+        }
+
+        for case let itemURL as URL in enumerator {
+            if checkIsInjectedBundle(itemURL) || enumerator.level > 2 {
+                enumerator.skipDescendants()
+                continue
+            }
+            if itemURL.path.hasSuffix(".\(Self.alternateSuffix)") {
+                continue
+            }
+            let atLevel2 = enumerator.level == 2
+            let atLevel1Dylib = enumerator.level == 1 && itemURL.pathExtension.lowercased() == "dylib"
+            guard atLevel2 || atLevel1Dylib else {
+                continue
+            }
+            if hasAlternate(itemURL) && isMachO(itemURL) {
+                modifiedMachOs.append(itemURL)
+            }
+        }
+
+        return modifiedMachOs
     }
 
     // MARK: - Load Commands

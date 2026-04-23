@@ -45,10 +45,11 @@ extension InjectorV3 {
     }
 
     func isMachO(_ target: URL) -> Bool {
-        guard hasMachOMagic(target) else {
-            return false
-        }
-        return (try? MachOKit.loadFromFile(url: target)) != nil
+        // Magic-byte check only: MachOKit.loadFromFile eagerly touches DyldCache
+        // code in its parser, which can hit a Swift runtime trap (brk #1) inside
+        // MachOKit that `try?` does not catch. Magic bytes alone are sufficient
+        // to classify a file as Mach-O for injection/eject scanning.
+        hasMachOMagic(target)
     }
 
     func isProtectedMachO(_ target: URL) throws -> Bool {
