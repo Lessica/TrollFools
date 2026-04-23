@@ -10,12 +10,45 @@ import MachOKit
 import OrderedCollections
 
 extension InjectorV3 {
-    func isMachO(_ target: URL) -> Bool {
-        if (try? MachOKit.loadFromFile(url: target)) != nil {
-            true
-        } else {
-            false
+    // Mach-O magic numbers (both native and byte-swapped).
+    // MachOKit's loadFromFile can hit a Swift runtime trap (brk #1) on files
+    // that are not Mach-O — `try?` does not catch those — so callers must
+    // screen with this cheap pre-check before invoking MachOKit.
+    private static let machOMagics: Set<UInt32> = [
+        0xFEEDFACE, 0xCEFAEDFE,
+        0xFEEDFACF, 0xCFFAEDFE,
+        0xCAFEBABE, 0xBEBAFECA,
+        0xCAFEBABF, 0xBFBAFECA,
+    ]
+
+    fileprivate func hasMachOMagic(_ target: URL) -> Bool {
+        guard let size = (try? target.resourceValues(forKeys: [.fileSizeKey]).fileSize),
+              size >= 32
+        else {
+            return false
         }
+        guard let handle = try? FileHandle(forReadingFrom: target) else {
+            return false
+        }
+        defer { try? handle.close() }
+        let head: Data?
+        if #available(iOS 13.4, *) {
+            head = try? handle.read(upToCount: 4)
+        } else {
+            head = handle.readData(ofLength: 4)
+        }
+        guard let data = head, data.count == 4 else {
+            return false
+        }
+        let magic = data.withUnsafeBytes { $0.load(as: UInt32.self) }
+        return Self.machOMagics.contains(magic)
+    }
+
+    func isMachO(_ target: URL) -> Bool {
+        guard hasMachOMagic(target) else {
+            return false
+        }
+        return (try? MachOKit.loadFromFile(url: target)) != nil
     }
 
     func isProtectedMachO(_ target: URL) throws -> Bool {
