@@ -247,29 +247,38 @@ fileprivate enum ZStd {
         }
 
         let chunkSize = max(Int(ZSTD_DStreamOutSize()), 1)
-        var chunk = [UInt8](repeating: 0, count: chunkSize)
+        let chunk = UnsafeMutableRawPointer.allocate(byteCount: chunkSize, alignment: 1)
+        defer {
+            chunk.deallocate()
+        }
+
         var output = Data()
+        try data.withUnsafeBytes { (sourceBuffer: UnsafeRawBufferPointer) throws -> Void in
+            guard let sourcePtr = sourceBuffer.baseAddress else {
+                throw SWCompression.DataError.corrupted
+            }
+            var input = ZSTD_inBuffer(src: sourcePtr, size: sourceBuffer.count, pos: 0)
 
-        try data.withUnsafeBytes { sourceBuffer in
-            var input = ZSTD_inBuffer(src: sourceBuffer.baseAddress, size: sourceBuffer.count, pos: 0)
-            var streamResult: size_t = 1
-
-            while input.pos < input.size || streamResult != 0 {
-                let produced = try chunk.withUnsafeMutableBytes { destinationBuffer in
-                    var outBuffer = ZSTD_outBuffer(
-                        dst: destinationBuffer.baseAddress,
-                        size: destinationBuffer.count,
-                        pos: 0
-                    )
-                    streamResult = ZSTD_decompressStream(stream, &outBuffer, &input)
-                    guard ZSTD_isError(streamResult) == 0 else {
-                        throw SWCompression.DataError.corrupted
-                    }
-                    return outBuffer.pos
+            while true {
+                var outBuffer = ZSTD_outBuffer(dst: chunk, size: chunkSize, pos: 0)
+                let streamResult = ZSTD_decompressStream(stream, &outBuffer, &input)
+                guard ZSTD_isError(streamResult) == 0 else {
+                    throw SWCompression.DataError.corrupted
                 }
 
-                if produced > 0 {
-                    output.append(contentsOf: chunk[..<Int(produced)])
+                if outBuffer.pos > 0 {
+                    output.append(
+                        chunk.assumingMemoryBound(to: UInt8.self),
+                        count: Int(outBuffer.pos)
+                    )
+                }
+
+                if streamResult == 0 {
+                    break
+                }
+
+                if outBuffer.pos == 0 && input.pos == input.size {
+                    throw SWCompression.DataError.corrupted
                 }
             }
         }
