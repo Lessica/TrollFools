@@ -1,5 +1,33 @@
 # Changelog
 
+## 4.3 Build 246 Hotfix (2026-04-23)
+
+修复 4.2 Build 225 至 4.3 Build 246 期间引入的三处注入/移除注入崩溃。三处均为 Swift 运行时陷阱（`brk #1`），`try?` 无法捕获。
+
+### 修复
+
+- **zstd 流式解压崩溃（注入路径）**：`InjectorV3+Preprocess.swift` 中 `ZStd.decompress` 以 `Data()` 起始，再 `append(contentsOf: ArraySlice<UInt8>)`，首次 COW 时在 `_NSZeroData` 背书状态下触发 ARC `brk #1`。改为 `UnsafeMutableRawPointer` 裸缓冲配合 `Data.append(_:count:)`，绕开 Sequence/COW 路径；循环条件收紧为 `streamResult == 0` 退出，无进展时直接抛错，避免截断输入下潜在死循环。
+- **MachOKit 非 Mach-O 文件崩溃（移除注入路径）**：commit `8a832b4` 引入的 Unity 回退扫描对 `Frameworks/*.framework/` 中所有 level-2 文件（`Info.plist`、`.car`、`.nib`、`.bin` 等）调用 `isMachO`，`MachOKit.loadFromFile` 在 `NSFileHandle.read<A>(offset:swapHandler:)` 内部 `brk #1`。`isMachO` 收紧为仅校验前 4 字节 Mach-O / fat magic（8 种变体），非 Mach-O 文件不再进入 MachOKit。
+- **MachOKit DyldCache 路径崩溃（移除注入路径）**：commit `5ea814a` 引入的 `injectedAssetNames` 反查循环对每个带 `.troll-fools.bak` 备份的 Mach-O 调用 `loadedDylibsOfMachO`，MachOKit 的 load commands 迭代进入 `DyldCache.programsTrieEntries` → `Sequence.programOffsets` 触发 `brk #1`。移除注入本不需要该反查。新增独立实现 `collectModifiedMachOs`，仅扫描文件系统中有 `.troll-fools.bak` 兄弟文件的 Mach-O，完全避开 MachOKit load commands 路径。
+
+完整根因与修复见 `hotfix-4.3-246` annotated tag。
+
+------
+
+## 4.3 Build 246 Hotfix (2026-04-23) [EN]
+
+Fixed three injection/ejection crashes introduced between builds 225 and 246. All three are Swift runtime traps (`brk #1`) that `try?` cannot catch.
+
+### Fixed
+
+- **zstd streaming decompression crash (inject)**: `ZStd.decompress` in `InjectorV3+Preprocess.swift` started from an empty `Data()` backed by `_NSZeroData` and grew via `append(contentsOf: ArraySlice<UInt8>)`; the first COW transition triggered an ARC `brk #1`. Rewritten to use a raw `UnsafeMutableRawPointer` buffer with `Data.append(_:count:)` — bypasses the Sequence/COW path. Loop tightened: break on `streamResult == 0` and fail fast on stalled progress instead of potentially spinning on truncated input.
+- **MachOKit crash on non-Mach-O files (eject)**: The Unity fallback scan added in `8a832b4` called `isMachO` on every level-2 file inside `Frameworks/*.framework/` (including `Info.plist`, `.car`, `.nib`, `.bin`). `MachOKit.loadFromFile` `brk #1`s inside `NSFileHandle.read<A>(offset:swapHandler:)` on such inputs. `isMachO` is now a 4-byte magic check only (8 Mach-O / fat magic variants) — non-Mach-O files never reach MachOKit.
+- **MachOKit DyldCache trap (eject)**: The `injectedAssetNames` diff loop added in `5ea814a` called `loadedDylibsOfMachO` on every Mach-O with a `.troll-fools.bak` sibling; MachOKit's load-command iteration reaches `DyldCache.programsTrieEntries` → `Sequence.programOffsets` and traps. Eject does not need that filter. A dedicated `collectModifiedMachOs` now does a plain filesystem scan for `.bak` siblings, avoiding every MachOKit load-command path.
+
+Full root-cause notes live in the annotated `hotfix-4.3-246` tag.
+
+------
+
 ## 4.3 Build 246 (2026-04-16)
 
 修复二次注入时可能误选已注入动态库作为目标 Mach-O 的问题。

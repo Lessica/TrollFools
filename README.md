@@ -25,6 +25,16 @@ PRs are always welcome.
 - [x] `optool` is buggy so we need to compile a statically linked `install_name_tool` or `llvm-install-name-tool` on iOS to achieve a smaller package size.
 - [x] Support for `.deb` or `.zip`.
 
+## Hotfix Notes (2026-04-23)
+
+A hotfix on top of 4.3 Build 246 resolves three injection/ejection crashes introduced between builds 225 and 246. All three surfaced as Swift runtime traps (`brk #1`) that `try?` could not catch:
+
+- Inject path — zstd streaming decompression tripped ARC during the first COW transition from an empty `Data` (`_NSZeroData`-backed).
+- Eject path — the fallback scan called `isMachO` on non-Mach-O files (`Info.plist`, `.car`, `.nib`), reaching a trap inside MachOKit's `NSFileHandle.read`.
+- Eject path — the `injectedAssetNames` backup-diff loop reached MachOKit's `DyldCache.programsTrieEntries` parser and trapped there.
+
+See [CHANGELOG.md](CHANGELOG.md) and the annotated `hotfix-4.3-246` tag for per-bug root cause and fix details.
+
 ## Credits
 
 This project is inspired by [Patched-TS-App](https://github.com/34306/Patched-TS-App) by **[Huy Nguyen](https://x.com/Little_34306) and [Nathan](https://x.com/dedbeddedbed)**.
