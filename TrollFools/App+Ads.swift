@@ -46,6 +46,15 @@ extension App {
                 alternateIcon: .init(named: "vnc-default"),
                 isAdvertisement: true
             ),
+            App(
+                bid: NSLocalizedString("Keep your everyday apps ready.", comment: ""),
+                name: NSLocalizedString("AutoRun", comment: ""),
+                type: "System",
+                teamID: "GXZ23M5TP2",
+                url: URL(string: "https://havoc.app/package/autorun")!,
+                alternateIcon: .init(named: "autorun-default"),
+                isAdvertisement: true
+            ),
         ].randomElement()!
     }()
 }

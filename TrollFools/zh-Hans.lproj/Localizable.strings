@@ -32,6 +32,9 @@
 "Are you sure you want to eject all plug-ins? This action cannot be undone." = "你确定要推出所有插件吗？此操作无法撤销。";
 
 /* No comment provided by engineer. */
+"AutoRun" = "AutoRun";
+
+/* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
 
 /* No comment provided by engineer. */
@@ -153,6 +156,9 @@
 
 /* No comment provided by engineer. */
 "Injection Strategy" = "注入策略";
+
+/* No comment provided by engineer. */
+"Keep your everyday apps ready." = "让常用应用随时待命。";
 
 /* No comment provided by engineer. */
 "Launch" = "启动";

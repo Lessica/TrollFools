@@ -32,6 +32,9 @@
 "Are you sure you want to eject all plug-ins? This action cannot be undone." = "Bạn có chắc chắn muốn gỡ bỏ tất cả plug-in không? Hành động này không thể hoàn tác.";
 
 /* No comment provided by engineer. */
+"AutoRun" = "AutoRun";
+
+/* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Mang trở lại công cụ phân tích hệ thống và bảo mật tiên tiến nhất.";
 
 /* No comment provided by engineer. */
@@ -153,6 +156,9 @@
 
 /* No comment provided by engineer. */
 "Injection Strategy" = "Phương pháp tiêm";
+
+/* No comment provided by engineer. */
+"Keep your everyday apps ready." = "Giữ các ứng dụng hằng ngày của bạn luôn sẵn sàng.";
 
 /* No comment provided by engineer. */
 "Launch" = "Mở ứng dụng";

@@ -32,6 +32,9 @@
 "Are you sure you want to eject all plug-ins? This action cannot be undone." = "Are you sure you want to eject all plug-ins? This action cannot be undone.";
 
 /* No comment provided by engineer. */
+"AutoRun" = "AutoRun";
+
+/* No comment provided by engineer. */
 "Bringing back the most advanced system and security analysis tool." = "Bringing back the most advanced system and security analysis tool.";
 
 /* No comment provided by engineer. */
@@ -153,6 +156,9 @@
 
 /* No comment provided by engineer. */
 "Injection Strategy" = "Injection Strategy";
+
+/* No comment provided by engineer. */
+"Keep your everyday apps ready." = "Keep your everyday apps ready.";
 
 /* No comment provided by engineer. */
 "Launch" = "Launch";
